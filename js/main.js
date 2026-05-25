@@ -3,7 +3,7 @@
 
   var mqReduceMotion =
     typeof window.matchMedia === "function" ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
-  var THEME_KEY = "portfolio-theme";
+  var THEME_KEY = "portfolio-theme-v2";
 
   function prefersReducedMotion() {
     return mqReduceMotion ? mqReduceMotion.matches : false;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" data-default-theme="dark">
+<html lang="ko" data-default-theme="light" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,7 +8,7 @@
     <script>
       (function () {
         try {
-          var theme = localStorage.getItem("portfolio-theme");
+          var theme = localStorage.getItem("portfolio-theme-v2");
           if (theme === "dark" || theme === "light") {
             document.documentElement.setAttribute("data-theme", theme);
           }
@@ -67,9 +67,9 @@
           </ul>
         </nav>
         <div class="site-header__actions">
-          <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="true" aria-label="라이트 테마로 전환">
+          <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="다크 테마로 전환">
             <span class="theme-toggle__label">고대비</span>
-            <span class="theme-toggle__state" data-theme-label>다크</span>
+            <span class="theme-toggle__state" data-theme-label>라이트</span>
           </button>
           <button
             type="button"
