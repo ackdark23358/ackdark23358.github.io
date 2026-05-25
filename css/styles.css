@@ -807,6 +807,7 @@ a {
   margin: 0;
   font-size: calc(var(--text-caption) * 2);
   line-height: var(--lh-body);
+  text-align: center;
   color: var(--color-text-muted);
 }
 

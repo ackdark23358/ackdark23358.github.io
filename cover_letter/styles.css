@@ -502,6 +502,7 @@ a:hover {
   margin: 0;
   font-size: 1.625rem;
   line-height: 1.6;
+  text-align: center;
   color: color-mix(in srgb, var(--slate) 85%, transparent);
 }
 
