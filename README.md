@@ -59,14 +59,18 @@ IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적
 │   └── main.js
 ├── cover_letter/
 │   ├── profile.html
-│   ├── styles.css
-│   ├── script.js
+│   ├── css/
+│   │   └── styles.css
+│   ├── js/
+│   │   └── script.js
 │   └── 자기소개서.txt
 ├── online_business_card/
 │   ├── business-card.html
 │   ├── cover_letter_draft.md
-│   ├── style.css
-│   └── script.js
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       └── script.js
 └── cv/
     ├── resume.html
     ├── css/
@@ -111,7 +115,7 @@ GitHub Pages는 공개 웹사이트로 배포될 수 있으므로, 업로드 전
 
 - 메인 자기소개 문구: `index.html`
 - 프로필 페이지 내용: `cover_letter/profile.html`
-- 온라인 명함 문구와 애니메이션: `online_business_card/business-card.html`, `online_business_card/script.js`
+- 온라인 명함 문구와 애니메이션: `online_business_card/business-card.html`, `online_business_card/js/script.js`
 - 이력서 내용: `cv/resume.html`
 - 공통 헤더 스타일: `css/site-header.css`
 - 메인 페이지 스타일: `css/styles.css`
