@@ -19,7 +19,7 @@ IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적
 | 메인 자기소개서 | `index.html` | 지원 동기, 성장 과정, 보유 역량, 강점, 참고 정보를 담은 메인 페이지 |
 | 자기소개 / 프로필 | `cover_letter/profile.html` | 프로필, 관심 분야, 학습 경험, 지원 동기 등을 정리한 페이지 |
 | 온라인 명함 | `online_business_card/business-card.html` | 스크롤에 따라 명함이 회전하고 확대되는 인터랙티브 페이지 |
-| 이력서 | `resume/resume.html` | 경력, 학력, 자격증을 간단히 정리한 문서형 이력서 |
+| 이력서 | `cv/resume.html` | 경력, 학력, 자격증을 간단히 정리한 문서형 이력서 |
 
 ## 주요 기능
 
@@ -67,7 +67,7 @@ IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적
 │   ├── cover_letter_draft.md
 │   ├── style.css
 │   └── script.js
-└── resume/
+└── cv/
     ├── resume.html
     ├── css/
     │   ├── reset.css
@@ -112,7 +112,7 @@ GitHub Pages는 공개 웹사이트로 배포될 수 있으므로, 업로드 전
 - 메인 자기소개 문구: `index.html`
 - 프로필 페이지 내용: `cover_letter/profile.html`
 - 온라인 명함 문구와 애니메이션: `online_business_card/business-card.html`, `online_business_card/script.js`
-- 이력서 내용: `resume/resume.html`
+- 이력서 내용: `cv/resume.html`
 - 공통 헤더 스타일: `css/site-header.css`
 - 메인 페이지 스타일: `css/styles.css`
 
