@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko" data-default-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>김신욱 · 자기소개</title>
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem("portfolio-theme");
+        if (theme === "dark" || theme === "light") {
+          document.documentElement.setAttribute("data-theme", theme);
+        }
+      } catch (e) {
+        /* 테마 저장소를 사용할 수 없는 환경에서는 기본 테마를 사용합니다. */
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css?v=theme-sync" />
+  <link rel="stylesheet" href="../css/site-header.css?v=theme-sync" />
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-header__brand" href="../index.html">코탐록</a>
+      <nav id="site-nav" class="site-nav" aria-label="자료 페이지">
+        <ul class="site-nav__list">
+          <li><a class="site-nav__link is-active" href="../cover_letter/profile.html" aria-current="page">자기소개 / 프로필</a></li>
+          <li><a class="site-nav__link" href="../online_business_card/business-card.html">온라인 명함</a></li>
+          <li><a class="site-nav__link" href="../resume/resume.html">이력서</a></li>
+        </ul>
+      </nav>
+      <div class="site-header__actions">
+        <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="다크 테마로 전환">
+          <span class="theme-toggle__label">고대비</span>
+          <span class="theme-toggle__state" data-theme-label>라이트</span>
+        </button>
+        <button
+          type="button"
+          class="nav-toggle"
+          aria-expanded="false"
+          aria-controls="site-nav"
+          aria-label="메뉴 열기"
+        >
+          <span class="nav-toggle__bar" aria-hidden="true"></span>
+          <span class="nav-toggle__bar" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <header class="sidebar" aria-label="소개 및 탐색">
+      <div class="sidebar-inner">
+        <div class="brand">
+          <figure class="profile-figure">
+            <div class="profile-photo-ring">
+              <img
+                class="profile-photo"
+                src="P.png"
+                alt="김신욱 프로필 사진"
+                width="130"
+                height="130"
+                decoding="async"
+                fetchpriority="high"
+              />
+            </div>
+          </figure>
+          <h1 class="brand-name">김신욱</h1>
+          <p class="brand-role">웹 · 모바일 · AI 서비스</p>
+          <p class="brand-tagline">
+            접근 가능하고 정돈된 디지털 경험을 지향하며, IT 분야 취업을 준비하고 있습니다.
+          </p>
+        </div>
+
+        <nav class="side-nav" aria-label="섹션 이동">
+          <ul class="side-nav-list" id="navList">
+            <li>
+              <a class="nav-link" href="#about" data-section="about"><span class="nav-marker" aria-hidden="true"></span>소개</a>
+            </li>
+            <li>
+              <a class="nav-link" href="#profile" data-section="profile"><span class="nav-marker" aria-hidden="true"></span>프로필</a>
+            </li>
+            <li>
+              <a class="nav-link" href="#interests" data-section="interests"><span class="nav-marker" aria-hidden="true"></span>관심 분야</a>
+            </li>
+            <li>
+              <a class="nav-link" href="#learning" data-section="learning"><span class="nav-marker" aria-hidden="true"></span>학습 · 경험</a>
+            </li>
+            <li>
+              <a class="nav-link" href="#motivation" data-section="motivation"><span class="nav-marker" aria-hidden="true"></span>지원 동기</a>
+            </li>
+            <li>
+              <a class="nav-link" href="#motto" data-section="motto"><span class="nav-marker" aria-hidden="true"></span>생활신조</a>
+            </li>
+          </ul>
+        </nav>
+
+        <ul class="social-list" aria-label="외부 링크">
+          <li>
+            <a class="social-link" href="https://blog.naver.com/fifo23" target="_blank" rel="noopener noreferrer">
+              Blog<span class="external" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        </ul>
+
+      </div>
+    </header>
+
+    <main id="main" class="main">
+      <section id="about" class="content-section" aria-labelledby="heading-about">
+        <h2 id="heading-about" class="section-heading">
+          <span class="section-heading-text">소개</span>
+        </h2>
+        <div class="prose">
+          <p>
+            4년제 응용통계학과(SW응용통계학)를 졸업한 뒤 IT 분야를 꾸준히 학습해 왔고,
+            <a href="https://blog.naver.com/fifo23" target="_blank" rel="noopener noreferrer">코탐록 네이버 블로그</a>를 운영할 예정이며 취업 준비를 이어가고 있습니다.
+            웹·모바일 개발과 AI·IT 전반에 관심이 많습니다.
+          </p>
+        </div>
+      </section>
+
+      <section id="profile" class="content-section" aria-labelledby="heading-profile">
+        <h2 id="heading-profile" class="section-heading">
+          <span class="section-heading-text">프로필</span>
+        </h2>
+        <ul class="profile-list">
+          <li><span class="profile-k">성별</span><span class="profile-v">남성</span></li>
+          <li><span class="profile-k">나이</span><span class="profile-v">30대 후반</span></li>
+          <li><span class="profile-k">학력</span><span class="profile-v">대졸, 학점은행제(멀티미디어학) 도전 중</span></li>
+          <li><span class="profile-k">목표</span><span class="profile-v">취업(이력서·자소서), AI 서비스를 제대로 활용하기</span></li>
+          <li><span class="profile-k">취미</span><span class="profile-v">프로그래밍(주로 책 위주 학습)</span></li>
+          <li><span class="profile-k">온라인 학습</span><span class="profile-v">패스트캠퍼스, 코드잇, 인프런, 유데미, KMOOC, 경기지식 등</span></li>
+          <li><span class="profile-k">성장 과제</span><span class="profile-v">사교성, 도전정신 — 꾸준히 보완 중입니다.</span></li>
+        </ul>
+      </section>
+
+      <section id="interests" class="content-section" aria-labelledby="heading-interests">
+        <h2 id="heading-interests" class="section-heading">
+          <span class="section-heading-text">관심 분야</span>
+        </h2>
+        <p class="lead">모바일, 웹, AI 서비스, IT/ICT 전반에 폭넓게 관심을 두고 있습니다.</p>
+        <ul class="tag-cloud">
+          <li>모바일</li>
+          <li>웹</li>
+          <li>AI 서비스</li>
+          <li>IT / ICT</li>
+          <li>멀티미디어</li>
+        </ul>
+      </section>
+
+      <section id="learning" class="content-section" aria-labelledby="heading-learning">
+        <h2 id="heading-learning" class="section-heading">
+          <span class="section-heading-text">학습 · 경험</span>
+        </h2>
+        <ol class="timeline">
+          <li class="timeline-item">
+            <div class="timeline-meta">기초 · 통계</div>
+            <div class="timeline-body">
+              <h3 class="timeline-title">비주얼베이직, SAS · SPSS</h3>
+              <p class="timeline-desc">통계·분석 도구와 프로그래밍 입문 경험.</p>
+              <ul class="tech-tags">
+                <li>VB</li>
+                <li>SAS</li>
+                <li>SPSS</li>
+              </ul>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-meta">앱 · 도구</div>
+            <div class="timeline-body">
+              <h3 class="timeline-title">자바 · 코틀린 · .NET</h3>
+              <p class="timeline-desc">
+                자바(GUI, AWT, SWING) 로또 게임, 코틀린 XML 레이아웃 두더지 게임, SWING 스톱워치, 레인미터 정리, Visual .NET 텍스트 합치기 등.
+              </p>
+              <ul class="tech-tags">
+                <li>Java</li>
+                <li>Kotlin</li>
+                <li>Android XML</li>
+                <li>Visual .NET</li>
+              </ul>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-meta">최근</div>
+            <div class="timeline-body">
+              <h3 class="timeline-title">AI · 생산성</h3>
+              <p class="timeline-desc">
+                생성형 AI로 소규모 프로젝트, 바이브 코딩·프롬프트 엔지니어링 학습, 펠로AI·젠스파크로 필기 슬라이드 정리 등.
+              </p>
+              <ul class="tech-tags">
+                <li>Generative AI</li>
+                <li>Prompt</li>
+              </ul>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section id="motivation" class="content-section" aria-labelledby="heading-motivation">
+        <h2 id="heading-motivation" class="section-heading">
+          <span class="section-heading-text">지원 동기 및 포부</span>
+        </h2>
+        <div class="prose">
+          <p>
+            IT 관련 개발직을 목표로 하며, 웹·모바일뿐 아니라 다른 IT 기술과 AI에도 관심이 많습니다.
+            IT기술직·현장직, 웹·앱 개발자로 일하고 싶습니다.
+          </p>
+          <p>
+            최근 AI 기술에 집중해 학습하고 있으며, 백업·정리된 학습 노트와 프로젝트를 바탕으로 이력서와 자소서를 다듬어 지원할 계획입니다.
+            대학 졸업 이후 공백이 있었으나 하루 최소 약 3시간은 IT에 매진해 왔고, 일상에서도 IT 활용에 관심이 많습니다.
+          </p>
+          <p>
+            개인만으로는 어려운 서비스를 팀원과 협업해 만들고, 올바른 가이드라인을 지키며 프로젝트에 참여하고 싶습니다. IT 분야 취업 후 기술 발전에 기여하고자 합니다.
+          </p>
+        </div>
+      </section>
+
+      <section id="motto" class="content-section" aria-labelledby="heading-motto">
+        <h2 id="heading-motto" class="section-heading">
+          <span class="section-heading-text">생활신조</span>
+        </h2>
+        <blockquote class="motto">
+          <p class="motto-line">필사즉생</p>
+          <p class="motto-sub">안 되는 것을 꾸준히 고민하며, 될 때까지 해내는 것이 제 신조입니다.</p>
+        </blockquote>
+      </section>
+
+      <footer class="site-footer">
+        <div class="site-footer__inner">
+          <p class="site-footer__note">
+            2026년 제작 · Cursor AI를 사용해 제작했습니다.
+          </p>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="../js/main.js?v=theme-sync"></script>
+</body>
+</html>
