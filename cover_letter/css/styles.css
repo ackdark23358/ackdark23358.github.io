@@ -27,11 +27,11 @@
 }
 
 html[data-theme="dark"] {
-  --navy: #0a192f;
-  --navy-light: #112240;
-  --slate: #8892b0;
-  --lightest-slate: #ccd6f6;
-  --white: #e6f1ff;
+  --navy: #0c0c0c;
+  --navy-light: #161616;
+  --slate: rgba(245, 245, 245, 0.66);
+  --lightest-slate: #f5f5f5;
+  --white: #f5f5f5;
   --green: #64ffda;
   --green-dim: rgba(100, 255, 218, 0.12);
   --profile-ring-shadow:
