@@ -77,6 +77,11 @@ body {
   left: 0;
 }
 
+/* 포트폴리오 공통 상단 카테고리(site-header)와 본문 레이아웃 */
+body:has(.site-header) .page {
+  padding-top: 0.5rem;
+}
+
 /* —— Hero —— */
 .hero {
   width: 100%;

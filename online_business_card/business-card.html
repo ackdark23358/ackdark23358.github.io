@@ -1,9 +1,21 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-default-theme="light" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>코탐록 - 코딩 탐험가 이력서</title>
+    <script>
+        (function () {
+            try {
+                var theme = localStorage.getItem("portfolio-theme-v2");
+                if (theme === "dark" || theme === "light") {
+                    document.documentElement.setAttribute("data-theme", theme);
+                }
+            } catch (e) {
+                /* 테마 저장소를 사용할 수 없는 환경에서는 라이트(흰색) 기본값을 사용합니다. */
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="css/style.css?v=scroll-hint">
     <link rel="stylesheet" href="../css/site-header.css?v=theme-sync">
 </head>
@@ -11,16 +23,6 @@
     <header class="site-header">
         <div class="site-header__inner">
             <a class="site-header__brand" href="../index.html">코탐록</a>
-            <button
-                type="button"
-                class="nav-toggle"
-                aria-expanded="false"
-                aria-controls="site-nav"
-                aria-label="메뉴 열기"
-            >
-                <span class="nav-toggle__bar" aria-hidden="true"></span>
-                <span class="nav-toggle__bar" aria-hidden="true"></span>
-            </button>
             <nav id="site-nav" class="site-nav" aria-label="자료 페이지">
                 <ul class="site-nav__list">
                     <li><a class="site-nav__link" href="../cover_letter/profile.html">자기소개 / 프로필</a></li>
@@ -29,6 +31,22 @@
                     <li><a class="site-nav__link" href="../study_note_record_organization/dashboard/index.html">학습록</a></li>
                 </ul>
             </nav>
+            <div class="site-header__actions">
+                <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="다크 테마로 전환">
+                    <span class="theme-toggle__label">고대비</span>
+                    <span class="theme-toggle__state" data-theme-label>라이트</span>
+                </button>
+                <button
+                    type="button"
+                    class="nav-toggle"
+                    aria-expanded="false"
+                    aria-controls="site-nav"
+                    aria-label="메뉴 열기"
+                >
+                    <span class="nav-toggle__bar" aria-hidden="true"></span>
+                    <span class="nav-toggle__bar" aria-hidden="true"></span>
+                </button>
+            </div>
         </div>
     </header>
 
