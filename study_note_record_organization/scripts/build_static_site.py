@@ -7,6 +7,7 @@ import json
 import re
 import shutil
 from pathlib import Path
+from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "output"
@@ -144,10 +145,20 @@ def _inline_md(s: str) -> str:
     return s
 
 
+def normalize_source_key(key: str) -> str:
+    """Markdown links may use percent-encoded paths; files on disk do not."""
+    k = key.replace("\\", "/").lstrip("/")
+    prev = None
+    while prev != k:
+        prev = k
+        k = unquote(k)
+    return k
+
+
 def rewrite_source_links(html: str, pending: set[str]) -> str:
     def repl(m: re.Match) -> str:
         href = m.group(1)
-        key = href.lstrip("/")
+        key = normalize_source_key(href)
         pending.add(key)
         attrs = m.group(2) or ""
         if "class=" in attrs:
@@ -165,6 +176,7 @@ def rewrite_source_links(html: str, pending: set[str]) -> str:
 
 
 def resolve_source_path(key: str) -> Path | None:
+    key = normalize_source_key(key)
     if key.startswith("_extracted/"):
         return OUT / key
     if key.startswith("data/"):

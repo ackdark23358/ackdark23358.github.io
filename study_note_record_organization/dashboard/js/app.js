@@ -198,7 +198,8 @@
     if (!chunk) {
       return Promise.resolve(null);
     }
-    return fetch("js/sources/" + chunk)
+    var url = new URL("js/sources/" + chunk, window.location.href).href;
+    return fetch(url)
       .then(function (res) {
         if (!res.ok) throw new Error("fetch failed");
         return res.json();
