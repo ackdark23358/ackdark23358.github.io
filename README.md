@@ -1,6 +1,6 @@
 # 코탐록 이력서 & 자기소개 포트폴리오
 
-IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적 포트폴리오 사이트입니다. 자기소개서, 프로필, 온라인 명함, 이력서 페이지를 각각 분리해 관리하며, GitHub Pages 같은 정적 호스팅 환경에 배포할 수 있도록 구성했습니다.
+IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적 포트폴리오 사이트입니다. 자기소개서, 프로필, 온라인 명함, 이력서, 학습·과제 기록 아카이브를 각각 분리해 관리하며, GitHub Pages 같은 정적 호스팅 환경에 배포할 수 있도록 구성했습니다.
 
 ## 프로젝트 소개
 
@@ -10,6 +10,7 @@ IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적
 - 프로필과 관심 분야를 정리한 자기소개 페이지
 - 스크롤 애니메이션이 있는 3D 온라인 명함
 - 간단한 문서형 이력서 페이지
+- 학습·과제 노트 요약 아카이브(학습록 대시보드)
 - 라이트/다크 테마 전환과 반응형 내비게이션
 
 ## 페이지 구성
@@ -20,6 +21,7 @@ IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적
 | 자기소개 / 프로필 | `cover_letter/profile.html` | 프로필, 관심 분야, 학습 경험, 지원 동기 등을 정리한 페이지 |
 | 온라인 명함 | `online_business_card/business-card.html` | 스크롤에 따라 명함이 회전하고 확대되는 인터랙티브 페이지 |
 | 이력서 | `cv/resume.html` | 경력, 학력, 자격증을 간단히 정리한 문서형 이력서 |
+| 학습·과제 기록 | `study_note_record_organization/dashboard/index.html` | 독서·강의·과제 요약 검색 및 원본 텍스트 열람 |
 
 ## 주요 기능
 
@@ -71,15 +73,21 @@ IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적
 │   │   └── style.css
 │   └── js/
 │       └── script.js
-└── cv/
-    ├── resume.html
-    ├── css/
-    │   ├── reset.css
-    │   └── style.css
-    ├── js/
-    │   ├── jquery-4.0.0.min.js
-    │   └── ui.js
-    └── img/
+├── cv/
+│   ├── resume.html
+│   ├── css/
+│   ├── js/
+│   └── img/
+└── study_note_record_organization/
+    ├── dashboard/          # 학습록 정적 사이트 (배포 대상)
+    │   ├── index.html
+    │   ├── css/
+    │   └── js/
+    │       ├── data.js
+    │       ├── sources/    # 원본 텍스트 청크 (지연 로딩)
+    │       └── ...
+    ├── data/image/         # 히어로 갤러리
+    └── scripts/            # 로컬 빌드용 (선택)
 ```
 
 ## 로컬에서 확인하기
@@ -88,7 +96,9 @@ IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적
 
 1. 저장소를 내려받습니다.
 2. `index.html`을 브라우저로 엽니다.
-3. 상단 메뉴에서 자기소개, 온라인 명함, 이력서 페이지로 이동합니다.
+3. 상단 메뉴에서 자기소개, 온라인 명함, 이력서, 학습록 페이지로 이동합니다.
+
+학습록 대시보드는 프로젝트 루트에서 로컬 서버를 띄운 뒤 `/study_note_record_organization/dashboard/`로 접속하는 것이 좋습니다(히어로 이미지 경로).
 
 VS Code나 Cursor를 사용한다면 Live Server 같은 확장 프로그램으로 실행하면 페이지 이동과 리소스 확인이 더 편합니다.
 
@@ -101,6 +111,15 @@ GitHub 저장소에 업로드한 뒤 Pages 설정에서 배포할 수 있습니�
 3. GitHub 저장소의 `Settings > Pages`로 이동합니다.
 4. 배포 브랜치와 루트 폴더를 선택합니다.
 5. 배포 URL에서 `index.html` 기준으로 사이트가 열리는지 확인합니다.
+6. 학습록: `https://<username>.github.io/study_note_record_organization/dashboard/index.html`
+
+학습록 데이터 갱신 시:
+
+```powershell
+cd study_note_record_organization
+python scripts/build_output.py
+python scripts/build_static_site.py
+```
 
 ## 개인정보 공개 주의
 
@@ -117,6 +136,7 @@ GitHub Pages는 공개 웹사이트로 배포될 수 있으므로, 업로드 전
 - 프로필 페이지 내용: `cover_letter/profile.html`
 - 온라인 명함 문구와 애니메이션: `online_business_card/business-card.html`, `online_business_card/js/script.js`
 - 이력서 내용: `cv/resume.html`
+- 학습록 아카이브: `study_note_record_organization/dashboard/`, 빌드 스크립트 `study_note_record_organization/scripts/`
 - 공통 헤더 스타일: `css/site-header.css`
 - 메인 페이지 스타일: `css/styles.css`
 

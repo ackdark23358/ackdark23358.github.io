@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="학습·과제 기록 요약 아카이브" />
+    <title>학습록 — 학습·과제 기록</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+    <section class="hero hidden" id="hero" aria-label="사진 갤러리">
+      <button type="button" class="hero__stage" id="hero-stage" aria-label="다른 사진 보기">
+        <div class="hero__slides">
+          <img class="hero__img is-visible" id="hero-img-a" alt="" decoding="async" />
+          <img class="hero__img" id="hero-img-b" alt="" decoding="async" />
+        </div>
+        <span class="hero__hint" aria-hidden="true">클릭하세요</span>
+      </button>
+    </section>
+
+    <div class="container page">
+      <section class="section" id="about" aria-labelledby="about-title">
+        <h2 class="section__title" id="about-title">1. 학습·과제 아카이브</h2>
+        <p class="section__lead" id="subtitle"></p>
+      </section>
+
+      <div class="info-grid" aria-label="요약 정보">
+        <div class="info-col">
+          <h3 class="info-col__title">구성</h3>
+          <p class="info-col__text" id="info-compose"></p>
+        </div>
+        <div class="info-col">
+          <h3 class="info-col__title">이용 방법</h3>
+          <p class="info-col__text">
+            카드를 클릭하면 요약본을 읽을 수 있습니다. 요약 안의 원본 출처 링크를 누르면 전체 텍스트를 확인할 수 있습니다.
+            과제 항목의 교수·학번은 프라이버시를 위해 마스킹되어 있습니다.
+          </p>
+        </div>
+      </div>
+
+      <p class="section__note" id="note"></p>
+
+      <main class="section" id="main">
+        <section id="records" aria-labelledby="records-title">
+          <h2 class="section__title" id="records-title">2. 기록 목록</h2>
+          <p class="section__desc">
+            독서 노트·강의·과제 원본을 바탕으로 정리한 요약입니다. 제목이나 요약으로 검색할 수 있습니다.
+          </p>
+
+          <div class="toolbar">
+            <label class="search-field">
+              <span class="visually-hidden">검색</span>
+              <input
+                type="search"
+                id="search"
+                class="search-field__input"
+                placeholder="제목·요약 검색…"
+                autocomplete="off"
+              />
+            </label>
+          </div>
+
+          <div class="card-grid" id="grid"></div>
+          <p class="empty hidden" id="empty">검색 결과가 없습니다.</p>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>
+          <span id="footer-count"></span>
+          · 정적 HTML/CSS/JavaScript ·
+          <code>python scripts/build_static_site.py</code>
+          · <a href="../../index.html">코탐록 메인</a>
+        </p>
+      </footer>
+    </div>
+
+    <div class="modal-overlay hidden" id="modal-overlay" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <header class="modal__header">
+          <div class="modal__meta" id="modal-meta"></div>
+          <button type="button" class="modal__close" id="modal-close" aria-label="닫기">×</button>
+        </header>
+        <div class="modal__body" id="modal-body"></div>
+      </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="source-overlay" aria-hidden="true">
+      <div class="modal modal--wide" role="dialog" aria-modal="true" aria-labelledby="source-title">
+        <header class="modal__header">
+          <div class="modal__meta">
+            <p class="card-label">SOURCE</p>
+            <h2 class="modal__title" id="source-title">원본</h2>
+          </div>
+          <button type="button" class="modal__close" id="source-close" aria-label="닫기">×</button>
+        </header>
+        <div class="modal__body" id="source-body"></div>
+      </div>
+    </div>
+
+    <noscript>
+      <p class="noscript container">JavaScript를 활성화한 뒤 새로고침하세요.</p>
+    </noscript>
+
+    <script src="js/hero-images.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/hero.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+# Node / Vite (not used — static site only)
+dashboard/node_modules/
+dashboard/.vite/
+dashboard/package-lock.json
+dashboard/package.json
+
+# Old Vite build output
+dist-dashboard/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+
+# Raw note sources (Pages uses built dashboard + hero images only)
+data/**
+!data/image/
+!data/image/**
+
+# Build intermediates (bundled into dashboard/js)
+output/
