@@ -411,14 +411,37 @@ body:has(.site-header) .page {
 
 .site-footer {
   margin-top: 2rem;
-  padding-top: 1.5rem;
+  padding: 1.5rem 0 2.5rem;
   border-top: 1px solid var(--border);
+}
+
+.site-footer__inner {
+  text-align: center;
+}
+
+.site-footer__meta {
+  margin: 0 0 1.25rem;
   font-size: 0.85rem;
+  line-height: 1.6;
   color: var(--text-muted);
+}
+
+.site-footer__note {
+  margin: 0 auto;
+  max-width: 22rem;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.65;
+  text-align: center;
+  color: #8b9cb3;
 }
 
 .site-footer code {
   font-size: 0.82em;
+}
+
+.site-footer a {
+  color: var(--study);
 }
 
 /* —— Modal —— */
@@ -542,6 +565,25 @@ body:has(.site-header) .page {
   padding: 1rem;
   overflow-x: auto;
   font-size: 0.85rem;
+}
+
+.md-content img {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  height: auto;
+  margin: 0.75rem auto;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #f0f0f0;
+}
+
+.md-content em {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  font-style: normal;
 }
 
 .md-content a,

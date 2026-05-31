@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Extract sources, build catalog, generate 53 markdown summaries (37 study + 16 assignment)."""
+"""Extract sources, build catalog, generate markdown summaries (37 study + 18 assignment)."""
 from __future__ import annotations
 
 import json
@@ -602,7 +602,7 @@ def find_assign_file(files: list[str], keywords: list[str], used: set[str], excl
 
 
 def build_assignment_catalog() -> list[CatalogItem]:
-    """16 university assignments — matched to actual files in data/과제분류하기."""
+    """18 university assignments — matched to actual files in data/과제분류하기."""
     files = [f for f in os.listdir(ASSIGN) if (ASSIGN / f).is_file()]
     used: set[str] = set()
     items: list[CatalogItem] = []
@@ -631,27 +631,8 @@ def build_assignment_catalog() -> list[CatalogItem]:
     add("c-language-1", "C언어1", ["C언어1"], ["c", "pointer"])
     add("pc-skills-1", "PC활용1", ["PC활용1"], ["office", "pc"])
     add("database", "데이터베이스", ["데이터베이스"], ["database", "sql"])
-    intro = find_assign_file(files, ["멀티미디어 개론", "멀티미디어개론"], used)
-    telecom = find_assign_file(files, ["멀티미디어통신"], used)
-    mm_srcs = []
-    if intro:
-        used.add(intro)
-        mm_srcs.append(SourceRef(path=f"data/과제분류하기/{intro}", unit="멀티미디어 개론"))
-    if telecom:
-        used.add(telecom)
-        mm_srcs.append(SourceRef(path=f"data/과제분류하기/{telecom}", unit="멀티미디어통신"))
-    items.append(
-        CatalogItem(
-            id="assignment-multimedia",
-            type="assignment",
-            category="university",
-            title="멀티미디어 (개론·통신)",
-            slug="multimedia",
-            summary="멀티미디어 개론·통신 총괄 과제",
-            tags=["multimedia"],
-            sources=mm_srcs,
-        )
-    )
+    add("multimedia-intro", "멀티미디어 개론", ["멀티미디어 개론", "멀티미디어개론"], ["multimedia"])
+    add("multimedia-telecom", "멀티미디어 통신", ["멀티미디어통신"], ["multimedia", "telecom"])
     add("software-engineering", "소프트웨어공학", ["소프트웨어공학"], ["software-engineering"])
     add("system-analysis-design", "시스템분석설계", ["시스템분석설계"], ["system", "analysis"])
     add("discrete-math", "이산수학", ["이산수학"], ["math"])
@@ -663,28 +644,19 @@ def build_assignment_catalog() -> list[CatalogItem]:
     add("computer-intro", "컴퓨터개론", ["컴퓨터개론"], ["computer-science"])
     add("computer-graphics-1", "컴퓨터그래픽1", ["컴퓨터그래픽1"], ["graphics"])
     add("computer-network", "컴퓨터네트워크", ["컴퓨터네트워크"], ["network", "protocol"])
-
-    # 윈도우 프로그래밍1(VB) + 윈도우프로그래밍2(docx) 통합
-    win2 = find_assign_file(files, ["윈도우프로그래밍2"], used)
-    extra = []
-    if win2:
-        used.add(win2)
-        extra.append(SourceRef(path=f"data/과제분류하기/{win2}", unit="윈도우프로그래밍2"))
-    vb_path = "data/과제분류하기/윈도우 프로그래밍1 총괄과제"
-    if (ASSIGN / "윈도우 프로그래밍1 총괄과제").is_dir():
-        extra.append(SourceRef(path=vb_path, unit="Form1.vb"))
     items.append(
         CatalogItem(
-            id="assignment-windows-programming",
+            id="assignment-windows-programming-1",
             type="assignment",
             category="university",
-            title="윈도우 프로그래밍",
-            slug="windows-programming",
-            summary="VB.NET WinForms 과제 및 윈도우프로그래밍2 문서 과제",
-            tags=["vbnet", "winforms"],
-            sources=extra,
+            title="윈도우 프로그래밍1",
+            slug="windows-programming-1",
+            summary="WinForms 실행 프로그램 제출 (텍스트 문서 없음)",
+            tags=["vbnet", "winforms", "program"],
+            sources=[],
         )
     )
+    add("windows-programming", "윈도우프로그래밍2", ["윈도우프로그래밍2"], ["document"])
 
     return items
 
@@ -703,6 +675,158 @@ def extract_meta_assignment(text: str) -> dict[str, str]:
         if m:
             meta[key] = m.group(1)
     return meta
+
+
+_ASSIGNMENT_META_FIELDS = re.compile(
+    r"(?:"
+    r"과\s*제\s*주\s*제|과목\s*명|지\s*도\s*교\s*수|담\s*당\s*교\s*수|"
+    r"학\s*번|수\s*강\s*번\s*호|이\s*름|제\s*출\s*일(?:\s*자)?"
+    r")\s*[:：]",
+    re.I,
+)
+_ASSIGNMENT_META_LINE = re.compile(
+    r"^(?:[•\-\*·]\s*)?"
+    r"(?:학\s*번|수\s*강\s*번\s*호|이\s*름|지도\s*교수|담당\s*교수|"
+    r"제출\s*일(?:\s*자)?|과목\s*명|과\s*제\s*주\s*제|총\s*괄\s*과\s*제)"
+    r"\s*[:：]",
+    re.I,
+)
+_ASSIGNMENT_SECTION_HEADER = re.compile(
+    r"^(?:과제\s*주제|과제에\s*대한\s*답변|출력\s*결과|과제\s*정보|총\s*괄\s*과\s*제)\s*$",
+    re.I,
+)
+_ASSIGNMENT_DEPT_LINE = re.compile(r"^[-\s•*·]*[-\s].*[-\s•*·]$")
+
+
+def _assignment_line_inner(line: str) -> str:
+    return re.sub(r"\s+", " ", line.strip().lstrip("•-*· ").strip())
+
+
+def _is_assignment_meta_line(line: str) -> bool:
+    s = line.strip()
+    if not s:
+        return False
+    inner = _assignment_line_inner(s)
+    if _ASSIGNMENT_META_LINE.match(s) or _ASSIGNMENT_META_LINE.match(inner):
+        return True
+    if _ASSIGNMENT_META_FIELDS.search(inner):
+        return True
+    if re.match(r"^총\s*괄\s*과\s*제\s*$", inner, re.I):
+        return True
+    if _ASSIGNMENT_DEPT_LINE.match(s) and re.search(r"[가-힣]", s):
+        return True
+    return False
+
+
+def strip_assignment_cover_block(text: str) -> str:
+    """표지·과제주제 라벨·학번/제출일 등 메타 구간을 본문(서론·목차 등) 전까지 제거."""
+    lines = text.splitlines()
+    kept: list[str] = []
+    in_cover = True
+    skip_topic_lines = False
+
+    for ln in lines:
+        s = ln.strip()
+        if in_cover:
+            if not s:
+                continue
+            if re.fullmatch(r"={3,}", s):
+                continue
+            if _is_assignment_meta_line(ln):
+                skip_topic_lines = False
+                continue
+            if re.search(r"과\s*제\s*주\s*제\s*[:：]", s, re.I):
+                skip_topic_lines = True
+                continue
+            if skip_topic_lines:
+                if re.match(r"^[•\-\*·]", s):
+                    if _is_assignment_meta_line(ln):
+                        continue
+                    skip_topic_lines = False
+                    continue
+                continue
+            if re.match(r"^(?:서론|목차|본론|결론)\b", s):
+                in_cover = False
+                kept.append(ln)
+                continue
+            if s.startswith("  ") or len(s) > 55:
+                in_cover = False
+                kept.append(ln)
+                continue
+            if len(s) <= 40:
+                continue
+            in_cover = False
+            kept.append(ln)
+        else:
+            kept.append(ln)
+    return "\n".join(kept)
+
+
+def strip_assignment_meta_text(text: str) -> str:
+    """과제 원본에서 학번·제출일·과제주제 표지 등 메타 블록을 제거."""
+    if not text:
+        return text
+    text = re.sub(
+        r"^[ \t]*={3,}[ \t]*\n(?:.*?\n)*?[ \t]*={3,}[ \t]*\n+",
+        "",
+        text,
+        count=1,
+        flags=re.M,
+    )
+    text = re.sub(
+        r"^[ \t]*[•\-\*·][ \t]*"
+        r"(?:과목\s*명|지\s*도\s*교\s*수|담\s*당\s*교\s*수|이\s*름|학\s*번|"
+        r"수\s*강\s*번\s*호|제\s*출\s*일(?:\s*자)?)\s*[:：][^\n]*\n?",
+        "",
+        text,
+        flags=re.M | re.I,
+    )
+    text = strip_assignment_cover_block(text)
+    kept: list[str] = []
+    for ln in text.splitlines():
+        s = ln.strip()
+        if not s:
+            kept.append("")
+            continue
+        if re.fullmatch(r"={3,}", s):
+            continue
+        if _is_assignment_meta_line(ln):
+            continue
+        if _ASSIGNMENT_SECTION_HEADER.match(s):
+            continue
+        kept.append(ln)
+    return "\n".join(kept)
+
+
+def is_assignment_meta_bullet(bullet: str) -> bool:
+    s = bullet.strip()
+    if not s:
+        return True
+    inner = _assignment_line_inner(s)
+    if _ASSIGNMENT_META_FIELDS.search(inner):
+        return True
+    if re.match(r"^총\s*괄\s*과\s*제\s*$", inner, re.I):
+        return True
+    if _ASSIGNMENT_DEPT_LINE.match(s) and re.search(r"[가-힣]", s):
+        return True
+    if re.match(r"^C:[/\\]", s):
+        return True
+    if re.match(r"^(?:File |Traceback|using |import |#include|Private Sub )", s, re.I):
+        return True
+    return False
+
+
+def summarize_assignment_bullets(text: str, max_items: int = 10) -> list[str]:
+    cleaned = strip_assignment_meta_text(mask_assignment_privacy(text))
+    raw = summarize_bullets(cleaned, max_items * 2)
+    out: list[str] = []
+    for b in raw:
+        if is_assignment_meta_bullet(b):
+            continue
+        out.append(b)
+        if len(out) >= max_items:
+            break
+    return out
 
 
 _HANGUL = re.compile(r"[가-힣]")
@@ -895,7 +1019,68 @@ def make_overview(item: CatalogItem, bullets: list[str]) -> str:
     return f"「{item.title}」 관련 학습 노트를 정리했습니다. 원본 메모가 짧거나 키워드 수준일 수 있습니다."
 
 
+WINDOWS_PROGRAMMING1_SCREENSHOT = "../data/image/윈도우프로그래밍1-총괄과제.png"
+
+
+def render_windows_programming1_markdown(item: CatalogItem) -> str:
+    """실행 파일 제출 과제 — 텍스트 원문 없이 프로그램 화면으로 설명."""
+    lines = [
+        "---",
+        f"id: {item.id}",
+        f"type: {item.type}",
+        f"category: {item.category}",
+        f'title: "{item.title}"',
+        f"slug: {item.slug}",
+        f'summary: "{item.summary}"',
+        f"tags: {json.dumps(item.tags, ensure_ascii=False)}",
+        "progress:",
+        "  units: 0",
+        "  completed: 0",
+        "sources: []",
+        "created_from: study_note_record_organization",
+        "---",
+        "",
+        f"# {item.title}",
+        "",
+        "## 한눈에 보기",
+        "",
+        "윈도우 프로그래밍1 총괄과제는 Word·한글·PDF 같은 **텍스트 문서가 아니라**, "
+        "Visual Basic .NET WinForms로 만든 **실행 프로그램(.exe) 자체**를 제출한 과제입니다. "
+        "그래서 다른 과제 카드처럼 독서·과제 노트 원문을 붙여 두지 않았고, "
+        "아래 실행 화면 캡처와 동작 설명으로 대신 정리했습니다.",
+        "",
+        "## 제출 형태",
+        "",
+        "- **과목**: 윈도우 프로그래밍1",
+        "- **제출물**: Windows 데스크톱 앱 (WinForms `.exe`)",
+        "- **텍스트 문서**: 없음 — 보고서·답안지 파일은 따로 작성·제출하지 않음",
+        "",
+        "![윈도우 프로그래밍1 총괄과제 실행 화면](" + WINDOWS_PROGRAMMING1_SCREENSHOT + ")",
+        "",
+        "*캡처: 총괄과제 WinForms 프로그램 실행 화면. 상단 레이블에 입력 내용이 실시간으로 표시됩니다.*",
+        "",
+        "## 동작 요약",
+        "",
+        "- 창 제목 **「총괄과제」** 의 WinForms 폼 하나로 구성",
+        "- **상단** `Label`(`lblOutput`): 테두리가 있는 출력 영역",
+        "- **하단** `TextBox`(`txtInput`): 여러 줄 입력 가능",
+        "- 입력할 때마다 `TextChanged` 이벤트로 하단 글자가 **즉시** 상단 레이블에 같은 내용으로 반영",
+        "- 폼이 열릴 때 `lblOutput`에 포커스를 두도록 설정",
+        "",
+        "## 배운 점 / 적용",
+        "",
+        "- WinForms 컨트롤 배치·속성 설정과 이벤트 핸들러 연결",
+        "- 사용자 입력을 UI에 바로 보여 주는 기본 GUI 프로그래밍",
+        "- 문서가 아닌 **동작하는 프로그램**으로 과제 요구를 충족하는 제출 방식",
+        "",
+    ]
+    return "\n".join(lines)
+
+
 def render_markdown(item: CatalogItem) -> str:
+    if item.slug == "windows-programming-1":
+        return render_windows_programming1_markdown(item)
+
     all_text = "\n\n".join(s.text for s in item.sources if s.text)
     bullets = summarize_bullets(all_text)
     study_narr = build_study_narrative(item) if item.type == "study" else None
@@ -948,42 +1133,14 @@ def render_markdown(item: CatalogItem) -> str:
         lines.append("")
 
     if item.type == "assignment":
-        meta = extract_meta_assignment(all_text)
-        if "지도교수" in meta:
-            meta["지도교수"] = PROFESSOR_MASK
-        for key in _ID_META_KEYS:
-            if key in meta:
-                meta[key] = STUDENT_ID_MASK
-        masked_text = mask_assignment_privacy(all_text)
-        lines.append("## 과제 정보\n")
-        if meta:
-            for k, v in meta.items():
-                lines.append(f"- **{k}**: {v}")
+        lines.append("## 내용 요약\n")
+        topics = summarize_assignment_bullets(all_text, 10)
+        if topics:
+            for b in topics:
+                lines.append(f"- {b}")
         else:
-            lines.append("- 원본에서 메타 정보를 추출하지 못했습니다.")
+            lines.append("- 원본에서 요약할 서술 문장을 추출하지 못했습니다.")
         lines.append("")
-
-        lines.append("## 과제 주제·요구사항\n")
-        topics = summarize_bullets(masked_text, 8)
-        for b in topics[:5]:
-            lines.append(f"- {b}")
-        lines.append("")
-
-        lines.append("## 수행 내용·답안 요약\n")
-        for b in topics[5:] or topics:
-            lines.append(f"- {b}")
-        lines.append("")
-
-        if "vb" in "".join(item.tags).lower() or any("Form1" in s.path for s in item.sources):
-            lines.append("## 구현·소스\n")
-            lines.append("- WinForms `txtInput` 입력 시 `lblOutput`에 동일 텍스트를 실시간 표시")
-            lines.append("- 폼 로드 시 `lblOutput`에 포커스 설정")
-            if "Form1.vb" in all_text or "txtInput" in all_text:
-                lines.append("\n```vb")
-                lines.append("Private Sub txtInput_TextChanged(...) Handles txtInput.TextChanged")
-                lines.append("    lblOutput.Text = txtInput.Text")
-                lines.append("End Sub")
-                lines.append("```\n")
 
     if item.type == "assignment":
         lines.append("## 배운 점 / 적용\n")
