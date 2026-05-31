@@ -829,6 +829,225 @@ def summarize_assignment_bullets(text: str, max_items: int = 10) -> list[str]:
     return out
 
 
+def _clip_prose(s: str, max_len: int = 200) -> str:
+    s = re.sub(r"\s+", " ", s.strip())
+    s = re.sub(r"^[•\-\*·]\s*", "", s)
+    if not s:
+        return ""
+    if len(s) <= max_len:
+        return soften_sentence(s)
+    clipped = s[: max_len - 1].rsplit(" ", 1)[0]
+    return soften_sentence(clipped + "…")
+
+
+def _is_readable_assignment_prose(line: str) -> bool:
+    s = line.strip()
+    if not is_prose_line(s):
+        return False
+    if len(s) > 48 and " " not in s:
+        return False
+    return True
+
+
+def extract_assignment_points(text: str, max_items: int = 15) -> list[str]:
+    points: list[str] = []
+    seen: set[str] = set()
+    for ln in text.splitlines():
+        if not ln.strip():
+            continue
+        ln = re.sub(r"\s+", " ", ln.strip())
+        if not _is_readable_assignment_prose(ln):
+            continue
+        key = ln[:50]
+        if key in seen:
+            continue
+        seen.add(key)
+        points.append(ln)
+        if len(points) >= max_items:
+            break
+    return points
+
+
+def _split_assignment_sections(text: str) -> dict[str, str]:
+    buffers: dict[str, list[str]] = {"intro": [], "body": [], "outro": []}
+    active = "intro"
+    for ln in text.splitlines():
+        s = ln.strip()
+        if re.match(r"^서론\s*$", s):
+            active = "intro"
+            continue
+        if re.match(r"^본론\s*$", s):
+            active = "body"
+            continue
+        if re.match(r"^결론\s*$", s):
+            active = "outro"
+            continue
+        buffers[active].append(ln)
+    return {k: "\n".join(v) for k, v in buffers.items() if any(x.strip() for x in v)}
+
+
+def _has_assignment_section_markers(text: str) -> bool:
+    return bool(re.search(r"^서론\s*$", text, re.M)) and bool(
+        re.search(r"^본론\s*$", text, re.M)
+    )
+
+
+def _extract_assignment_topics(text: str) -> list[str]:
+    topics: list[str] = []
+    prefer = False
+    for ln in text.splitlines():
+        s = ln.strip()
+        if re.match(r"^목차\s*$", s):
+            prefer = True
+            continue
+        if not s or len(s) < 6 or len(s) > 48:
+            continue
+        if _is_assignment_meta_line(ln):
+            continue
+        if re.match(r"^\d+$", s):
+            continue
+        if re.match(r"^(?:서론|본론|결론|목차|참고|출력)", s):
+            continue
+        if not re.search(r"[가-힣]", s):
+            continue
+        if s in topics:
+            continue
+        if prefer or len(topics) < 4:
+            topics.append(s)
+        if len(topics) >= 6:
+            break
+    if len(topics) < 3:
+        topics = []
+        for ln in text.splitlines():
+            s = ln.strip()
+            if not s or len(s) < 8 or len(s) > 48:
+                continue
+            if _is_assignment_meta_line(ln) or re.match(r"^\d+$", s):
+                continue
+            if re.match(r"^(?:서론|본론|결론|목차|참고)", s):
+                continue
+            if re.search(r"[가-힣]", s) and s not in topics:
+                topics.append(s)
+            if len(topics) >= 6:
+                break
+    return topics
+
+
+def _assignment_summary_filler(item: CatalogItem, index: int) -> str:
+    fillers = [
+        f"{item.title} 총괄과제에서 요구한 주제랑 형식에 맞춰 답안·산출물을 구성했어요.",
+        "본문·코드·도표·발표 자료 같은 제출 형식에 맞게 핵심 내용을 담았어요.",
+        "과제 요구사항에 맞춰 조사·정리한 내용을 마무리하고 제출했어요.",
+    ]
+    return fillers[min(index, len(fillers) - 1)]
+
+
+_SECTION_VERBS = {
+    "서론": "소개했어요",
+    "본론": "설명했어요",
+    "결론": "마무리했어요",
+    "마무리": "마무리했어요",
+}
+
+
+def _sentence_from_section(points: list[str], item: CatalogItem, section_name: str) -> str:
+    verb = _SECTION_VERBS.get(section_name, "정리했어요")
+    if not points:
+        return f"{section_name}에서는 {item.summary.rstrip('.')} 관련 내용을 {verb}"
+    core = _clip_prose(points[0], 52).rstrip(".")
+    return f"{section_name}에서는 {core}를 중심으로 {verb}"
+
+
+def _compose_summary_from_topics(item: CatalogItem, topics: list[str]) -> list[str]:
+    picks = topics[:3]
+    while len(picks) < 3:
+        picks.append(item.summary)
+    t0, t1, t2 = picks[0], picks[1], picks[2]
+    return [
+        f"과제는 「{t0}」 주제로 개요와 배경부터 소개했어요.",
+        f"「{t1}」 파트에서 개념·사례·조사 자료를 표와 도표로 정리했어요.",
+        f"「{t2}」 내용으로 결론과 참고 문헌까지 마무리했어요.",
+    ]
+
+
+def _sentence_from_points(points: list[str], opener: str, fallback: str = "") -> str:
+    if not points:
+        base = fallback or "과제 원문에서 핵심만 골라"
+        return f"{opener.rstrip('.')} {base} 정리했어요."
+    core = _clip_prose(points[0], 52).rstrip(".")
+    return f"{opener.rstrip('.')} {core}를 다루며 정리했어요."
+
+
+def build_assignment_content_summary(item: CatalogItem, all_text: str) -> list[str]:
+    """과제 본문에서 구어체 한 문장 요약 3개 생성."""
+    cleaned = strip_assignment_meta_text(mask_assignment_privacy(all_text))
+    sections = _split_assignment_sections(cleaned)
+    section_keys = [("intro", "서론"), ("body", "본론"), ("outro", "결론")]
+    section_lines: list[str] = []
+
+    if _has_assignment_section_markers(cleaned):
+        for key, name in section_keys:
+            sec = sections.get(key, "").strip()
+            if not sec:
+                continue
+            pts = extract_assignment_points(sec, 6)
+            line = _sentence_from_section(pts, item, name)
+            if line:
+                section_lines.append(line)
+
+        if len(section_lines) >= 2:
+            if len(section_lines) < 3:
+                tail = sections.get("outro", "") or sections.get("body", "")
+                pts = extract_assignment_points(tail, 4)
+                if pts:
+                    section_lines.append(
+                        _sentence_from_section([pts[-1]], item, "마무리")
+                    )
+            while len(section_lines) < 3:
+                section_lines.append(_assignment_summary_filler(item, len(section_lines)))
+            return section_lines[:3]
+
+    topics = _extract_assignment_topics(cleaned)
+    is_slide_pdf = any(s.path.lower().endswith(".pdf") for s in item.sources)
+    if len(topics) >= 3 and (is_slide_pdf or len(extract_assignment_points(cleaned, 15)) < 4):
+        return _compose_summary_from_topics(item, topics)
+
+    points = extract_assignment_points(cleaned, 15)
+    if len(points) < 3:
+        if len(topics) >= 3:
+            return _compose_summary_from_topics(item, topics)
+        if points:
+            openers = ["먼저", "이어서", "마무리로는"]
+            lines = [
+                _sentence_from_points([p], openers[i], f"{item.title} 과제에서")
+                for i, p in enumerate(points[:3])
+            ]
+            while len(lines) < 3:
+                lines.append(_assignment_summary_filler(item, len(lines)))
+            return lines[:3]
+        return [
+            _assignment_summary_filler(item, 0),
+            _assignment_summary_filler(item, 1),
+            _assignment_summary_filler(item, 2),
+        ]
+
+    third = max(1, len(points) // 3)
+    chunks = [
+        points[:third],
+        points[third : third * 2],
+        points[third * 2 :],
+    ]
+    openers = ["앞부분에서는", "중간에서는", "마무리에서는"]
+    lines = [
+        _sentence_from_points(chunk, openers[i], f"{item.title} 과제에서")
+        for i, chunk in enumerate(chunks)
+    ]
+    for i, line in enumerate(lines):
+        if not line.strip():
+            lines[i] = _assignment_summary_filler(item, i)
+    return lines[:3]
+
+
 _HANGUL = re.compile(r"[가-힣]")
 _CODE_NOISE = re.compile(
     r"^(>>>|\.\.\.|File \"|Traceback|import |from |def |class |#include|"
@@ -1134,12 +1353,9 @@ def render_markdown(item: CatalogItem) -> str:
 
     if item.type == "assignment":
         lines.append("## 내용 요약\n")
-        topics = summarize_assignment_bullets(all_text, 10)
-        if topics:
-            for b in topics:
-                lines.append(f"- {b}")
-        else:
-            lines.append("- 원본에서 요약할 서술 문장을 추출하지 못했습니다.")
+        summary_lines = build_assignment_content_summary(item, all_text)
+        for para in summary_lines:
+            lines.append(para + "\n")
         lines.append("")
 
     if item.type == "assignment":
