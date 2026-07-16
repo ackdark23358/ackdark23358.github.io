@@ -184,12 +184,21 @@ def resolve_source_path(key: str) -> Path | None:
     return None
 
 
+def read_text_file(path: Path) -> str:
+    for enc in ("utf-8", "utf-8-sig", "cp949"):
+        try:
+            return path.read_text(encoding=enc)
+        except (UnicodeDecodeError, OSError):
+            continue
+    return path.read_text(encoding="utf-8", errors="replace")
+
+
 def read_source_text(key: str) -> str | None:
     path = resolve_source_path(key)
     if not path or not path.is_file():
         return None
     try:
-        text = path.read_text(encoding="utf-8", errors="replace")
+        text = read_text_file(path)
     except OSError:
         return None
     if is_assignment_path(key):
