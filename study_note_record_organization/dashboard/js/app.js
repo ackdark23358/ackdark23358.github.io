@@ -6,6 +6,7 @@
   var articles = {};
   var sourceMap = {};
   var sourceCache = {};
+  var sourceBuildId = "";
   var searchQuery = "";
 
   var grid = document.getElementById("grid");
@@ -198,8 +199,11 @@
     if (!chunk) {
       return Promise.resolve(null);
     }
-    var url = new URL("js/sources/" + chunk, window.location.href).href;
-    return fetch(url)
+    var url = new URL("js/sources/" + chunk, window.location.href);
+    if (sourceBuildId) {
+      url.searchParams.set("v", sourceBuildId);
+    }
+    return fetch(url.href, { cache: "no-store" })
       .then(function (res) {
         if (!res.ok) throw new Error("fetch failed");
         return res.json();
@@ -316,6 +320,7 @@
     catalog = data.catalog;
     articles = data.articles || {};
     sourceMap = data.sourceMap || {};
+    sourceBuildId = data.sourceBuildId || "";
     sourceCache = {};
     if (data.sources && !data.sourceMap) {
       sourceCache = data.sources;

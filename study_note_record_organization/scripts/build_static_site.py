@@ -226,9 +226,26 @@ def write_hero_images_js(js_dir: Path) -> int:
     return len(images)
 
 
-def source_chunk_filename(key: str) -> str:
-    digest = hashlib.sha256(key.encode("utf-8")).hexdigest()[:16]
-    return f"{digest}.json"
+def source_chunk_filename(key: str, text: str) -> str:
+    key_digest = hashlib.sha256(key.encode("utf-8")).hexdigest()[:8]
+    content_digest = hashlib.sha256(text.encode("utf-8")).hexdigest()[:8]
+    return f"{key_digest}-{content_digest}.json"
+
+
+def source_build_id(source_map: dict[str, str]) -> str:
+    payload = "|".join(f"{k}:{v}" for k, v in sorted(source_map.items()))
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:12]
+
+
+def stamp_index_scripts(build_id: str) -> None:
+    index_path = SITE / "index.html"
+    html = index_path.read_text(encoding="utf-8")
+    html = re.sub(
+        r'src="js/(data|app)\.js(?:\?[^"]*)?"',
+        lambda m: f'src="js/{m.group(1)}.js?v={build_id}"',
+        html,
+    )
+    index_path.write_text(html, encoding="utf-8")
 
 
 def assert_under_github_limit(path: Path, label: str) -> None:
@@ -287,7 +304,7 @@ def build_site() -> None:
         text = read_source_text(key)
         if text is None:
             continue
-        chunk_name = source_chunk_filename(key)
+        chunk_name = source_chunk_filename(key, text)
         chunk_path = sources_dir / chunk_name
         chunk_payload = {"key": key, "text": text}
         chunk_path.write_text(
@@ -299,10 +316,12 @@ def build_site() -> None:
         written_sources += 1
         sources_total_bytes += chunk_path.stat().st_size
 
+    build_id = source_build_id(source_map)
     site_data = {
         "catalog": catalog,
         "articles": articles,
         "sourceMap": source_map,
+        "sourceBuildId": build_id,
         "counts": catalog_data.get("counts", {}),
     }
 
@@ -315,6 +334,7 @@ def build_site() -> None:
     data_js = "window.SITE_DATA = " + json.dumps(site_data, ensure_ascii=False) + ";\n"
     data_js_path.write_text(data_js, encoding="utf-8")
     assert_under_github_limit(data_js_path, "data.js")
+    stamp_index_scripts(build_id)
     hero_count = write_hero_images_js(js_dir)
 
     print(f"Static data: {len(catalog)} items, {written_sources} source chunks")
