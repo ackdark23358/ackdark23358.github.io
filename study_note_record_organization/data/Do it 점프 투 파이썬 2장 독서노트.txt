@@ -1,0 +1,1178 @@
+2장
+
+>>> a = 123
+>>> a = -178
+>>> a = 0
+>>> a = 1.2
+>>> a = -3.45
+>>> a = 4.24E10
+>>> a = 4.24e-10
+>>> a = 0o177
+>>> print(a)
+127
+>>> a = 0x8ff
+>>> b = 0xABC
+>>> print(b)
+2748
+>>> a = 3
+>>> b = 4
+>>> a + b
+7
+>>> a - b
+-1
+>>> a / b
+0.75
+>>> a * b
+12
+>>> a = 3
+>>> b = 4
+>>> a ** b
+81
+
+>>> 7 % 3
+1
+>>> 3 % 7
+3
+
+>>> 7 / 4
+1.75
+>>> 7 // 4
+1
+
+>>> food = "Python's favorite food is perl"
+>>> food
+"Python's favorite food is perl"
+>>> food = 'Python's favorite food is perl'
+  File "<python-input-31>", line 1
+    food = 'Python's favorite food is perl'
+                                          ^
+SyntaxError: unterminated string literal (detected at line 1)
+>>>
+>>> 'Python's favorite food is perl'
+  File "<python-input-33>", line 1
+    'Python's favorite food is perl'
+                                   ^
+SyntaxError: unterminated string literal (detected at line 1)
+>>> say = '"Python is very easy." he say.'
+>>> say
+'"Python is very easy." he say.'
+>>> food = 'Python\' favorite food is perl'
+>>> say = "\"Python is very easy.\" he say."
+>>> food
+"Python' favorite food is perl"
+>>> say
+'"Python is very easy." he say.'
+>>>
+>>> food = 'Python\' favorite food is perl'
+>>> say = "\"Python is very easy.\" he say."
+>>> food
+"Python' favorite food is perl"
+>>> say
+'"Python is very easy." he say.'
+>>> multiline = "line is too short\nYou need python"
+>>> multiline
+'line is too short\nYou need python'
+>>> multiline = '''
+... Life is too short
+... You need python
+... '''
+>>> multiline
+'\nLife is too short\nYou need python\n'
+>>> multiline = """
+... Life is too short
+... You need python
+... """
+>>> multiline
+'\nLife is too short\nYou need python\n'
+>>> print(multiline)
+
+Life is too short
+You need python
+
+head = "Python"
+>>> tail = " is fun!"
+>>> head + tail
+'Python is fun!'
+
+>>> a = "python"
+>>> a * 2
+'pythonpython'
+
+>>> a = "Life is too short"
+>>> len(a)
+17
+
+
+>>> a = "Life is too short, You need Python"
+>>> a[3]
+'e'
+
+>>> a = "Life is too short, You need Python"
+>>> a[0]
+'L'
+>>> a[12]
+'s'
+>>> a[-1]
+'n'
+>>> a[-0]
+'L'
+>>> a[-2]
+'o'
+>>> a[-]5
+  File "<python-input-67>", line 1
+    a[-]5
+       ^
+SyntaxError: invalid syntax
+>>> a[-5]
+'y'
+
+>>> a = "Life is too short, You need Python"
+>>> b = a[0] + a[1] + a[2] + a[3]
+>>> b
+'Life'
+>>> a = "Life is too short, you need Python"
+>>> a[0:4]
+'Life'
+
+>>> a[0:2]
+'Li'
+>>> a[5:7]
+'is'
+>>> a[12:17]
+'short'
+>>>
+>>> a[19:]
+'you need Python'
+>>> a[:17]
+'Life is too short'
+
+>>> a[:]
+'Life is too short, you need Python'
+>>>
+
+>>> a = "20230331Rainy"
+>>> date = a[:8]
+>>> weather = a[8:]
+>>> date
+'20230331'
+>>> weather
+'Rainy'
+
+>>> a = "20230331Rainy"
+>>> year = a[:4]
+>>> day = a[4:8]
+>>> weather = a[9:]
+>>> year
+'2023'
+>>> day
+'0331'
+>>> weather
+'ainy'
+>>> weather = a[8:]
+>>> year
+'2023'
+>>> day
+'0331'
+>>> weather
+'Rainy'
+>>>
+
+>>> a = "Pithon"
+>>> a[:1]
+'P'
+>>> a[2:]
+'thon'
+>>> a[:1] + 'y' + a[2:]
+'Python'
+
+>>> "I eat %d appless." %
+  File "<python-input-103>", line 1
+    "I eat %d appless." %
+                          ^
+SyntaxError: invalid syntax
+>>> "I eat %d apples." % 3
+'I eat 3 apples.'
+>>> "I eat %s apples." % "five"
+'I eat fiv
+
+>>> number = 3
+>>> "I eat %d apples." % number
+'I eat 3 apples.'
+>>> number = 10
+>>> day = "three"
+>>> "I ate %d apples. so I was sick for %s days." % (number, day)
+'I ate 10 apples. so I was sick for three days.'
+
+>>> "I havs %s apple" % 3
+'I havs 3 apple'
+>>> "rate is %s" % 3.234
+'rate is 3.234'
+
+>>> "Error is %d%" % 98
+Traceback (most recent call last):
+  File "<python-input-113>", line 1, in <module>
+    "Error is %d%" % 98
+    ~~~~~~~~~~~~~~~^~~~
+ValueError: incomplete format
+>>> "Error is %d%." % 98
+Traceback (most recent call last):
+  File "<python-input-114>", line 1, in <module>
+    "Error is %d%." % 98
+    ~~~~~~~~~~~~~~~~^~~~
+ValueError: incomplete format
+>>> "Error is %d%%." % 98
+'Error is 98%.'
+
+>>> "%10s" % "hi"
+'        hi'
+>>> "%-10s" % "hi"
+'hi        '
+>>> "%0.4f" % 3.412134234
+'3.4121'
+>>> "%0.4f" % 3.42134234
+'3.4213'
+>>> "%10.4f" % 3.42134234
+'    3.4213'
+>>> "I eat {0} apples".format(3)
+'I eat 3 apples'
+>>> "I eat {0} apples".format("five")
+'I eat five apples'
+>>> number = 3
+>>> "I eat {0} apples".format(number)
+'I eat 3 apples'
+
+>>> number = 10
+>>> day = "three"
+>>> "I ate {0} apples. so I was sick for {1} days.".format(number, day)
+'I ate 10 apples. so I was sick for three days.'
+>>>
+"I ate {number} apples. so I was sick for {day} days.".format(number=10, day=3)
+'I ate 10 apples. so I was sick for 3 dats.'
+>>> "I ate {0} apples. so I was sick for {day} days.".format(10, day=3)
+'I ate 10 apples. so I was sick for 3 days.'
+
+>>> "{0:<10}".format("hi")
+'hi        '
+>>> "{0:>10}".format("hi")
+'        hi'
+>>> "{0:^10}".format("hi")
+'    hi    '
+>>> "{0:=^10}".format("hi")
+'====hi===='
+>>> "{0:!^10}".format("hi")
+'!!!!hi!!!!'
+>>> y
+3.142134234
+>>> "{0:0.4f}".format(y)
+'3.1421'
+>>> "{0:10.4f}".format(y)
+'    3.1421'
+>>> "{{ and }}".format()
+'{ and }'
+
+>>> name = '홍길동'
+>>> age = 30
+>>> f'나의 이름은 {name}입니다. 나이는 {age}입니다.'
+'나의 이름은 홍길동입니다. 나이는 30입니다.'
+>>>
+
+>>> age = 30
+>>> f'나는 내년이면 {age + 1}살이 된다.'
+'나는 내년이면 31살이 된다.'
+>>> d = {'name':'홍길동', 'age':30}
+>>> f'나의 이름은 {d["name"]}입니다. 나이는 {d["age"]}입니다.'
+'나의 이름은 홍길동입니다. 나이는 30입니다.'
+
+>>> f'{"hi":<10}'
+'hi        '
+>>> f'{"hi":>10}'
+'        hi'
+>>> f'{"hi":^10}'
+'    hi    '
+>>> f'{"hi":=^10}'
+'====hi===='
+>>> f'{"hi":!<10}'
+'hi!!!!!!!!'
+>>> y = 3.42134234
+>>> f'{y:0.4f}
+  File "<python-input-156>", line 1
+    f'{y:0.4f}
+    ^
+SyntaxError: unterminated f-string literal (detected at line 1)
+>>> f'{y:0.4f}'
+'3.4213'
+>>> f'{y:10.4f}'
+'    3.4213'
+>>> f'{{ and }}'
+'{ and }'
+
+>>> a = "hobby"
+>>> a.count('b')
+2
+>>> a = "Python is the best choice"
+>>> a.find('b')
+14
+>>> a.finx('k')
+Traceback (most recent call last):
+  File "<python-input-4>", line 1, in <module>
+    a.finx('k')
+    ^^^^^^
+AttributeError: 'str' object has no attribute 'finx'. Did you mean: 'find'?
+>>> a.find('k')
+-1
+
+>>> a = "Life is too short"
+>>> a.index('t')
+8
+>>> a.index'k')
+  File "<python-input-8>", line 1
+    a.index'k')
+              ^
+SyntaxError: unmatched ')'
+>>> a.index('k')
+Traceback (most recent call last):
+  File "<python-input-9>", line 1, in <module>
+    a.index('k')
+    ~~~~~~~^^^^^
+ValueError: substring not found
+>>>
+>>> ",".join('abcd')
+'a,b,c,d'
+>>> ",".join(['a','b','c','d'])
+'a,b,c,d'
+>>> a = "hi"
+>>> a.upper()
+'HI'
+>>> a = "HI"
+>>> a.lower()
+'hi'
+
+>>> a = " hi "
+>>> a.lstrip()
+'hi '
+
+>>> a = " hi "
+>>> a.rstrip()
+' hi'
+
+>>> a = " hi "
+>>> a.strip()
+'hi'
+
+>>> a = "Life is too short"
+>>> a.replace("Life", "Your leg")
+'Your leg is too short'
+
+>>> a = "Life is too short"
+>>> a.split()
+['Life', 'is', 'too', 'short']
+>>> b = "a:b:c:d"
+>>> b.split(':')
+['a', 'b', 'c', 'd']
+
+>>> a = 'hi'
+>>> a.upper()
+'HI'
+>>> a
+'hi'
+>>> a = a.upper()
+>>> a
+'HI'
+
+>>> odd = [1, 3, 5, 7, 9]
+>>> a = []
+>>> b = [1, 2, 3]
+>>> c = ['Life', 'is', 'too', 'short']
+>>> d = [1, 2, 'Life', 'is']
+>>> e = [1, 2, ['Life', 'is']]
+>>> a = [1, 2, 3]
+>>> a
+[1, 2, 3]
+>>> a[0]
+1
+>>> a[0] + a[2]
+4
+>>> a[-1]
+3
+>>> a = [1, 2, 3, ['a', 'b', 'c']]
+>>> a[0]
+1
+>>> a[-1]
+['a', 'b', 'c']
+>>> a[3]
+['a', 'b', 'c']
+>>> a[-1][0]
+'a'
+
+>>> a[-1][1]
+'b'
+>>> a[-1][2]
+'c'
+>>> a = [1, 2, ['a', 'b', ['Life', 'is']]]
+>>> a[2][2][0]
+'Life'
+
+>>> a = [1, 2, 3, 4, 5]
+>>> a[0:2]
+[1, 2]
+
+>>> a = "12345"
+>>> a[0:2]
+'12'
+
+>>> a = [1, 2, 3, 4, 5]
+>>> b = a[:2]
+>>> c = a[2:]
+>>> b
+[1, 2]
+>>> c
+[3, 4, 5]
+
+>>> a = [1, 2, 3, ['a', 'b', 'c'], 4, 5]
+>>> a[2:5]
+[3, ['a', 'b', 'c'], 4]
+>>> a[3][:2]
+['a', 'b']
+
+>>> a = [1, 2, 3]
+>>> b = [4, 5, 6]
+>>> a + b
+[1, 2, 3, 4, 5, 6]
+
+>>> a = [1, 2, 3]
+>>> a * 3
+[1, 2, 3, 1, 2, 3, 1, 2, 3]
+
+>>> a = [1, 2, 3]
+>>> len(a)
+3
+
+>>> a = [1, 2, 3]
+>>> a[2] + "hi"
+Traceback (most recent call last):
+  File "<python-input-76>", line 1, in <module>
+    a[2] + "hi"
+    ~~~~~^~~~~~
+TypeError: unsupported operand type(s) for +: 'int' and 'str'
+>>> str(a[2]) + "hi"
+'3hi'
+
+>>> str(a[2]) + "hi"
+'3hi'
+>>> a = [1, 2, 3]
+>>> a[2]
+3
+>>> a[2] = 4
+>>> a
+[1, 2, 4]
+>>>
+>>> a = [1, 2, 3]
+>>> del a[1]
+>>> a
+[1, 3]
+
+>>> a = [1, 2, 3, 4, 5]
+>>> del a[2:]
+>>> a
+[1, 2]
+>>>
+
+>>> a = [1, 2, 3]
+>>> a.append(4)
+>>> a
+[1, 2, 3, 4]
+
+>>> a.append([5, 6])
+>>> a
+[1, 2, 3, 4, [5, 6]]
+
+>>> a = [1, 4, 3, 2]
+>>> a.sort()
+>>> a
+[1, 2, 3, 4]
+
+>>> a = ['a', 'c', 'b']
+>>> a.sort()
+>>> a
+['a', 'b', 'c']
+
+>>> a = ['a', 'c', 'b']
+>>> a.reverse()
+>>> a
+['b', 'c', 'a']
+
+>>> a = [1, 2, 3]
+>>> a.index(3)
+2
+>>> a.index(1)
+0
+
+>>> a.index(0)
+Traceback (most recent call last):
+  File "<python-input-106>", line 1, in <module>
+    a.index(0)
+    ~~~~~~~^^^
+ValueError: 0 is not in list
+>>> a = [1, 2, 3]
+>>> a.insert(0, 4)
+>>> a
+[4, 1, 2, 3]
+
+>>> a.insert(3, 5)
+>>> a
+[4, 1, 2, 5, 3]
+
+>>> a = [1, 2, 3, 1, 2, 3]
+>>> a.remove(3)
+>>> a
+[1, 2, 1, 2, 3]
+
+>>> a.remove(3)
+>>> a
+[1, 2, 1, 2]
+
+>>> a = [1, 2, 3]
+>>> a.pop()
+3
+>>> a
+[1, 2]
+
+>>> a = [1, 2, 3]
+>>> a.pop(1)
+2
+>>> a
+[1, 3]
+
+>>> a = [1, 2, 3, 1]
+>>> a.count(1)
+2
+
+>>> a = [1, 2, 3]
+>>> a.extend[4, 5])
+  File "<python-input-132>", line 1
+    a.extend[4, 5])
+                  ^
+SyntaxError: unmatched ')'
+>>> a.extend([4, 5])
+>>> a
+[1, 2, 3, 4, 5]
+>>> b = [6, 7]
+>>> a.extend(b)
+>>> a
+[1, 2, 3, 4, 5, 6, 7]
+
+>>> t1 = (1, 2, 'a', 'b')
+>>> del t1[0]
+Traceback (most recent call last):
+  File "<python-input-139>", line 1, in <module>
+    del t1[0]
+        ~~^^^
+TypeError: 'tuple' object doesn't support item deletion
+
+>>> t1 = (1, 2, 'a', 'b')
+>>> t1[0] = 'c'
+Traceback (most recent call last):
+  File "<python-input-141>", line 1, in <module>
+    t1[0] = 'c'
+    ~~^^^
+TypeError: 'tuple' object does not support item assignment
+
+
+>>> t1 = (1, 2, 'a', 'b')
+>>> t1[0]
+1
+>>> t1[3]
+'b'
+
+>>> t1 = (1, 2, 'a', 'b')
+>>> t1[1:]
+(2, 'a', 'b')
+
+>>> t1 = (1, 2, 'a', 'b')
+>>> t2 = (3, 4)
+>>> t3 = t1 + t2
+>>> t3
+(1, 2, 'a', 'b', 3, 4)
+
+
+>>> t2 = (3, 4)
+>>> t3 = t2 * 3
+>>> t3
+(3, 4, 3, 4, 3, 4)
+
+>>> t1 = (1, 2, 'a', 'b')
+>>> len(t1)
+4
+
+>>> dic = {'name': 'pey', 'phone': '010-9999-1234', 'birth': '1118'}
+
+>>> a = {1: 'hi'}
+>>> a = {'a': [1, 2, 3]}
+>>> a = {1: 'a'}
+>>> a[2] = 'b'
+>>> a
+{1: 'a', 2: 'b'}
+>>> a['name'] = 'pey'
+>>> a
+{1: 'a', 2: 'b', 'name': 'pey'}
+
+>>> a[3] = [1, 2, 3]
+>>> a
+{1: 'a', 2: 'b', 'name': 'pey', 3: [1, 2, 3]}
+
+>>> del a[1]
+>>> a
+{2: 'b', 'name': 'pey', 3: [1, 2, 3]}
+
+>>> grade = {'pey': 10, 'julliet': 99}
+>>> grade['pey']
+10
+>>> grade['julliet']
+99
+>>> a = {1:'a', 2:'b'}
+>>> a[1]
+'a'
+>>> a[2]
+'b'
+
+>>> a = {'a': 1, 'b':2}
+>>> a['a']
+1
+>>> a['b']
+2
+
+>>> dic = {'name':'pey', 'phone':'010-9999-1234', 'birth': '1118'}
+>>> dic['name']
+'pey'
+>>> dic['phone']
+'010-9999-1234'
+>>> dic['birth']
+'1118'
+
+>>> a = {1:'a', 1:'b'}
+>>> a
+{1: 'b'}
+
+>>> a = {[1,2] : 'hi'}
+Traceback (most recent call last):
+  File "<python-input-187>", line 1, in <module>
+    a = {[1,2] : 'hi'}
+        ^^^^^^^^^^^^^^
+TypeError: unhashable type: 'list'
+
+>>> a = {'name': 'pey', 'phone': '010-9999-1234', 'birth': '1118'}
+>>> a.keys()
+dict_keys(['name', 'phone', 'birth'])
+
+>>> for k in a.keys():
+...     print(k)
+...
+name
+phone
+birth
+
+>>> list(a.keys())
+['name', 'phone', 'birth']
+
+>>> a.values()
+dict_values(['pey', '010-9999-1234', '1118'])
+
+>>> a.items()
+dict_items([('name', 'pey'), ('phone', '010-9999-1234'), ('birth', '1118')])
+
+
+>>> a.clear()
+>>> a
+{}
+
+
+>>> a = {'name': 'pey', 'phone': '010-9999-1234', 'birth': '1118'}
+>>> a.get('name')
+'pey'
+>>> a
+{'name': 'pey', 'phone': '010-9999-1234', 'birth': '1118'}
+>>> a.get('phone')
+'010-9999-1234'
+
+>>> a = {'name':'pey', 'phone':'010-9999-1234', 'birth': '1118'}
+>>> print(a.get('nokey'))
+None
+>>> print(a['nokey'])
+Traceback (most recent call last):
+  File "<python-input-205>", line 1, in <module>
+    print(a['nokey'])
+          ~^^^^^^^^^
+KeyError: 'nokey'
+
+>>> a.get('nokey', 'foo')
+'foo'
+
+>>> a = {'name':'pey', 'phone':'010-9999-1234', 'birth': '1118'}
+>>> 'name' in a
+True
+>>> 'email' in a
+False
+
+
+>>> s1 = set([1, 2, 3])
+>>> s1
+{1, 2, 3}
+
+>>> s2 = set("hello")
+>>> s2
+{'o', 'l', 'e', 'h'}
+
+>>> s1 = set([1, 2, 3])
+>>> s1
+{1, 2, 3}
+>>> s2 = set("hello")
+>>> s2
+{'o', 'l', 'e', 'h'}
+>>> s1 = set([1, 2, 3])
+>>> l1 = list(s1)
+>>> l1
+[1, 2, 3]
+>>> l1[0]
+1
+>>> t1 = tuple(s1)
+>>> t1
+(1, 2, 3)
+>>> t1[0]
+1
+
+
+>>> s1 = set([1, 2, 3, 4, 5, 6])
+>>> s2 = set([4, 5, 6, 7, 8, 9])
+>>> s1 & s2
+{4, 5, 6}
+
+>>> s1.intersection(s2)
+{4, 5, 6}
+
+>>> s1 | s2
+{1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+>>> s1.union(s2)
+{1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+>>> s1 - s2
+{1, 2, 3}
+>>> s2 - s1
+{8, 9, 7}
+
+>>> s1.difference(s2)
+{1, 2, 3}
+>>> s2.difference(s1)
+{8, 9, 7}
+
+>>> s1 = set([1, 2, 3])
+>>> s1.add(4)
+>>> s1
+{1, 2, 3, 4}
+
+>>> s1 = set([1, 2, 3])
+>>> s1.update([4, 5, 6])
+>>> s1
+{1, 2, 3, 4, 5, 6}
+
+>>> s1 = set([1, 2, 3])
+>>> s1.remove(2)
+>>> s1
+{1, 3}
+
+>>> a = True
+>>> b = False
+
+>>> type(a)
+<class 'bool'>
+>>> type(b)
+<class 'bool'>
+
+>>> 1 == 1
+True
+
+>>> 2 < 1
+False
+
+>>> a = [1, 2, 3, 4]
+>>> while a:
+...     print(a.pop())
+...
+4
+3
+2
+
+>>> if []:
+...     print("참")
+... else:
+...     print("거짓")
+...
+거짓
+
+>>> if [1, 2, 3]:
+...     print("참")
+... else:
+...     print("거짓")
+...
+참
+
+>>> bool('python')
+True
+>>> bool('')
+False
+
+>>> bool([1, 2, 3])
+True
+>>> bool([])
+False
+>>> bool(0)
+False
+>>> bool(3)
+True
+
+>>> a = 1
+>>> b = "python"
+>>> c = [1, 2, 3]
+
+
+>>> a = [1, 2, 3]
+>>> id(a)
+2550404351744
+
+>>> a = [1, 2, 3]
+>>> b = a
+
+>>> id(a)
+2550404358144
+>>> id(b)
+2550404358144
+
+>>> a is b
+True
+
+>>> a[1] = 4
+>>> a
+[1, 4, 3]
+>>> b
+[1, 4, 3]
+
+>>> a = [1, 2, 3,]
+>>> b = a[:]
+>>> a[1] = 4
+>>> a
+[1, 4, 3]
+>>> b
+[1, 2, 3]
+
+>>> from copy import copy
+>>> a = [1, 2, 3]
+>>> b = copy(a)
+
+>>> b is a
+False
+
+>>> a = [1, 2, 3]
+>>> b = a.copy()
+>>> b is a
+False
+
+>>> a, b = ('python', 'life')
+>>> (a, b) = 'python', 'life'
+>>> [a, b] = ['python', 'life']
+>>> a = b = 'python'
+
+>>> a = 3
+>>> b = 5
+>>> a, b = b, a
+>>> a
+5
+>>> b
+3
+
+
+
+
+
+
+
+
+
+이스케이프 코드를 사용하면 세부적으로 출력물을 보기좋게 출력할 수 있다.
+문자열 포맷팅 코드를 사용하면 %연산자로 출력물에 다양한 것들을 대입할 수 있다.
+
+
+
+
+
+
+
+1분 코딩 p48
+a = 10 * 18**2 + 2 * 11
+a
+
+>>> a = 10 * 18**2 + 2 * 11
+>>> a
+3262
+
+
+
+
+1분 코딩 p49
+방금 배운 연산자를 사용해서 숫자 14를 3으로 나누었을 댸 몫과 나머지를 확인해 보자.
+14 % 3 나머지
+14 // 3 몫
+
+>>> 14 // 3
+4
+>>> 14 % 3
+2
+
+1분코딩 p56
+'You need python'라는 문장을 문자열로 만들고 길이를 구해 보자.
+
+a = 'You need python'
+len(a)
+
+>>> a = 'You need python'
+>>> a
+'You need python'
+>>> lena()
+Traceback (most recent call last):
+  File "<python-input-56>", line 1, in <module>
+    lena()
+    ^^^^
+NameError: name 'lena' is not defined. Did you mean: 'len'?
+>>> len(a)
+
+1분코딩 p72 
+
+format 함수 또는 f문자열 포매팅을 사용해 !!!python!!!문자열을 출력해 보자.
+
+f'{"Python":!^12}'
+>>> f'{"Python":!^12}'
+'!!!Python!!!'
+
+
+1분코딩 p81
+a=[1,2,3,4,5] 리스트에서 슬라이싱 기법을 사용하여 리스트[2,3]을 만들어보자.
+
+a=[1,2,3,4,5]
+result=a[1:3]
+
+>>> a=[1,2,3,4,5]
+>>> result=a[1:3]
+>>> result
+[2, 3]
+
+
+1분코딩 p 92
+
+(1, 2, 3)이라는 튜플에 값 4를 추가하여 (1, 2, 3, 4)라는 새로운 튜플을 출력해 보자.
+
+tp = (1, 2, 3)
+tp = (1, 2, 3, 4)
+
+=> tp+(4,)
+
+>>> tp = (1, 2, 3)
+>>> tp+=(4,)
+>>> tp
+(1, 2, 3, 4)
+
+
+
+1분코딩 p101
+
+다음 표를 딕셔너리로 만드시오
+
+항복 값
+name 홍길동
+birth 1128
+age 30
+
+
+{ 'name': '홍길동', 'birth': 1128, 'age' : 30 
+
+=> dic = {'name':'홍길동','birth':1128','age':30}
+=> dic = {'name':'홍길동','birth':'1128','age':30}
+
+
+1분코딩 p 115
+
+다음 예제를 실행한 후 그 결과를 설명해 보자.
+
+a =  [1, 2, 3]
+b = [1, 2, 3]
+a is b
+
+>>> a = [1, 2, 3]
+>>> b = 1, 2, 3]
+  File "<python-input-297>", line 1
+    b = 1, 2, 3]
+               ^
+SyntaxError: unmatched ']'
+>>> b = [1, 2, 3]
+>>> a is b
+False
+>>> id(a)
+2550404363968
+>>> id(b)
+2550404362432
+>>> a
+[1, 2, 3]
+>>> b
+[1, 2, 3]
+>>>
+
+참조하는 주소가 다르다.
+
+
+
+why
+이코드는 튜플같은 immutable의 자료형을 의 불변이기떄문에 대입연산자를 사용해야한다는걸까 아니면 함수자체의 리턴값이 원본자료를 변경하지 않기떄문에 대입연산으로 백업해야된다는 걸까
+일단 대입연산자로 자료를 백업하기도하면서 불변자료형의 성격을 가변으로 사용하기위해 사용하는 것 같긴한데 함수마다 다를 수 있는건가?
+>>> a = 'hi'
+>>> a.upper()
+'HI'
+>>> a
+'hi'
+>>> a = a.upper()
+>>> a
+'HI'
+
+
+
+연습문제 풀어보기
+
+1. 홍길동씨의 과목별 점수는 다음과 같다. 홍길동 씨의 평균 점수를 구해보자.
+과목 점수
+국어 80
+영어 75
+수학 55
+
+kor = 80
+eng = 75
+math = 55
+average = (kor + eng + math)/3
+print(f"{average}")
+
+2. 홀수, 짝수 판별하기
+자연수 13이 홀수인지, 짝수인지 판별할 수 있는 방법에 대해 말해보자.
+
+자연수 13을 %연산을 하였을때 나머지가 1?이면 홀수 2이면 짝수이다.
+
+num = 13
+if num % 2 == 1:
+    print("홀수 입니다.")
+else:
+    print("짝수입니다.")
+
+
+3. 주민등록번호 나누기
+홍길동 씨의 주민등록번호는 881120-1068234이다. 홍길동 씨의 주민번호를 연월일 (YYYYMMDD) 부분과 그 뒤의 숫자 부분으로 나누어 출력해보자.
+
+pin = "881120-1068234"
+yyyymmdd = pin[0:6]
+num = pin[7:]
+print(f"{yyyymmdd}")
+print(f"{num}")
+
+4. 주민등록번호 인덱싱
+주민등록번호 뒷자리의 맨 첫 번재 숫자는 성별을 나타낸다. 주민등록번호에서 성별을 나타내는 숫자를 출력해 보자.
+
+pin = "881120-1068234"
+print(f"{pin[7:8]") => print(pin[7])
+
+
+5. 문자열 바꾸기
+다음과 같은 문자열 a:b:c:d가 있다. 문자열의 replace함수를 사용하여 a#b#c#d로 바꿔 출력해보자.
+
+a = "a:b:c:d"
+b = a.replace(':','#')
+print(b)
+
+6. 리스트 역순 정렬하기
+[1, 3, 5, 4, 2] 리스트를 [5, 4, 3, 2, 1]로 만들어보자
+
+a = [1, 3, 5, 4, 2]
+a.sort()
+a.reverse()
+print(a)
+
+7.['Life', 'is', 'to', 'short'] 리스트를 Life is too short문자열로 만들어 출력해보자.
+a = ['Life', 'is', 'too', 'short']
+result = a.join(' ') => " ".join(a)
+print(result)
+
+a = ['Life', 'is', 'too', 'short']
+result = ' '.join(a)
+print(result)
+
+8. (1, 2, 3)튜플에 값 4를 추가ㅣ하여 (1,2,3,4) 를만든후 출력해보자.
+
+a = (1, 2, 3)
+a = a[0:3] + 4
+print(a)
+
+
+a = (1, 2, 3)
+a = (1, 2, 3, 4)
+print(a)
+
+a = (1, 2, 3)
+??? => a = a + (4,)
+print(a)
+
+9. 딕셔너리의 키
+다음과 같은 딕셔너리 a가 있다.
+a = dict()
+a
+{}
+
+다음 중 오류가 발생하는 경우를 고르고, 그이유를 설명해보자.
+
+a['name'] = 'python'
+a[('a',)] = 'python'
+a[[1]] = 'python'
+a[250] = 'python'
+
+Traceback (most recent call last):
+  File "D:/doit/1_practice.py", line 55, in <module>
+    a[[1]] = 'python'
+TypeError: unhashable type: 'list'
+
+딕셔너리의 key에는 list자료형이 들어가지 못한다.
+
+
+
+10. 딕셔너리 값 추출하기
+딕셔너리 a에서 'B'에 해당하는 값을 추출해 보자.
+
+a = {'A':90, 'B':80, 'C':70}
+result = a["B"] => result = a.pop('B')
+print(a)
+print(result)
+
+
+11. 리스트에서 중복제거하기
+a 리스트에서 중복숫자를 제거해 보자.
+a = [1, 2, 1, 2, 2, 3, 3, 3, 4, 4, 5]
+aSet =set(a)
+b = list(aSet)
+print(b)
+
+12. 파이썬 변수
+파이썬은 다음처럼 동일한 값이 여러개의 변수를 선언할 수 있다. 다음과 같이 a, b변수를 선언한 후 a의 두 번째 요솟값을 변경하면 b값은 어떻게 될까? 그리고 이런결과가 나타나는 이유를 설명해보자.
+
+a = b= [1, 2, 3]
+a[1] = 4
+print(b)
+
+b의 두번재 요소도 변경된다.
+동일한 id 메모리를 참조하고 있기때문이다.
+
+
+
+
+
+

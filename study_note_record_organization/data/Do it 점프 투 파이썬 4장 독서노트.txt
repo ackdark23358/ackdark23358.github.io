@@ -1,0 +1,545 @@
+4장
+
+
+>>> def add(a, b):
+...     return a + b
+...
+>>> a = 3
+>>> b = 4
+>>> c = add(a, b)
+>>> print(c)
+7
+
+>>> def add(a, b):
+...     result = a + b
+...     return result
+...
+>>> a = add(3, 4)
+>>> print(a)
+7
+
+>>> def say():
+...     return 'Hi'
+...
+>>> a = say()
+>>> print(a)
+Hi
+
+>>> def add(a, b):
+...     print("%d, %d의 합은 %d입니다." % (a, b, a + b))
+...
+>>> add(3, 4)
+3, 4의 합은 7입니다.
+
+>>> a = add(3, 4)
+3, 4의 합은 7입니다.
+>>> print(a)
+None
+
+>>> def say():
+...     print('Hi')
+...
+>>> say()
+Hi
+
+>>> def sub(a, b):
+...     return a - b
+...
+>>> result = sub(a=7, b=3)
+>>> print(result)
+4
+
+>>> result = sub(b=5, a=3)
+>>> print(result)
+-2
+
+>>> def add_many(*args):
+...     result = 0
+...     for i in args:
+...         result = result + i
+...     return result
+...
+>>> result = add_many(1, 2, 3)
+>>> print(result)
+6
+>>> result = add_many(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+>>> print(result)
+55
+
+>>> def add_mul(choice, *args):
+...     if choice == "add":
+...         result = 0
+...         for i in args:
+...             result = result + i
+...     elif choice == "mul":
+...         result = 1
+...         for i in args:
+...             result = result * i
+...     return result
+...
+>>> result = add_mul('add', 1, 2, 3, 4, 5)
+>>> print(result)
+15
+>>> result = add_mul('mul', 1, 2, 3, 4, 5)
+>>> print(result)
+120
+
+>>> def print_kwargs(**kwargs):
+...     print(kwargs)
+...
+>>> print_kwargs(a=1)
+{'a': 1}
+>>> print_kwargs(name='foo', age=4)
+{'name': 'foo', 'age': 4}
+
+>>> def add_and_mul(a, b):
+...     return a+b, a*b
+...
+>>> result = add_and_mul(3, 4)
+
+ result1, result2 = add_and_mul(3,4)
+
+>>> def add_and_mul(a, b):
+...     return a + b
+...     return a * b
+...
+
+>>> def add_and_mul(a,b):
+...     return a + b
+...
+
+>>> def say_nick(nick):
+...     if nick == "바보":
+...         return
+...     print("나의 별명은 %s입니다." % nick)
+...
+
+>>> say_nick('야호')
+나의 별명은 야호입니다.
+>>> say_nick('바보')
+>>>
+
+def say_myself(name, age, man=True):
+    print("나의 이름은 %s입니다." % name)
+    print("나이는 %d살 입니다." % age)
+    if man:
+        print("남자입니다.")
+    else:
+        print("여자입니다.")
+
+
+say_myself("박응용", 27)
+나의 이름은 박응용입니다.
+나이는 27살 입니다.
+남자입니다.
+say_myself("방응용", 27, True)
+나의 이름은 방응용입니다.
+나이는 27살 입니다.
+남자입니다.
+
+
+say_myself("박응선", 27, False)
+           
+나의 이름은 박응선입니다.
+나이는 27살 입니다.
+여자입니다.
+
+
+a = 1 #함수 밖의 변수 a
+def vartest(a): #vartest 함수 선언
+    a = a +  1
+
+vartest(a) #vartest 함수의 입력값으로 a를 대입
+print(a) #a값 출력
+
+1
+
+def vartest(a):
+    a = a + 1
+
+
+vartest(3)
+print(a)
+
+a = 1
+def vartest(a):
+    a = a + 1
+    return a
+
+a = vartest(a) # vartest(a)의 리턴값을 함수 밖의 변수 a에 대입
+print(a)
+
+2
+
+a = 1
+def vartest():
+    global a
+    a = a + 1
+
+vartest()
+print(a)
+
+2
+
+>>> add = lambda a, b: a + b
+>>> result = add(3, 4)
+>>> print(result)
+7
+
+>>> def add(a, b):
+...     return a + b
+...
+>>> result = add(3, 4)
+>>> print(result)
+7
+
+
+>>> a = input()
+Life is too short, you need python
+>>> a
+'Life is too short, you need python'
+
+>>> number = input("숫자를 입력하세요: ")
+숫자를 입력하세요: 3
+>>> print(number)
+3
+
+>>> type(number)
+<class 'str'>
+
+>>> a = 123
+>>> print(a)
+123
+>>> a = "python"
+>>> print(a)
+python
+>>> a = [1, 2, 3]
+>>> print(a)
+[1, 2, 3]
+
+>>> print("life" "is" "too short")
+lifeistoo short
+>>> print("life"+"is"+"too short")
+lifeistoo short
+
+>>> print("life", "is", "too short")
+life is too short
+
+for i in range(10):
+    print(i, end=' ')
+
+           
+0 1 2 3 4 5 6 7 8 9 
+
+
+
+f = open("새 파일.txt", 'w')
+f.close()
+
+
+f = open("D:/doit/새파일.txt", "w")
+for i in range(1, 11):
+    data = "%d번째 줄입니다.\n" % i
+    f.write(data)
+f.close()
+
+1번째 줄입니다.
+2번째 줄입니다.
+3번째 줄입니다.
+4번째 줄입니다.
+5번째 줄입니다.
+6번째 줄입니다.
+7번째 줄입니다.
+8번째 줄입니다.
+9번째 줄입니다.
+10번째 줄입니다.
+
+
+
+
+f = open("D:/doit/새파일.txt", "r")
+line = f.readline()
+print(line)
+f.close()
+
+1번째 줄입니다.
+
+f = open("D:/doit/새파일.txt", "r")
+while True:
+    line = f.readline()
+    if not line: break
+    print(line)
+f.close()
+
+1번째 줄입니다.
+
+2번째 줄입니다.
+
+3번째 줄입니다.
+
+4번째 줄입니다.
+
+5번째 줄입니다.
+
+6번째 줄입니다.
+
+7번째 줄입니다.
+
+8번째 줄입니다.
+
+9번째 줄입니다.
+
+10번째 줄입니다.
+
+
+f = open("D:/doit/새파일.txt", "r")
+lines = f.readlines()
+for line in lines:
+    print(line)
+f.close()
+
+1번째 줄입니다.
+
+2번째 줄입니다.
+
+3번째 줄입니다.
+
+4번째 줄입니다.
+
+5번째 줄입니다.
+
+6번째 줄입니다.
+
+7번째 줄입니다.
+
+8번째 줄입니다.
+
+9번째 줄입니다.
+
+10번째 줄입니다.
+
+f = open("D:/doit/새파일.txt", 'r')
+for line in f:
+    print(line)
+f.close()
+
+
+1번째 줄입니다.
+2번째 줄입니다.
+3번째 줄입니다.
+4번째 줄입니다.
+5번째 줄입니다.
+6번째 줄입니다.
+7번째 줄입니다.
+8번째 줄입니다.
+9번째 줄입니다.
+10번째 줄입니다.
+
+f = open("D:/doit/새파일.txt", 'a')
+for i in range(11, 20):
+    data = "%d번째 줄입니다.\n" % i
+    f.write(data)
+f.close()
+
+1번째 줄입니다.
+2번째 줄입니다.
+3번째 줄입니다.
+4번째 줄입니다.
+5번째 줄입니다.
+6번째 줄입니다.
+7번째 줄입니다.
+8번째 줄입니다.
+9번째 줄입니다.
+10번째 줄입니다.
+11번째 줄입니다.
+12번째 줄입니다.
+13번째 줄입니다.
+14번째 줄입니다.
+15번째 줄입니다.
+16번째 줄입니다.
+17번째 줄입니다.
+18번째 줄입니다.
+19번째 줄입니다.
+11번째 줄입니다.
+12번째 줄입니다.
+13번째 줄입니다.
+14번째 줄입니다.
+15번째 줄입니다.
+16번째 줄입니다.
+17번째 줄입니다.
+18번째 줄입니다.
+19번째 줄입니다.
+
+with open("foo.txt", "w") as f:
+    f.write("Life if too short, you need python")
+    
+
+D:\doit>type 새파일.txt
+1번째 줄입니다.
+2번째 줄입니다.
+3번째 줄입니다.
+4번째 줄입니다.
+5번째 줄입니다.
+6번째 줄입니다.
+7번째 줄입니다.
+8번째 줄입니다.
+9번째 줄입니다.
+10번째 줄입니다.
+11번째 줄입니다.
+12번째 줄입니다.
+13번째 줄입니다.
+14번째 줄입니다.
+15번째 줄입니다.
+16번째 줄입니다.
+17번째 줄입니다.
+18번째 줄입니다.
+19번째 줄입니다.
+11번째 줄입니다.
+12번째 줄입니다.
+13번째 줄입니다.
+14번째 줄입니다.
+15번째 줄입니다.
+16번째 줄입니다.
+17번째 줄입니다.
+18번째 줄입니다.
+19번째 줄입니다.
+11번째 줄입니다.
+12번째 줄입니다.
+13번째 줄입니다.
+14번째 줄입니다.
+15번째 줄입니다.
+16번째 줄입니다.
+17번째 줄입니다.
+18번째 줄입니다.
+19번째 줄입니다.
+
+import sys
+
+args = sys.argv[1:]
+for i in args:
+    print(i)
+
+D:\doit>python sys1.py aaa bbb ccc
+aaa
+bbb
+ccc
+
+import sys
+args = sys.argv[1:]
+for i in args:
+    print(i.upper(), end=' ')
+
+
+D:\doit>python sys2.py Life is too short, you need python
+LIFE IS TOO SHORT, YOU NEED PYTHON
+
+
+
+1분코딩 p176
+복습.txt파일을 C:\doit 디렉터리에 만들어 보자.
+D:\에 만들기
+
+f = open("C:/doit/복습.txt", "w")
+f.close()
+
+f = open("D:/doit/복습.txt", "w")
+f.close()
+
+
+
+연습문제 풀어보기
+
+1. 홀수, 짝수 판별하기
+주어진 자연수가 홀수인지, 짝수인지 판별해 주는 함수 is_odd를 작성해 보자. iss_odd함수는 홀수이면 True, 짝수이면 False를 리턴해야 한다.
+
+def is_odd(number):
+	if number % 2 == 1:
+		return True
+	else:
+		return False
+
+2. 모든 입력의 평균값 구하기
+입력으로 들어오는 모든 수의 평균값을 계산해 주는 함수를 작성해 보자. 단 입력으로 들어오는 수의 개수는 정해져 있지 않다.
+
+def avg_numbers(*args):
+	result = 0
+	for i in args:
+		result += i
+	return result / len(args)
+
+avg_numbers(1,2)
+avg_numbers(1,2,3,4,5)
+
+3. 프로그램 오류 수정하기1
+다음은 2개의 숫자를 입력받아 더한 후에 리턴하는 프로그램이다.
+input1 = input("첫 번째 숫자를 입력하세요: ")
+input2 = input("두 번째 숫자를 입력하세요: ")
+
+total = input1 + input2 => int(input1) + int(input2)
+print("두 수의 합은 %s입니다." % total) => %s를 d로 바꾼다.
+
+이프로그램을 실행해보자.
+첫 번째 숫자를 입력하세요 : 3
+두 번째 숫자를 입력하세요. : 6
+두 수의 합은 36입니다.
+
+4. 출력 결과가 다른 것은? 3번
+다음 중 출력 결과가 다른 하나를 골라보자.
+1. print("you" "need" "python") => youneedpython
+2. print("you" + "need" + "python") => youneedpython
+3. print("you", "need", "python") => you need python
+4. prunt("".join(["you", "need", "python"]) => youneedpython
+
+5. 프로그램 오류 수정하기2
+다음은 파일(test.txt)에 "Life is too short"문자열을 저장한 후 다시 그 파일을 읽어 출력하는 프로그램이다.
+
+f1 = open("test.txt", 'w')
+f1.wirte("Life is too short")
+
+=> f1.close()를 하지 않아서 f2에서 텍스트파일을 열때 오류가 발생된다.
+
+f2 = open("test.txt", 'r')
+print(f2.read())
+
+6. 사용자 입력 저장하기
+사용자의 입력을 파일(test.txt)에 저장하는 프로그램을 작성해 보자. 단, 프로그램을 다시 실행하더라도 기존에 작성한 내용을 유지하고 새로 입력한 내용을 추가해야한다.
+user_input = input("저장할 내용을 입력하세요:")
+f = open('test.txt', 'a')
+f.write(user_input)
+f.write("\n")
+f.close()
+
+7.파일의 문자열 바꾸기
+다음과 같은 내용을 지닌 test.txt가 있다. 이파일의 내용중 "java"라는 문자열을 "python"으로 바꾸어 저장해보자.
+Life is to short
+you need java
+
+f = open('test.txt', 'r')
+body = f.readlines() => f.read()
+f.close()
+body = body.replace("java","python")
+f = open('test.txt', 'w')
+f.write(body)
+f.close()
+
+8.입력값을 모두 더해 출력하기
+다음과 같이 실행할 때 입력값을 모두 더해 출력하는 스크립트(D:/doit/myargv.py)를 작성해보자.
+
+C:\> cd doit
+C:\doit> python myargv.py 1 2 3 4 5 6 7 8 9 10
+
+입출력관련해서 sys모듈 사용하는 거였던같은데 어떻게 사용했엇지?
+
+????????
+
+import sys
+
+numbers = sys.argv[1:] # 파일 이름을 제외한 명령 행의 모든 입력
+
+result = 0
+for number in numbers:
+	result += int(number)
+print(result)
+
+
+

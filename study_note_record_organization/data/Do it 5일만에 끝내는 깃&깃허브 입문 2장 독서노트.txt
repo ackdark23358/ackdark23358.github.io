@@ -1,0 +1,35 @@
+2장
+
+깃 저장소 만들기
+버전만들기
+
+깃 => 작업트리, 스테이지, 저장소
+
+실습.... 스테이지에 인덱스하고 커밋 까지
+
+
+커밋 내용확인하기
+
+커밋 로그, git log, 커밋해시
+
+실습...
+
+버전만드는 단계마다 파일 상태 알아보기
+
+실습...
+
+
+연습 문제 풀어보기
+
+1.git init => init
+2. git status  => status
+3. git add => add "ch01.txt"
+4. git commit "ch01" => commit -m "ch01"
+5. git commit -am "ch02" => commit -am "ch02"
+6. git log => log
+7. git diff => diff
+8. git reset => restore work.txt
+9. git reset work.txt => restore --stage work.txt
+10. git reset HEAD^ => reset HEAD^ 
+11. git restore 커밋해시 => reset 커밋 해시
+12. git restore 커밋해시 => revert 커밋 해시

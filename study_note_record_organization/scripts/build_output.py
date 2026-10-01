@@ -82,19 +82,59 @@ def extract_html(path: Path) -> str:
         return raw
 
 
+KEY_MASK = "142857"
+
+_SECRET_PATTERNS = [
+    # Google API Key
+    re.compile(r"AIza[0-9A-Za-z\-_]{35}"),
+    # OpenAI API Key
+    re.compile(r"sk-[a-zA-Z0-9_\-]{20,}"),
+    # Anthropic API Key
+    re.compile(r"sk-ant-[a-zA-Z0-9_\-]{20,}"),
+    # GitHub Token
+    re.compile(r"(?:ghp|gho|ghu|ghs|ghr)_[a-zA-Z0-9]{36}|github_pat_[a-zA-Z0-9_]{50,}"),
+    # AWS Access Key
+    re.compile(r"(?:AKIA|ABIA|ACCA|ASIA)[0-9A-Z]{16}"),
+    # Slack Token
+    re.compile(r"xox[baprs]-[0-9a-zA-Z]{10,}"),
+    # Firebase FCM device registration token
+    re.compile(r"[a-zA-Z0-9_\-]{15,}:APA91b[a-zA-Z0-9_\-]{50,}"),
+]
+
+_KEY_ASSIGNMENT_PATTERNS = [
+    re.compile(
+        r'(?i)((?:api[_-]?key|client[_-]?secret|secret[_-]?key|access[_-]?token|service[_-]?key)\s*[:=]\s*["\'])([a-zA-Z0-9_\-\.\%\+\=]{16,})(["\'])'
+    ),
+    re.compile(
+        r'(?i)((?:android:name=["\']com\.google\.android\.maps\.v2\.API_KEY["\']\s+android:value=["\']))([^"\']+)(["\'])'
+    ),
+]
+
+
+def mask_secrets(text: str, mask: str = KEY_MASK) -> str:
+    if not text:
+        return text
+    for pat in _SECRET_PATTERNS:
+        text = pat.sub(mask, text)
+    for pat in _KEY_ASSIGNMENT_PATTERNS:
+        text = pat.sub(rf"\g<1>{mask}\g<3>", text)
+    return text
+
+
 def extract_source(path: Path) -> str:
     ext = path.suffix.lower()
+    raw = ""
     if ext == ".txt":
-        return read_text_file(path)
-    if ext == ".docx":
-        return extract_docx(path)
-    if ext == ".pdf":
-        return extract_pdf(path)
-    if ext in (".html", ".htm"):
-        return extract_html(path)
-    if ext == ".vb":
-        return read_text_file(path)
-    return ""
+        raw = read_text_file(path)
+    elif ext == ".docx":
+        raw = extract_docx(path)
+    elif ext == ".pdf":
+        raw = extract_pdf(path)
+    elif ext in (".html", ".htm"):
+        raw = extract_html(path)
+    elif ext == ".vb":
+        raw = read_text_file(path)
+    return mask_secrets(raw)
 
 
 def source_href(path: str) -> str:
@@ -161,7 +201,8 @@ def cache_extract(rel_path: str, content: str) -> Path:
     safe = re.sub(r"[^\w\-]", "_", rel_path)[:120]
     out = EXTRACTED / f"{safe}.txt"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(content or "[empty]", encoding="utf-8")
+    clean_content = mask_secrets(content)
+    out.write_text(clean_content or "[empty]", encoding="utf-8")
     return out
 
 
@@ -1376,7 +1417,7 @@ def render_markdown(item: CatalogItem) -> str:
             lines.append(f"- [{label}]({href}) ({s.unit}) — `{s.path}`")
     lines.append("")
 
-    return "\n".join(lines)
+    return mask_secrets("\n".join(lines))
 
 
 def main() -> None:

@@ -1,0 +1,496 @@
+oop
+
+클래스로 인스턴스를 생성해서 아이돌 그룹 // blick pink , redvalvat, bts ........
+를 만들 수 있는 클래스를 정의해놓고 (설계도)
+
+아이돌 그룹을 만들어 낼 수 있다.
+
+네임드 함수로 정의 하고
+맴버변수를 final로 선언하고
+생성자를 const로 선언
+하는게 일반적이다.
+플루터에서 효율을 올려주는 부분이다.
+
+const로 생성하고 맴버네임과 맴버들이 같다면 인스턴스가 같다.
+
+getter/ setter
+//데이터를 가져올때
+//데이터를 설정할떄
+
+String get firstMember{
+	return this.members[0];
+}
+set firstMember(String name){
+	this.members[0] = name;
+}
+setter는 현대에는 많이 안쓴다. 데이터를 건드리면 안되게 하게되기떄문에
+
+_Idol => private 같은 파일에서만 사용할 수 있다.
+Idol
+
+상속 inheritance
+상속을 받으면 부모클래스의 모든 속성을 자식 클래스가 부여받는다.
+
+부모클래스에서는 자식클래스에서 작성한 메소드를 사용할 수 없다.
+자식클레스를 상위객체로 형변활 할 수 없기떄문이다.
+
+Idol 클래스를 사용해서 apink를 만들고
+
+상속을 하면 자식클래스와 부모클래스가 생기고
+부모클래스속성들은 자식클래스로 넘어간다
+부모클래스는 자식클래스 속성들을 사용할 수 없다.
+자식클래스들끼리 속성들을공유할 수없다.
+
+method - function (class 내부에 있는 함수)
+override - 덮어쓰다( 우선시하다) 재정의
+static 키워드
+
+인터페이스 키워드
+제너릭 타입을 외부에서 받을때 사용
+
+OOP
+//객체지향 프로그래밍
+모든 변수는 객체다.
+
+
+//Idol class
+
+// name(이름) - 변수
+//numbers(맴버들) - 변수
+// sayHello(인사) - 함수
+// introduce (맴버소개) -함수
+
+void main() {
+  Idol blackPink = const Idol(
+    '블렉핑크',
+    ['지수', '제니', '리사', '로제'],
+  );
+  Idol blackPink2 = const Idol(
+    '블렉핑크',
+    ['지수', '제니', '리사', '로제'],
+  );
+  
+  
+  //블렉핑크의 인스턴스와 블렉핑크2의 인스턴스가
+  //같다.
+  print('===============');
+  print(blackPink == blackPink2);
+  
+  
+  print(blackPink.name);
+  print(blackPink.members);
+  
+  
+  Idol bts = Idol(
+    'DTS',
+    ['마가린','버터','마늘','까진마늘','흙마늘']
+  );
+  
+  print(bts.name);
+  
+  print(bts.members);
+  
+  bts.sayHello();
+  bts.introduce();
+  
+  
+  
+}
+
+//설계서
+
+class Idol {
+  
+  final String name;
+  final List<String> members;
+  
+  
+  const Idol(this.name, this.members);
+  
+  
+//   Idol(String name, List<String> members)
+//     : this.name = name,
+//     this.members = members;
+
+  //포지셔널 파라미터 (순서 상관 o)
+  //네임드 파라미터 (순서상관 X)
+  
+  Idol.fromList(List values)
+      : this.members = values[0],
+        this.name = values[1];
+
+  
+  
+  void sayHello(){
+    print('안녕하세요 ${this.name} 입니다.');
+  }
+  void introduce() {
+    print('저희 맴버는 ${this.members} 가 있습니다.');
+  }
+}
+
+
+
+
+
+===============
+
+//Idol class
+
+// name(이름) - 변수
+//numbers(맴버들) - 변수
+// sayHello(인사) - 함수
+// introduce (맴버소개) -함수
+
+void main() {
+  Idol blackPink = Idol(
+    '블렉핑크',
+    ['지수', '제니', '리사', '로제'],
+  );
+  
+  //setter는 한개의 인지를 전달할수있다.
+  print(blackPink.firstMember);
+  blackPink.firstMember = 'Iron Man';
+  print(blackPink.firstMember);
+  print(blackPink.members);
+  
+  
+  Idol bts = Idol(
+    'DTS',
+    ['마가린','버터','마늘','까진마늘','흙마늘']
+  );
+  
+  
+  print(bts.name);
+  print(bts.members);
+  
+  bts.sayHello();
+  bts.introduce();
+  
+  print(bts.firstMember);
+  bts.firstMember = 'wook';
+  
+  print(bts.members);
+  print(bts.firstMember);
+
+  
+}
+
+//설계서
+
+class Idol {
+  //private변수 파일 내에서만 사용 변수나 
+  //클레스에서도 모두사용가능
+  
+  var _a;
+  
+  String name;
+  List<String> members;
+  
+  Idol(this.name, this.members);
+  
+  
+//   Idol(String name, List<String> members)
+//     : this.name = name,
+//     this.members = members;
+
+  //포지셔널 파라미터 (순서 상관 o)
+  //네임드 파라미터 (순서상관 X)
+  
+  Idol.fromList(List values)
+      : this.members = values[0],
+        this.name = values[1];
+
+  
+  void sayHello(){
+    print('안녕하세요 ${this.name} 입니다.');
+  }
+  void introduce() {
+    print('저희 맴버는 ${this.members} 가 있습니다.');
+  }
+  
+  //getter
+  String get firstMember{
+    return this.members[0];
+  }
+  
+  //setter
+  set firstMember(String name){
+    this.members[0] = name;
+  }
+}
+
+
+//상속 - inheritance
+
+// 상속을 받으면 부모클래스의 모두ㅡㄴ 속성을
+// 자식클래스가 부여받는다.
+
+
+class Idol{
+  //이름
+  String name;
+  //맴버 숫자
+  int memberCount;
+  
+  Idol({
+    required this.name,
+    required this.memberCount,
+  });
+  
+  void sayName(){
+    print('저는 ${this.name} 입니다.');
+    
+  }
+  
+  void sayMemberCount(){
+    print('${this.name}은 ${this.memberCount}명의 맴버가 있습니다.');
+  }
+  
+  
+}
+
+class BoyGroup extends Idol{
+  BoyGroup(
+    String name,
+    int membersCount,
+  ): super(name: name, memberCount: membersCount);
+  
+  sayHello(){
+    print("hello boyGroup입니다.");
+  }
+}
+
+class GirlGroup extends Idol{
+  GirlGroup(
+    String name,
+    int memberCount,
+  ): super(name: name, memberCount: memberCount);
+  
+  sayHello(){
+    print('hello girlGroup입니다.');
+  }
+}
+
+void main(){
+ print('------------------- idol -----------------');
+
+ Idol idol = Idol(name : 'bts',memberCount : 6);
+  
+  idol.sayName();
+  idol.sayMemberCount();
+  
+  print('------------------- boygroup -------------');
+  GirlGroup aPink = GirlGroup('nineyard',6);
+  
+  aPink.sayHello();
+  
+  
+  print('------------------- girl group -----------');
+  BoyGroup bbs = BoyGroup('name', 8);
+  
+  bbs.sayHello();
+
+  print('\n');
+  
+  print(idol is Idol);
+  print(idol is GirlGroup);
+  print(idol is BoyGroup);
+  
+  print('\n');
+  
+  print(aPink is Idol);
+  print(aPink is GirlGroup);
+  print(aPink is BoyGroup);
+ 
+  print('\n');
+  
+  print(bbs is Idol);
+  print(bbs is GirlGroup);
+  print(bbs is BoyGroup);
+
+
+
+void main() {
+  TimesTwo timetwo = TimesTwo(5);
+  print(timetwo.calculate());
+  
+  TimeFour time = TimeFour(5);
+  print(time.calculate());
+  
+  
+}
+
+class TimesTwo {
+  final int number;
+
+  TimesTwo(
+    this.number,
+  );
+
+  int calculate() {
+    return number * 2;
+  }
+}
+
+class TimeFour extends TimesTwo {
+  TimeFour(
+    int number,
+  ) : super(number);
+  
+  @override
+  int calculate(){
+    return super.number * 4;
+  }
+}
+
+
+
+
+void main() {
+  Employee alba1 = Employee('슬기');
+  Employee alba2 = Employee('감자머리');
+  Employee alba3 = Employee('까가머리');
+  
+  Employee.buling = '감자타워';
+  
+  alba1.printNameAndBuilding();
+  alba2.printNameAndBuilding();
+  alba3.printNameAndBuilding();
+  
+  Employee.printBuilding();
+  
+}
+
+
+class Employee{
+  //static은 instance에 귀속되지 않고 class에 귀속된다.
+  //알바생이 일하고 있는 건물
+  
+  static String? buling;
+  
+  String name;
+  
+  Employee(
+    this.name,
+  );
+  
+  void printNameAndBuilding(){
+    print('제이름은 $name. $buling 건물에서 근무하고 있습니다.');
+     
+  }
+  
+  static void printBuilding(){
+      print('저는 $buling 건물에서 근무중입니다.,');
+    }
+}
+
+
+void main() {
+  BoyGroup bts = BoyGroup('bts');
+  GirlGroup redvelvet = GirlGroup('레드벨벳');
+
+  redvelvet.sayName();
+  bts.sayName();
+  
+  print(bts is IdolInterface);
+  print(bts is BoyGroup);
+  print(bts is GirlGroup);
+  
+  
+  print(redvelvet is IdolInterface);
+  print(redvelvet is BoyGroup);
+  print(redvelvet is GirlGroup);
+}
+
+abstract class IdolInterface {
+  String name;
+
+  IdolInterface(this.name);
+
+  void sayName();
+}
+
+class BoyGroup implements IdolInterface {
+  String name;
+
+  BoyGroup(this.name);
+
+  void sayName() {
+    print('제 이름은 $name 입니다.');
+  }
+}
+
+class GirlGroup implements IdolInterface {
+  String name;
+
+  GirlGroup(this.name);
+
+  void sayName() {
+    print('제 이름은 $name 입니다.');
+  }
+}
+
+void main() {
+  BoyGroup bts = BoyGroup('bts');
+  GirlGroup redvelvet = GirlGroup('레드벨벳');
+  
+  redvelvet.sayName();
+  bts.sayName();
+  
+  print(bts is IdolInterface);
+  print(bts is BoyGroup);
+  print(bts is GirlGroup);
+  
+  
+  print(redvelvet is IdolInterface);
+  print(redvelvet is BoyGroup);
+  print(redvelvet is GirlGroup);
+}
+
+ abstract class IdolInterface {
+  String name;
+
+  IdolInterface(this.name);
+
+  void sayName();
+}
+
+class BoyGroup implements IdolInterface {
+  String name;
+
+  BoyGroup(this.name);
+
+  void sayName() {
+    print('제 이름은 $name 입니다.');
+  }
+}
+
+class GirlGroup implements IdolInterface {
+  String name;
+
+  GirlGroup(this.name);
+
+  void sayName() {
+    print('제 이름은 $name 입니다.');
+  }
+}
+void main() {
+  Lecture<String> lecture 
+    = Lecture('ackdark23','kim');
+  
+}
+
+class Lecture<T>{
+  final T id;
+  final String name;
+  
+  Lecture(this.id, this.name);
+}
+
+class Lecture2<T,V>{
+  final T id;
+  final V name;
+  
+  Lecture2(this.id, this.name);
+}

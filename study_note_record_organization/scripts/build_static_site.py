@@ -19,6 +19,43 @@ GITHUB_MAX_BYTES = 100 * 1024 * 1024
 _ASSIGNMENT_DIR = "과제분류하기"
 PROFESSOR_MASK = "OOO 교수님"
 STUDENT_ID_MASK = "OOOOOOOO"
+KEY_MASK = "142857"
+
+_SECRET_PATTERNS = [
+    # Google API Key
+    re.compile(r"AIza[0-9A-Za-z\-_]{35}"),
+    # OpenAI API Key
+    re.compile(r"sk-[a-zA-Z0-9_\-]{20,}"),
+    # Anthropic API Key
+    re.compile(r"sk-ant-[a-zA-Z0-9_\-]{20,}"),
+    # GitHub Token
+    re.compile(r"(?:ghp|gho|ghu|ghs|ghr)_[a-zA-Z0-9]{36}|github_pat_[a-zA-Z0-9_]{50,}"),
+    # AWS Access Key
+    re.compile(r"(?:AKIA|ABIA|ACCA|ASIA)[0-9A-Z]{16}"),
+    # Slack Token
+    re.compile(r"xox[baprs]-[0-9a-zA-Z]{10,}"),
+    # Firebase FCM device registration token
+    re.compile(r"[a-zA-Z0-9_\-]{15,}:APA91b[a-zA-Z0-9_\-]{50,}"),
+]
+
+_KEY_ASSIGNMENT_PATTERNS = [
+    re.compile(
+        r'(?i)((?:api[_-]?key|client[_-]?secret|secret[_-]?key|access[_-]?token|service[_-]?key)\s*[:=]\s*["\'])([a-zA-Z0-9_\-\.\%\+\=]{16,})(["\'])'
+    ),
+    re.compile(
+        r'(?i)((?:android:name=["\']com\.google\.android\.maps\.v2\.API_KEY["\']\s+android:value=["\']))([^"\']+)(["\'])'
+    ),
+]
+
+
+def mask_secrets(text: str, mask: str = KEY_MASK) -> str:
+    if not text:
+        return text
+    for pat in _SECRET_PATTERNS:
+        text = pat.sub(mask, text)
+    for pat in _KEY_ASSIGNMENT_PATTERNS:
+        text = pat.sub(rf"\g<1>{mask}\g<3>", text)
+    return text
 
 _SOURCE_HREF_RE = re.compile(
     r'<a href="(/(?:data|_extracted)/[^"]+)"([^>]*)>',
@@ -201,6 +238,7 @@ def read_source_text(key: str) -> str | None:
         text = read_text_file(path)
     except OSError:
         return None
+    text = mask_secrets(text)
     if is_assignment_path(key):
         text = mask_assignment_privacy(text)
     return text
@@ -288,7 +326,7 @@ def build_site() -> None:
             continue
         raw = md_path.read_text(encoding="utf-8")
         _, body = parse_frontmatter(raw)
-        html = md_to_html(body)
+        html = md_to_html(mask_secrets(body))
         html = rewrite_source_links(html, pending_sources)
         articles[item["slug"]] = html
 

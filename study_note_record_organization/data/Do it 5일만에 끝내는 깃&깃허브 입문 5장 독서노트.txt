@@ -1,0 +1,15 @@
+5장
+
+깃허브로 협업하기
+
+git home을 만들고 git office를 만들고 홈과 오피스에서 pull, push를 하는 싨습들.... fetch로 정보면 가져오고 브렌치를 병학하는 실습들.... (브렌치 병합하는 중간에 파일추가를 두번해서 병합이 제대로 된건지는 별도로 확인해봐야함, git log로 확인해 봤을떄 이전에 추가한 f3.txt, f4.txt 둘다 잘가져옴) .... 
+
+p182 부터 장이 끝나는데 까지는 취업이후 혹은 팀이 있는경우 다시 참고해보는게 좋을 것 같다.
+
+연습 문제 풀어보기
+
+1. git clone 저장소 주소 => clone 저장소 주소 myhome
+2. git pull => pull
+3. git fetch => fetch
+4. git diff main origin => diff HEAD origin/main
+5. 풀 리퀘스트 => 풀 리퀘스트(pull request) or PR

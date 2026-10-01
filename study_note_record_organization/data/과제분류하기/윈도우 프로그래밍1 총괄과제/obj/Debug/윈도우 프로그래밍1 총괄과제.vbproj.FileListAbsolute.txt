@@ -1,0 +1,11 @@
+C:\Users\shinw\source\repos\윈도우 프로그래밍1 총괄과제\bin\Debug\윈도우 프로그래밍1 총괄과제.exe.config
+C:\Users\shinw\source\repos\윈도우 프로그래밍1 총괄과제\bin\Debug\윈도우 프로그래밍1 총괄과제.exe
+C:\Users\shinw\source\repos\윈도우 프로그래밍1 총괄과제\bin\Debug\윈도우 프로그래밍1 총괄과제.pdb
+C:\Users\shinw\source\repos\윈도우 프로그래밍1 총괄과제\bin\Debug\윈도우 프로그래밍1 총괄과제.xml
+C:\Users\shinw\source\repos\윈도우 프로그래밍1 총괄과제\obj\Debug\윈도우_프로그래밍1_총괄과제.frmMain.resources
+C:\Users\shinw\source\repos\윈도우 프로그래밍1 총괄과제\obj\Debug\윈도우_프로그래밍1_총괄과제.Resources.resources
+C:\Users\shinw\source\repos\윈도우 프로그래밍1 총괄과제\obj\Debug\윈도우 프로그래밍1 총괄과제.vbproj.GenerateResource.cache
+C:\Users\shinw\source\repos\윈도우 프로그래밍1 총괄과제\obj\Debug\윈도우 프로그래밍1 총괄과제.vbproj.CoreCompileInputs.cache
+C:\Users\shinw\source\repos\윈도우 프로그래밍1 총괄과제\obj\Debug\윈도우 프로그래밍1 총괄과제.exe
+C:\Users\shinw\source\repos\윈도우 프로그래밍1 총괄과제\obj\Debug\윈도우 프로그래밍1 총괄과제.xml
+C:\Users\shinw\source\repos\윈도우 프로그래밍1 총괄과제\obj\Debug\윈도우 프로그래밍1 총괄과제.pdb

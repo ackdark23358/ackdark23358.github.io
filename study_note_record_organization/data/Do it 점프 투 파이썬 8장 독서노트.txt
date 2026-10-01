@@ -1,0 +1,356 @@
+8장
+
+정규표현식
+
+>>> data = """
+... park 800905-1049118
+... kim 700905-1059119
+... """
+>>> result = []
+
+>>> for line in data.split("\n"):
+...     word_result = []
+...     for word in line.split(" "):
+...         if len(word) == 14 and word[:6].isdigit() and word[7:].isdigit():
+...             word = word[:6] + "-" + "*******"
+...         word_result.append(word)
+...     result.append(" ".join(word_result))
+... print("\n".join(result))
+...
+
+park 800905-*******
+kim 700905-*******
+
+길이가 14자리이고 처음 여섯개의 문자열이 숫자이고 일곱번째부터 마지막 자리의 문자열이 숫자이면 마지막 처음 여섯개의 문자열다음 "-"를 붙이고 "*******"을 그다음에 붙힌다음 리스트1(word_result, 한줄)에 추가하고 공백을 추가하여 리스트2에(result, 한줄씩 저장할 리스트) 추가 리스트2(result, 한줄씩 저장할 리스트) 마지막에 "\n"을 결합하고 출력
+
+14자리에서 처음 6자리가 숫자고 한칸다음 부터 마지막까지의 숫자 7자리(7부터 마지막까지)가 숫자면 주민등록번호임
+=> 앞의 여섯 자리가 숫자 - 다음 숫자가 숫자면 주민등록번호임
+
+>>> import re
+>>> data = """
+... park 800905-1049118
+... kim 700905-1059119
+... """
+>>>
+>>> pat = re.compile("(\d{6})[-]\d{7}")
+<python-input-19>:1: SyntaxWarning: invalid escape sequence '\d'
+>>> print(pat.sub("\g<1>-*******",data))
+<python-input-20>:1: SyntaxWarning: invalid escape sequence '\g'
+
+park 800905-*******
+kim 700905-*******
+
+메타문자
+문자클래스
+
+>>> import re
+>>> p = re.compile('ab*')
+>>> import re
+>>> p = re.compile('ab*')
+>>> import re
+>>> p = re.compile('[a-z]+')
+>>> m = p.match("python")
+>>> print(m)
+<re.Match object; span=(0, 6), match='python'>
+>>>
+>>> m = p.match("3 python")
+>>> print(m)
+None
+
+>>> m = p.search("python")
+>>> print(m)
+<re.Match object; span=(0, 6), match='python'>
+
+>>> m = p.search("3 python")
+>>> print(m)
+<re.Match object; span=(2, 8), match='python'>
+
+>>> result = p.findall("life is too short")
+>>> print(result)
+['life', 'is', 'too', 'short']
+
+>>> for r in result: print(r)
+...
+<re.Match object; span=(0, 4), match='life'>
+<re.Match object; span=(5, 7), match='is'>
+<re.Match object; span=(8, 11), match='too'>
+<re.Match object; span=(12, 17), match='short'>
+
+>>> m = p.match("python")
+>>> m.group()
+'python'
+>>> m.start()
+0
+>>> m.end()
+6
+>>> m.span()
+(0, 6)
+
+>>> m = p.search("3 python")
+>>> m.group()
+'python'
+>>> m.start()
+2
+>>> m.end()
+8
+>>> m.span()
+(2, 8)
+
+
+>>> p = re.compile('[a-z]+')
+>>> m = p.match("python")
+
+>>> m = re.match('[a-z]+', "python")
+
+>>> p = re.compile('a.b')
+>>> m = p.match('a\nb')
+>>> print(m)
+None
+
+>>> p = re.compile('a.b', re.DOTALL)
+>>> m = p.match('a\nb')
+>>> print(m)
+<re.Match object; span=(0, 3), match='a\nb'>
+
+>>> p = re.compile('[a-z]+', re.I)
+>>> p.match('python')
+<re.Match object; span=(0, 6), match='python'>
+>>> p.match('Python')
+<re.Match object; span=(0, 6), match='Python'>
+>>> p.match('PYTHON')
+<re.Match object; span=(0, 6), match='PYTHON'>
+
+multiline.py 파일
+
+import re
+p = re.compile(r"^python\s\w+")
+
+data = """python one
+life is too short
+python two
+you need python
+python three"""
+
+print(p.findall(data))
+
+================================================= RESTART: D:/doit/multiline.py ================================================
+['python one']
+
+
+multiline.py 파일 수정
+
+import re
+p = re.compile(r"^python\s\w+", re.MULTILINE) #각라인의 처음으로 인식되게 하는 re.MULTILINE 
+
+data = """python one
+life is too short
+python two
+you need python
+python three"""
+
+print(p.findall(data))
+
+================================================= RESTART: D:/doit/multiline.py ================================================
+['python one', 'python two', 'python three']
+
+
+charref = re.compile(r'&[#](0[0-7]+|[0-9]+|x[0-9a-fA-F+);')
+
+=>
+
+charref = re.compile(r"""
+&[#] # Start of a numeric entity reference
+(
+    0[0-7]+ # 0ctal form
+    | [0-9]+ # Decimal form
+    | x[0-9a-fA-F]+ # Hexadecimal form
+)
+;
+""", re.VERBOSE)
+
+
+>>> p = re.compile('\\section')
+>>> p
+re.compile('\\section')
+>>> p = re.compile('\\\\section')
+
+
+로우 스트링
+raw string
+
+>>> p = re.compile(r'\\section')
+
+
+
+>>> p = re.compile('Crow|Servo')
+>>> m = p.match('CrowHello')
+>>> print(m)
+<re.Match object; span=(0, 4), match='Crow'>
+
+
+소비가 있는 매칭과 소비가 있는 매칭
+
+>>> print(re.search('^Life', 'Life is too short'))
+<re.Match object; span=(0, 4), match='Life'>
+>>> print(re.search('^Life', 'My Life'))
+None
+
+>>> import re
+>>> print(re.search('short$', 'Life is too short'))
+<re.Match object; span=(12, 17), match='short'>
+>>> print(re.search('short$', 'Life is too short, you need python'))
+None
+
+
+>>> p = re.compile(r'\bclass\b')
+>>> print(p.search('no class at all'))
+<re.Match object; span=(3, 8), match='class'>
+>>> print(p.search('the declassified alogorithm'))
+None
+
+>>> print(p.search('the declassified algorithm'))
+<re.Match object; span=(6, 11), match='class'>
+>>> print(p.search('one subclass is'))
+None
+
+그루핑
+
+>>> p = re.compile('(ABC)+')
+>>> m = p.search('ABCABCABC OK?')
+>>> print(m)
+<re.Match object; span=(0, 9), match='ABCABCABC'>
+>>> print(m.group())
+ABCABCABC
+
+>>> p = re.compile(r"(\w+)\s+\d+[-]\d+[-]\d+")
+>>> m = p.search("park 010-1234-1234")
+>>> print(m.group(1))
+park
+
+>>> p = re.compile(r"(\w+)\s+(\d+[-]\d+[-]\d+)")
+>>> m = p.search("park 010-1234-1234")
+>>> print(m.group(2))
+010-1234-1234
+
+>>> p = re.compile(r"(\w+)\s+((\d+)[-]\d+[-]\d+)")
+>>> m = p.search("park 010-1234-1234")
+>>> print(mgroup(3))
+Traceback (most recent call last):
+  File "<python-input-41>", line 1, in <module>
+    print(mgroup(3))
+          ^^^^^^
+NameError: name 'mgroup' is not defined
+>>> print(m.group(3))
+010
+
+>>> p = re.compile(r'(\b\w+)\s+\1'
+... )
+>>> p.search('Paris in the the spring').group()
+'the the'
+
+
+그룸 이름
+
+(?p<name>\w+)\s+((\d+)[-]\d+[-][\d+)
+
+>>> p = re.compile(r'(?P<word>\b\w+)\s+(?P=word)')
+>>> p.search('Paris in the the spring').group()
+'the the'
+
+전방탐색
+
+긍정
+
+>>> p = re.compile(".+:")
+>>> m = p.search("http://google.com")
+>>> print(m.group())
+http:
+
+부정
+
+.*[.]([^b].?.?|.[^a]?.?|..?[^t]?)$
+
+너무 복잡하다 
+=> .*[.](?!bat#).*$
+=> .*[.](?!bat$|exe$).*$
+
+
+>>> p = re.compile('(blue|white|red)')
+>>> p.sub('colour', 'blue socks and red shoes')
+'colour socks and colour shoes'
+
+>>> p.sub('colour', 'blue socks and red shoes', count=1)
+'colour socks and red shoes'
+
+>>> p = re.compile('(blue|white|red)')
+>>> p.subn('colour', 'blue socks and red shoes')
+('colour socks and colour shoes', 2)
+
+>>> p = re.compile(r"(?P<name>\w+)\s+(?P<phone>(\d+)[-]\d+[-]\d+)")
+>>> print(p.sub("\g<phone> \g<name>", "park 010-1234-1234"))
+<python-input-65>:1: SyntaxWarning: invalid escape sequence '\g'
+010-1234-1234 park
+>>> print(p.sub(r"\g<phone> \g<name>", "park 010-1234-1234"))
+010-1234-1234 park
+
+>>> p = re.compile(r"(?P<name>\w+)\s+(?P<phone>(\d+)[-]\d+[-]\d+)")
+>>> print(p.sub("\g<2> \g<1>", "park 010-1234-1234"))
+<python-input-68>:1: SyntaxWarning: invalid escape sequence '\g'
+010-1234-1234 park
+>>> print(p.sub(r"\g<2> \g<1>", "park 010-1234-1234"))
+010-1234-1234 park
+
+>>> def hexrepl(match):
+...     value = int(match.group())
+...     return hex(value)
+...
+>>> p = re.compile(r'\d+')
+>>> p.sub(hexrepl, 'Call 65490 for printing, 49152 for user code.')
+'Call 0xffd2 for printing, 0xc000 for user code.'
+
+그리디와 난 그리디
+
+>>> s = '<html><head><title>Title<</title>'
+>>> len(s)
+33
+>>> print(re.match('<.*>', s).span())
+(0, 33)
+>>> print(re.match('<.*>', s).group())
+<html><head><title>Title<</title>
+
+>>> print(re.match('<.*?>', s).group())
+<html>
+
+
+
+
+why
+
+>>> p = re.compile('\\\\section')
+
+파이썬에서는 왜 역슬레시를 2개가 아니라 4개를 붙여야 하는걸까? (200자 내외)
+
+뤼튼 AI답변 응답 일부
+파이썬이 \section이라는 정규식 패턴을 re.compile()에 넘겨주려면, 먼저 파이썬 문자열 규칙에 따라 \\section을 만들고, 이 \\가 다시 정규식 엔진에서 \로 인식되도록 \\\\section이 필요한 것
+
+소비하고 안하고의 차이점이 뭐지?
+비교할값을 기준으로 비교하는것과 내가찾는 위치를 기준으로 비교하는 것과의 차이가 소비인지 소비가 아닌지의 차이점인걸까? (200자내외)
+
+뤼튼 AI 응답 답변
+
+네, 신욱님, 정확하게 파악하셨어요! ✨
+
+정규 표현식에서 **'비교할 값'(예: `a`, `Life`, `\w` 등 실제 문자)**을 찾아 매치하면, 해당 문자를 '소비'하여 내부 포인터가 이동한답니다.
+
+하지만 **'내가 찾는 위치'(예: `^`, `$`, `\b` 등)**를 기준으로 비교할 때는, 실제 문자를 '소비'하지 않고 단지 현재 위치가 조건에 맞는지 '확인만' 하기 때문에 포인터가 이동하지 않는 것이지요. 이 차이가 '소비' 유무를 결정하는 핵심이랍니다. 😊
+
+>>> print(re.search('^Life', 'Life is too short'))
+<re.Match object; span=(0, 4), match='Life'>
+>>> print(re.search('^Life', 'My Life'))
+None
+
+>>> print(re.search('short$', 'Life is too short'))
+<re.Match object; span=(12, 17), match='short'>
+>>> print(re.search('short$', 'Life is too short, you need python'))
+None
+

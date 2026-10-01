@@ -1,0 +1,51 @@
+리눅스 토르발스
+
+깃, 깃허브
+
+깃허브 데스크톱, 토터스 깃, 소스트리
+
+커멘드라인 인터페이스
+
+git 설치.....
+
+git-bash history
+
+    4  ~
+    5  pwd
+    6  ls
+    7  ls -l
+    8  cd ..
+    9  ~
+   10  /c
+   11  /c
+   12  \c
+   13  ls
+   14  cd shinw/
+   15  ls
+   16  cd ..
+   17  cd ..
+   18  ls
+   19  cd Users/
+   20  cd ~
+   21  cd Documents
+   22  mkdir test
+   23  ls
+   24  rm -r test
+   25  ls
+   26  history
+
+
+p 36 문제 풀어보기
+1. git config user-name "mygitname"
+2. git config user-email "myemail@myemail.myemail"
+3. path
+4. ls
+5. ls - a
+6. cd..
+7. ls al
+8. clear
+9. cd 지정한 하위디렉터리
+10. mkdir
+11. cd ~
+12. rm -r
+13. exit

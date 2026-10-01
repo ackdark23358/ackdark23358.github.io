@@ -17,11 +17,8 @@ venv/
 .DS_Store
 Thumbs.db
 *.swp
-
-# Raw note sources (Pages uses built dashboard + hero images only)
-data/**
-!data/image/
-!data/image/**
+.vs/
+*.suo
 
 # Build intermediates (bundled into dashboard/js)
 output/
