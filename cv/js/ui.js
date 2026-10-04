@@ -1,5 +1,8 @@
-$(document).ready(function () {
-
+/**
+ * 이력서의 각 경력 항목에서 시작일·종료일을 읽어 재직 기간을 계산한다.
+ * 종료일이 today이면 오늘 날짜로 바꾸고, 연·개월을 periodResult에 괄호로 표시한다.
+ */
+function fillCareerPeriods() {
     $('.article').each(function () {
 
         const startDate = $(this).find('.startDate').text().trim();
@@ -56,5 +59,6 @@ $(document).ready(function () {
         }
 
     });
+}
 
-});
+$(document).ready(fillCareerPeriods);

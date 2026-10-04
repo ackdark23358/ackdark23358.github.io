@@ -1,5 +1,7 @@
 @charset "UTF-8";
 
+/* 이력서 본문의 배경, 글꼴, 경력 항목 여백과 구분선을 정한다. */
+
 @import url('http://fonts.googleapis.com/earlyaccess/nanumgothic.css');
 @import url('http://fonts.googleapis.com/earlyaccess/nanummyeongjo.css');
 

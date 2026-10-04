@@ -1,3 +1,6 @@
+/**
+ * 스크롤에 따라 명함을 뒤집고 확대하며, 이력서 절이 보이면 나타나게 한다.
+ */
 document.addEventListener('DOMContentLoaded', () => {
     const card = document.getElementById('card');
     const scrollContainer = document.querySelector('.scroll-container');
@@ -6,6 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let ticking = false;
 
+    /**
+     * 스크롤 진행률로 명함 기울기·뒤집기·확대 transform을 다시 계산해 카드에 적용한다.
+     * 앞 절반은 뒤집기, 뒤 절반은 화면을 덮도록 확대하고, 조금 내리면 스크롤 안내를 숨긴다.
+     */
     function updateAnimation() {
         // scroll-container의 높이를 기준으로 애니메이션 진행률 계산
         const scrollY = window.scrollY;

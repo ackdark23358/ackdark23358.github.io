@@ -1,3 +1,4 @@
+/* 여러 페이지가 공유하는 상단 헤더, 내비게이션, 자료 드롭다운, 모바일 메뉴의 배치와 색을 정한다. */
 :root {
   --site-header-canvas: #0c0c0c;
   --site-header-text: #f5f5f5;

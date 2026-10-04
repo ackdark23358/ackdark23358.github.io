@@ -78,6 +78,12 @@ IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적
 │   ├── css/
 │   ├── js/
 │   └── img/
+├── docs/
+│   ├── code-reference.pdf      # 함수·클래스 설명과 유사코드
+│   ├── technical-specs.pdf     # 요구사항부터 시험 명세까지
+│   ├── build_code_reference.py
+│   ├── build_specs.py
+│   └── specs/                  # 기술명세 원본과 차트 이미지
 └── study_note_record_organization/
     ├── dashboard/          # 학습록 정적 사이트 (배포 대상)
     │   ├── index.html
@@ -89,6 +95,26 @@ IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적
     ├── data/image/         # 히어로 갤러리
     └── scripts/            # 로컬 빌드용 (선택)
 ```
+
+## 기술 문서
+
+코드 설명과 기술명세는 `docs/`에 있습니다. 화면 코드와 빌드 스크립트에는 함수·클래스 주석이 있고, 그 주석을 모아 PDF로 만듭니다. `data/` 안의 과제 프로그램 코드는 코드 설명과 기술명세에서 빼 두었습니다.
+
+| 문서 | 경로 | 내용 |
+| --- | --- | --- |
+| 코드 설명 | `docs/code-reference.pdf` | 함수·클래스 설명, 인자, 반환, 유사코드 |
+| 기술명세 | `docs/technical-specs.pdf` | 요구사항, 유스케이스, 자료 흐름도, 자료 사전, 화면 흐름, 프로세스 명세, 상태 전이, 구조도, 시험 명세 |
+
+기술명세의 차트는 그림으로 들어갑니다. 유스케이스의 행위자는 사람 그림이고, 자료 흐름도의 작성자·방문자는 외부 실체 상자입니다. 같은 내용의 마크다운과 HTML도 `docs/`에 있습니다.
+
+문서를 다시 만들 때:
+
+```powershell
+python docs/build_code_reference.py
+python docs/build_specs.py
+```
+
+명세 차트는 Edge 또는 Chrome으로 그립니다. 차트 문장이 바뀌면 그 그림을 새로 만들기 위해 인터넷 연결이 필요합니다.
 
 ## 로컬에서 확인하기
 
@@ -137,6 +163,8 @@ GitHub Pages는 공개 웹사이트로 배포될 수 있으므로, 업로드 전
 - 온라인 명함 문구와 애니메이션: `online_business_card/business-card.html`, `online_business_card/js/script.js`
 - 이력서 내용: `cv/resume.html`
 - 학습록 아카이브: `study_note_record_organization/dashboard/`, 빌드 스크립트 `study_note_record_organization/scripts/`
+- 코드 설명: 함수·클래스 주석을 고친 뒤 `python docs/build_code_reference.py`
+- 기술명세: `docs/specs/`를 고친 뒤 `python docs/build_specs.py`
 - 공통 헤더 스타일: `css/site-header.css`
 - 메인 페이지 스타일: `css/styles.css`
 

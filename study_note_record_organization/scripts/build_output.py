@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Extract sources, build catalog, generate markdown summaries (37 study + 18 assignment)."""
+"""학습 노트와 과제 원본에서 텍스트를 뽑고, 카탈로그와 요약 마크다운을 만든다."""
 from __future__ import annotations
 
 import json
@@ -31,18 +31,23 @@ NOTE_SUFFIX_RE = re.compile(
 
 
 class MLStripper(HTMLParser):
+    """HTML 태그 사이의 글자만 모아 순수 텍스트로 만드는 파서."""
     def __init__(self):
+        """태그 사이에 모을 문자열 목록을 비워 둔다."""
         super().__init__()
         self.parts: list[str] = []
 
     def handle_data(self, data: str) -> None:
+        """파서가 만난 텍스트 조각을 목록에 추가한다."""
         self.parts.append(data)
 
     def get_text(self) -> str:
+        """모은 텍스트 조각을 줄바꿈으로 이어 한 문자열로 돌려준다."""
         return "\n".join(self.parts)
 
 
 def read_text_file(path: Path) -> str:
+    """utf-8, utf-8-sig, cp949 순으로 텍스트 파일을 읽는다. 모두 실패하면 빈 문자열을 돌려준다."""
     for enc in ("utf-8", "utf-8-sig", "cp949"):
         try:
             return path.read_text(encoding=enc)
@@ -52,6 +57,7 @@ def read_text_file(path: Path) -> str:
 
 
 def extract_docx(path: Path) -> str:
+    """워드 문서의 비어 있지 않은 문단을 줄로 이어 뽑는다. python-docx가 없으면 안내 문구를 돌려준다."""
     try:
         from docx import Document
     except ImportError:
@@ -61,6 +67,7 @@ def extract_docx(path: Path) -> str:
 
 
 def extract_pdf(path: Path) -> str:
+    """PDF 각 페이지의 텍스트를 이어 붙인다. PyMuPDF가 없으면 안내 문구를 돌려준다."""
     try:
         import fitz
     except ImportError:
@@ -73,6 +80,7 @@ def extract_pdf(path: Path) -> str:
 
 
 def extract_html(path: Path) -> str:
+    """HTML 파일에서 태그를 제거하고 본문 글자만 돌려준다. 파싱에 실패하면 원문을 그대로 둔다."""
     raw = read_text_file(path)
     stripper = MLStripper()
     try:
@@ -112,6 +120,7 @@ _KEY_ASSIGNMENT_PATTERNS = [
 
 
 def mask_secrets(text: str, mask: str = KEY_MASK) -> str:
+    """본문에서 API 키·토큰 패턴을 찾아 고정 마스크 문자열로 바꾼다."""
     if not text:
         return text
     for pat in _SECRET_PATTERNS:
@@ -122,6 +131,7 @@ def mask_secrets(text: str, mask: str = KEY_MASK) -> str:
 
 
 def extract_source(path: Path) -> str:
+    """확장자에 맞춰 텍스트, 워드, PDF, HTML, VB에서 본문을 뽑고 비밀 값을 가린다."""
     ext = path.suffix.lower()
     raw = ""
     if ext == ".txt":
@@ -138,6 +148,7 @@ def extract_source(path: Path) -> str:
 
 
 def source_href(path: str) -> str:
+    """data 기준 상대 경로를 사이트에서 여는 /data/ 주소로 바꾼다. 경로 조각은 URL 인코딩한다."""
     rel = path.replace("\\", "/")
     if rel.startswith("data/"):
         rel = rel[5:]
@@ -145,12 +156,16 @@ def source_href(path: str) -> str:
 
 
 def extracted_href(path: str) -> str:
+    """원본 경로를 안전한 파일 이름으로 바꿔 추출 텍스트 주소 /_extracted/...txt 를 만든다."""
     safe = re.sub(r"[^\w\-]", "_", path)[:120]
     return f"/_extracted/{safe}.txt"
 
 
 def source_link_target(s: SourceRef) -> tuple[str, str]:
-    """(표시 이름, 클릭 URL)"""
+    """원본 종류에 따라 링크에 보일 이름과 클릭 주소를 정한다.
+
+    워드와 PDF는 추출 텍스트로, 텍스트·HTML·VB는 원본 경로로 연결한다.
+    """
     p = ROOT / s.path
     if p.is_dir():
         vb = p / "Form1.vb"
@@ -175,10 +190,12 @@ _ID_META_KEYS = frozenset({"학번", "수강번호"})
 
 
 def is_assignment_path(rel_path: str) -> bool:
+    """경로에 과제 폴더 이름이 있으면 참을 돌려준다."""
     return _ASSIGNMENT_DIR in rel_path.replace("\\", "/")
 
 
 def mask_assignment_privacy(text: str) -> str:
+    """과제 본문의 지도교수 이름, 학번, 파일명 속 학번 숫자를 가린다."""
     if not text:
         return text
     text = re.sub(
@@ -198,6 +215,7 @@ def mask_assignment_privacy(text: str) -> str:
 
 
 def cache_extract(rel_path: str, content: str) -> Path:
+    """뽑은 본문을 output/_extracted 아래 텍스트 파일로 저장하고 그 경로를 돌려준다."""
     safe = re.sub(r"[^\w\-]", "_", rel_path)[:120]
     out = EXTRACTED / f"{safe}.txt"
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -207,6 +225,7 @@ def cache_extract(rel_path: str, content: str) -> Path:
 
 
 def parse_unit(filename: str) -> str:
+    """파일 이름에서 장, 일차, 강, 주차, 서론, 부록, 코딩면허 같은 학습 단위를 찾는다. 없으면 전체다."""
     name = filename.replace(".txt", "")
     for pat in [
         r"(\d+[~\-]?\d*)\s*장",
@@ -223,6 +242,7 @@ def parse_unit(filename: str) -> str:
 
 
 def sort_key_unit(unit: str) -> tuple:
+    """학습 단위를 서론, 구간, 본문, 부록 순으로 정렬하기 위한 키를 만든다."""
     if unit == "전체":
         return (0, 0)
     if "서론" in unit or "프롤로그" in unit:
@@ -238,6 +258,7 @@ def sort_key_unit(unit: str) -> tuple:
 
 @dataclass
 class SourceRef:
+    """카탈로그 항목이 가리키는 원본 파일 하나. 경로, 학습 단위, 추출한 본문을 담는다."""
     path: str
     unit: str = "전체"
     text: str = ""
@@ -245,6 +266,7 @@ class SourceRef:
 
 @dataclass
 class CatalogItem:
+    """학습 또는 과제 카드 하나. 제목, 슬러그, 태그, 원본 목록을 갖고 마크다운으로 렌더된다."""
     id: str
     type: str
     category: str
@@ -255,6 +277,7 @@ class CatalogItem:
     sources: list[SourceRef] = field(default_factory=list)
 
     def load_sources(self) -> None:
+        """각 원본 파일의 본문을 읽어 text에 채우고, 가린 내용을 추출 캐시에 저장한다. 폴더면 Form1.vb를 합친다."""
         for s in self.sources:
             p = ROOT / s.path
             if p.is_file():
@@ -537,6 +560,7 @@ STUDY_NARRATIVES: dict[str, str] = {
 
 
 def normalize_study_title(filename: str) -> str:
+    """노트 파일 이름에서 장·일차 번호와 독서노트·수강노트 꼬리를 떼고 과목 이름만 남긴다."""
     n = filename.replace(".txt", "").replace(".docx", "")
     n = re.sub(
         r"\s+(\d+[~\-]?\d*\s*)?(장|일차|강|주차)\s*(독서\s*노트|독서노트|수강노트|영상노트|독서 노트)\s*$",
@@ -554,7 +578,10 @@ def normalize_study_title(filename: str) -> str:
 
 
 def collect_study_groups() -> dict[str, list[str]]:
-    """data/ 내 txt·docx만 수집, 과목(도서/강의)당 1그룹."""
+    """data 폴더의 텍스트·워드 노트를 과목 이름으로 묶는다.
+
+    hwpx는 빼고, 별칭은 같은 과목으로 합친 뒤 장·강 순으로 정렬한다.
+    """
     raw: dict[str, list[str]] = {}
     skipped_hwpx: list[str] = []
 
@@ -582,6 +609,7 @@ def collect_study_groups() -> dict[str, list[str]]:
 
 
 def build_study_catalog() -> list[CatalogItem]:
+    """과목 그룹이 37개가 아니면 감사 파일을 남기고 중단한다. 맞으면 학습 CatalogItem 목록을 만든다."""
     groups, skipped_hwpx = collect_study_groups()
 
     if len(groups) != 37:
@@ -630,6 +658,7 @@ def build_study_catalog() -> list[CatalogItem]:
 
 
 def find_assign_file(files: list[str], keywords: list[str], used: set[str], exclude_contains: list[str] | None = None) -> str | None:
+    """아직 쓰지 않은 과제 파일 중 키워드가 들어 있고 제외어가 없는 첫 파일을 찾는다."""
     excludes = exclude_contains or []
     for kw in keywords:
         for f in files:
@@ -643,12 +672,16 @@ def find_assign_file(files: list[str], keywords: list[str], used: set[str], excl
 
 
 def build_assignment_catalog() -> list[CatalogItem]:
-    """18 university assignments — matched to actual files in data/과제분류하기."""
+    """과제 폴더의 파일 이름과 과목 키워드를 맞춰 과제 카탈로그를 만든다.
+
+    윈도우 프로그래밍1은 텍스트 문서가 없어 출처 목록을 비워 둔다.
+    """
     files = [f for f in os.listdir(ASSIGN) if (ASSIGN / f).is_file()]
     used: set[str] = set()
     items: list[CatalogItem] = []
 
     def add(slug: str, title: str, keywords: list[str], tags: list[str], exclude_contains: list[str] | None = None, extra_sources: list[SourceRef] | None = None):
+        """키워드로 과제 파일을 하나 묶어 과제 CatalogItem을 목록에 추가한다. 추가 출처가 있으면 같이 넣는다."""
         matched = find_assign_file(files, keywords, used, exclude_contains)
         srcs: list[SourceRef] = []
         if matched:
@@ -703,6 +736,7 @@ def build_assignment_catalog() -> list[CatalogItem]:
 
 
 def extract_meta_assignment(text: str) -> dict[str, str]:
+    """과제 본문에서 학번, 수강번호, 이름, 지도교수, 제출일 값을 정규식으로 골라 딕셔너리로 돌려준다."""
     meta = {}
     patterns = [
         ("학번", r"학\s*번\s*[:：]\s*(\d+)"),
@@ -740,10 +774,12 @@ _ASSIGNMENT_DEPT_LINE = re.compile(r"^[-\s•*·]*[-\s].*[-\s•*·]$")
 
 
 def _assignment_line_inner(line: str) -> str:
+    """줄 앞의 글머리표와 중복 공백을 제거한 속 내용을 돌려준다."""
     return re.sub(r"\s+", " ", line.strip().lstrip("•-*· ").strip())
 
 
 def _is_assignment_meta_line(line: str) -> bool:
+    """학번, 제출일, 과목명, 학과 줄처럼 과제 표지 메타인지 판별한다."""
     s = line.strip()
     if not s:
         return False
@@ -840,6 +876,7 @@ def strip_assignment_meta_text(text: str) -> str:
 
 
 def is_assignment_meta_bullet(bullet: str) -> bool:
+    """요약 목록에 넣으면 안 되는 표지 정보, 경로, 코드 잡음인지 판별한다."""
     s = bullet.strip()
     if not s:
         return True
@@ -858,6 +895,7 @@ def is_assignment_meta_bullet(bullet: str) -> bool:
 
 
 def summarize_assignment_bullets(text: str, max_items: int = 10) -> list[str]:
+    """과제 본문에서 표지 메타를 뺀 뒤, 요약에 쓸 불릿을 최대 개수만큼 고른다."""
     cleaned = strip_assignment_meta_text(mask_assignment_privacy(text))
     raw = summarize_bullets(cleaned, max_items * 2)
     out: list[str] = []
@@ -871,6 +909,7 @@ def summarize_assignment_bullets(text: str, max_items: int = 10) -> list[str]:
 
 
 def _clip_prose(s: str, max_len: int = 200) -> str:
+    """문장을 최대 길이로 자르고 말끝을 부드럽게 다듬는다."""
     s = re.sub(r"\s+", " ", s.strip())
     s = re.sub(r"^[•\-\*·]\s*", "", s)
     if not s:
@@ -882,6 +921,7 @@ def _clip_prose(s: str, max_len: int = 200) -> str:
 
 
 def _is_readable_assignment_prose(line: str) -> bool:
+    """과제 줄이 사람이 읽을 산문인지 본다. 공백 없는 긴 토큰은 제외한다."""
     s = line.strip()
     if not is_prose_line(s):
         return False
@@ -891,6 +931,7 @@ def _is_readable_assignment_prose(line: str) -> bool:
 
 
 def extract_assignment_points(text: str, max_items: int = 15) -> list[str]:
+    """과제 본문에서 서로 다른 읽을 수 있는 줄을 앞에서부터 최대 개수만큼 모은다."""
     points: list[str] = []
     seen: set[str] = set()
     for ln in text.splitlines():
@@ -910,6 +951,7 @@ def extract_assignment_points(text: str, max_items: int = 15) -> list[str]:
 
 
 def _split_assignment_sections(text: str) -> dict[str, str]:
+    """서론, 본론, 결론 제목을 기준으로 과제 본문을 세 구간 문자열로 나눈다."""
     buffers: dict[str, list[str]] = {"intro": [], "body": [], "outro": []}
     active = "intro"
     for ln in text.splitlines():
@@ -928,12 +970,14 @@ def _split_assignment_sections(text: str) -> dict[str, str]:
 
 
 def _has_assignment_section_markers(text: str) -> bool:
+    """본문에 서론과 본론 제목이 둘 다 있는지 확인한다."""
     return bool(re.search(r"^서론\s*$", text, re.M)) and bool(
         re.search(r"^본론\s*$", text, re.M)
     )
 
 
 def _extract_assignment_topics(text: str) -> list[str]:
+    """목차나 짧은 제목 줄에서 과제 주제 후보를 최대 여섯 개 고른다."""
     topics: list[str] = []
     prefer = False
     for ln in text.splitlines():
@@ -975,6 +1019,7 @@ def _extract_assignment_topics(text: str) -> list[str]:
 
 
 def _assignment_summary_filler(item: CatalogItem, index: int) -> str:
+    """요약 문장이 부족할 때 순번에 맞춰 넣는 기본 문장을 돌려준다."""
     fillers = [
         f"{item.title} 총괄과제에서 요구한 주제랑 형식에 맞춰 답안·산출물을 구성했어요.",
         "본문·코드·도표·발표 자료 같은 제출 형식에 맞게 핵심 내용을 담았어요.",
@@ -992,6 +1037,7 @@ _SECTION_VERBS = {
 
 
 def _sentence_from_section(points: list[str], item: CatalogItem, section_name: str) -> str:
+    """서론·본론·결론 구간의 첫 문장을 그 구간에 맞는 말투의 한 문장으로 만든다."""
     verb = _SECTION_VERBS.get(section_name, "정리했어요")
     if not points:
         return f"{section_name}에서는 {item.summary.rstrip('.')} 관련 내용을 {verb}"
@@ -1000,6 +1046,7 @@ def _sentence_from_section(points: list[str], item: CatalogItem, section_name: s
 
 
 def _compose_summary_from_topics(item: CatalogItem, topics: list[str]) -> list[str]:
+    """주제 세 개로 개요, 본문, 마무리 형식의 요약 문장 세 개를 만든다."""
     picks = topics[:3]
     while len(picks) < 3:
         picks.append(item.summary)
@@ -1012,6 +1059,7 @@ def _compose_summary_from_topics(item: CatalogItem, topics: list[str]) -> list[s
 
 
 def _sentence_from_points(points: list[str], opener: str, fallback: str = "") -> str:
+    """고른 문장의 앞부분을 시작 말과 이어 요약 한 문장으로 만든다."""
     if not points:
         base = fallback or "과제 원문에서 핵심만 골라"
         return f"{opener.rstrip('.')} {base} 정리했어요."
@@ -1098,6 +1146,7 @@ _CODE_NOISE = re.compile(
 
 
 def is_prose_line(line: str) -> bool:
+    """한글이 있고 코드·로그·너무 짧거나 긴 줄이 아닌 서술 줄인지 판별한다."""
     s = line.strip()
     if len(s) < 12 or len(s) > 280:
         return False
@@ -1133,6 +1182,7 @@ def extract_study_points(text: str, max_items: int = 8) -> list[str]:
 
 
 def soften_sentence(s: str) -> str:
+    """문장 끝의 불필요한 마침표와 '등의'를 정리하고, 끝이 없으면 마침표를 붙인다."""
     s = s.rstrip(".")
     s = re.sub(r"\s*등의\s*$", "", s)
     if s and s[-1] not in ".!?":
@@ -1141,7 +1191,7 @@ def soften_sentence(s: str) -> str:
 
 
 def weave_narrative(opener: str, points: list[str], fallback: str = "") -> str:
-    """추출한要点를 구어체 서술문으로 이어 붙임."""
+    """고른 문장을 구어체 서술 한 덩어리로 이어 붙인다. 쓸 문장이 없으면 fallback으로 채운다."""
     cleaned = [soften_sentence(p).rstrip(".") for p in points if p.strip()]
     if not cleaned:
         base = fallback or "교재·강의 흐름을 따라가며 전체 개념을 익히는 데 집중"
@@ -1240,6 +1290,7 @@ def build_study_narrative(item: CatalogItem) -> dict[str, Any]:
 
 
 def summarize_bullets(text: str, max_items: int = 10) -> list[str]:
+    """글머리표, 번호 목록, 긴 줄을 중복 없이 최대 개수만큼 모아 요약 불릿으로 만든다."""
     lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
     bullets = []
     for ln in lines:
@@ -1264,6 +1315,7 @@ def summarize_bullets(text: str, max_items: int = 10) -> list[str]:
 
 
 def make_overview(item: CatalogItem, bullets: list[str]) -> str:
+    """학습이면 노트 수와 키워드로, 과제이면 수행 기록과 원본 파일 수로 한눈에 보기 문장을 만든다."""
     if item.type == "assignment":
         return (
             f"{item.title} 과목의 총괄/최종 과제를 수행하며 "
@@ -1338,6 +1390,7 @@ def render_windows_programming1_markdown(item: CatalogItem) -> str:
 
 
 def render_markdown(item: CatalogItem) -> str:
+    """카탈로그 항목 하나의 프론트매터와 본문 마크다운을 만든다. 윈도우 프로그래밍1은 별도 형식을 쓴다."""
     if item.slug == "windows-programming-1":
         return render_windows_programming1_markdown(item)
 
@@ -1421,6 +1474,7 @@ def render_markdown(item: CatalogItem) -> str:
 
 
 def main() -> None:
+    """학습·과제 요약을 output에 쓰고 catalog.json과 index.md를 갱신한 뒤 정적 사이트 빌드를 호출한다."""
     STUDY_OUT.mkdir(parents=True, exist_ok=True)
     ASSIGN_OUT.mkdir(parents=True, exist_ok=True)
     EXTRACTED.mkdir(parents=True, exist_ok=True)
