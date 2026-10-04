@@ -80,9 +80,14 @@ IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적
 │   └── img/
 ├── docs/
 │   ├── code-reference.pdf      # 함수·클래스 설명과 유사코드
+│   ├── codebook.pdf            # 소스를 파일 순서대로 읽은 설명
+│   ├── source-bundle.pdf       # 주석이 붙은 소스 본문
 │   ├── technical-specs.pdf     # 요구사항부터 시험 명세까지
 │   ├── build_code_reference.py
+│   ├── build_codebook.py
+│   ├── build_source_bundle.py
 │   ├── build_specs.py
+│   ├── codebook/               # 코드북 원본
 │   └── specs/                  # 기술명세 원본과 차트 이미지
 └── study_note_record_organization/
     ├── dashboard/          # 학습록 정적 사이트 (배포 대상)
@@ -98,11 +103,13 @@ IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적
 
 ## 기술 문서
 
-코드 설명과 기술명세는 `docs/`에 있습니다. 화면 코드와 빌드 스크립트에는 함수·클래스 주석이 있고, 그 주석을 모아 PDF로 만듭니다. `data/` 안의 과제 프로그램 코드는 코드 설명과 기술명세에서 빼 두었습니다.
+코드 설명, 코드북, 소스 모음, 기술명세는 `docs/`에 있습니다. 화면 코드와 빌드 스크립트에는 함수·클래스 주석이 있고, 그 주석을 모아 PDF로 만듭니다. 소스 모음은 그 주석이 붙어 있는 코드 본문입니다. `data/` 안의 과제 프로그램 코드는 이 문서들에서 빼 두었습니다.
 
 | 문서 | 경로 | 내용 |
 | --- | --- | --- |
 | 코드 설명 | `docs/code-reference.pdf` | 함수·클래스 설명, 인자, 반환, 유사코드 |
+| 코드북 | `docs/codebook.pdf` | 화면과 빌드 소스를 파일 순서대로 읽은 설명 |
+| 소스 모음 | `docs/source-bundle.pdf` | 주석이 붙은 소스를 파일 순서대로 이어 둔 본문 |
 | 기술명세 | `docs/technical-specs.pdf` | 요구사항, 유스케이스, 자료 흐름도, 자료 사전, 화면 흐름, 프로세스 명세, 상태 전이, 구조도, 시험 명세 |
 
 기술명세의 차트는 그림으로 들어갑니다. 유스케이스의 행위자는 사람 그림이고, 자료 흐름도의 작성자·방문자는 외부 실체 상자입니다. 같은 내용의 마크다운과 HTML도 `docs/`에 있습니다.
@@ -111,6 +118,8 @@ IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적
 
 ```powershell
 python docs/build_code_reference.py
+python docs/build_codebook.py
+python docs/build_source_bundle.py
 python docs/build_specs.py
 ```
 
@@ -164,6 +173,8 @@ GitHub Pages는 공개 웹사이트로 배포될 수 있으므로, 업로드 전
 - 이력서 내용: `cv/resume.html`
 - 학습록 아카이브: `study_note_record_organization/dashboard/`, 빌드 스크립트 `study_note_record_organization/scripts/`
 - 코드 설명: 함수·클래스 주석을 고친 뒤 `python docs/build_code_reference.py`
+- 코드북: `docs/codebook/`을 고친 뒤 `python docs/build_codebook.py`
+- 소스 모음: `python docs/build_source_bundle.py`
 - 기술명세: `docs/specs/`를 고친 뒤 `python docs/build_specs.py`
 - 공통 헤더 스타일: `css/site-header.css`
 - 메인 페이지 스타일: `css/styles.css`
