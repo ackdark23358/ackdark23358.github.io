@@ -1,0 +1,59 @@
+# 일반 검색로봇. 메인 자기소개서는 두고, 자료 페이지와 원본 데이터는 수집하지 않는다.
+User-agent: *
+Disallow: /cover_letter/
+Disallow: /online_business_card/
+Disallow: /cv/
+Disallow: /study_note_record_organization/
+Disallow: /docs/
+
+# 생성형 검색·학습 로봇. 본문 재사용과 학습용 수집을 거절한다.
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: OAI-SearchBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: AI2Bot
+Disallow: /

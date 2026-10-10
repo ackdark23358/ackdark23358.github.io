@@ -67,3 +67,13 @@ DFD의 자료 흐름과 저장소에 실리는 자료의 이름, 의미, 구성�
 - 지도교수 마스크: 이름 대신 쓰는 고정 호칭 문자열
 
 이 마스크 결과는 추출 본문, 요약에 실린 과제 경로, 원본 보기 화면에 적용된다.
+
+## D4 리소스 보안 가드 및 수집 정책
+
+- `window.__portfolioGuard`: `allowsAccess()` 메서드를 가진 전역 객체. `!isEmbedded() && allowedHost()` 결과를 반환한다.
+- `ALLOWED_HOSTS`: 허용 호스트 매핑 객체 (`ackdark23358.github.io`, `localhost`, `127.0.0.1`).
+- `tdmrep.json`: TDM 권리 유보 선언 JSON (`[{"location": "/", "tdm-reservation": 1}]`).
+- 하단 고정 표기값:
+  - 저작권: `© 2026 김신욱(깃허브 ackdark23358). All rights reserved.`
+  - AI 생성 선언문: `자료를 제외한 문장이나 문구는 나의 생각을 프롬프트에 요청하여 생성한 문장이나 문구입니다.`
+

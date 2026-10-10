@@ -24,7 +24,7 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 9pt; backgro
 <p>이 문서는 포트폴리오 저장소의 화면 코드와 빌드 스크립트를 파일 단위로 읽는다. 함수 목록과 유사코드는 <code>docs/code-reference.pdf</code>에 있고, 요구사항부터 시험 명세까지는 <code>docs/technical-specs.pdf</code>에 있다. 여기서는 그 목록을 다시 찍지 않고, 파일을 위에서 아래로 따라가며 무엇이 바뀌는지 적는다.</p>
 <p>서버 프로세스는 없다. 브라우저는 HTML, CSS, JS를 읽고, 학습 기록 데이터는 파이썬 스크립트가 미리 만든다. <code>data/</code> 안의 과제 프로그램 소스는 이 코드북의 대상이 아니다. 빌드가 그 파일을 읽어 요약하는 코드만 다룬다. 학번과 이름은 문서에 적지 않는다.</p>
 <h2>읽는 순서</h2>
-<ol><li>메인 페이지와 공통 헤더</li><li>이력서 기간</li><li>자기소개 페이지</li><li>온라인 명함</li><li>학습 기록 대시보드</li><li>히어로 갤러리</li><li>요약 빌드</li><li>정적 사이트 데이터</li><li>문서 생성 스크립트</li></ol>
+<ol><li>메인 페이지와 공통 헤더</li><li>이력서 기간</li><li>자기소개 페이지</li><li>온라인 명함</li><li>학습 기록 대시보드</li><li>히어로 갤러리</li><li>요약 빌드</li><li>정적 사이트 데이터</li><li>문서 생성 스크립트</li><li>리소스 보호 및 보안 가드</li></ol>
 <h2>한 장을 읽는 법</h2>
 <p>각 장은 같은 순서를 따른다.</p>
 <ul><li>이 파일이 맡는 일</li><li>읽는 순서</li><li>구간 설명</li><li>이 파일이 부르는 다른 파일</li></ul>
@@ -290,8 +290,8 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 9pt; backgro
 <h1>문서 생성 스크립트</h1>
 <h2>이 파일이 맡는 일</h2>
 <p><code>docs/</code>의 파이썬 스크립트는 사이트를 그리지 않는다. 이미 있는 마크다운이나 소스 주석을 한 권의 HTML로 합친 뒤 Edge 또는 Chrome으로 PDF를 인쇄한다. 글꼴은 맑은 고딕이다.</p>
-<p>세 갈래다.</p>
-<ul><li><code>build_code_reference.py</code>는 함수·클래스 주석과 유사코드를 <code>code-reference.md</code>, HTML, PDF로 만든다.</li><li><code>build_specs.py</code>는 <code>docs/specs/*.md</code>를 <code>technical-specs.md</code>, HTML, PDF로 만든다. Mermaid 차트는 그림으로 바꾼다.</li><li><code>build_codebook.py</code>는 <code>docs/codebook/*.md</code>를 <code>codebook.md</code>, HTML, PDF로 만든다.</li></ul>
+<p>다섯 갈래다.</p>
+<ul><li><code>build_portfolio_book.py</code>는 <code>docs/portfolio-book/*.md</code>를 합치고 Mermaid 다이어그램을 그려 <code>portfolio-book.md</code>, HTML, PDF 단행본으로 만든다.</li><li><code>build_code_reference.py</code>는 함수·클래스 주석과 유사코드를 <code>code-reference.md</code>, HTML, PDF로 만든다.</li><li><code>build_specs.py</code>는 <code>docs/specs/*.md</code>를 <code>technical-specs.md</code>, HTML, PDF로 만든다. Mermaid 차트는 그림으로 바꾼다.</li><li><code>build_codebook.py</code>는 <code>docs/codebook/*.md</code>를 <code>codebook.md</code>, HTML, PDF로 만든다.</li><li><code>build_source_bundle.py</code>는 화면과 빌드 소스를 파일 순서대로 이어 행 번호가 있는 <code>source-bundle.html</code>, PDF로 만든다.</li></ul>
 <p><code>data/</code> 과제 프로그램 소스는 코드 설명 수집 대상이 아니다. 파일 목록에 학번이나 이름이 섞이면 마스크로 바꾼다.</p>
 <h2>읽는 순서</h2>
 <p>각 스크립트는 글을 모으고, 마크다운의 일부만 HTML로 바꾼 다음, 브라우저의 <code>print-to-pdf</code>를 호출하는 순서다.</p>
@@ -302,7 +302,31 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 9pt; backgro
 <p><code>docs/specs</code>의 마크다운을 파일 이름순으로 잇는다. 제목, 목록, 코드 울타리, 문단, 굵게, 인라인 코드를 HTML로 바꾼다. 울타리 언어가 <code>mermaid</code>이면 차트 소스를 브라우저로 그려 PNG로 저장하고 <code>img</code>로 넣는다. 유스케이스 소스에 <code>actor-style: person</code>이 있으면 Mermaid 대신 사람 그림이 있는 SVG를 그린다. 나머지 차트는 Mermaid다. 그림 파일 이름은 소스 해시다. 이번 빌드에 쓰이지 않은 그림은 지운다. PDF 인쇄는 머리글과 바닥글 없이 한다.</p>
 <h3>build_codebook.py</h3>
 <p><code>docs/codebook</code>의 마크다운을 파일 이름순으로 잇는다. HTML로 바꾸는 규칙은 명세와 같고, 차트 분기는 없다. 코드 울타리는 회색 <code>pre</code>로만 둔다. 브라우저를 찾지 못하거나 PDF가 너무 작으면 중단한다.</p>
+<h3>build_portfolio_book.py</h3>
+<p><code>docs/portfolio-book</code>의 마크다운 챕터들을 순서대로 잇는다. 표지, 목차, 인쇄 스타일을 입히고 Mermaid 다이어그램을 브라우저 헤드리스 모드로 렌더링하여 이미지로 삽입한 뒤, A4 규격 단행본 <code>portfolio-book.pdf</code>를 인쇄한다.</p>
+<h3>build_source_bundle.py</h3>
+<p>HTML, CSS, JS, Python 소스를 찾아 각 줄마다 행 번호를 매긴 뒤 단일 HTML 및 PDF로 병합한다. 생성 파일과 라이브러리, 원본 데이터는 제외한다.</p>
 <h2>이 파일이 부르는 다른 파일</h2>
 <p>코드 설명 스크립트는 저장소의 화면 스크립트, 스타일, 빌드 스크립트를 읽는다. 명세와 코드북 스크립트는 <code>docs/specs</code>와 <code>docs/codebook</code>의 마크다운만 읽는다. 셋 다 Edge 또는 Chrome 실행 파일을 찾아 PDF를 쓴다.</p>
+<h1>리소스 보호 및 보안 가드</h1>
+<h2>이 파일이 맡는 일</h2>
+<p><code>js/protect-resources.js</code>는 정적 호스팅(GitHub Pages) 환경에서 무단 복사, 스크랩, 악의적인 iframe 끼워 넣기를 방지하고 방문자에게 안내를 제공하는 클라이언트 보안 스크립트다.</p>
+<p>함께 동작하는 거버넌스 설정은 다음과 같다:</p>
+<ul><li><code>robots.txt</code>: 일반 검색엔진에는 메인 페이지만 색인하도록 하고, 하위 자료 폴더와 17종의 인공지능 학습 크롤러는 사이트 전체에서 거절한다.</li><li><code>.well-known/tdmrep.json</code>: TDM(Text and Data Mining) 권리 유보 선언을 머신러닝 수집기에 전달한다.</li></ul>
+<h2>읽는 순서</h2>
+<ol><li>허용 호스트(<code>ALLOWED_HOSTS</code>) 및 상수 정의 (<code>MESSAGE</code>, <code>HIDE_MS</code>)</li><li><code>isEmbedded</code>, <code>allowedHost</code>, <code>window.__portfolioGuard</code></li><li>차단 화면 그리기 (<code>paintBlockedPage</code>) 및 조건 검사</li><li>안내 토스트 스타일 및 키프레임 주입 (<code>#resource-protect-notice</code>)</li><li>입력 요소 판별 (<code>isEditable</code>), 안내 표시 (<code>showNotice</code>), 이벤트 차단 (<code>block</code>)</li><li>마우스 이벤트 리스너 및 키보드 단축키 리스너 등록</li></ol>
+<h2>구간 설명</h2>
+<h3>isEmbedded</h3>
+<p><code>window.top !== window.self</code>를 검사한다. 교차 출처 iframe에 갇혀 예외가 발생하더라도 <code>catch</code>에서 참을 돌려주어 임베딩 상태로 판단한다.</p>
+<h3>allowedHost</h3>
+<p>접속 프로토콜이 <code>http:</code> 또는 <code>https:</code>인지 확인하고, <code>window.location.hostname</code>이 <code>ackdark23358.github.io</code>, <code>localhost</code>, <code>127.0.0.1</code>에 해당하는지 검사한다.</p>
+<h3>paintBlockedPage</h3>
+<p>비인가 호스트나 iframe 환경일 때 실행된다. <code>document.body</code>의 내용을 모두 비우고 검은 배경에 &quot;자료에 대해서 퍼가는 것을 방지하였습니다.&quot;라는 문구만 전체 화면 중앙에 띄운다. 본문 스크립트와 스타일 주입은 즉시 중단된다.</p>
+<h3>isEditable</h3>
+<p>이벤트가 발생한 대상 요소(<code>event.target</code>)가 검색창이나 텍스트 입력창(<code>input</code>, <code>textarea</code>, <code>select</code>, <code>contenteditable</code>) 내부인지 검사한다. 학습록 대시보드에서 방문자가 검색어를 타이핑하는 동작이 차단되지 않도록 보호한다.</p>
+<h3>showNotice와 block</h3>
+<p><code>copy</code>, <code>cut</code>, <code>contextmenu</code>(우클릭), <code>dragstart</code>, <code>selectstart</code> 이벤트 및 <code>Ctrl+C</code>, <code>Ctrl+X</code>, <code>Ctrl+A</code>, <code>Ctrl+S</code>, <code>Ctrl+U</code> 단축키가 발생하면 <code>e.preventDefault()</code>로 가로채고 <code>showNotice()</code>를 호출한다. 하단에 토스트 팝업이 부드럽게 떠올랐다가 2.6초 뒤 사라진다.</p>
+<h2>이 파일이 부르는 다른 파일</h2>
+<p>외부 의존성은 없다. 5개 공개 HTML(<code>index.html</code>, <code>profile.html</code>, <code>business-card.html</code>, <code>resume.html</code>, <code>dashboard/index.html</code>)의 바닥에서 로드되어 독립적으로 동작한다.</p>
 </body>
 </html>

@@ -19,7 +19,7 @@
 ## 디렉터리 지도
 
 - css/ — 메인 페이지와 공통 헤더 스타일
-- js/ — 메인 페이지 내비게이션과 테마
+- js/ — 메인 페이지 내비게이션, 테마 및 리소스 보호(protect-resources.js)
 - cv/css, cv/js — 이력서 스타일과 재직 기간 계산
 - cover_letter/css, cover_letter/js — 자기소개 스타일과 스크롤 메뉴
 - online_business_card/css, online_business_card/js — 명함 애니메이션
@@ -27,9 +27,10 @@
 - study_note_record_organization/scripts — build_output.py, build_static_site.py, extract_sources.py
 - study_note_record_organization/output — 빌드가 쓰는 요약 마크다운과 catalog.json
 - study_note_record_organization/data/과제분류하기 — 과제 문서 원본. 코드 파일은 이 문서에서 빼 둔다
+- docs/ — 기술명세서, 코드북, 코드 설명, 소스 번들, 포트폴리오 북 빌드 스크립트
 
 
-## 메인 사이트
+## 메인 사이트 및 보안 가드
 
 
 ### index.html
@@ -441,6 +442,162 @@ id가 있는 섹션에 tabindex -1을 넣어, 메뉴 이동 뒤 키보드 포커
 queryAll(".section[id]").forEach(function (section)
   만약 !section.hasAttribute("tabindex"
     section.setAttribute("tabindex", "-1")
+```
+
+
+### js/protect-resources.js
+
+자료 복사와 다른 사이트의 끼워 넣기를 막고 안내를 보여 준다.
+허용된 호스트(GitHub Pages, localhost)에서만 정상 동작하며 불법 스크랩 및 임베딩을 방지한다.
+
+
+#### isEmbedded
+
+`js/protect-resources.js:19`
+
+```
+function isEmbedded()
+```
+
+창이 다른 사이트의 iframe 안에 끼워져 있는지 확인한다.
+
+- 인자: 없음
+- 반환: boolean iframe 임베딩 여부
+
+유사코드
+
+```
+시도
+  반환 window.top !== window.self
+  } catch (e)
+  반환 true
+```
+
+
+#### allowedHost
+
+`js/protect-resources.js:31`
+
+```
+function allowedHost()
+```
+
+현재 주소의 프로토콜과 호스트가 허용 목록에 있는지 검사한다.
+
+- 인자: 없음
+- 반환: boolean 허용 호스트 여부
+
+유사코드
+
+```
+protocol ← window.location.protocol
+만약 protocol !== "http:" && protocol !== "https:") return false
+반환 !!ALLOWED_HOSTS[window.location.hostname]
+```
+
+
+#### paintBlockedPage
+
+`js/protect-resources.js:46`
+
+```
+function paintBlockedPage()
+```
+
+비인가 호스트나 iframe일 때 전체 화면을 검은 배경으로 바꾸고 차단 안내를 표시한다.
+
+- 인자: 없음
+- 반환: 없음
+
+유사코드
+
+```
+만약 !document.body) return
+document.body.innerHTML = ""
+document.body.style.margin = "0"
+document.body.style.background = "#111111"
+document.body.style.color = "#ffffff"
+notice ← document.createElement("p")
+notice.textContent = MESSAGE
+notice.style.cssText = "margin:0;min-height:100vh;display:flex;align-it…
+document.body.appendChild(notice)
+```
+
+
+#### isEditable
+
+`js/protect-resources.js:108`
+
+```
+function isEditable(target)
+```
+
+이벤트 대상이 입력 요소(검색창, 텍스트에어리어 등)인지 판별한다.
+
+- 인자: target: EventTarget 판별할 대상 요소
+- 반환: boolean 편집 가능 요소 여부
+
+유사코드
+
+```
+만약 !target || !target.closest) return false
+반환 !!target.closest("input, textarea, select, [contenteditable='true']")
+```
+
+
+#### showNotice
+
+`js/protect-resources.js:116`
+
+```
+function showNotice()
+```
+
+화면 하단에 자료 퍼가기 방지 안내 토스트 팝업을 띄운다.
+
+- 인자: 없음
+- 반환: 없음
+
+유사코드
+
+```
+notice ← document.getElementById("resource-protect-notice")
+만약 !notice
+  notice = document.createElement("p")
+  notice.id = "resource-protect-notice"
+  notice.setAttribute("role", "status")
+  notice.setAttribute("aria-live", "polite")
+  notice.textContent = MESSAGE
+  document.body.appendChild(notice)
+notice.classList.remove("is-visible")
+void notice.offsetWidth
+notice.classList.add("is-visible")
+window.clearTimeout(hideTimer)
+hideTimer = window.setTimeout(function ()
+  notice.classList.remove("is-visible")
+  }, HIDE_MS)
+```
+
+
+#### block
+
+`js/protect-resources.js:139`
+
+```
+function block(event)
+```
+
+복사, 잘라내기, 우클릭 등 금지된 이벤트의 기본 동작을 막고 안내를 띄운다.
+
+- 인자: event: Event 가로챌 브라우저 이벤트
+- 반환: 없음
+
+유사코드
+
+```
+만약 isEditable(event.target)) return
+event.preventDefault()
+showNotice()
 ```
 
 
@@ -1018,9 +1175,34 @@ function resolveSourceChunk(key)
 ```
 
 
+#### siteAccessAllowed
+
+`study_note_record_organization/dashboard/js/app.js:251`
+
+```
+function siteAccessAllowed()
+```
+
+포트폴리오 가드 또는 호스트 화이트리스트를 검사하여 정당한 사이트 접근인지 판별한다.
+
+- 인자: 없음
+- 반환: boolean 접근 허용 여부
+
+유사코드
+
+```
+guard ← window.__portfolioGuard
+만약 guard && typeof guard.allowsAccess === "function") return guard.allowsA…
+protocol ← window.location.protocol
+host ← window.location.hostname
+known ← host === "ackdark23358.github.io" || host === "localhost" || ho…
+반환 (protocol === "http:" || protocol === "https:") && known
+```
+
+
 #### fetchSourceText
 
-`study_note_record_organization/dashboard/js/app.js:252`
+`study_note_record_organization/dashboard/js/app.js:265`
 
 ```
 function fetchSourceText(key)
@@ -1034,6 +1216,8 @@ function fetchSourceText(key)
 유사코드
 
 ```
+만약 !siteAccessAllowed
+  반환 Promise.resolve(null)
 만약 sourceCache[key]
   반환 Promise.resolve(sourceCache[key])
 chunk ← resolveSourceChunk(key)
@@ -1059,7 +1243,7 @@ url ← new URL("js/sources/" + chunk, window.location.href)
 
 #### sourceDisplayName
 
-`study_note_record_organization/dashboard/js/app.js:288`
+`study_note_record_organization/dashboard/js/app.js:304`
 
 ```
 function sourceDisplayName(label, key)
@@ -1081,7 +1265,7 @@ function sourceDisplayName(label, key)
 
 #### openSourceViewer
 
-`study_note_record_organization/dashboard/js/app.js:300`
+`study_note_record_organization/dashboard/js/app.js:316`
 
 ```
 function openSourceViewer(key, label)
@@ -1117,7 +1301,7 @@ fetchSourceText(key).then(function (text)
 
 #### closeSourceModal
 
-`study_note_record_organization/dashboard/js/app.js:331`
+`study_note_record_organization/dashboard/js/app.js:347`
 
 ```
 function closeSourceModal()
@@ -1141,7 +1325,7 @@ overlay.style.pointerEvents = ""
 
 #### bindSourceLinks
 
-`study_note_record_organization/dashboard/js/app.js:344`
+`study_note_record_organization/dashboard/js/app.js:360`
 
 ```
 function bindSourceLinks(container)
@@ -1167,7 +1351,7 @@ container.addEventListener("click", function (e)
 
 #### openModal
 
-`study_note_record_organization/dashboard/js/app.js:359`
+`study_note_record_organization/dashboard/js/app.js:375`
 
 ```
 function openModal(item)
@@ -1205,7 +1389,7 @@ bindSourceLinks(modalBody)
 
 #### closeModal
 
-`study_note_record_organization/dashboard/js/app.js:388`
+`study_note_record_organization/dashboard/js/app.js:404`
 
 ```
 function closeModal()
@@ -1228,7 +1412,7 @@ overlay.setAttribute("aria-hidden", "true")
 
 #### init
 
-`study_note_record_organization/dashboard/js/app.js:400`
+`study_note_record_organization/dashboard/js/app.js:416`
 
 ```
 function init()
@@ -1242,6 +1426,9 @@ SITE_DATA로 카탈로그와 원본 지도를 읽고 소개와 카드 그리드�
 유사코드
 
 ```
+만약 !siteAccessAllowed
+  grid.innerHTML = '<p class="error">자료에 대해서 퍼가는 것을 방지하였습니다.</p>'
+  반환
 data ← getData()
 만약 !data || !data.catalog
   grid.innerHTML = '<p class="error">data.js가 없습니다. build_static_site.py를…
@@ -1557,7 +1744,7 @@ window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
 ## 빌드 스크립트
 
-scripts 폴더의 파이썬이 학습 원본을 요약하고 대시보드 데이터를 갱신한다. 아래 설명은 각 함수와 클래스 독스트링이다.
+scripts 폴더와 docs 폴더의 파이썬 스크립트가 학습 원본 요약, 대시보드 데이터 갱신, 기술문서 및 포트폴리오 북 생성을 맡는다. 아래 설명은 각 함수와 클래스 독스트링이다.
 
 
 ### study_note_record_organization/scripts/extract_sources.py
@@ -3927,6 +4114,366 @@ build_site를 실행하고, 만든 대시보드를 브라우저에서 열 수 �
 ```
 build_site()
 print('Done. Open dashboard/index.html in a browser (or use a local sta…
+```
+
+
+### docs/build_portfolio_book.py
+
+포트폴리오 북 마크다운 챕터들을 통합하여 A4 규격의 한글 PDF 단행본으로 빌드한다.
+
+마크다운 표, 인용구, 코드 블록, 인라인 링크 및 Mermaid 다이어그램을 파싱하여
+Microsoft Edge 또는 Google Chrome 헤드리스 엔진으로 고품질 인쇄용 PDF를 생성한다.
+
+
+#### inline
+
+`docs/build_portfolio_book.py:34`
+
+```
+def inline(text: str) -> str
+```
+
+설명이 없습니다.
+
+- 인자: text: str
+- 반환: str
+
+유사코드
+
+```
+escaped ← html.escape(text)
+escaped ← INLINE_CODE.sub(lambda m: f'<code>{m.group(1)}</code>', escaped)
+escaped ← BOLD.sub(lambda m: f'<strong>{m.group(1)}</strong>', escaped)
+escaped ← LINK.sub(lambda m: f'<a href="{m.group(2)}">{m.group(1)}</a>', escaped)
+반환 escaped
+```
+
+
+#### find_browser
+
+`docs/build_portfolio_book.py:42`
+
+```
+def find_browser() -> Path | None
+```
+
+설명이 없습니다.
+
+- 인자: 없음
+- 반환: Path | None
+
+유사코드
+
+```
+local ← os.environ.get('LOCALAPPDATA', '')
+candidates ← [Path('C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.ex…
+반복 candidate ← candidates
+  만약 candidate.is_file()
+    반환 candidate
+반환 None
+```
+
+
+#### diagram_page
+
+`docs/build_portfolio_book.py:56`
+
+```
+def diagram_page(source: str) -> str
+```
+
+설명이 없습니다.
+
+- 인자: source: str
+- 반환: str
+
+유사코드
+
+```
+escaped ← html.escape(source)
+반환 f'<!DOCTYPE html>\n<html lang="ko">\n<head>\n<meta charset="utf-8" />\n…
+```
+
+
+#### crop_whitespace
+
+`docs/build_portfolio_book.py:79`
+
+```
+def crop_whitespace(path: Path) -> None
+```
+
+설명이 없습니다.
+
+- 인자: path: Path
+- 반환: None
+
+유사코드
+
+```
+image ← Image.open(path).convert('RGB')
+background ← Image.new('RGB', image.size, (255, 255, 255))
+box ← ImageChops.difference(image, background).getbbox()
+만약 box is None
+  중단 SystemExit(f'차트가 비어 있습니다: {path.name}')
+pad ← 16
+left ← max(box[0] - pad, 0)
+top ← max(box[1] - pad, 0)
+right ← min(box[2] + pad, image.width)
+bottom ← min(box[3] + pad, image.height)
+cropped ← image.crop((left, top, right, bottom))
+만약 cropped.width < 40 or cropped.height < 40
+  중단 SystemExit(f'차트가 너무 작습니다: {path.name}')
+cropped.save(path)
+```
+
+
+#### render_diagram
+
+`docs/build_portfolio_book.py:96`
+
+```
+def render_diagram(source: str) -> str
+```
+
+설명이 없습니다.
+
+- 인자: source: str
+- 반환: str
+
+유사코드
+
+```
+digest ← hashlib.sha256(source.encode('utf-8')).hexdigest()[:12]
+USED_DIAGRAMS.add(digest)
+DIAGRAMS.mkdir(parents=True, exist_ok=True)
+png ← DIAGRAMS / f'{digest}.png'
+만약 not png.is_file()
+  browser ← find_browser()
+  만약 browser is None
+    escaped ← html.escape(source.strip())
+    반환 f'<pre class="code diagram-fallback">{escaped}</pre>'
+  html_path ← DIAGRAMS / f'{digest}.html'
+  html_path.write_text(diagram_page(source), encoding='utf-8')
+  profile ← Path(tempfile.mkdtemp(prefix='book-chart-'))
+  command ← [str(browser), '--headless=new', '--disable-gpu', '--no-first-run', '--…
+  시도
+    subprocess.run(command, check=True, timeout=60)
+    deadline ← time.time() + 8
+    동안 not png.is_file() and time.time() < deadline
+      time.sleep(0.3)
+    crop_whitespace(png)
+  실패 Exception
+    print(f'[경고] 차트 렌더링 실패 ({digest}): {e}')
+    escaped ← html.escape(source.strip())
+    반환 f'<pre class="code diagram-fallback">{escaped}</pre>'
+rel ← png.relative_to(ROOT).as_posix()
+반환 f'<figure class="chart"><img src="{rel}" alt="다이어그램" /></figure>'
+```
+
+
+#### parse_table
+
+`docs/build_portfolio_book.py:140`
+
+```
+def parse_table(lines: list[str]) -> str
+```
+
+설명이 없습니다.
+
+- 인자: lines: list[str]
+- 반환: str
+
+유사코드
+
+```
+rows ← []
+반복 line ← lines
+  raw_cells ← [c.strip() for c in line.strip().strip('|').split('|')]
+  rows.append(raw_cells)
+만약 not rows
+  반환 ''
+header ← rows[0]
+data_rows ← rows[1:]
+만약 data_rows and all((re.match('^:?-+:?$', cell) for cell in data_rows[0]))
+  data_rows ← data_rows[1:]
+html_parts ← ['<div class="table-wrap"><table><thead><tr>']
+반복 cell ← header
+  html_parts.append(f'<th>{inline(cell)}</th>')
+html_parts.append('</tr></thead><tbody>')
+반복 r ← data_rows
+  html_parts.append('<tr>')
+  반복 cell ← r
+    html_parts.append(f'<td>{inline(cell)}</td>')
+  html_parts.append('</tr>')
+html_parts.append('</tbody></table></div>')
+반환 ''.join(html_parts)
+```
+
+
+#### markdown_to_html
+
+`docs/build_portfolio_book.py:166`
+
+```
+def markdown_to_html(text: str) -> str
+```
+
+설명이 없습니다.
+
+- 인자: text: str
+- 반환: str
+
+유사코드
+
+```
+lines ← text.splitlines()
+parts ← []
+index ← 0
+first_h1 ← True
+동안 index < len(lines)
+  line ← lines[index]
+  만약 line.startswith('```')
+    language ← line[3:].strip()
+    body ← []
+    index ← index 연산 1
+    동안 index < len(lines) and (not lines[index].startswith('```'))
+      body.append(lines[index])
+      index ← index 연산 1
+    index ← index 연산 1
+    source ← '\n'.join(body).strip() + '\n'
+    만약 language == 'mermaid'
+      parts.append(render_diagram(source))
+    아니면
+      parts.append(f'<pre class="code"><code>{html.escape(source)}</code></pr…
+    다음 반복
+  stripped ← line.strip()
+  만약 not stripped
+    index ← index 연산 1
+    다음 반복
+  만약 stripped in ('---', '***', '___')
+    parts.append('<hr class="divider" />')
+    index ← index 연산 1
+    다음 반복
+  만약 line.startswith('#')
+    level ← len(line) - len(line.lstrip('#'))
+    level ← min(max(level, 1), 4)
+    title ← line[level:].strip()
+    cls ← ''
+    만약 level == 1
+      만약 first_h1
+        cls ← ' class="book-title"'
+        first_h1 ← False
+      아니면
+        cls ← ' class="chapter-title"'
+    parts.append(f'<h{level}{cls}>{inline(title)}</h{level}>')
+…
+```
+
+
+#### combined_markdown
+
+`docs/build_portfolio_book.py:281`
+
+```
+def combined_markdown() -> str
+```
+
+설명이 없습니다.
+
+- 인자: 없음
+- 반환: str
+
+유사코드
+
+```
+files ← sorted(CHAPTERS.glob('*.md'))
+만약 not files
+  중단 SystemExit(f'포트폴리오 북 챕터 마크다운이 없습니다: {CHAPTERS}')
+chunks ← [path.read_text(encoding='utf-8').strip() for path in files]
+반환 '\n\n'.join(chunks) + '\n'
+```
+
+
+#### render_html
+
+`docs/build_portfolio_book.py:497`
+
+```
+def render_html(body: str) -> str
+```
+
+설명이 없습니다.
+
+- 인자: body: str
+- 반환: str
+
+유사코드
+
+```
+반환 '\n'.join(['<!DOCTYPE html>', '<html lang="ko">', '<head>', '<meta char…
+```
+
+
+#### write_pdf
+
+`docs/build_portfolio_book.py:517`
+
+```
+def write_pdf(html_path: Path, pdf_path: Path) -> None
+```
+
+설명이 없습니다.
+
+- 인자: html_path: Path, pdf_path: Path
+- 반환: None
+
+유사코드
+
+```
+browser ← find_browser()
+만약 browser is None
+  중단 SystemExit('PDF로 인쇄할 Edge 또는 Chrome을 찾지 못했습니다.')
+만약 pdf_path.exists()
+  pdf_path.unlink()
+profile ← Path(tempfile.mkdtemp(prefix='portfolio-book-pdf-'))
+command ← [str(browser), '--headless=new', '--disable-gpu', '--no-first-run', '--…
+시도
+  subprocess.run(command, check=True, timeout=120)
+만약 not pdf_path.is_file() or pdf_path.stat().st_size < 1000
+  중단 SystemExit(f'PDF가 만들어지지 않았습니다: {pdf_path}')
+```
+
+
+#### main
+
+`docs/build_portfolio_book.py:542`
+
+```
+def main() -> None
+```
+
+설명이 없습니다.
+
+- 인자: 없음
+- 반환: None
+
+유사코드
+
+```
+print('[1/4] 포트폴리오 북 마크다운 챕터 병합 중...')
+markdown ← combined_markdown()
+MD_PATH.write_text(markdown, encoding='utf-8')
+print(f' -> 통합 마크다운 저장: {MD_PATH}')
+print('[2/4] 마크다운 -> HTML 변환 및 다이어그램 렌더링 중...')
+html_content ← render_html(markdown_to_html(markdown))
+HTML_PATH.write_text(html_content, encoding='utf-8')
+print(f' -> HTML 저장: {HTML_PATH}')
+print('[3/4] 헤드리스 브라우저 A4 PDF 변환 중...')
+write_pdf(HTML_PATH, PDF_PATH)
+print(f' -> PDF 완성: {PDF_PATH} ({PDF_PATH.stat().st_size // 1024} KB)')
+print('[4/4] 빌드 완료! 성공적으로 포트폴리오 북이 생성되었습니다.')
 ```
 
 

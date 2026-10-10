@@ -245,11 +245,27 @@
   }
 
   /**
+   * 포트폴리오 가드 또는 호스트 화이트리스트를 검사하여 정당한 사이트 접근인지 판별한다.
+   * @returns {boolean} 접근 허용 여부
+   */
+  function siteAccessAllowed() {
+    var guard = window.__portfolioGuard;
+    if (guard && typeof guard.allowsAccess === "function") return guard.allowsAccess();
+    var protocol = window.location.protocol;
+    var host = window.location.hostname;
+    var known = host === "ackdark23358.github.io" || host === "localhost" || host === "127.0.0.1";
+    return (protocol === "http:" || protocol === "https:") && known;
+  }
+
+  /**
    * 소스 JSON을 가져와 원문 텍스트를 돌려준다. 한 번 받은 값은 캐시에 둔다.
    * @param {string} key 원본 경로
    * @returns {Promise<string|null>}
    */
   function fetchSourceText(key) {
+    if (!siteAccessAllowed()) {
+      return Promise.resolve(null);
+    }
     if (sourceCache[key]) {
       return Promise.resolve(sourceCache[key]);
     }
@@ -398,6 +414,10 @@
    * 데이터가 없으면 빌드 스크립트를 실행하라는 안내를 보여 준다.
    */
   function init() {
+    if (!siteAccessAllowed()) {
+      grid.innerHTML = '<p class="error">자료에 대해서 퍼가는 것을 방지하였습니다.</p>';
+      return;
+    }
     var data = getData();
     if (!data || !data.catalog) {
       grid.innerHTML = '<p class="error">data.js가 없습니다. build_static_site.py를 실행하세요.</p>';

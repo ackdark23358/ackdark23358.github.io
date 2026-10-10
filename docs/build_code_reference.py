@@ -640,7 +640,7 @@ def build() -> Doc:
     doc.ul(
         [
             "css/ — 메인 페이지와 공통 헤더 스타일",
-            "js/ — 메인 페이지 내비게이션과 테마",
+            "js/ — 메인 페이지 내비게이션, 테마 및 리소스 보호(protect-resources.js)",
             "cv/css, cv/js — 이력서 스타일과 재직 기간 계산",
             "cover_letter/css, cover_letter/js — 자기소개 스타일과 스크롤 메뉴",
             "online_business_card/css, online_business_card/js — 명함 애니메이션",
@@ -648,17 +648,19 @@ def build() -> Doc:
             "study_note_record_organization/scripts — build_output.py, build_static_site.py, extract_sources.py",
             "study_note_record_organization/output — 빌드가 쓰는 요약 마크다운과 catalog.json",
             "study_note_record_organization/data/과제분류하기 — 과제 문서 원본. 코드 파일은 이 문서에서 빼 둔다",
+            "docs/ — 기술명세서, 코드북, 코드 설명, 소스 번들, 포트폴리오 북 빌드 스크립트",
         ]
     )
 
     sections = [
         (
-            "메인 사이트",
+            "메인 사이트 및 보안 가드",
             [
                 ROOT / "index.html",
                 ROOT / "css" / "styles.css",
                 ROOT / "css" / "site-header.css",
                 ROOT / "js" / "main.js",
+                ROOT / "js" / "protect-resources.js",
             ],
         ),
         (
@@ -710,13 +712,14 @@ def build() -> Doc:
 
     doc.h2("빌드 스크립트")
     doc.p(
-        "scripts 폴더의 파이썬이 학습 원본을 요약하고 대시보드 데이터를 갱신한다. "
+        "scripts 폴더와 docs 폴더의 파이썬 스크립트가 학습 원본 요약, 대시보드 데이터 갱신, 기술문서 및 포트폴리오 북 생성을 맡는다. "
         "아래 설명은 각 함수와 클래스 독스트링이다."
     )
     for path in [
         ROOT / "study_note_record_organization" / "scripts" / "extract_sources.py",
         ROOT / "study_note_record_organization" / "scripts" / "build_output.py",
         ROOT / "study_note_record_organization" / "scripts" / "build_static_site.py",
+        DOCS / "build_portfolio_book.py",
     ]:
         file_doc, symbols = parse_py(path)
         add_code_file(doc, path, file_doc, symbols)
