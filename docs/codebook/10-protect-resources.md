@@ -41,4 +41,4 @@
 
 ## 이 파일이 부르는 다른 파일
 
-외부 의존성은 없다. 6개 공개 HTML(`index.html`, `profile.html`, `business-card.html`, `resume.html`, `study_note_record_organization/dashboard/index.html`, `portfolio_achieve/index.html`) 및 프로젝트 상세 페이지의 바닥에서 로드되어 독립적으로 동작한다.
+외부 의존성은 없다. 6개 공개 HTML(`index.html`, `profile.html`, `business-card.html`, `resume.html`, `study_note_record_organization/dashboard/index.html`, `portfolio_achieve/index.html`)의 바닥에서 로드되어 독립적으로 동작한다.

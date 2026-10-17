@@ -10,7 +10,6 @@ flowchart TD
   resume[이력서 resume.html]
   dash[학습기록 dashboard/index.html]
   archive[프로젝트아카이브 portfolio_achieve/index.html]
-  proj[프로젝트 상세 proj-01~09.html]
   modal[요약 모달]
   source[원본 보기]
   main --> letter
@@ -18,7 +17,6 @@ flowchart TD
   main --> resume
   main --> dash
   main --> archive
-  archive --> proj
   dash --> modal
   modal --> source
 ```
@@ -28,7 +26,7 @@ flowchart TD
 1. 방문자는 메인에서 절 앵커로 본문을 이동하거나 자료 화면으로 나간다.
 2. 자기소개, 명함, 이력서는 각 페이지 안에서 스크롤로 내용을 본다.
 3. 학습 기록은 카드 그리드에서 요약 모달로, 모달의 링크에서 원본 보기로 들어간다.
-4. 프로젝트 아카이브는 카드로 프로젝트를 살펴보고, 개별 프로젝트 상세 페이지로 들어가 실행 화면과 코드를 본다.
+4. 프로젝트 아카이브는 단일 화면 내에서 카드로 프로젝트를 살펴보고, 각 카드의 사용 도구·실행 환경·간단 설명·핵심 기능을 바로 확인한다.
 5. 원본 보기를 닫으면 요약 모달로 돌아온다. 요약을 닫으면 그리드로 돌아온다.
 
 ## 메인

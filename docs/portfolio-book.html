@@ -253,7 +253,7 @@ a:hover {
 <h3>5) 학습·과제 기록 아카이브 (<code>study_note_record_organization/dashboard/index.html</code>)</h3>
 <p>지원자가 수년간 쌓아온 독서 노트 37권과 학점은행제 과제 수행 기록 18건을 시각화한 데이터 대시보드입니다. 상단에 포토 갤러리 히어로 섹션을 배치하고, 하단에는 실시간 클라이언트 검색창과 카드 그리드를 제공합니다. 요약 팝업과 지연 로딩 기반의 원본 뷰어를 통해 학습의 깊이를 입증합니다.</p>
 <h3>6) 프로젝트 아카이브 (<code>portfolio_achieve/index.html</code>)</h3>
-<p>파이썬 기초 실습부터 댓글 게시판, 웹 스토리지 할 일 목록, 카카오맵 공공데이터 시각화, 생성형 AI(ChatGPT, Copilot, Cursor) 미니 프로젝트에 이르는 총 9개 프로젝트(<code>PROJ_01</code> ~ <code>PROJ_09</code>)를 카드로 모듈화한 아카이브입니다. 각 카드마다 사용 도구(Pill 태그), 실행 환경, 간단 설명, 핵심 기능을 정형화하여 표시하며, 상세 화면(<code>proj-01.html</code> ~ <code>proj-09.html</code>)으로 원활히 연결됩니다.</p>
+<p>파이썬 기초 실습부터 댓글 게시판, 웹 스토리지 할 일 목록, 카카오맵 공공데이터 시각화, 생성형 AI(ChatGPT, Copilot, Cursor) 미니 프로젝트에 이르는 총 9개 프로젝트(<code>PROJ_01</code> ~ <code>PROJ_09</code>)를 카드로 모듈화한 아카이브입니다. 각 카드마다 사용 도구(Pill 태그), 실행 환경, 간단 설명, 핵심 기능을 정형화하여 표시하며, 외부 페이지 이동 없이 단일 화면 안에서 완결성 있게 모든 정보를 직관적으로 탐색할 수 있도록 설계되었습니다.</p>
 <hr class="divider" />
 <h2>1.3 전체 시스템 아키텍처 및 무의존성 설계</h2>
 <p>본 프로젝트는 npm, webpack, vite 같은 무거운 빌드 툴이나 프레임워크 런타임에 의존하지 않는 <strong>&#x27;무의존성 순수 정적 웹(Vanilla Static Web)&#x27;</strong> 아키텍처를 고수합니다.</p>
@@ -326,7 +326,7 @@ a:hover {
 <h3>4) 웹 접근성(A11y) 및 시맨틱 표준 준수</h3>
 <ul><li><strong>스킵 내비게이션 (Skip Links)</strong>: 키보드 사용자가 반복되는 헤더를 건너뛰고 즉시 본문으로 이동할 수 있는 바로가기 링크 제공</li><li><strong>WAI-ARIA 지원</strong>: 모바일 메뉴 버튼(<code>aria-expanded</code>, <code>aria-label</code>), 사이트맵 내 현재 페이지 표시(<code>aria-current=&quot;page&quot;</code>), 요약 팝업 모달(<code>role=&quot;dialog&quot;</code>, <code>aria-modal=&quot;true&quot;</code>)을 완벽히 적용</li><li><strong>명도 대비 및 키보드 포커스</strong>: 다크 모드와 라이트 모드 모두에서 WCAG 2.1 AA 기준을 만족하는 명도 대비를 확보하고, <code>:focus-visible</code>을 통해 키보드 탭 이동 시 명확한 아웃라인 링을 표시합니다.</li></ul>
 <h3>5) 카드로 보는 프로젝트 아카이브 (<code>portfolio_achieve</code>)</h3>
-<ul><li><strong>모듈형 카드 아키텍처</strong>: <code>PROJ_01</code> 파이썬 댓글 게시판부터 <code>PROJ_09</code> Cursor AI 응용 프로젝트까지 9개의 프로젝트를 동일한 메타 카드 레이아웃(사용 도구, 실행 환경, 간단 설명, 핵심 기능)으로 구조화했습니다.</li><li><strong>반응형 그리드 및 테마 동기화</strong>: <code>css/archive.css</code>와 <code>js/site.js</code>를 통해 메인 테마(<code>portfolio-theme-v2</code>)와 완벽히 동기화되며, 반응형 카드 그리드로 직관적인 탐색을 제공합니다.</li><li><strong>개별 프로젝트 상세 연계</strong>: 각 카드는 전용 상세 페이지(<code>proj-01.html</code> ~ <code>proj-09.html</code>)로 연결되어 배포 전 시험 화면, 코드 분석, 학습 필기 내용을 상세히 열람할 수 있습니다.</li></ul>
+<ul><li><strong>모듈형 카드 아키텍처</strong>: <code>PROJ_01</code> 파이썬 댓글 게시판부터 <code>PROJ_09</code> Cursor AI 응용 프로젝트까지 9개의 프로젝트를 동일한 메타 카드 레이아웃(사용 도구, 실행 환경, 간단 설명, 핵심 기능)으로 구조화했습니다.</li><li><strong>반응형 그리드 및 테마 동기화</strong>: <code>css/archive.css</code>와 <code>js/site.js</code>를 통해 메인 테마(<code>portfolio-theme-v2</code>)와 완벽히 동기화되며, 반응형 카드 그리드로 직관적인 탐색을 제공합니다.</li><li><strong>단일 화면 완결형 정보 제공</strong>: 각 카드는 외부 페이지로의 불필요한 이동을 배제하고, 카드 본문에 사용 도구, 환경, 요약 설명 및 핵심 기능을 완결성 있게 담아내어 한눈에 프로젝트 전체 맥락을 파악할 수 있도록 최적화했습니다.</li></ul>
 <h1 class="chapter-title">제5장. 정적 배포 환경의 보안·거버넌스 및 SEO 전략</h1>
 <h2>5.1 정적 호스팅(GitHub Pages)의 보안적 한계 인식</h2>
 <p>GitHub Pages는 전 세계 개발자들이 애용하는 훌륭한 무료 정적 호스팅 플랫폼입니다. 그러나 백엔드 서버를 직접 제어할 수 없다는 태생적 한계로 인해 다음과 같은 보안적 취약점이 존재합니다:</p>

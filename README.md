@@ -104,9 +104,8 @@ IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적
 │   ├── portfolio-book/         # 포트폴리오 북 챕터 원본
 │   ├── codebook/               # 코드북 원본 (리소스 보호 챕터 포함)
 │   └── specs/                  # 기술명세 원본과 차트 이미지
-├── portfolio_achieve/          # 프로젝트 아카이브 (PROJ_01~PROJ_09 카드 및 상세)
+├── portfolio_achieve/          # 프로젝트 아카이브 (PROJ_01~PROJ_09 메타 카드)
 │   ├── index.html
-│   ├── proj-01.html ~ proj-09.html
 │   ├── css/
 │   ├── js/
 │   └── img/

@@ -327,24 +327,24 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 9pt; backgro
 <h3>showNotice와 block</h3>
 <p><code>copy</code>, <code>cut</code>, <code>contextmenu</code>(우클릭), <code>dragstart</code>, <code>selectstart</code> 이벤트 및 <code>Ctrl+C</code>, <code>Ctrl+X</code>, <code>Ctrl+A</code>, <code>Ctrl+S</code>, <code>Ctrl+U</code> 단축키가 발생하면 <code>e.preventDefault()</code>로 가로채고 <code>showNotice()</code>를 호출한다. 하단에 토스트 팝업이 부드럽게 떠올랐다가 2.6초 뒤 사라진다.</p>
 <h2>이 파일이 부르는 다른 파일</h2>
-<p>외부 의존성은 없다. 6개 공개 HTML(<code>index.html</code>, <code>profile.html</code>, <code>business-card.html</code>, <code>resume.html</code>, <code>study_note_record_organization/dashboard/index.html</code>, <code>portfolio_achieve/index.html</code>) 및 프로젝트 상세 페이지의 바닥에서 로드되어 독립적으로 동작한다.</p>
+<p>외부 의존성은 없다. 6개 공개 HTML(<code>index.html</code>, <code>profile.html</code>, <code>business-card.html</code>, <code>resume.html</code>, <code>study_note_record_organization/dashboard/index.html</code>, <code>portfolio_achieve/index.html</code>)의 바닥에서 로드되어 독립적으로 동작한다.</p>
 <h1>프로젝트 아카이브</h1>
 <h2>이 파일이 맡는 일</h2>
 <p><code>portfolio_achieve/index.html</code>은 지원자가 실습하고 개발한 9개 프로젝트(<code>PROJ_01</code> ~ <code>PROJ_09</code>)를 카드로 모아 제공하는 프로젝트 아카이브 메인 페이지다.</p>
-<p>각 프로젝트 카드는 소개, 사용 도구(Pill 태그), 실행 환경, 간단 설명, 핵심 기능을 균일한 구조로 담고 있으며, 카드를 누르면 해당 프로젝트 상세 페이지(<code>proj-01.html</code> ~ <code>proj-09.html</code>)로 이동한다.</p>
+<p>각 프로젝트 카드는 소개, 사용 도구(Pill 태그), 실행 환경, 간단 설명, 핵심 기능을 균일한 시맨틱 카드(<code>&lt;article class=&quot;project-card&quot;&gt;</code>) 구조로 담고 있으며, 외부 이동 없이 단일 페이지 내에서 일목요연하게 열람할 수 있도록 구성되었다.</p>
 <p>동작을 지원하는 스타일과 스크립트는 다음과 같다:</p>
-<ul><li><code>portfolio_achieve/css/archive.css</code>: 다크/라이트 테마 변수, 프로젝트 카드 그리드, 상세 페이지 레이아웃 및 캡처 이미지 반응형 스타일</li><li><code>portfolio_achieve/js/site.js</code>: 테마 전환 토글(<code>portfolio-theme-v2</code> 동기화), 모바일 네비게이션 드롭다운 제어, 스크롤 이동 이벤트</li></ul>
+<ul><li><code>portfolio_achieve/css/archive.css</code>: 다크/라이트 테마 변수, 프로젝트 카드 그리드, 정적 메타 카드 레이아웃 및 캡처 이미지 반응형 스타일</li><li><code>portfolio_achieve/js/site.js</code>: 테마 전환 토글(<code>portfolio-theme-v2</code> 동기화), 모바일 네비게이션 드롭다운 제어, 스크롤 이동 이벤트</li></ul>
 <h2>읽는 순서</h2>
 <ol><li>테마 및 리소스 보호 메타 태그 (<code>robots</code>, <code>tdm-reservation</code>, <code>referrer</code>)</li><li>상단 헤더 및 자료 드롭다운 네비게이션</li><li>히어로 소개 구역 (<code>#archive</code>)</li><li>프로젝트 카드 그리드 목록 (<code>#archive-list</code>, <code>PROJ_01</code> ~ <code>PROJ_09</code>)</li><li>전개형 사이트맵 및 저작권·선언문 푸터</li><li>테마 및 인터랙션 스크립트 (<code>js/site.js</code>, <code>../js/protect-resources.js</code>)</li></ol>
 <h2>구간 설명</h2>
 <h3>메타 태그와 테마 사전 적용</h3>
 <p><code>&lt;head&gt;</code> 내부에서 <code>localStorage.getItem(&quot;portfolio-theme-v2&quot;)</code>를 즉시 실행하여 <code>data-theme</code> 속성을 지정한다. 화면이 그려지기 전에 적용되어 깜빡임 현상을 방지한다.</p>
 <h3>프로젝트 카드 구조 (<code>.project-card</code>)</h3>
-<p>각 카드는 <code>&lt;a&gt;</code> 링크 태그로 감싸져 있으며 다음과 같은 정보 블록을 표준화하여 배치한다:</p>
-<ul><li><code>.project-card__eyebrow</code>: 프로젝트 번호와 작업 일자 (예: <code>PROJ_01 · 2025.02.17</code>)</li><li><code>.project-card__title</code>: 프로젝트 명칭</li><li><code>.field-label</code> 및 <code>.field-body</code>: 프로젝트 소개, 간단 설명, 실행 환경, 핵심 기능</li><li><code>.pill-list</code>: 사용한 언어, 프레임워크, AI 도구 태그 목록 (Python, Express, Cursor 등)</li><li><code>.project-card__more</code>: 상세 페이지 링크 안내</li></ul>
+<p>각 카드는 독립적인 시맨틱 <code>&lt;article&gt;</code> 태그로 구성되며 다음과 같은 정보 블록을 표준화하여 배치한다:</p>
+<ul><li><code>.project-card__eyebrow</code>: 프로젝트 번호와 작업 일자 (예: <code>PROJ_01 · 2025.02.17</code>)</li><li><code>.project-card__title</code>: 프로젝트 명칭</li><li><code>.field-label</code> 및 <code>.field-body</code>: 프로젝트 소개, 간단 설명, 실행 환경, 핵심 기능</li><li><code>.pill-list</code>: 사용한 언어, 프레임워크, AI 도구 태그 목록 (Python, Express, Cursor 등)</li></ul>
 <h3>테마 토글 및 드롭다운 (<code>js/site.js</code>)</h3>
 <ul><li><code>initThemeToggle</code>: 버튼 클릭 시 다크 모드와 라이트 모드를 상호 전환하고 <code>localStorage</code>에 기록한다.</li><li><code>setMobileNav</code>, <code>closeDropdowns</code>: 모바일 뷰포트에서 햄버거 메뉴 및 자료 서브 드롭다운 메뉴를 여닫는다. 바깥 영역 클릭 또는 Escape 키 입력 시 열려 있는 메뉴를 닫는다.</li></ul>
 <h2>이 파일이 부르는 다른 파일</h2>
-<ul><li><code>portfolio_achieve/css/archive.css</code>: 아카이브 전용 스타일시트</li><li><code>portfolio_achieve/js/site.js</code>: 테마 및 네비게이션 스크립트</li><li><code>portfolio_achieve/proj-01.html</code> ~ <code>proj-09.html</code>: 9개 개별 프로젝트 상세 페이지</li><li><code>../js/protect-resources.js</code>: 복사·우클릭 방지 및 도메인 검증 보안 가드</li><li><code>portfolio_achieve/img/</code>: 각 프로젝트의 실행 및 테스트 캡처 이미지들</li></ul>
+<ul><li><code>portfolio_achieve/css/archive.css</code>: 아카이브 전용 스타일시트</li><li><code>portfolio_achieve/js/site.js</code>: 테마 및 네비게이션 스크립트</li><li><code>../js/protect-resources.js</code>: 복사·우클릭 방지 및 도메인 검증 보안 가드</li><li><code>portfolio_achieve/img/</code>: 각 프로젝트의 실행 및 테스트 캡처 이미지들</li></ul>
 </body>
 </html>

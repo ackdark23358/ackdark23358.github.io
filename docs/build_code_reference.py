@@ -646,7 +646,7 @@ def build() -> Doc:
             "cover_letter/css, cover_letter/js — 자기소개 스타일과 스크롤 메뉴",
             "online_business_card/css, online_business_card/js — 명함 애니메이션",
             "study_note_record_organization/dashboard/js — 카드, 검색, 히어로. data.js와 sources는 생성물",
-            "portfolio_achieve/ — 프로젝트 아카이브 카드 및 상세(PROJ_01~PROJ_09), 스타일(archive.css) 및 스크립트(site.js)",
+            "portfolio_achieve/ — 프로젝트 아카이브(PROJ_01~PROJ_09 메타 카드), 스타일(archive.css) 및 스크립트(site.js)",
             "study_note_record_organization/scripts — build_output.py, build_static_site.py, extract_sources.py",
             "study_note_record_organization/output — 빌드가 쓰는 요약 마크다운과 catalog.json",
             "study_note_record_organization/data/과제분류하기 — 과제 문서 원본. 코드 파일은 이 문서에서 빼 둔다",
