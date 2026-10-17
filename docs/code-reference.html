@@ -25,9 +25,9 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 9.5pt; backg
 <p>이력서, 자기소개, 온라인 명함, 학습 기록 대시보드와 그 빌드 스크립트를 함수·클래스 단위로 정리한 문서다. 설명은 소스 주석에서 뽑았고, 함수가 없는 파일은 파일 역할만 적었다.</p>
 <h2 class="first">프로젝트 구성</h2>
 <p>루트는 취업 지원용 포트폴리오 페이지다. 이력서, 자기소개, 명함은 각각 폴더로 나뉘고, 학습 노트와 과제 원본은 study_note_record_organization 안에 있다. 그 폴더의 파이썬 스크립트가 원본을 요약 마크다운으로 바꾸고, 대시보드가 읽는 data.js와 원본 JSON을 만든다.</p>
-<ul><li>index.html, css/, js/main.js — 메인 포트폴리오</li><li>cv/ — 이력서</li><li>cover_letter/ — 자기소개</li><li>online_business_card/ — 스크롤 명함</li><li>study_note_record_organization/dashboard/ — 학습·과제 카드 화면</li><li>study_note_record_organization/scripts/ — 요약과 정적 데이터 빌드</li><li>study_note_record_organization/data/ — 노트, 과제, 이미지 원본</li></ul>
+<ul><li>index.html, css/, js/main.js — 메인 포트폴리오</li><li>cv/ — 이력서</li><li>cover_letter/ — 자기소개</li><li>online_business_card/ — 스크롤 명함</li><li>study_note_record_organization/dashboard/ — 학습·과제 카드 화면</li><li>portfolio_achieve/ — 프로젝트 아카이브 (PROJ_01~PROJ_09)</li><li>study_note_record_organization/scripts/ — 요약과 정적 데이터 빌드</li><li>study_note_record_organization/data/ — 노트, 과제, 이미지 원본</li></ul>
 <h2 class="">디렉터리 지도</h2>
-<ul><li>css/ — 메인 페이지와 공통 헤더 스타일</li><li>js/ — 메인 페이지 내비게이션, 테마 및 리소스 보호(protect-resources.js)</li><li>cv/css, cv/js — 이력서 스타일과 재직 기간 계산</li><li>cover_letter/css, cover_letter/js — 자기소개 스타일과 스크롤 메뉴</li><li>online_business_card/css, online_business_card/js — 명함 애니메이션</li><li>study_note_record_organization/dashboard/js — 카드, 검색, 히어로. data.js와 sources는 생성물</li><li>study_note_record_organization/scripts — build_output.py, build_static_site.py, extract_sources.py</li><li>study_note_record_organization/output — 빌드가 쓰는 요약 마크다운과 catalog.json</li><li>study_note_record_organization/data/과제분류하기 — 과제 문서 원본. 코드 파일은 이 문서에서 빼 둔다</li><li>docs/ — 기술명세서, 코드북, 코드 설명, 소스 번들, 포트폴리오 북 빌드 스크립트</li></ul>
+<ul><li>css/ — 메인 페이지와 공통 헤더 스타일</li><li>js/ — 메인 페이지 내비게이션, 테마 및 리소스 보호(protect-resources.js)</li><li>cv/css, cv/js — 이력서 스타일과 재직 기간 계산</li><li>cover_letter/css, cover_letter/js — 자기소개 스타일과 스크롤 메뉴</li><li>online_business_card/css, online_business_card/js — 명함 애니메이션</li><li>study_note_record_organization/dashboard/js — 카드, 검색, 히어로. data.js와 sources는 생성물</li><li>portfolio_achieve/ — 프로젝트 아카이브 카드 및 상세(PROJ_01~PROJ_09), 스타일(archive.css) 및 스크립트(site.js)</li><li>study_note_record_organization/scripts — build_output.py, build_static_site.py, extract_sources.py</li><li>study_note_record_organization/output — 빌드가 쓰는 요약 마크다운과 catalog.json</li><li>study_note_record_organization/data/과제분류하기 — 과제 문서 원본. 코드 파일은 이 문서에서 빼 둔다</li><li>docs/ — 기술명세서, 코드북, 코드 설명, 소스 번들, 포트폴리오 북 빌드 스크립트</li></ul>
 <h2 class="">메인 사이트 및 보안 가드</h2>
 <h3>index.html</h3>
 <p>포트폴리오 메인 화면. 지원 동기, 성장·학습, 역량 절과 자료 메뉴를 담고, 저장된 라이트·다크 테마를 그리기 전에 적용한다.</p>
@@ -932,6 +932,143 @@ window.matchMedia &amp;&amp;
 window.matchMedia(&quot;(prefers-reduced-motion: reduce)&quot;).matches
 만약 !reduced &amp;&amp; images.length &gt; 1
   timer = setInterval(nextRandom, AUTO_MS)</pre>
+<h2 class="">프로젝트 아카이브</h2>
+<h3>portfolio_achieve/index.html</h3>
+<p>파일 역할 주석이 없습니다.</p>
+<h3>portfolio_achieve/css/archive.css</h3>
+<p>코탐록 메인 페이지와 같은 색, 글자, 간격을 프로젝트 아카이브에 맞춘다.</p>
+<h3>portfolio_achieve/js/site.js</h3>
+<h4>prefersReducedMotion</h4>
+<p><code>portfolio_achieve/js/site.js:8</code></p>
+<pre>function prefersReducedMotion()</pre>
+<p>설명이 없습니다.</p>
+<ul><li>인자: 없음</li><li>반환: 없음</li></ul>
+<p>유사코드</p>
+<pre>반환 mqReduceMotion ? mqReduceMotion.matches : false</pre>
+<h4>queryAll</h4>
+<p><code>portfolio_achieve/js/site.js:12</code></p>
+<pre>function queryAll(selector)</pre>
+<p>설명이 없습니다.</p>
+<ul><li>인자: selector</li><li>반환: 없음</li></ul>
+<p>유사코드</p>
+<pre>반환 Array.prototype.slice.call(document.querySelectorAll(selector))</pre>
+<h4>initThemeToggle</h4>
+<p><code>portfolio_achieve/js/site.js:16</code></p>
+<pre>function initThemeToggle()</pre>
+<p>설명이 없습니다.</p>
+<ul><li>인자: 없음</li><li>반환: 없음</li></ul>
+<p>유사코드</p>
+<pre>toggle ← document.querySelector(&quot;[data-theme-toggle]&quot;)
+만약 !toggle) return
+storedTheme ← null
+시도
+  storedTheme = localStorage.getItem(THEME_KEY)
+  } catch (e)
+  storedTheme = null
+theme ← storedTheme || document.documentElement.getAttribute(&quot;data-defa…
+applyTheme(theme, toggle)
+toggle.addEventListener(&quot;click&quot;, function ()
+  current ← document.documentElement.getAttribute(&quot;data-theme&quot;) === &quot;ligh…
+  next ← current === &quot;light&quot; ? &quot;dark&quot; : &quot;light&quot;
+  시도
+    localStorage.setItem(THEME_KEY, next)
+    } catch (e)
+  applyTheme(next, toggle)</pre>
+<h4>applyTheme</h4>
+<p><code>portfolio_achieve/js/site.js:42</code></p>
+<pre>function applyTheme(theme, toggle)</pre>
+<p>설명이 없습니다.</p>
+<ul><li>인자: theme, toggle</li><li>반환: 없음</li></ul>
+<p>유사코드</p>
+<pre>normalized ← theme === &quot;light&quot; ? &quot;light&quot; : &quot;dark&quot;
+label ← toggle.querySelector(&quot;[data-theme-label]&quot;)
+document.documentElement.setAttribute(&quot;data-theme&quot;, normalized)
+toggle.setAttribute(&quot;aria-pressed&quot;, normalized === &quot;dark&quot; ? &quot;true&quot; : &quot;f…
+toggle.setAttribute(&quot;aria-label&quot;, normalized === &quot;dark&quot; ? &quot;라이트 테마로 전환&quot; …
+만약 label) label.textContent = normalized === &quot;dark&quot; ? &quot;다크&quot; : &quot;라이트&quot;</pre>
+<h4>setMobileNav</h4>
+<p><code>portfolio_achieve/js/site.js:51</code></p>
+<pre>function setMobileNav(open)</pre>
+<p>설명이 없습니다.</p>
+<ul><li>인자: open</li><li>반환: 없음</li></ul>
+<p>유사코드</p>
+<pre>nav ← document.getElementById(&quot;site-nav&quot;)
+toggle ← document.querySelector(&quot;.nav-toggle&quot;)
+만약 !nav || !toggle) return
+nav.classList.toggle(&quot;is-open&quot;, open)
+toggle.setAttribute(&quot;aria-expanded&quot;, open ? &quot;true&quot; : &quot;false&quot;)
+toggle.setAttribute(&quot;aria-label&quot;, open ? &quot;메뉴 닫기&quot; : &quot;메뉴 열기&quot;)
+만약 !open) closeDropdowns</pre>
+<h4>setDropdown</h4>
+<p><code>portfolio_achieve/js/site.js:61</code></p>
+<pre>function setDropdown(dropdown, open)</pre>
+<p>설명이 없습니다.</p>
+<ul><li>인자: dropdown, open</li><li>반환: 없음</li></ul>
+<p>유사코드</p>
+<pre>toggle ← dropdown.querySelector(&quot;.site-nav__dropdown-toggle&quot;)
+menu ← dropdown.querySelector(&quot;.site-nav__dropdown-menu&quot;)
+dropdown.classList.toggle(&quot;is-open&quot;, open)
+만약 toggle) toggle.setAttribute(&quot;aria-expanded&quot;, open ? &quot;true&quot; : &quot;false&quot;
+만약 menu) menu.hidden = !open</pre>
+<h4>closeDropdowns</h4>
+<p><code>portfolio_achieve/js/site.js:69</code></p>
+<pre>function closeDropdowns(except)</pre>
+<p>설명이 없습니다.</p>
+<ul><li>인자: except</li><li>반환: 없음</li></ul>
+<p>유사코드</p>
+<pre>queryAll(&quot;.site-nav__dropdown&quot;).forEach(function (dropdown)
+  만약 except &amp;&amp; dropdown === except) return
+  setDropdown(dropdown, false)</pre>
+<h4>initNav</h4>
+<p><code>portfolio_achieve/js/site.js:76</code></p>
+<pre>function initNav()</pre>
+<p>설명이 없습니다.</p>
+<ul><li>인자: 없음</li><li>반환: 없음</li></ul>
+<p>유사코드</p>
+<pre>nav ← document.getElementById(&quot;site-nav&quot;)
+toggle ← document.querySelector(&quot;.nav-toggle&quot;)
+만약 toggle &amp;&amp; nav
+  toggle.addEventListener(&quot;click&quot;, function ()
+    setMobileNav(!nav.classList.contains(&quot;is-open&quot;))
+queryAll(&quot;.site-nav__dropdown&quot;).forEach(function (dropdown)
+  dropdownToggle ← dropdown.querySelector(&quot;.site-nav__dropdown-toggle&quot;)
+  만약 !dropdownToggle) return
+  dropdownToggle.addEventListener(&quot;click&quot;, function (e)
+    e.preventDefault()
+    open ← dropdownToggle.getAttribute(&quot;aria-expanded&quot;) !== &quot;true&quot;
+    closeDropdowns(dropdown)
+    setDropdown(dropdown, open)
+queryAll(&#x27;a[href^=&quot;#&quot;]&#x27;).forEach(function (link)
+  link.addEventListener(&quot;click&quot;, function (e)
+    id ← (link.getAttribute(&quot;href&quot;) || &quot;&quot;).slice(1)
+    target ← id ? document.getElementById(id) : null
+    만약 !target) return
+    e.preventDefault()
+    target.scrollIntoView({ behavior: prefersReducedMotion() ? &quot;auto&quot; : &quot;sm…
+    만약 !target.hasAttribute(&quot;tabindex&quot;)) target.setAttribute(&quot;tabindex&quot;, &quot;-1&quot;
+    target.focus({ preventScroll: true })
+    setMobileNav(false)
+    closeDropdowns()
+document.addEventListener(&quot;click&quot;, function (e)
+  target ← e.target
+  만약 target instanceof Element &amp;&amp; target.closest(&quot;.site-nav__dropdown&quot;)) ret…
+  closeDropdowns()
+document.addEventListener(&quot;keydown&quot;, function (e)
+  만약 e.key !== &quot;Escape&quot;) return
+  closeDropdowns()
+  만약 nav &amp;&amp; nav.classList.contains(&quot;is-open&quot;
+    setMobileNav(false)
+    만약 toggle) toggle.focus
+window.addEventListener(&quot;resize&quot;, function ()
+  만약 window.innerWidth &gt; 768) setMobileNav(false</pre>
+<h4>initSectionTargets</h4>
+<p><code>portfolio_achieve/js/site.js:131</code></p>
+<pre>function initSectionTargets()</pre>
+<p>설명이 없습니다.</p>
+<ul><li>인자: 없음</li><li>반환: 없음</li></ul>
+<p>유사코드</p>
+<pre>queryAll(&quot;.section[id], .hero[id]&quot;).forEach(function (section)
+  만약 !section.hasAttribute(&quot;tabindex&quot;)) section.setAttribute(&quot;tabindex&quot;, &quot;-1&quot;</pre>
 <h2 class="">빌드 스크립트</h2>
 <p>scripts 폴더와 docs 폴더의 파이썬 스크립트가 학습 원본 요약, 대시보드 데이터 갱신, 기술문서 및 포트폴리오 북 생성을 맡는다. 아래 설명은 각 함수와 클래스 독스트링이다.</p>
 <h3>study_note_record_organization/scripts/extract_sources.py</h3>

@@ -31,13 +31,13 @@
 
 ## 범위
 
-- 포함: `index.html`, `cv/`, `cover_letter/`, `online_business_card/`, `study_note_record_organization/dashboard/`, `study_note_record_organization/scripts/`
+- 포함: `index.html`, `cv/`, `cover_letter/`, `online_business_card/`, `study_note_record_organization/dashboard/`, `study_note_record_organization/scripts/`, `portfolio_achieve/`
 - 제외: `data/` 안의 과제 프로그램 코드, Visual Studio 생성물, 이미 만들어진 `output/` 원문을 사람이 고치는 일
 
 ## 기능 요구
 
 - FR-01 메인 화면은 지원 동기, 성장·학습, 역량, 강점, 마치며, 참고 절로 이동할 수 있다. 페이지 안 링크는 해당 절의 처음으로 스크롤하고, 그 절이 키보드 포커스를 받을 수 있다.
-- FR-02 자료 메뉴에서 자기소개, 온라인 명함, 이력서, 학습 기록 대시보드로 이동할 수 있다.
+- FR-02 자료 메뉴에서 자기소개, 온라인 명함, 이력서, 학습 기록 대시보드, 프로젝트 아카이브로 이동할 수 있다.
 - FR-03 좁은 화면에서는 햄버거 버튼으로 메뉴를 열고 닫는다. Escape 또는 768px보다 넓은 화면에서는 메뉴가 닫힌다.
 - FR-04 테마는 라이트와 다크 두 가지다. 선택한 값은 `portfolio-theme-v2`로 저장되고, 다음 방문과 다른 탭에 반영된다. 저장소를 쓸 수 없으면 현재 페이지만 유지한다.
 - FR-05 이력서의 각 경력 항목은 시작일과 종료일로 재직 기간을 계산해 보여 준다. 종료일이 today이면 오늘 날짜로 바꾼다.
@@ -52,9 +52,10 @@
 - FR-14 빌드는 본문의 API 키·토큰 패턴을 고정 마스크로 바꾼다. 과제 본문의 학번과 지도교수 표기도 가린다.
 - FR-15 만들어지는 `data.js`와 원본 JSON 한 파일은 GitHub 한 파일 크기 한도를 넘으면 빌드가 중단된다.
 - FR-16 리소스 보호 스크립트는 인가되지 않은 호스트나 iframe 환경에서 본문 대신 차단 안내를 표시하고, 복사·우클릭 시 애니메이션 토스트를 띄운다. 검색창 입력은 차단하지 않는다.
-- FR-17 사이트 루트의 `robots.txt`는 일반 검색로봇의 자료 경로 수집을 배제하고 17종의 인공지능 학습 수집기를 차단하며, `.well-known/tdmrep.json`으로 TDM 권리 유보를 알린다.
+- FR-17 사이트 루트의 `robots.txt`는 일반 검색로봇의 자료 경로(`portfolio_achieve/` 포함) 수집을 배제하고 17종의 인공지능 학습 수집기를 차단하며, `.well-known/tdmrep.json`으로 TDM 권리 유보를 알린다.
 - FR-18 문서 생성 스크립트는 마크다운 챕터와 Mermaid 다이어그램을 통합하여 단행본 `portfolio-book.pdf`를 빌드한다.
-- FR-19 5대 공개 페이지 하단에는 전개형 사이트맵과 저작권 표기(`김신욱(깃허브 ackdark23358)`), AI 문장 생성 선언문을 일관되게 표시한다.
+- FR-19 6대 공개 페이지 하단에는 전개형 사이트맵과 저작권 표기(`김신욱(깃허브 ackdark23358)`), AI 문장 생성 선언문을 일관되게 표시한다.
+- FR-20 프로젝트 아카이브는 PROJ_01부터 PROJ_09까지 9개 실습 프로젝트를 동일 구조의 메타 카드로 제공하며, 각 카드는 상세 페이지(`proj-01.html` ~ `proj-09.html`)로 연결된다.
 
 ## 비기능 요구
 
@@ -308,7 +309,7 @@ DFD의 자료 흐름과 저장소에 실리는 자료의 이름, 의미, 구성�
 
 # 화면 흐름
 
-화면은 다섯이다. 메인이 허브이고, 나머지 넷은 자료 메뉴와 본문 카드로 연결된다. 각 화면은 같은 테마 저장 키를 읽는다.
+화면은 여섯이다. 메인이 허브이고, 나머지 다섯은 자료 메뉴와 본문 카드로 연결된다. 각 화면은 같은 테마 저장 키를 읽는다.
 
 ```mermaid
 flowchart TD
@@ -317,12 +318,16 @@ flowchart TD
   card[명함 business-card.html]
   resume[이력서 resume.html]
   dash[학습기록 dashboard/index.html]
+  archive[프로젝트아카이브 portfolio_achieve/index.html]
+  proj[프로젝트 상세 proj-01~09.html]
   modal[요약 모달]
   source[원본 보기]
   main --> letter
   main --> card
   main --> resume
   main --> dash
+  main --> archive
+  archive --> proj
   dash --> modal
   modal --> source
 ```
@@ -332,7 +337,8 @@ flowchart TD
 1. 방문자는 메인에서 절 앵커로 본문을 이동하거나 자료 화면으로 나간다.
 2. 자기소개, 명함, 이력서는 각 페이지 안에서 스크롤로 내용을 본다.
 3. 학습 기록은 카드 그리드에서 요약 모달로, 모달의 링크에서 원본 보기로 들어간다.
-4. 원본 보기를 닫으면 요약 모달로 돌아온다. 요약을 닫으면 그리드로 돌아온다.
+4. 프로젝트 아카이브는 카드로 프로젝트를 살펴보고, 개별 프로젝트 상세 페이지로 들어가 실행 화면과 코드를 본다.
+5. 원본 보기를 닫으면 요약 모달로 돌아온다. 요약을 닫으면 그리드로 돌아온다.
 
 ## 메인
 
@@ -342,6 +348,7 @@ flowchart TD
 - 온라인 명함: `online_business_card/business-card.html`
 - 이력서: `cv/resume.html`
 - 학습 기록: `study_note_record_organization/dashboard/index.html`
+- 프로젝트 아카이브: `portfolio_achieve/index.html`
 
 좁은 화면에서는 상단 메뉴가 접혀 있다가 햄버거 버튼으로 열린다.
 

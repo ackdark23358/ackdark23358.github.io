@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ko" data-default-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>프로젝트 아카이브 — 코탐록</title>
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="tdm-reservation" content="1" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      name="description"
+      content="코탐록 자료 카테고리의 프로젝트 아카이브. 프로젝트 소개, 사용 도구, 실행 환경, 간단 설명, 핵심 기능을 카드로 정리합니다."
+    />
+    <link rel="stylesheet" href="css/archive.css?v=19" />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem("portfolio-theme-v2");
+          if (theme === "dark" || theme === "light") {
+            document.documentElement.setAttribute("data-theme", theme);
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-header__brand" href="../index.html">코탐록</a>
+        <div class="site-header__actions">
+          <nav id="site-nav" class="site-nav" aria-label="페이지 섹션">
+            <ul class="site-nav__list">
+              <li><a class="site-nav__link" href="../index.html#section-motivation">지원 동기</a></li>
+              <li><a class="site-nav__link" href="../index.html#section-growth">성장·학습</a></li>
+              <li><a class="site-nav__link" href="../index.html#section-skills">역량</a></li>
+              <li class="site-nav__item site-nav__dropdown">
+                <button
+                  type="button"
+                  class="site-nav__link site-nav__dropdown-toggle is-active"
+                  aria-expanded="false"
+                  aria-controls="resource-dropdown"
+                >
+                  자료
+                  <span class="site-nav__dropdown-caret" aria-hidden="true"></span>
+                </button>
+                <div id="resource-dropdown" class="site-nav__dropdown-menu" aria-label="자료 카테고리" hidden>
+                  <a class="site-nav__dropdown-link" href="../index.html#section-links">
+                    <span class="site-nav__dropdown-title">자료 보기</span>
+                    <span class="site-nav__dropdown-desc">자기소개서의 자료 카테고리로 이동</span>
+                  </a>
+                  <a class="site-nav__dropdown-link" href="../cover_letter/profile.html">
+                    <span class="site-nav__dropdown-title">자기소개 / 프로필</span>
+                    <span class="site-nav__dropdown-desc">기본 소개와 학습 경험</span>
+                  </a>
+                  <a class="site-nav__dropdown-link" href="../online_business_card/business-card.html">
+                    <span class="site-nav__dropdown-title">온라인 명함</span>
+                    <span class="site-nav__dropdown-desc">3D 스크롤 명함 페이지</span>
+                  </a>
+                  <a class="site-nav__dropdown-link" href="../cv/resume.html">
+                    <span class="site-nav__dropdown-title">이력서</span>
+                    <span class="site-nav__dropdown-desc">문서형 이력서 페이지</span>
+                  </a>
+                  <a
+                    class="site-nav__dropdown-link"
+                    href="../study_note_record_organization/dashboard/index.html"
+                  >
+                    <span class="site-nav__dropdown-title">학습·과제 기록</span>
+                    <span class="site-nav__dropdown-desc">학습록 아카이브 대시보드</span>
+                  </a>
+                  <a class="site-nav__dropdown-link" href="index.html" aria-current="page">
+                    <span class="site-nav__dropdown-title">프로젝트 아카이브</span>
+                    <span class="site-nav__dropdown-desc">카드로 보는 프로젝트 기록</span>
+                  </a>
+                </div>
+              </li>
+              <li><a class="site-nav__link" href="../index.html#section-strengths">강점</a></li>
+              <li><a class="site-nav__link" href="../index.html#section-closing">마치며</a></li>
+              <li><a class="site-nav__link" href="../index.html#section-refs">참고</a></li>
+            </ul>
+          </nav>
+          <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="true" aria-label="라이트 테마로 전환">
+            <span class="theme-toggle__label">고대비</span>
+            <span class="theme-toggle__state" data-theme-label>다크</span>
+          </button>
+          <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="메뉴 열기">
+            <span class="nav-toggle__bar"></span>
+            <span class="nav-toggle__bar"></span>
+            <span class="nav-toggle__bar"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <header class="hero" id="archive">
+        <div class="hero__inner">
+          <p class="hero__eyebrow">자료 · 프로젝트 아카이브</p>
+          <h1 class="hero__title">만든 프로젝트를 카드로 쌓아 둔 아키이브</h1>
+          <p class="hero__lead">
+            자기소개서의 자료 카테고리 옆에 두는 정적 페이지입니다. 카드 하나에 프로젝트 소개, 사용 도구, 실행 환경,
+            간단 설명, 핵심 기능을 담고, 카드를 누르면 그 프로젝트 페이지로 이동합니다. PROJ_01부터 같은 형식으로
+            이어서 추가합니다.
+          </p>
+          <dl class="hero__meta">
+            <div class="hero__meta-row">
+              <dt>범위</dt>
+              <dd>PROJ_01부터 PROJ_09까지, 하나씩 카드로 추가</dd>
+            </div>
+            <div class="hero__meta-row">
+              <dt>현재</dt>
+              <dd>
+                PROJ_01 파이썬 학습과 댓글 게시판 · 2025년 2월 17일, PROJ_02 원두 정기 구독 · 2025년 3월 29일,                 PROJ_03
+                오늘의 할 일 · 2025년 5월 22일, PROJ_04 전국 캠핑장 현황 · 2025년 5월 22일,                 PROJ_05 ChatGPT로 만든
+                프로그램 · 2025년 5월 22일, PROJ_06 코딩상자 · 2025년 6월 9일, PROJ_07 하루하루 스터디 · 2025년 7월 6일, PROJ_08 저자 식별 · 2025년 7월 14일, PROJ_09 커서로 따라 만든 프로그램 · 2025년 8월 5일
+              </dd>
+            </div>
+            <div class="hero__meta-row">
+              <dt>추가 방법</dt>
+              <dd>이 페이지에 카드를 직접 넣고, 프로젝트별 HTML 페이지를 하나 더 만듭니다.</dd>
+            </div>
+          </dl>
+        </div>
+      </header>
+
+      <section class="section" id="archive-list" aria-labelledby="heading-list">
+        <div class="section__inner">
+          <h2 id="heading-list" class="section__title">프로젝트 목록</h2>
+          <p class="section-lead">
+            화면은 2026년 10월 17일에 각 프로젝트 폴더를 열어 확인한 것입니다. 실제 호스팅은 완료 후 시간이 오래 지나
+            카드와 프로젝트 페이지에 넣지 않았습니다.
+          </p>
+          <div class="archive-grid">
+            <a class="project-card" href="proj-01.html">
+              <figure class="project-card__media">
+                <img src="img/proj-01-list.png" alt="댓글 하나와 수정, 삭제, 등록 폼이 보이는 게시판 화면" />
+              </figure>
+              <div class="project-card__body">
+                <p class="project-card__index">PROJ_01 · 2025.02.17</p>
+                <h3 class="project-card__title">파이썬 학습과 댓글 게시판</h3>
+
+                <div>
+                  <p class="field-label">프로젝트 소개</p>
+                  <p class="field-body">
+                    『Do it! 파이썬』 필기와 『Do it! 점프 투 파이썬』 실습을 뤼튼·OpenAI로 정리하고, 조코딩 게시판
+                    예제를 참고한 댓글 게시판을 배포 전 시험 환경에서 실행한 기록입니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">간단 설명</p>
+                  <p class="field-body">
+                    문법, 파일 입출력, 클래스, 정규 표현식 실습을 문서로 남기고, 폼으로 받은 댓글을 SQLite에 저장해
+                    목록·수정·삭제까지 확인했습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">사용 도구</p>
+                  <ul class="pill-list">
+                    <li>Python</li>
+                    <li>CMD</li>
+                    <li>뤼튼</li>
+                    <li>Node.js</li>
+                    <li>Express</li>
+                    <li>EJS</li>
+                    <li>Sequelize</li>
+                    <li>SQLite</li>
+                    <li>Cloudtype</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <p class="field-label">실행 환경</p>
+                  <p class="field-body">
+                    배포 전 시험. 로컬 <span class="path">node index.js</span> · 포트 3000. 실제 호스팅은 프로젝트 완료
+                    후 시간이 오래 지나 넣지 않았고, README에만 Cloudtype 주소가 남아 있습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">핵심 기능</p>
+                  <p class="field-body">파이썬 실습 정리, 댓글 목록·등록·수정·삭제</p>
+                </div>
+
+                <p class="project-card__more">프로젝트 페이지 보기</p>
+              </div>
+            </a>
+            <a class="project-card" href="proj-02.html">
+              <figure class="project-card__media">
+                <img src="img/proj-02-hero.png" alt="원두정기구독 첫 화면. 커피 원두 사진 위에 이메일 구독 폼" />
+              </figure>
+              <div class="project-card__body">
+                <p class="project-card__index">PROJ_02 · 2025.03.29</p>
+                <h3 class="project-card__title">원두 정기 구독</h3>
+
+                <div>
+                  <p class="field-label">프로젝트 소개</p>
+                  <p class="field-body">
+                    『Do it! HTML+CSS+자바스크립트 웹 표준의 정석』의 넷플릭스형 랜딩을 따라 만든 스위커 원두 구독
+                    페이지입니다. 확인 질문과 CSS·자바스크립트 필기를 함께 남겼습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">간단 설명</p>
+                  <p class="field-body">
+                    이메일 구독, 로스트 선택, 원두 카드, FAQ를 HTML과 CSS로 구성했습니다. 질문 목록은 라디오와 CSS로
+                    열고 닫습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">사용 도구</p>
+                  <ul class="pill-list">
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>Font Awesome</li>
+                    <li>자바스크립트</li>
+                    <li>VS Code</li>
+                    <li>뤼튼</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <p class="field-label">실행 환경</p>
+                  <p class="field-body">
+                    정적 페이지. <span class="path">Project/index.html</span>을 브라우저에서 연 화면. 실제 호스팅은
+                    완료 후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">핵심 기능</p>
+                  <p class="field-body">구독 폼, 로스트 선택, 원두 카드, FAQ 아코디언, 반응형 배치</p>
+                </div>
+
+                <p class="project-card__more">프로젝트 페이지 보기</p>
+              </div>
+            </a>
+            <a class="project-card" href="proj-03.html">
+              <figure class="project-card__media">
+                <img src="img/proj-03-list.png" alt="오늘의 할 일 화면. 취소선이 그어진 항목과 일반 항목, 완료와 삭제 버튼" />
+              </figure>
+              <div class="project-card__body">
+                <p class="project-card__index">PROJ_03 · 2025.05.22</p>
+                <h3 class="project-card__title">오늘의 할 일</h3>
+
+                <div>
+                  <p class="field-label">프로젝트 소개</p>
+                  <p class="field-body">
+                    『Do it! 모던 자바스크립트』의 웹 스토리지 실습으로 만든 할 일 목록입니다. 유튜브 강의 요약은 뤼튼으로
+                    정리했습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">간단 설명</p>
+                  <p class="field-body">
+                    입력한 할 일을 localStorage에 저장하고, 완료 표시와 삭제를 버튼으로 처리합니다. 글을 새로고침해도
+                    목록 문장은 다시 나타납니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">사용 도구</p>
+                  <ul class="pill-list">
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>JavaScript</li>
+                    <li>localStorage</li>
+                    <li>Canvas</li>
+                    <li>뤼튼</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <p class="field-label">실행 환경</p>
+                  <p class="field-body">
+                    정적 페이지. <span class="path">todo-result.html</span>을 브라우저에서 연 화면. 실제 호스팅은 완료
+                    후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">핵심 기능</p>
+                  <p class="field-body">할 일 추가, 완료 취소선, 삭제, localStorage 저장</p>
+                </div>
+
+                <p class="project-card__more">프로젝트 페이지 보기</p>
+              </div>
+            </a>
+            <a class="project-card" href="proj-04.html">
+              <figure class="project-card__media">
+                <img src="img/proj-04-map.png" alt="전국 캠핑장 현황 제목만 보이고 지도 영역은 비어 있는 화면" />
+              </figure>
+              <div class="project-card__body">
+                <p class="project-card__index">PROJ_04 · 2025.05.22</p>
+                <h3 class="project-card__title">전국 캠핑장 현황</h3>
+
+                <div>
+                  <p class="field-label">프로젝트 소개</p>
+                  <p class="field-body">
+                    『Do it! 모던 자바스크립트』의 공공데이터와 카카오맵 실습으로 만든 캠핑장 위치 페이지입니다. 유튜브
+                    강의 요약은 뤼튼으로 정리했습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">간단 설명</p>
+                  <p class="field-body">
+                    고캠핑 목록의 좌표로 마커를 만들고, 마우스를 올리면 시설명 창을 띄우며, 마커는 클러스터로 묶습니다.
+                    소스의 지도 키와 공공데이터 키는 자리표시라 실행이 되지 않아, 실제 실행 환경은 포함하지 않았습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">사용 도구</p>
+                  <ul class="pill-list">
+                    <li>HTML</li>
+                    <li>JavaScript</li>
+                    <li>Kakao Map</li>
+                    <li>공공데이터</li>
+                    <li>fetch</li>
+                    <li>Canvas</li>
+                    <li>뤼튼</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <p class="field-label">실행 환경</p>
+                  <p class="field-body">
+                    지도 키와 공공데이터 키가 자리표시라 실행이 되지 않아, 실제 실행 환경은 포함하지 않았습니다. 실제
+                    호스팅은 완료 후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">핵심 기능</p>
+                  <p class="field-body">캠핑장 좌표 마커, 시설명 말풍선, 마커 클러스터</p>
+                </div>
+
+                <p class="project-card__more">프로젝트 페이지 보기</p>
+              </div>
+            </a>
+            <a class="project-card" href="proj-05.html">
+              <figure class="project-card__media">
+                <img src="img/proj-05-bricks.png" alt="파란 벽돌 여러 행과 공, 아래 패들이 있는 화면" />
+              </figure>
+              <div class="project-card__body">
+                <p class="project-card__index">PROJ_05 · 2025.05.22</p>
+                <h3 class="project-card__title">ChatGPT로 만든 프로그램</h3>
+
+                <div>
+                  <p class="field-label">프로젝트 소개</p>
+                  <p class="field-body">
+                    ChatGPT와 뤼튼으로 작은 프로그램을 만들어 본 폴더입니다. 벽돌 캔버스, 로또 공, 단어 연습, 두더지
+                    잡기, 알람, 파일 도구가 한곳에 있습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">간단 설명</p>
+                  <p class="field-body">
+                    2026년 10월 17일 실행에서 벽돌은 8열 12행으로 캔버스 안에 남고, 로또는 시작 뒤 번호 6개가 나왔습니다.
+                    단어, 알람, 불쾌지수, 두더지, 5지선다, 워드클라우드 창도 찍었습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">사용 도구</p>
+                  <ul class="pill-list">
+                    <li>Python</li>
+                    <li>Tkinter</li>
+                    <li>Flask</li>
+                    <li>HTML</li>
+                    <li>Canvas</li>
+                    <li>WebGL</li>
+                    <li>JavaFX</li>
+                    <li>ChatGPT</li>
+                    <li>뤼튼</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <p class="field-label">실행 환경</p>
+                  <p class="field-body">
+                    HTML과 파이썬 창은 2026년 10월 17일에 실행했습니다. JavaFX와 pptx 변환은 필요한 파일이 없어 실행하지
+                    못했습니다. 실제 호스팅은 완료 후 시간이 오래 지나 넣지 않았습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">핵심 기능</p>
+                  <p class="field-body">벽돌·공 캔버스, 로또 번호, 단어 맞히기, 두더지 잡기, 파일 합치기와 백업</p>
+                </div>
+
+                <p class="project-card__more">프로젝트 페이지 보기</p>
+              </div>
+            </a>
+            <a class="project-card" href="proj-06.html">
+              <figure class="project-card__media">
+                <img src="img/proj-06-home.png" alt="코딩상자 내비게이션과 파란 소개 영역, About Me 문단이 있는 화면" />
+              </figure>
+              <div class="project-card__body">
+                <p class="project-card__index">PROJ_06 · 2025.06.09</p>
+                <h3 class="project-card__title">코딩상자</h3>
+
+                <div>
+                  <p class="field-label">프로젝트 소개</p>
+                  <p class="field-body">
+                    『지금 바로 만드는 5분 코딩』 그링노마드 종원 실습으로, Start Bootstrap Scrolling Nav 템플릿을 코딩상자
+                    소개 페이지로 고친 기록입니다. 독서 노트는 생산자 관점, 개발자 도구, Netlify와 검색 등록, 구름IDE의
+                    Expo 웹뷰, 다음 학습 주제까지 장 순서대로 적어 두었습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">간단 설명</p>
+                  <p class="field-body">
+                    위 메뉴는 About Me로 스크롤하고, 서비스와 연락 구역은 주석으로 빠져 있습니다. 사이트맵의 마지막
+                    수정은 2025년 6월 9일입니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">사용 도구</p>
+                  <ul class="pill-list">
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>Bootstrap</li>
+                    <li>JavaScript</li>
+                    <li>Netlify</li>
+                    <li>SEO</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <p class="field-label">실행 환경</p>
+                  <p class="field-body">
+                    정적 페이지. <span class="path">index.html</span>을 브라우저에서 연 화면. 파일 속 Netlify 주소는
+                    2026년 10월 17일에 열리지 않았고, 실제 호스팅은 이 페이지에 다시 넣지 않았습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">핵심 기능</p>
+                  <p class="field-body">스크롤 메뉴, 소개 문단, 메타 태그, robots.txt와 sitemap</p>
+                </div>
+
+                <p class="project-card__more">프로젝트 페이지 보기</p>
+              </div>
+            </a>
+            <a class="project-card" href="proj-07.html">
+              <figure class="project-card__media">
+                <img src="img/proj-07-home.png" alt="오후의 블로그 헤더와 하루하루 스터디 제목, 노트 사진, Title 1 목록" />
+              </figure>
+              <div class="project-card__body">
+                <p class="project-card__index">PROJ_07 · 2025.07.06</p>
+                <h3 class="project-card__title">하루하루 스터디</h3>
+
+                <div>
+                  <p class="field-label">프로젝트 소개</p>
+                  <p class="field-body">
+                    『Do it! Node.js 프로그래밍 입문』으로 만든 블로그입니다. 앞부분에서는 연락처 앱을 만들고, 영상 강의
+                    요약은 뤼튼으로 정리했습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">간단 설명</p>
+                  <p class="field-body">
+                    일반 화면은 글 목록과 본문, 관리자 화면은 로그인 뒤 글 등록·수정·삭제입니다. 2026년 10월 17일에는
+                    MongoDB에 연결되지 않아 목록은 정적 예시입니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">사용 도구</p>
+                  <ul class="pill-list">
+                    <li>Node.js</li>
+                    <li>Express</li>
+                    <li>MongoDB</li>
+                    <li>Mongoose</li>
+                    <li>EJS</li>
+                    <li>JWT</li>
+                    <li>bcrypt</li>
+                    <li>뤼튼</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <p class="field-label">실행 환경</p>
+                  <p class="field-body">
+                    <span class="path">myBlog/app.js</span>. 포트는 환경 변수가 없으면 3000입니다. 실제 호스팅은 완료 후
+                    시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">핵심 기능</p>
+                  <p class="field-body">글 목록·본문, 관리자 로그인, 글 등록·수정·삭제, 연락처 CRUD</p>
+                </div>
+
+                <p class="project-card__more">프로젝트 페이지 보기</p>
+              </div>
+            </a>
+            <a class="project-card" href="proj-08.html">
+              <figure class="project-card__media">
+                <img src="img/proj-08-run.png" alt="독테스트 14개 통과와 미지 문서 네 편의 비교. 네 번째는 charles_dickens.txt" />
+              </figure>
+              <div class="project-card__body">
+                <p class="project-card__index">PROJ_08 · 2025.07.14</p>
+                <h3 class="project-card__title">저자 식별</h3>
+
+                <div>
+                  <p class="field-label">프로젝트 소개</p>
+                  <p class="field-body">
+                    GitHub Copilot으로 문장 특징을 비교하는 저자 식별과, 같은 사진을 걸러 모으는 스크립트를 만들었습니다.
+                    장별 필기 요약은 뤼튼으로 정리했습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">간단 설명</p>
+                  <p class="field-body">
+                    2026년 10월 17일 실행에서 독테스트 14개가 통과했습니다. 미지 문서 넷 중 허클베리 핀은 디킨스 파일과
+                    더 가깝게 나왔습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">사용 도구</p>
+                  <ul class="pill-list">
+                    <li>Python</li>
+                    <li>doctest</li>
+                    <li>VS Code</li>
+                    <li>GitHub Copilot</li>
+                    <li>뤼튼</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <p class="field-label">실행 환경</p>
+                  <p class="field-body">
+                    <span class="path">7_practice.py</span>를 파이썬으로 실행. 사진 원본 폴더는 없습니다. 실제 호스팅은
+                    완료 후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">핵심 기능</p>
+                  <p class="field-body">시그니처 비교, 독테스트, 내용이 같은 사진 건너뛰기</p>
+                </div>
+
+                <p class="project-card__more">프로젝트 페이지 보기</p>
+              </div>
+            </a>
+            <a class="project-card" href="proj-09.html">
+              <figure class="project-card__media">
+                <img src="img/proj-09-todo.png" alt="2025년 7월 21일 캡처. 오늘의 할 일 달력과 Cursor 편집기" />
+              </figure>
+              <div class="project-card__body">
+                <p class="project-card__index">PROJ_09 · 2025.08.05</p>
+                <h3 class="project-card__title">커서로 따라 만든 프로그램</h3>
+
+                <div>
+                  <p class="field-label">프로젝트 소개</p>
+                  <p class="field-body">
+                    커서 AI 트렌드 책과 콜로소 강의로 할 일, 챗봇, 게시판, 차트, 파일 분류를 만들었습니다. 필기는
+                    같은 폴더 이름에 _add_doc를 붙여 PROJ_09_add_doc 안에 둘로 나뉘어 있습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">간단 설명</p>
+                  <p class="field-body">
+                    책 쪽 add_doc은 에이전트 독서노트이고, 콜로소 쪽 add_doc은 프롤로그부터 8장입니다. 독서노트 요약은
+                    뤼튼으로, 실습 정리는 OpenAI로 정리했습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">사용 도구</p>
+                  <ul class="pill-list">
+                    <li>Cursor</li>
+                    <li>PHP</li>
+                    <li>Python</li>
+                    <li>HTML</li>
+                    <li>JavaScript</li>
+                    <li>뤼튼</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <p class="field-label">실행 환경</p>
+                  <p class="field-body">
+                    PHP 페이지와 파이썬 스크립트. 화면은 폴더 안 캡처입니다. 전자명함 경로는 닷홈에서 404였습니다.
+                  </p>
+                </div>
+
+                <div>
+                  <p class="field-label">핵심 기능</p>
+                  <p class="field-body">할 일 달력, 챗봇 화면, 게시판, 차트, 파일 분류</p>
+                </div>
+
+                <p class="project-card__more">프로젝트 페이지 보기</p>
+              </div>
+            </a>
+            <!--
+              다음 프로젝트 카드는 이 주석 아래에 같은 구조로 추가합니다.
+              <a class="project-card" href="proj-10.html"> ... </a>
+            -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <nav class="site-sitemap" aria-label="사이트맵">
+          <p class="site-sitemap__label">사이트맵</p>
+          <ul class="site-sitemap__groups">
+            <li>
+              <a class="site-sitemap__page" href="../index.html">자기소개서</a>
+              <ul class="site-sitemap__list">
+                <li><a href="../index.html#section-motivation">지원 동기</a></li>
+                <li><a href="../index.html#section-growth">성장·학습</a></li>
+                <li><a href="../index.html#section-skills">역량</a></li>
+                <li><a href="../index.html#section-links">자료</a></li>
+                <li><a href="../index.html#section-strengths">강점</a></li>
+                <li><a href="../index.html#section-closing">마치며</a></li>
+                <li><a href="../index.html#section-refs">참고</a></li>
+              </ul>
+            </li>
+            <li>
+              <a class="site-sitemap__page" href="../cover_letter/profile.html">자기소개 / 프로필</a>
+              <ul class="site-sitemap__list">
+                <li><a href="../cover_letter/profile.html#about">소개</a></li>
+                <li><a href="../cover_letter/profile.html#profile">프로필</a></li>
+                <li><a href="../cover_letter/profile.html#interests">관심 분야</a></li>
+                <li><a href="../cover_letter/profile.html#learning">학습 · 경험</a></li>
+              </ul>
+            </li>
+            <li>
+              <a class="site-sitemap__page" href="../online_business_card/business-card.html">온라인 명함</a>
+              <ul class="site-sitemap__list">
+                <li><a href="../cv/resume.html">이력서</a></li>
+                <li><a href="../study_note_record_organization/dashboard/index.html">학습록</a></li>
+              </ul>
+            </li>
+            <li>
+              <a class="site-sitemap__page" href="index.html" aria-current="page">프로젝트 아카이브</a>
+              <ul class="site-sitemap__list">
+                <li><a href="#archive-list">목록</a></li>
+                <li><a href="proj-01.html">PROJ_01 파이썬 학습과 댓글 게시판</a></li>
+                <li><a href="proj-02.html">PROJ_02 원두 정기 구독</a></li>
+                <li><a href="proj-03.html">PROJ_03 오늘의 할 일</a></li>
+                <li><a href="proj-04.html">PROJ_04 전국 캠핑장 현황</a></li>
+                <li><a href="proj-05.html">PROJ_05 ChatGPT로 만든 프로그램</a></li>
+                <li><a href="proj-06.html">PROJ_06 코딩상자</a></li>
+                <li><a href="proj-07.html">PROJ_07 하루하루 스터디</a></li>
+                <li><a href="proj-08.html">PROJ_08 저자 식별</a></li>
+                <li><a href="proj-09.html">PROJ_09 커서로 따라 만든 프로그램</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <p class="site-footer__note">2026년 10월 17일 구성 · 코탐록 자료 카테고리의 프로젝트 아카이브</p>
+        <p class="site-footer__disclosure">
+          자료를 제외한 문장이나 문구는 나의 생각을 프롬프트에 요청하여 생성한 문장이나 문구입니다.
+        </p>
+        <p class="site-footer__copyright">© 2026 김신욱(깃허브 ackdark23358). All rights reserved.</p>
+      </div>
+    </footer>
+    <script src="js/site.js"></script>
+      <script src="../js/protect-resources.js"></script>
+  </body>
+</html>

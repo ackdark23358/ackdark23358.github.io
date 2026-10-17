@@ -631,6 +631,7 @@ def build() -> Doc:
             "cover_letter/ — 자기소개",
             "online_business_card/ — 스크롤 명함",
             "study_note_record_organization/dashboard/ — 학습·과제 카드 화면",
+            "portfolio_achieve/ — 프로젝트 아카이브 (PROJ_01~PROJ_09)",
             "study_note_record_organization/scripts/ — 요약과 정적 데이터 빌드",
             "study_note_record_organization/data/ — 노트, 과제, 이미지 원본",
         ]
@@ -645,6 +646,7 @@ def build() -> Doc:
             "cover_letter/css, cover_letter/js — 자기소개 스타일과 스크롤 메뉴",
             "online_business_card/css, online_business_card/js — 명함 애니메이션",
             "study_note_record_organization/dashboard/js — 카드, 검색, 히어로. data.js와 sources는 생성물",
+            "portfolio_achieve/ — 프로젝트 아카이브 카드 및 상세(PROJ_01~PROJ_09), 스타일(archive.css) 및 스크립트(site.js)",
             "study_note_record_organization/scripts — build_output.py, build_static_site.py, extract_sources.py",
             "study_note_record_organization/output — 빌드가 쓰는 요약 마크다운과 catalog.json",
             "study_note_record_organization/data/과제분류하기 — 과제 문서 원본. 코드 파일은 이 문서에서 빼 둔다",
@@ -695,6 +697,14 @@ def build() -> Doc:
                 ROOT / "study_note_record_organization" / "dashboard" / "css" / "styles.css",
                 ROOT / "study_note_record_organization" / "dashboard" / "js" / "app.js",
                 ROOT / "study_note_record_organization" / "dashboard" / "js" / "hero.js",
+            ],
+        ),
+        (
+            "프로젝트 아카이브",
+            [
+                ROOT / "portfolio_achieve" / "index.html",
+                ROOT / "portfolio_achieve" / "css" / "archive.css",
+                ROOT / "portfolio_achieve" / "js" / "site.js",
             ],
         ),
     ]

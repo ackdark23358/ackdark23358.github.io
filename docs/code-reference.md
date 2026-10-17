@@ -12,6 +12,7 @@
 - cover_letter/ — 자기소개
 - online_business_card/ — 스크롤 명함
 - study_note_record_organization/dashboard/ — 학습·과제 카드 화면
+- portfolio_achieve/ — 프로젝트 아카이브 (PROJ_01~PROJ_09)
 - study_note_record_organization/scripts/ — 요약과 정적 데이터 빌드
 - study_note_record_organization/data/ — 노트, 과제, 이미지 원본
 
@@ -24,6 +25,7 @@
 - cover_letter/css, cover_letter/js — 자기소개 스타일과 스크롤 메뉴
 - online_business_card/css, online_business_card/js — 명함 애니메이션
 - study_note_record_organization/dashboard/js — 카드, 검색, 히어로. data.js와 sources는 생성물
+- portfolio_achieve/ — 프로젝트 아카이브 카드 및 상세(PROJ_01~PROJ_09), 스타일(archive.css) 및 스크립트(site.js)
 - study_note_record_organization/scripts — build_output.py, build_static_site.py, extract_sources.py
 - study_note_record_organization/output — 빌드가 쓰는 요약 마크다운과 catalog.json
 - study_note_record_organization/data/과제분류하기 — 과제 문서 원본. 코드 파일은 이 문서에서 빼 둔다
@@ -1739,6 +1741,270 @@ window.matchMedia &&
 window.matchMedia("(prefers-reduced-motion: reduce)").matches
 만약 !reduced && images.length > 1
   timer = setInterval(nextRandom, AUTO_MS)
+```
+
+
+## 프로젝트 아카이브
+
+
+### portfolio_achieve/index.html
+
+파일 역할 주석이 없습니다.
+
+
+### portfolio_achieve/css/archive.css
+
+코탐록 메인 페이지와 같은 색, 글자, 간격을 프로젝트 아카이브에 맞춘다.
+
+
+### portfolio_achieve/js/site.js
+
+
+#### prefersReducedMotion
+
+`portfolio_achieve/js/site.js:8`
+
+```
+function prefersReducedMotion()
+```
+
+설명이 없습니다.
+
+- 인자: 없음
+- 반환: 없음
+
+유사코드
+
+```
+반환 mqReduceMotion ? mqReduceMotion.matches : false
+```
+
+
+#### queryAll
+
+`portfolio_achieve/js/site.js:12`
+
+```
+function queryAll(selector)
+```
+
+설명이 없습니다.
+
+- 인자: selector
+- 반환: 없음
+
+유사코드
+
+```
+반환 Array.prototype.slice.call(document.querySelectorAll(selector))
+```
+
+
+#### initThemeToggle
+
+`portfolio_achieve/js/site.js:16`
+
+```
+function initThemeToggle()
+```
+
+설명이 없습니다.
+
+- 인자: 없음
+- 반환: 없음
+
+유사코드
+
+```
+toggle ← document.querySelector("[data-theme-toggle]")
+만약 !toggle) return
+storedTheme ← null
+시도
+  storedTheme = localStorage.getItem(THEME_KEY)
+  } catch (e)
+  storedTheme = null
+theme ← storedTheme || document.documentElement.getAttribute("data-defa…
+applyTheme(theme, toggle)
+toggle.addEventListener("click", function ()
+  current ← document.documentElement.getAttribute("data-theme") === "ligh…
+  next ← current === "light" ? "dark" : "light"
+  시도
+    localStorage.setItem(THEME_KEY, next)
+    } catch (e)
+  applyTheme(next, toggle)
+```
+
+
+#### applyTheme
+
+`portfolio_achieve/js/site.js:42`
+
+```
+function applyTheme(theme, toggle)
+```
+
+설명이 없습니다.
+
+- 인자: theme, toggle
+- 반환: 없음
+
+유사코드
+
+```
+normalized ← theme === "light" ? "light" : "dark"
+label ← toggle.querySelector("[data-theme-label]")
+document.documentElement.setAttribute("data-theme", normalized)
+toggle.setAttribute("aria-pressed", normalized === "dark" ? "true" : "f…
+toggle.setAttribute("aria-label", normalized === "dark" ? "라이트 테마로 전환" …
+만약 label) label.textContent = normalized === "dark" ? "다크" : "라이트"
+```
+
+
+#### setMobileNav
+
+`portfolio_achieve/js/site.js:51`
+
+```
+function setMobileNav(open)
+```
+
+설명이 없습니다.
+
+- 인자: open
+- 반환: 없음
+
+유사코드
+
+```
+nav ← document.getElementById("site-nav")
+toggle ← document.querySelector(".nav-toggle")
+만약 !nav || !toggle) return
+nav.classList.toggle("is-open", open)
+toggle.setAttribute("aria-expanded", open ? "true" : "false")
+toggle.setAttribute("aria-label", open ? "메뉴 닫기" : "메뉴 열기")
+만약 !open) closeDropdowns
+```
+
+
+#### setDropdown
+
+`portfolio_achieve/js/site.js:61`
+
+```
+function setDropdown(dropdown, open)
+```
+
+설명이 없습니다.
+
+- 인자: dropdown, open
+- 반환: 없음
+
+유사코드
+
+```
+toggle ← dropdown.querySelector(".site-nav__dropdown-toggle")
+menu ← dropdown.querySelector(".site-nav__dropdown-menu")
+dropdown.classList.toggle("is-open", open)
+만약 toggle) toggle.setAttribute("aria-expanded", open ? "true" : "false"
+만약 menu) menu.hidden = !open
+```
+
+
+#### closeDropdowns
+
+`portfolio_achieve/js/site.js:69`
+
+```
+function closeDropdowns(except)
+```
+
+설명이 없습니다.
+
+- 인자: except
+- 반환: 없음
+
+유사코드
+
+```
+queryAll(".site-nav__dropdown").forEach(function (dropdown)
+  만약 except && dropdown === except) return
+  setDropdown(dropdown, false)
+```
+
+
+#### initNav
+
+`portfolio_achieve/js/site.js:76`
+
+```
+function initNav()
+```
+
+설명이 없습니다.
+
+- 인자: 없음
+- 반환: 없음
+
+유사코드
+
+```
+nav ← document.getElementById("site-nav")
+toggle ← document.querySelector(".nav-toggle")
+만약 toggle && nav
+  toggle.addEventListener("click", function ()
+    setMobileNav(!nav.classList.contains("is-open"))
+queryAll(".site-nav__dropdown").forEach(function (dropdown)
+  dropdownToggle ← dropdown.querySelector(".site-nav__dropdown-toggle")
+  만약 !dropdownToggle) return
+  dropdownToggle.addEventListener("click", function (e)
+    e.preventDefault()
+    open ← dropdownToggle.getAttribute("aria-expanded") !== "true"
+    closeDropdowns(dropdown)
+    setDropdown(dropdown, open)
+queryAll('a[href^="#"]').forEach(function (link)
+  link.addEventListener("click", function (e)
+    id ← (link.getAttribute("href") || "").slice(1)
+    target ← id ? document.getElementById(id) : null
+    만약 !target) return
+    e.preventDefault()
+    target.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "sm…
+    만약 !target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1"
+    target.focus({ preventScroll: true })
+    setMobileNav(false)
+    closeDropdowns()
+document.addEventListener("click", function (e)
+  target ← e.target
+  만약 target instanceof Element && target.closest(".site-nav__dropdown")) ret…
+  closeDropdowns()
+document.addEventListener("keydown", function (e)
+  만약 e.key !== "Escape") return
+  closeDropdowns()
+  만약 nav && nav.classList.contains("is-open"
+    setMobileNav(false)
+    만약 toggle) toggle.focus
+window.addEventListener("resize", function ()
+  만약 window.innerWidth > 768) setMobileNav(false
+```
+
+
+#### initSectionTargets
+
+`portfolio_achieve/js/site.js:131`
+
+```
+function initSectionTargets()
+```
+
+설명이 없습니다.
+
+- 인자: 없음
+- 반환: 없음
+
+유사코드
+
+```
+queryAll(".section[id], .hero[id]").forEach(function (section)
+  만약 !section.hasAttribute("tabindex")) section.setAttribute("tabindex", "-1"
 ```
 
 

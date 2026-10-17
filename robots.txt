@@ -4,6 +4,7 @@ Disallow: /cover_letter/
 Disallow: /online_business_card/
 Disallow: /cv/
 Disallow: /study_note_record_organization/
+Disallow: /portfolio_achieve/
 Disallow: /docs/
 
 # 생성형 검색·학습 로봇. 본문 재사용과 학습용 수집을 거절한다.
