@@ -12,7 +12,7 @@
 - cover_letter/ — 자기소개
 - online_business_card/ — 스크롤 명함
 - study_note_record_organization/dashboard/ — 학습·과제 카드 화면
-- portfolio_achieve/ — 프로젝트 아카이브 (PROJ_01~PROJ_09)
+- portfolio_achieve/ — 프로젝트 아카이브 (PROJ_01~PROJ_15)
 - study_note_record_organization/scripts/ — 요약과 정적 데이터 빌드
 - study_note_record_organization/data/ — 노트, 과제, 이미지 원본
 
@@ -25,7 +25,7 @@
 - cover_letter/css, cover_letter/js — 자기소개 스타일과 스크롤 메뉴
 - online_business_card/css, online_business_card/js — 명함 애니메이션
 - study_note_record_organization/dashboard/js — 카드, 검색, 히어로. data.js와 sources는 생성물
-- portfolio_achieve/ — 프로젝트 아카이브(PROJ_01~PROJ_09 메타 카드), 스타일(archive.css) 및 스크립트(site.js)
+- portfolio_achieve/ — 프로젝트 아카이브(PROJ_01~PROJ_15 메타 카드), 스타일(archive.css) 및 스크립트(site.js)
 - study_note_record_organization/scripts — build_output.py, build_static_site.py, extract_sources.py
 - study_note_record_organization/output — 빌드가 쓰는 요약 마크다운과 catalog.json
 - study_note_record_organization/data/과제분류하기 — 과제 문서 원본. 코드 파일은 이 문서에서 빼 둔다
@@ -4783,12 +4783,92 @@ data 폴더의 노트, 과제 문서, 이미지다. 함수가 없어 파일마�
 
 ### .hwpx
 
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/06 이전 강의노트.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/06-4 뷰바인딩.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/06-5 카카오톡 비밀번호 화면 만들기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/07-1 레이아웃 LinearLayout.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/07-2 Relativelayout 관계레이아웃.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/07-3 FrameLayout.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/07-4 GridLayout.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/07-5 ConsraintLayout.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/07-6 전화번호 화면 구성해보기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/08-1 터치이벤트와 키이벤트.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/08-2 뷰 이벤트.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/08-3 시계 앱의 스톱워치 기능 만들기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/09-1 리소스 종류와 특징.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/09-2 리소스 조건 설정.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/09-3 폰 화면 크기별 설정.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/09-4 메신져 화면 만들기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/10-1 호환성문제.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/10-2 퍼미션 문제.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/10-3-1 다양한 다이얼로그 - 토스트, 시간, 날짜 다이얼로그.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/10-3-2 다양한 다이얼로그 - 알터 리스트 커스텀.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/10-4 진동과 벨 알림.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/10-5-1 알림띄우기- 채널, 알림 객체.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/10-5-2 알림구성 스타일.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/10-6-카카오톡 알림 만들기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/11-1. 제트펙과 androidx lib.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/11-2 AppcompatLib 호환성 문제 해결.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/11-3 프레그먼트 - 엑티비티처럼 동작하는뷰.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/11-4-1 리사이클러뷰 기본.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/11-4-2 리사이클러뷰 엑티비티 파일.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/11-5 뷰페이저2.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/11-6 드로어 레이아웃 - 옆에서 열리는 화면.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/11-7-제트팩을 이용해 화면 구성하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/12-1 Appbar Metarial.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/12-2 TabLayout 기본.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/12-3,4네비게이션뷰 확장된 플로팅 액션버튼.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/12-5-머티리얼 라이브러리로 화면 구성하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/13-1-1 인텐트 필기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/13-1-2 인텐트 세부사항 필기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/13-2 엑티비티 생명주기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/13-3 - 엑티비티 제어.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/13-4-태스크 관리.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/13-5-액티비티 ANR 문제와 코루틴.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/14-1 브로드캐드 리시버.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/14-2-시스템 상태 파악하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/14-3-배터리 정보 앱 만들기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/15 -1 서비스 이해하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/15-2 바인딩 서비스.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/15-3 백그라운드 제약.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/15-4 잡 스케줄러.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/16-1 콘텐츠 프로바이더.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/16-2 안드로이드 기본 앱과 연동하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/16-3 카메라앱과 겔러리앱 연동.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/17-1 DatabasePra xml 엑티비티 파일.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/17-2 파일에 보관하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/17-3 공유된 프리퍼런스에 보관하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/18-1 스마트폰 정보 구하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/18-2 HTTP 통신하기 - Volley 라이브러리.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/18-3 HTTP 통신하기 Retrofit2.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/18-4 이미지 Glide 라이브러리.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/19-1 사용자 위치 얻기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/19-2 지도사용하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/19-3 구글 지도앱 만들기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/20-1 firebase 이해하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/20-2 파이어베이스 연동하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/20-3 파이어베이스 인증 사용하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/20장-21장 함쳐본 파일.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/21-1 파이어스토어 데이터베이스 필기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/21-2 파이어베이스 스토리지.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/21-4 파이어베이스 클라우드 메시징.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의필가 합쳐논 파일.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/구글 클라우드 스토리지.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
 - study_note_record_organization/data/Do it android kotlin 수강노트.hwpx — 수강 노트
 - study_note_record_organization/data/패스트캠퍼스 안드로이드 코틀린 수강노트.hwpx — 수강 노트
 
 
+### .jpg
+
+- study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/2024신년카드만들기 결과물.jpg — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/2024신년카드만들기.jpg — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/크리스마스-가족.jpg — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/크리스마스-가족2.jpg — 학습·과제 화면 캡처 또는 도표
+
+
 ### .pdf
 
+- study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/취준생이 반드시 봐야 할 중고신입 전략.pdf — 학습 기록 원본
 - study_note_record_organization/data/과제분류하기/데이터베이스_총괄과졔 OOO(OOOOOOOO).pdf — 과제 제출 원본
 - study_note_record_organization/data/과제분류하기/정보처리_총괄과졔 OOO(OOOOOOOO).pdf — 과제 제출 원본
 - study_note_record_organization/data/과제분류하기/컴퓨터개론_총괄과제 OOO (OOOOOOOO).pdf — 과제 제출 원본
@@ -4796,6 +4876,78 @@ data 폴더의 노트, 과제 문서, 이미지다. 함수가 없어 파일마�
 
 ### .png
 
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/ANR문제해결.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/Appcompat 라이브러리 호환성 해결 필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/Appcompat 라이브러리 호환성 해결 필기2.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/Appcompat 라이브러리 호환성 해결 필기3.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/http 통신하기 retrofit2 필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/http통신하기 retrofir2 필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/intent 세부필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/KEY이벤트필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/layout.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/Notification알람 필기1.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/Notification알람 필기2.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/RecylerView decoration 필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의노트스캔0.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의노트스캔1.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의노트스캔2.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의노트스캔3.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의노트스캔4.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의노트스캔5.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의필기-1.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의필기-2뷰바인딩 필기노트.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/관계레이아웃필기1.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/관계레이아웃필기2.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/리사이클러뷰 필기1.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/리소스 조건 설정.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/바인딩 필기1.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/벡 그라운드 제약 필기 3.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/벡그라운드 제약 필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/벡그라운드 제어2.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/뷰바인딩 필기노트.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/뷰이벤트.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/브로드캐드리시버 필기2.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/브로드케드리시버 필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/서비스 필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/서피스 필기 2.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/앱바 머터리얼 필기 2.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/앱바 머터리얼 필기1.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/엑티비티 생명주기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/엡바 머터리얼 필기 3.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/여러가지 다이얼로그 커스텀 다이얼로그.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/여러가지다이얼로그필기 목록다이얼로그.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/여러다이얼로그필기1.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/인텐트 세부 필기2.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/인텐트 세부필기 3.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/잡 스캐줄러 필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/제트펙과 androidx 필기1.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/제트펙과 androidx 필기2.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/진동 알람 필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/콘텐츠 프로바이더 필기2.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/콘텐츠 프로바이더.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/터치이벤트필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/테스크관리3.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/테스트 관리 요청.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/텝레이아웃 필기1.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/텝레이아웃 필기2.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/파이어 베이스 필기2.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/파이어베이스 클라우드 메시징 필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/파이어베이스 필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/퍼미션 필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/폰화면 크기 화환성 필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/프래그먼트 필기1.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/프래그먼트 필기2.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/플로팅 버튼 필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/하위호환성 필기.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/하위호환성 필기2.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/udemy (과정 앞부분 50%미만 수강)/취준생을 위한 HTML + CSS + JAVASCRIPT 이력서 만들기/CLASSROOM/img/profile.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/2강/Screenshot 2025-07-16 214555.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/2강/Untitled.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/강의들으면서 캡쳐한사진/Screenshot 2025-07-19 175601.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/강의들으면서 캡쳐한사진/Screenshot 2025-07-19 181303.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/강의들으면서 캡쳐한사진/Screenshot 2025-07-19 192431.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/강의들으면서 캡쳐한사진/Screenshot 2025-07-19 205012.png — 학습·과제 화면 캡처 또는 도표
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/강의들으면서 캡쳐한사진/Screenshot 2025-07-20 232122.png — 학습·과제 화면 캡처 또는 도표
 - study_note_record_organization/data/image/1~2일차 쳇지피티 여행계획 프롬프트 작성 스크린샷.png — 학습·과제 화면 캡처 또는 도표
 - study_note_record_organization/data/image/1~2일차 쳇지피티 여행계획 프롬프트작성 - 2 화면 캡처 2026-01-04 222121.png — 학습·과제 화면 캡처 또는 도표
 - study_note_record_organization/data/image/GOMCAM OOOOOOOO_OOOOOOOO37.png — 학습·과제 화면 캡처 또는 도표
@@ -4829,8 +4981,64 @@ data 폴더의 노트, 과제 문서, 이미지다. 함수가 없어 파일마�
 - study_note_record_organization/data/image/함수 설계하고 테스트하는 기본적인 과정 다이어그램.drawio.png — 학습·과제 화면 캡처 또는 도표
 
 
+### .psd
+
+- study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/2024신년카드만들기.psd — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/가족사진-2.psd — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/가족사진-편집1.psd — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/가족사진.psd — 학습 기록 원본
+
+
 ### .txt
 
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/ANR문제해결 필기.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/바인딩 서비스 필기.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/브로드캐드리시버 필기.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/서비스 필기.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/시스템 파악하기.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/안드로이드 기본 앱과 연동하기 필기.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/엑티비티생명주기필기.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/인텐트 세부사항 필기.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/인텐트 필기.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/잡 스케쥴러.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/콘텐츠 프로바이더.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/테스크관리 필기.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/파이어베이스 쿨라우드 메시징 필기.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/udemy (과정 앞부분 50%미만 수강)/유데미 코틀린 필기 백업2.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/udemy (과정 앞부분 50%미만 수강)/유메니 코틀린 필기 백업.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/1일차 강의노트.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/2일차 강의노트.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/3일차 강의노트.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/4일차 강의노트.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/5일차 강의노트.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/6일차 강의노트.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/1.Flutter Dart 언어 필기.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/2. dart flutter oop 필기.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/3. dart 함수형 프로그래밍.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/4. dart 비동기 프로그래밍.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/코딩펙토리 만원쿠폰.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/10강/10강.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/11강/11강.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/12강/12강.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/13강/13강.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/14강/14강.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/15강/15강.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/1강/1강.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/2강/2강.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/3강/3강 기록.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/4강/4강.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/5강/5강.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/6강/6강.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/7강/7강.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/9강/9강.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/일러스트레이터 강의자료 필기/(정리)일러스트레이터 팁.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/일러스트레이터 강의자료 필기/(정리)일스트레이터 입문.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/(정리)포토샵 복습 페스트 캠퍼스.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/Chapter1 필기.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/Chapter2 필기.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/포토샵 파트3 필기 chapter1.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/포토샵 합성 chapter2 요약 정리하기.txt — 학습 기록 원본
+- study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/포토샵 합성 chapter2 요약.txt — 학습 기록 원본
 - study_note_record_organization/data/Do it 5일만에 끝내는 깃&깃허브 입문 1장 독서노트.txt — 독서 노트
 - study_note_record_organization/data/Do it 5일만에 끝내는 깃&깃허브 입문 2장 독서노트.txt — 독서 노트
 - study_note_record_organization/data/Do it 5일만에 끝내는 깃&깃허브 입문 3장 독서노트.txt — 독서 노트

@@ -24,6 +24,7 @@ SKIP_DIRS = {
     "obj",
     "bin",
     "node_modules",
+    "prtfolio_acheve_add_2026_10_16",
 }
 SKIP_FILES = {"data.js", "hero-images.js"}
 

@@ -330,12 +330,12 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 9pt; backgro
 <p>외부 의존성은 없다. 6개 공개 HTML(<code>index.html</code>, <code>profile.html</code>, <code>business-card.html</code>, <code>resume.html</code>, <code>study_note_record_organization/dashboard/index.html</code>, <code>portfolio_achieve/index.html</code>)의 바닥에서 로드되어 독립적으로 동작한다.</p>
 <h1>프로젝트 아카이브</h1>
 <h2>이 파일이 맡는 일</h2>
-<p><code>portfolio_achieve/index.html</code>은 지원자가 실습하고 개발한 9개 프로젝트(<code>PROJ_01</code> ~ <code>PROJ_09</code>)를 카드로 모아 제공하는 프로젝트 아카이브 메인 페이지다.</p>
+<p><code>portfolio_achieve/index.html</code>은 지원자가 실습하고 개발한 9개 실습 프로젝트(<code>PROJ_01</code> ~ <code>PROJ_09</code>) 및 6개 기관 과정 프로젝트(<code>PROJ_10</code> ~ <code>PROJ_15</code>)를 카드로 모아 총 15개 프로젝트를 제공하는 아카이브 메인 페이지다.</p>
 <p>각 프로젝트 카드는 소개, 사용 도구(Pill 태그), 실행 환경, 간단 설명, 핵심 기능을 균일한 시맨틱 카드(<code>&lt;article class=&quot;project-card&quot;&gt;</code>) 구조로 담고 있으며, 외부 이동 없이 단일 페이지 내에서 일목요연하게 열람할 수 있도록 구성되었다.</p>
 <p>동작을 지원하는 스타일과 스크립트는 다음과 같다:</p>
 <ul><li><code>portfolio_achieve/css/archive.css</code>: 다크/라이트 테마 변수, 프로젝트 카드 그리드, 정적 메타 카드 레이아웃 및 캡처 이미지 반응형 스타일</li><li><code>portfolio_achieve/js/site.js</code>: 테마 전환 토글(<code>portfolio-theme-v2</code> 동기화), 모바일 네비게이션 드롭다운 제어, 스크롤 이동 이벤트</li></ul>
 <h2>읽는 순서</h2>
-<ol><li>테마 및 리소스 보호 메타 태그 (<code>robots</code>, <code>tdm-reservation</code>, <code>referrer</code>)</li><li>상단 헤더 및 자료 드롭다운 네비게이션</li><li>히어로 소개 구역 (<code>#archive</code>)</li><li>프로젝트 카드 그리드 목록 (<code>#archive-list</code>, <code>PROJ_01</code> ~ <code>PROJ_09</code>)</li><li>전개형 사이트맵 및 저작권·선언문 푸터</li><li>테마 및 인터랙션 스크립트 (<code>js/site.js</code>, <code>../js/protect-resources.js</code>)</li></ol>
+<ol><li>테마 및 리소스 보호 메타 태그 (<code>robots</code>, <code>tdm-reservation</code>, <code>referrer</code>)</li><li>상단 헤더 및 자료 드롭다운 네비게이션</li><li>히어로 소개 구역 (<code>#archive</code>)</li><li>프로젝트 카드 그리드 목록 (<code>#archive-list</code>, <code>PROJ_01</code> ~ <code>PROJ_15</code>)</li><li>전개형 사이트맵 및 저작권·선언문 푸터</li><li>테마 및 인터랙션 스크립트 (<code>js/site.js</code>, <code>../js/protect-resources.js</code>)</li></ol>
 <h2>구간 설명</h2>
 <h3>메타 태그와 테마 사전 적용</h3>
 <p><code>&lt;head&gt;</code> 내부에서 <code>localStorage.getItem(&quot;portfolio-theme-v2&quot;)</code>를 즉시 실행하여 <code>data-theme</code> 속성을 지정한다. 화면이 그려지기 전에 적용되어 깜빡임 현상을 방지한다.</p>

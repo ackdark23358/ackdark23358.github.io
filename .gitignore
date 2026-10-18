@@ -9,3 +9,6 @@ Thumbs.db
 *.swp
 .vs/
 *.suo
+
+# Temp staging directories
+prtfolio_acheve_add_2026_10_16/

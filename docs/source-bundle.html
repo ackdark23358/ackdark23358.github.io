@@ -3346,7 +3346,7 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 8pt; line-he
 631              &quot;cover_letter/ — 자기소개&quot;,
 632              &quot;online_business_card/ — 스크롤 명함&quot;,
 633              &quot;study_note_record_organization/dashboard/ — 학습·과제 카드 화면&quot;,
-634              &quot;portfolio_achieve/ — 프로젝트 아카이브 (PROJ_01~PROJ_09)&quot;,
+634              &quot;portfolio_achieve/ — 프로젝트 아카이브 (PROJ_01~PROJ_15)&quot;,
 635              &quot;study_note_record_organization/scripts/ — 요약과 정적 데이터 빌드&quot;,
 636              &quot;study_note_record_organization/data/ — 노트, 과제, 이미지 원본&quot;,
 637          ]
@@ -3361,7 +3361,7 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 8pt; line-he
 646              &quot;cover_letter/css, cover_letter/js — 자기소개 스타일과 스크롤 메뉴&quot;,
 647              &quot;online_business_card/css, online_business_card/js — 명함 애니메이션&quot;,
 648              &quot;study_note_record_organization/dashboard/js — 카드, 검색, 히어로. data.js와 sources는 생성물&quot;,
-649              &quot;portfolio_achieve/ — 프로젝트 아카이브(PROJ_01~PROJ_09 메타 카드), 스타일(archive.css) 및 스크립트(site.js)&quot;,
+649              &quot;portfolio_achieve/ — 프로젝트 아카이브(PROJ_01~PROJ_15 메타 카드), 스타일(archive.css) 및 스크립트(site.js)&quot;,
 650              &quot;study_note_record_organization/scripts — build_output.py, build_static_site.py, extract_sources.py&quot;,
 651              &quot;study_note_record_organization/output — 빌드가 쓰는 요약 마크다운과 catalog.json&quot;,
 652              &quot;study_note_record_organization/data/과제분류하기 — 과제 문서 원본. 코드 파일은 이 문서에서 빼 둔다&quot;,
@@ -4297,124 +4297,125 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 8pt; line-he
  24      &quot;obj&quot;,
  25      &quot;bin&quot;,
  26      &quot;node_modules&quot;,
- 27  }
- 28  SKIP_FILES = {&quot;data.js&quot;, &quot;hero-images.js&quot;}
- 29  
+ 27      &quot;prtfolio_acheve_add_2026_10_16&quot;,
+ 28  }
+ 29  SKIP_FILES = {&quot;data.js&quot;, &quot;hero-images.js&quot;}
  30  
- 31  def include(path: Path) -&gt; bool:
- 32      if path.suffix.lower() not in SUFFIXES:
- 33          return False
- 34      if path.name in SKIP_FILES or path.name.endswith(&quot;.min.js&quot;):
- 35          return False
- 36      if any(part in SKIP_DIRS for part in path.parts):
- 37          return False
- 38      if DOCS in path.parents and path.suffix.lower() == &quot;.html&quot;:
- 39          return False
- 40      return True
- 41  
+ 31  
+ 32  def include(path: Path) -&gt; bool:
+ 33      if path.suffix.lower() not in SUFFIXES:
+ 34          return False
+ 35      if path.name in SKIP_FILES or path.name.endswith(&quot;.min.js&quot;):
+ 36          return False
+ 37      if any(part in SKIP_DIRS for part in path.parts):
+ 38          return False
+ 39      if DOCS in path.parents and path.suffix.lower() == &quot;.html&quot;:
+ 40          return False
+ 41      return True
  42  
- 43  def source_files() -&gt; list[Path]:
- 44      files = [path for path in ROOT.rglob(&quot;*&quot;) if path.is_file() and include(path)]
- 45      return sorted(files, key=lambda path: path.relative_to(ROOT).as_posix())
- 46  
+ 43  
+ 44  def source_files() -&gt; list[Path]:
+ 45      files = [path for path in ROOT.rglob(&quot;*&quot;) if path.is_file() and include(path)]
+ 46      return sorted(files, key=lambda path: path.relative_to(ROOT).as_posix())
  47  
- 48  def file_block(path: Path) -&gt; str:
- 49      rel = path.relative_to(ROOT).as_posix()
- 50      text = path.read_text(encoding=&quot;utf-8&quot;)
- 51      lines = text.splitlines()
- 52      width = max(len(str(len(lines))), 2)
- 53      numbered = &quot;\n&quot;.join(f&quot;{index:&gt;{width}}  {line}&quot; for index, line in enumerate(lines, start=1))
- 54      return f&quot;&lt;h2&gt;{html.escape(rel)}&lt;/h2&gt;\n&lt;pre&gt;{html.escape(numbered)}&lt;/pre&gt;&quot;
- 55  
+ 48  
+ 49  def file_block(path: Path) -&gt; str:
+ 50      rel = path.relative_to(ROOT).as_posix()
+ 51      text = path.read_text(encoding=&quot;utf-8&quot;)
+ 52      lines = text.splitlines()
+ 53      width = max(len(str(len(lines))), 2)
+ 54      numbered = &quot;\n&quot;.join(f&quot;{index:&gt;{width}}  {line}&quot; for index, line in enumerate(lines, start=1))
+ 55      return f&quot;&lt;h2&gt;{html.escape(rel)}&lt;/h2&gt;\n&lt;pre&gt;{html.escape(numbered)}&lt;/pre&gt;&quot;
  56  
- 57  def render_html(blocks: list[str]) -&gt; str:
- 58      intro = (
- 59          &quot;&lt;h1&gt;소스 모음&lt;/h1&gt;&quot;
- 60          &quot;&lt;p&gt;화면과 빌드 소스를 파일 순서대로 이어 두었습니다. &quot;
- 61          &quot;주석은 코드 옆에 그대로 있습니다. &quot;
- 62          &quot;data/ 과제 코드, 압축된 라이브러리, 빌드가 만든 data.js, hero-images.js, sources JSON은 넣지 않았습니다.&lt;/p&gt;&quot;
- 63      )
- 64      css = &quot;&quot;&quot;
- 65  @page { margin: 12mm 10mm; }
- 66  body { font-family: &quot;Malgun Gothic&quot;, sans-serif; color: #1c1c1c; }
- 67  h1 { font-size: 18pt; margin: 0 0 0.4em; }
- 68  h2 { font-size: 12pt; margin: 1.2em 0 0.3em; page-break-before: always; page-break-after: avoid; }
- 69  h2:first-of-type { page-break-before: auto; }
- 70  p { font-size: 10.5pt; line-height: 1.5; }
- 71  pre { font-family: Consolas, &quot;Malgun Gothic&quot;, monospace; font-size: 8pt; line-height: 1.35;
- 72        white-space: pre-wrap; word-break: break-all; margin: 0; }
- 73  &quot;&quot;&quot;
- 74      return &quot;\n&quot;.join(
- 75          [
- 76              &quot;&lt;!DOCTYPE html&gt;&quot;,
- 77              &#x27;&lt;html lang=&quot;ko&quot;&gt;&#x27;,
- 78              &quot;&lt;head&gt;&quot;,
- 79              &#x27;&lt;meta charset=&quot;utf-8&quot; /&gt;&#x27;,
- 80              &quot;&lt;title&gt;소스 모음&lt;/title&gt;&quot;,
- 81              &quot;&lt;style&gt;&quot;,
- 82              css,
- 83              &quot;&lt;/style&gt;&quot;,
- 84              &quot;&lt;/head&gt;&quot;,
- 85              &quot;&lt;body&gt;&quot;,
- 86              intro,
- 87              &quot;\n&quot;.join(blocks),
- 88              &quot;&lt;/body&gt;&quot;,
- 89              &quot;&lt;/html&gt;&quot;,
- 90          ]
- 91      )
- 92  
+ 57  
+ 58  def render_html(blocks: list[str]) -&gt; str:
+ 59      intro = (
+ 60          &quot;&lt;h1&gt;소스 모음&lt;/h1&gt;&quot;
+ 61          &quot;&lt;p&gt;화면과 빌드 소스를 파일 순서대로 이어 두었습니다. &quot;
+ 62          &quot;주석은 코드 옆에 그대로 있습니다. &quot;
+ 63          &quot;data/ 과제 코드, 압축된 라이브러리, 빌드가 만든 data.js, hero-images.js, sources JSON은 넣지 않았습니다.&lt;/p&gt;&quot;
+ 64      )
+ 65      css = &quot;&quot;&quot;
+ 66  @page { margin: 12mm 10mm; }
+ 67  body { font-family: &quot;Malgun Gothic&quot;, sans-serif; color: #1c1c1c; }
+ 68  h1 { font-size: 18pt; margin: 0 0 0.4em; }
+ 69  h2 { font-size: 12pt; margin: 1.2em 0 0.3em; page-break-before: always; page-break-after: avoid; }
+ 70  h2:first-of-type { page-break-before: auto; }
+ 71  p { font-size: 10.5pt; line-height: 1.5; }
+ 72  pre { font-family: Consolas, &quot;Malgun Gothic&quot;, monospace; font-size: 8pt; line-height: 1.35;
+ 73        white-space: pre-wrap; word-break: break-all; margin: 0; }
+ 74  &quot;&quot;&quot;
+ 75      return &quot;\n&quot;.join(
+ 76          [
+ 77              &quot;&lt;!DOCTYPE html&gt;&quot;,
+ 78              &#x27;&lt;html lang=&quot;ko&quot;&gt;&#x27;,
+ 79              &quot;&lt;head&gt;&quot;,
+ 80              &#x27;&lt;meta charset=&quot;utf-8&quot; /&gt;&#x27;,
+ 81              &quot;&lt;title&gt;소스 모음&lt;/title&gt;&quot;,
+ 82              &quot;&lt;style&gt;&quot;,
+ 83              css,
+ 84              &quot;&lt;/style&gt;&quot;,
+ 85              &quot;&lt;/head&gt;&quot;,
+ 86              &quot;&lt;body&gt;&quot;,
+ 87              intro,
+ 88              &quot;\n&quot;.join(blocks),
+ 89              &quot;&lt;/body&gt;&quot;,
+ 90              &quot;&lt;/html&gt;&quot;,
+ 91          ]
+ 92      )
  93  
- 94  def find_browser() -&gt; Path | None:
- 95      local = os.environ.get(&quot;LOCALAPPDATA&quot;, &quot;&quot;)
- 96      candidates = [
- 97          Path(r&quot;C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe&quot;),
- 98          Path(r&quot;C:\Program Files\Microsoft\Edge\Application\msedge.exe&quot;),
- 99          Path(r&quot;C:\Program Files\Google\Chrome\Application\chrome.exe&quot;),
-100          Path(local) / &quot;Google&quot; / &quot;Chrome&quot; / &quot;Application&quot; / &quot;chrome.exe&quot;,
-101      ]
-102      for candidate in candidates:
-103          if candidate.is_file():
-104              return candidate
-105      return None
-106  
+ 94  
+ 95  def find_browser() -&gt; Path | None:
+ 96      local = os.environ.get(&quot;LOCALAPPDATA&quot;, &quot;&quot;)
+ 97      candidates = [
+ 98          Path(r&quot;C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe&quot;),
+ 99          Path(r&quot;C:\Program Files\Microsoft\Edge\Application\msedge.exe&quot;),
+100          Path(r&quot;C:\Program Files\Google\Chrome\Application\chrome.exe&quot;),
+101          Path(local) / &quot;Google&quot; / &quot;Chrome&quot; / &quot;Application&quot; / &quot;chrome.exe&quot;,
+102      ]
+103      for candidate in candidates:
+104          if candidate.is_file():
+105              return candidate
+106      return None
 107  
-108  def write_pdf(html_path: Path, pdf_path: Path) -&gt; None:
-109      browser = find_browser()
-110      if browser is None:
-111          raise SystemExit(&quot;PDF로 인쇄할 Edge 또는 Chrome을 찾지 못했습니다.&quot;)
-112      if pdf_path.exists():
-113          pdf_path.unlink()
-114      profile = Path(tempfile.mkdtemp(prefix=&quot;source-bundle-&quot;))
-115      command = [
-116          str(browser),
-117          &quot;--headless=new&quot;,
-118          &quot;--disable-gpu&quot;,
-119          &quot;--no-first-run&quot;,
-120          &quot;--no-pdf-header-footer&quot;,
-121          f&quot;--user-data-dir={profile}&quot;,
-122          f&quot;--print-to-pdf={pdf_path.resolve()}&quot;,
-123          html_path.resolve().as_uri(),
-124      ]
-125      try:
-126          subprocess.run(command, check=True, timeout=180)
-127      finally:
-128          shutil.rmtree(profile, ignore_errors=True)
-129      if not pdf_path.is_file() or pdf_path.stat().st_size &lt; 1000:
-130          raise SystemExit(f&quot;PDF가 만들어지지 않았습니다: {pdf_path}&quot;)
-131  
+108  
+109  def write_pdf(html_path: Path, pdf_path: Path) -&gt; None:
+110      browser = find_browser()
+111      if browser is None:
+112          raise SystemExit(&quot;PDF로 인쇄할 Edge 또는 Chrome을 찾지 못했습니다.&quot;)
+113      if pdf_path.exists():
+114          pdf_path.unlink()
+115      profile = Path(tempfile.mkdtemp(prefix=&quot;source-bundle-&quot;))
+116      command = [
+117          str(browser),
+118          &quot;--headless=new&quot;,
+119          &quot;--disable-gpu&quot;,
+120          &quot;--no-first-run&quot;,
+121          &quot;--no-pdf-header-footer&quot;,
+122          f&quot;--user-data-dir={profile}&quot;,
+123          f&quot;--print-to-pdf={pdf_path.resolve()}&quot;,
+124          html_path.resolve().as_uri(),
+125      ]
+126      try:
+127          subprocess.run(command, check=True, timeout=180)
+128      finally:
+129          shutil.rmtree(profile, ignore_errors=True)
+130      if not pdf_path.is_file() or pdf_path.stat().st_size &lt; 1000:
+131          raise SystemExit(f&quot;PDF가 만들어지지 않았습니다: {pdf_path}&quot;)
 132  
-133  def main() -&gt; None:
-134      files = source_files()
-135      if not files:
-136          raise SystemExit(&quot;묶을 소스 파일이 없습니다.&quot;)
-137      HTML_PATH.write_text(render_html([file_block(path) for path in files]), encoding=&quot;utf-8&quot;)
-138      write_pdf(HTML_PATH, PDF_PATH)
-139      print(f&quot;Files {len(files)}&quot;)
-140      print(f&quot;Wrote {PDF_PATH} ({PDF_PATH.stat().st_size // 1024} KB)&quot;)
-141  
+133  
+134  def main() -&gt; None:
+135      files = source_files()
+136      if not files:
+137          raise SystemExit(&quot;묶을 소스 파일이 없습니다.&quot;)
+138      HTML_PATH.write_text(render_html([file_block(path) for path in files]), encoding=&quot;utf-8&quot;)
+139      write_pdf(HTML_PATH, PDF_PATH)
+140      print(f&quot;Files {len(files)}&quot;)
+141      print(f&quot;Wrote {PDF_PATH} ({PDF_PATH.stat().st_size // 1024} KB)&quot;)
 142  
-143  if __name__ == &quot;__main__&quot;:
-144      main()</pre>
+143  
+144  if __name__ == &quot;__main__&quot;:
+145      main()</pre>
 <h2>docs/build_specs.py</h2>
 <pre>  1  # -*- coding: utf-8 -*-
   2  &quot;&quot;&quot;기술명세 마크다운을 이어 한글 PDF로 만든다.
@@ -7329,557 +7330,801 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 8pt; line-he
  99            &lt;h1 class=&quot;hero__title&quot;&gt;만든 프로젝트를 카드로 쌓아 둔 아키이브&lt;/h1&gt;
 100            &lt;p class=&quot;hero__lead&quot;&gt;
 101              자기소개서의 자료 카테고리 옆에 두는 정적 페이지입니다. 카드 하나에 프로젝트 소개, 사용 도구, 실행 환경,
-102              간단 설명, 핵심 기능을 담아 정리했습니다. PROJ_01부터 같은 형식으로 이어서 추가합니다.
-103            &lt;/p&gt;
-104            &lt;dl class=&quot;hero__meta&quot;&gt;
-105              &lt;div class=&quot;hero__meta-row&quot;&gt;
-106                &lt;dt&gt;범위&lt;/dt&gt;
-107                &lt;dd&gt;PROJ_01부터 PROJ_09까지, 하나씩 카드로 추가&lt;/dd&gt;
-108              &lt;/div&gt;
-109              &lt;div class=&quot;hero__meta-row&quot;&gt;
-110                &lt;dt&gt;현재&lt;/dt&gt;
-111                &lt;dd&gt;
-112                  PROJ_01 파이썬 학습과 댓글 게시판 · 2025년 2월 17일, PROJ_02 원두 정기 구독 · 2025년 3월 29일,                 PROJ_03
-113                  오늘의 할 일 · 2025년 5월 22일, PROJ_04 전국 캠핑장 현황 · 2025년 5월 22일,                 PROJ_05 ChatGPT로 만든
-114                  프로그램 · 2025년 5월 22일, PROJ_06 코딩상자 · 2025년 6월 9일, PROJ_07 하루하루 스터디 · 2025년 7월 6일, PROJ_08 저자 식별 · 2025년 7월 14일, PROJ_09 커서로 따라 만든 프로그램 · 2025년 8월 5일
-115                &lt;/dd&gt;
-116              &lt;/div&gt;
-117              &lt;div class=&quot;hero__meta-row&quot;&gt;
-118                &lt;dt&gt;정리 방식&lt;/dt&gt;
-119                &lt;dd&gt;이 페이지에 프로젝트 카드를 직접 추가하여 기록을 모읍니다.&lt;/dd&gt;
-120              &lt;/div&gt;
-121            &lt;/dl&gt;
-122          &lt;/div&gt;
-123        &lt;/header&gt;
-124  
-125        &lt;section class=&quot;section&quot; id=&quot;archive-list&quot; aria-labelledby=&quot;heading-list&quot;&gt;
-126          &lt;div class=&quot;section__inner&quot;&gt;
-127            &lt;h2 id=&quot;heading-list&quot; class=&quot;section__title&quot;&gt;프로젝트 목록&lt;/h2&gt;
-128            &lt;p class=&quot;section-lead&quot;&gt;
-129              화면은 2026년 10월 17일에 각 프로젝트 폴더를 열어 확인한 것입니다. 실제 호스팅은 완료 후 시간이 오래 지나
-130              카드에 넣지 않았습니다.
-131            &lt;/p&gt;
-132            &lt;div class=&quot;archive-grid&quot;&gt;
-133              &lt;article class=&quot;project-card&quot;&gt;
-134                &lt;figure class=&quot;project-card__media&quot;&gt;
-135                  &lt;img src=&quot;img/proj-01-list.png&quot; alt=&quot;댓글 하나와 수정, 삭제, 등록 폼이 보이는 게시판 화면&quot; /&gt;
-136                &lt;/figure&gt;
-137                &lt;div class=&quot;project-card__body&quot;&gt;
-138                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_01 · 2025.02.17&lt;/p&gt;
-139                  &lt;h3 class=&quot;project-card__title&quot;&gt;파이썬 학습과 댓글 게시판&lt;/h3&gt;
-140  
-141                  &lt;div&gt;
-142                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
-143                    &lt;p class=&quot;field-body&quot;&gt;
-144                      『Do it! 파이썬』 필기와 『Do it! 점프 투 파이썬』 실습을 뤼튼·OpenAI로 정리하고, 조코딩 게시판
-145                      예제를 참고한 댓글 게시판을 배포 전 시험 환경에서 실행한 기록입니다.
-146                    &lt;/p&gt;
-147                  &lt;/div&gt;
-148  
-149                  &lt;div&gt;
-150                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
-151                    &lt;p class=&quot;field-body&quot;&gt;
-152                      문법, 파일 입출력, 클래스, 정규 표현식 실습을 문서로 남기고, 폼으로 받은 댓글을 SQLite에 저장해
-153                      목록·수정·삭제까지 확인했습니다.
-154                    &lt;/p&gt;
-155                  &lt;/div&gt;
-156  
-157                  &lt;div&gt;
-158                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
-159                    &lt;ul class=&quot;pill-list&quot;&gt;
-160                      &lt;li&gt;Python&lt;/li&gt;
-161                      &lt;li&gt;CMD&lt;/li&gt;
-162                      &lt;li&gt;뤼튼&lt;/li&gt;
-163                      &lt;li&gt;Node.js&lt;/li&gt;
-164                      &lt;li&gt;Express&lt;/li&gt;
-165                      &lt;li&gt;EJS&lt;/li&gt;
-166                      &lt;li&gt;Sequelize&lt;/li&gt;
-167                      &lt;li&gt;SQLite&lt;/li&gt;
-168                      &lt;li&gt;Cloudtype&lt;/li&gt;
-169                    &lt;/ul&gt;
-170                  &lt;/div&gt;
-171  
-172                  &lt;div&gt;
-173                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
-174                    &lt;p class=&quot;field-body&quot;&gt;
-175                      배포 전 시험. 로컬 &lt;span class=&quot;path&quot;&gt;node index.js&lt;/span&gt; · 포트 3000. 실제 호스팅은 프로젝트 완료
-176                      후 시간이 오래 지나 넣지 않았고, README에만 Cloudtype 주소가 남아 있습니다.
-177                    &lt;/p&gt;
-178                  &lt;/div&gt;
-179  
-180                  &lt;div&gt;
-181                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
-182                    &lt;p class=&quot;field-body&quot;&gt;파이썬 실습 정리, 댓글 목록·등록·수정·삭제&lt;/p&gt;
-183                  &lt;/div&gt;
-184                &lt;/div&gt;
-185              &lt;/article&gt;
-186              &lt;article class=&quot;project-card&quot;&gt;
-187                &lt;figure class=&quot;project-card__media&quot;&gt;
-188                  &lt;img src=&quot;img/proj-02-hero.png&quot; alt=&quot;원두정기구독 첫 화면. 커피 원두 사진 위에 이메일 구독 폼&quot; /&gt;
-189                &lt;/figure&gt;
-190                &lt;div class=&quot;project-card__body&quot;&gt;
-191                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_02 · 2025.03.29&lt;/p&gt;
-192                  &lt;h3 class=&quot;project-card__title&quot;&gt;원두 정기 구독&lt;/h3&gt;
-193  
-194                  &lt;div&gt;
-195                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
-196                    &lt;p class=&quot;field-body&quot;&gt;
-197                      『Do it! HTML+CSS+자바스크립트 웹 표준의 정석』의 넷플릭스형 랜딩을 따라 만든 스위커 원두 구독
-198                      페이지입니다. 확인 질문과 CSS·자바스크립트 필기를 함께 남겼습니다.
-199                    &lt;/p&gt;
-200                  &lt;/div&gt;
-201  
-202                  &lt;div&gt;
-203                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
-204                    &lt;p class=&quot;field-body&quot;&gt;
-205                      이메일 구독, 로스트 선택, 원두 카드, FAQ를 HTML과 CSS로 구성했습니다. 질문 목록은 라디오와 CSS로
-206                      열고 닫습니다.
-207                    &lt;/p&gt;
-208                  &lt;/div&gt;
-209  
-210                  &lt;div&gt;
-211                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
-212                    &lt;ul class=&quot;pill-list&quot;&gt;
-213                      &lt;li&gt;HTML&lt;/li&gt;
-214                      &lt;li&gt;CSS&lt;/li&gt;
-215                      &lt;li&gt;Font Awesome&lt;/li&gt;
-216                      &lt;li&gt;자바스크립트&lt;/li&gt;
-217                      &lt;li&gt;VS Code&lt;/li&gt;
-218                      &lt;li&gt;뤼튼&lt;/li&gt;
-219                    &lt;/ul&gt;
-220                  &lt;/div&gt;
-221  
-222                  &lt;div&gt;
-223                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
-224                    &lt;p class=&quot;field-body&quot;&gt;
-225                      정적 페이지. &lt;span class=&quot;path&quot;&gt;Project/index.html&lt;/span&gt;을 브라우저에서 연 화면. 실제 호스팅은
-226                      완료 후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
-227                    &lt;/p&gt;
-228                  &lt;/div&gt;
-229  
-230                  &lt;div&gt;
-231                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
-232                    &lt;p class=&quot;field-body&quot;&gt;구독 폼, 로스트 선택, 원두 카드, FAQ 아코디언, 반응형 배치&lt;/p&gt;
-233                  &lt;/div&gt;
-234                &lt;/div&gt;
-235              &lt;/article&gt;
-236              &lt;article class=&quot;project-card&quot;&gt;
-237                &lt;figure class=&quot;project-card__media&quot;&gt;
-238                  &lt;img src=&quot;img/proj-03-list.png&quot; alt=&quot;오늘의 할 일 화면. 취소선이 그어진 항목과 일반 항목, 완료와 삭제 버튼&quot; /&gt;
-239                &lt;/figure&gt;
-240                &lt;div class=&quot;project-card__body&quot;&gt;
-241                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_03 · 2025.05.22&lt;/p&gt;
-242                  &lt;h3 class=&quot;project-card__title&quot;&gt;오늘의 할 일&lt;/h3&gt;
-243  
-244                  &lt;div&gt;
-245                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
-246                    &lt;p class=&quot;field-body&quot;&gt;
-247                      『Do it! 모던 자바스크립트』의 웹 스토리지 실습으로 만든 할 일 목록입니다. 유튜브 강의 요약은 뤼튼으로
-248                      정리했습니다.
-249                    &lt;/p&gt;
-250                  &lt;/div&gt;
-251  
-252                  &lt;div&gt;
-253                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
-254                    &lt;p class=&quot;field-body&quot;&gt;
-255                      입력한 할 일을 localStorage에 저장하고, 완료 표시와 삭제를 버튼으로 처리합니다. 글을 새로고침해도
-256                      목록 문장은 다시 나타납니다.
-257                    &lt;/p&gt;
-258                  &lt;/div&gt;
-259  
-260                  &lt;div&gt;
-261                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
-262                    &lt;ul class=&quot;pill-list&quot;&gt;
-263                      &lt;li&gt;HTML&lt;/li&gt;
-264                      &lt;li&gt;CSS&lt;/li&gt;
-265                      &lt;li&gt;JavaScript&lt;/li&gt;
-266                      &lt;li&gt;localStorage&lt;/li&gt;
-267                      &lt;li&gt;Canvas&lt;/li&gt;
-268                      &lt;li&gt;뤼튼&lt;/li&gt;
-269                    &lt;/ul&gt;
-270                  &lt;/div&gt;
-271  
-272                  &lt;div&gt;
-273                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
-274                    &lt;p class=&quot;field-body&quot;&gt;
-275                      정적 페이지. &lt;span class=&quot;path&quot;&gt;todo-result.html&lt;/span&gt;을 브라우저에서 연 화면. 실제 호스팅은 완료
-276                      후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
-277                    &lt;/p&gt;
-278                  &lt;/div&gt;
-279  
-280                  &lt;div&gt;
-281                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
-282                    &lt;p class=&quot;field-body&quot;&gt;할 일 추가, 완료 취소선, 삭제, localStorage 저장&lt;/p&gt;
-283                  &lt;/div&gt;
-284                &lt;/div&gt;
-285              &lt;/article&gt;
-286              &lt;article class=&quot;project-card&quot;&gt;
-287                &lt;figure class=&quot;project-card__media&quot;&gt;
-288                  &lt;img src=&quot;img/proj-04-map.png&quot; alt=&quot;전국 캠핑장 현황 제목만 보이고 지도 영역은 비어 있는 화면&quot; /&gt;
-289                &lt;/figure&gt;
-290                &lt;div class=&quot;project-card__body&quot;&gt;
-291                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_04 · 2025.05.22&lt;/p&gt;
-292                  &lt;h3 class=&quot;project-card__title&quot;&gt;전국 캠핑장 현황&lt;/h3&gt;
-293  
-294                  &lt;div&gt;
-295                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
-296                    &lt;p class=&quot;field-body&quot;&gt;
-297                      『Do it! 모던 자바스크립트』의 공공데이터와 카카오맵 실습으로 만든 캠핑장 위치 페이지입니다. 유튜브
-298                      강의 요약은 뤼튼으로 정리했습니다.
-299                    &lt;/p&gt;
-300                  &lt;/div&gt;
-301  
-302                  &lt;div&gt;
-303                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
-304                    &lt;p class=&quot;field-body&quot;&gt;
-305                      고캠핑 목록의 좌표로 마커를 만들고, 마우스를 올리면 시설명 창을 띄우며, 마커는 클러스터로 묶습니다.
-306                      소스의 지도 키와 공공데이터 키는 자리표시라 실행이 되지 않아, 실제 실행 환경은 포함하지 않았습니다.
-307                    &lt;/p&gt;
-308                  &lt;/div&gt;
-309  
-310                  &lt;div&gt;
-311                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
-312                    &lt;ul class=&quot;pill-list&quot;&gt;
-313                      &lt;li&gt;HTML&lt;/li&gt;
-314                      &lt;li&gt;JavaScript&lt;/li&gt;
-315                      &lt;li&gt;Kakao Map&lt;/li&gt;
-316                      &lt;li&gt;공공데이터&lt;/li&gt;
-317                      &lt;li&gt;fetch&lt;/li&gt;
-318                      &lt;li&gt;Canvas&lt;/li&gt;
-319                      &lt;li&gt;뤼튼&lt;/li&gt;
-320                    &lt;/ul&gt;
-321                  &lt;/div&gt;
-322  
-323                  &lt;div&gt;
-324                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
-325                    &lt;p class=&quot;field-body&quot;&gt;
-326                      지도 키와 공공데이터 키가 자리표시라 실행이 되지 않아, 실제 실행 환경은 포함하지 않았습니다. 실제
-327                      호스팅은 완료 후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
-328                    &lt;/p&gt;
-329                  &lt;/div&gt;
-330  
-331                  &lt;div&gt;
-332                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
-333                    &lt;p class=&quot;field-body&quot;&gt;캠핑장 좌표 마커, 시설명 말풍선, 마커 클러스터&lt;/p&gt;
-334                  &lt;/div&gt;
-335                &lt;/div&gt;
-336              &lt;/article&gt;
-337              &lt;article class=&quot;project-card&quot;&gt;
-338                &lt;figure class=&quot;project-card__media&quot;&gt;
-339                  &lt;img src=&quot;img/proj-05-bricks.png&quot; alt=&quot;파란 벽돌 여러 행과 공, 아래 패들이 있는 화면&quot; /&gt;
-340                &lt;/figure&gt;
-341                &lt;div class=&quot;project-card__body&quot;&gt;
-342                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_05 · 2025.05.22&lt;/p&gt;
-343                  &lt;h3 class=&quot;project-card__title&quot;&gt;ChatGPT로 만든 프로그램&lt;/h3&gt;
-344  
-345                  &lt;div&gt;
-346                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
-347                    &lt;p class=&quot;field-body&quot;&gt;
-348                      ChatGPT와 뤼튼으로 작은 프로그램을 만들어 본 폴더입니다. 벽돌 캔버스, 로또 공, 단어 연습, 두더지
-349                      잡기, 알람, 파일 도구가 한곳에 있습니다.
-350                    &lt;/p&gt;
-351                  &lt;/div&gt;
-352  
-353                  &lt;div&gt;
-354                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
-355                    &lt;p class=&quot;field-body&quot;&gt;
-356                      2026년 10월 17일 실행에서 벽돌은 8열 12행으로 캔버스 안에 남고, 로또는 시작 뒤 번호 6개가 나왔습니다.
-357                      단어, 알람, 불쾌지수, 두더지, 5지선다, 워드클라우드 창도 찍었습니다.
-358                    &lt;/p&gt;
-359                  &lt;/div&gt;
-360  
-361                  &lt;div&gt;
-362                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
-363                    &lt;ul class=&quot;pill-list&quot;&gt;
-364                      &lt;li&gt;Python&lt;/li&gt;
-365                      &lt;li&gt;Tkinter&lt;/li&gt;
-366                      &lt;li&gt;Flask&lt;/li&gt;
-367                      &lt;li&gt;HTML&lt;/li&gt;
-368                      &lt;li&gt;Canvas&lt;/li&gt;
-369                      &lt;li&gt;WebGL&lt;/li&gt;
-370                      &lt;li&gt;JavaFX&lt;/li&gt;
-371                      &lt;li&gt;ChatGPT&lt;/li&gt;
-372                      &lt;li&gt;뤼튼&lt;/li&gt;
-373                    &lt;/ul&gt;
-374                  &lt;/div&gt;
-375  
-376                  &lt;div&gt;
-377                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
-378                    &lt;p class=&quot;field-body&quot;&gt;
-379                      HTML과 파이썬 창은 2026년 10월 17일에 실행했습니다. JavaFX와 pptx 변환은 필요한 파일이 없어 실행하지
-380                      못했습니다. 실제 호스팅은 완료 후 시간이 오래 지나 넣지 않았습니다.
-381                    &lt;/p&gt;
-382                  &lt;/div&gt;
-383  
-384                  &lt;div&gt;
-385                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
-386                    &lt;p class=&quot;field-body&quot;&gt;벽돌·공 캔버스, 로또 번호, 단어 맞히기, 두더지 잡기, 파일 합치기와 백업&lt;/p&gt;
-387                  &lt;/div&gt;
-388                &lt;/div&gt;
-389              &lt;/article&gt;
-390              &lt;article class=&quot;project-card&quot;&gt;
-391                &lt;figure class=&quot;project-card__media&quot;&gt;
-392                  &lt;img src=&quot;img/proj-06-home.png&quot; alt=&quot;코딩상자 내비게이션과 파란 소개 영역, About Me 문단이 있는 화면&quot; /&gt;
-393                &lt;/figure&gt;
-394                &lt;div class=&quot;project-card__body&quot;&gt;
-395                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_06 · 2025.06.09&lt;/p&gt;
-396                  &lt;h3 class=&quot;project-card__title&quot;&gt;코딩상자&lt;/h3&gt;
-397  
-398                  &lt;div&gt;
-399                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
-400                    &lt;p class=&quot;field-body&quot;&gt;
-401                      『지금 바로 만드는 5분 코딩』 그링노마드 종원 실습으로, Start Bootstrap Scrolling Nav 템플릿을 코딩상자
-402                      소개 페이지로 고친 기록입니다. 독서 노트는 생산자 관점, 개발자 도구, Netlify와 검색 등록, 구름IDE의
-403                      Expo 웹뷰, 다음 학습 주제까지 장 순서대로 적어 두었습니다.
-404                    &lt;/p&gt;
-405                  &lt;/div&gt;
-406  
-407                  &lt;div&gt;
-408                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
-409                    &lt;p class=&quot;field-body&quot;&gt;
-410                      위 메뉴는 About Me로 스크롤하고, 서비스와 연락 구역은 주석으로 빠져 있습니다. 사이트맵의 마지막
-411                      수정은 2025년 6월 9일입니다.
-412                    &lt;/p&gt;
-413                  &lt;/div&gt;
-414  
-415                  &lt;div&gt;
-416                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
-417                    &lt;ul class=&quot;pill-list&quot;&gt;
-418                      &lt;li&gt;HTML&lt;/li&gt;
-419                      &lt;li&gt;CSS&lt;/li&gt;
-420                      &lt;li&gt;Bootstrap&lt;/li&gt;
-421                      &lt;li&gt;JavaScript&lt;/li&gt;
-422                      &lt;li&gt;Netlify&lt;/li&gt;
-423                      &lt;li&gt;SEO&lt;/li&gt;
-424                    &lt;/ul&gt;
-425                  &lt;/div&gt;
-426  
-427                  &lt;div&gt;
-428                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
-429                    &lt;p class=&quot;field-body&quot;&gt;
-430                      정적 페이지. &lt;span class=&quot;path&quot;&gt;index.html&lt;/span&gt;을 브라우저에서 연 화면. 파일 속 Netlify 주소는
-431                      2026년 10월 17일에 열리지 않았고, 실제 호스팅은 이 페이지에 다시 넣지 않았습니다.
-432                    &lt;/p&gt;
-433                  &lt;/div&gt;
-434  
-435                  &lt;div&gt;
-436                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
-437                    &lt;p class=&quot;field-body&quot;&gt;스크롤 메뉴, 소개 문단, 메타 태그, robots.txt와 sitemap&lt;/p&gt;
-438                  &lt;/div&gt;
-439                &lt;/div&gt;
-440              &lt;/article&gt;
-441              &lt;article class=&quot;project-card&quot;&gt;
-442                &lt;figure class=&quot;project-card__media&quot;&gt;
-443                  &lt;img src=&quot;img/proj-07-home.png&quot; alt=&quot;오후의 블로그 헤더와 하루하루 스터디 제목, 노트 사진, Title 1 목록&quot; /&gt;
-444                &lt;/figure&gt;
-445                &lt;div class=&quot;project-card__body&quot;&gt;
-446                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_07 · 2025.07.06&lt;/p&gt;
-447                  &lt;h3 class=&quot;project-card__title&quot;&gt;하루하루 스터디&lt;/h3&gt;
-448  
-449                  &lt;div&gt;
-450                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
-451                    &lt;p class=&quot;field-body&quot;&gt;
-452                      『Do it! Node.js 프로그래밍 입문』으로 만든 블로그입니다. 앞부분에서는 연락처 앱을 만들고, 영상 강의
-453                      요약은 뤼튼으로 정리했습니다.
-454                    &lt;/p&gt;
-455                  &lt;/div&gt;
-456  
-457                  &lt;div&gt;
-458                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
-459                    &lt;p class=&quot;field-body&quot;&gt;
-460                      일반 화면은 글 목록과 본문, 관리자 화면은 로그인 뒤 글 등록·수정·삭제입니다. 2026년 10월 17일에는
-461                      MongoDB에 연결되지 않아 목록은 정적 예시입니다.
-462                    &lt;/p&gt;
-463                  &lt;/div&gt;
-464  
-465                  &lt;div&gt;
-466                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
-467                    &lt;ul class=&quot;pill-list&quot;&gt;
-468                      &lt;li&gt;Node.js&lt;/li&gt;
-469                      &lt;li&gt;Express&lt;/li&gt;
-470                      &lt;li&gt;MongoDB&lt;/li&gt;
-471                      &lt;li&gt;Mongoose&lt;/li&gt;
-472                      &lt;li&gt;EJS&lt;/li&gt;
-473                      &lt;li&gt;JWT&lt;/li&gt;
-474                      &lt;li&gt;bcrypt&lt;/li&gt;
-475                      &lt;li&gt;뤼튼&lt;/li&gt;
-476                    &lt;/ul&gt;
-477                  &lt;/div&gt;
-478  
-479                  &lt;div&gt;
-480                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
-481                    &lt;p class=&quot;field-body&quot;&gt;
-482                      &lt;span class=&quot;path&quot;&gt;myBlog/app.js&lt;/span&gt;. 포트는 환경 변수가 없으면 3000입니다. 실제 호스팅은 완료 후
-483                      시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
-484                    &lt;/p&gt;
-485                  &lt;/div&gt;
-486  
-487                  &lt;div&gt;
-488                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
-489                    &lt;p class=&quot;field-body&quot;&gt;글 목록·본문, 관리자 로그인, 글 등록·수정·삭제, 연락처 CRUD&lt;/p&gt;
-490                  &lt;/div&gt;
-491                &lt;/div&gt;
-492              &lt;/article&gt;
-493              &lt;article class=&quot;project-card&quot;&gt;
-494                &lt;figure class=&quot;project-card__media&quot;&gt;
-495                  &lt;img src=&quot;img/proj-08-run.png&quot; alt=&quot;독테스트 14개 통과와 미지 문서 네 편의 비교. 네 번째는 charles_dickens.txt&quot; /&gt;
-496                &lt;/figure&gt;
-497                &lt;div class=&quot;project-card__body&quot;&gt;
-498                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_08 · 2025.07.14&lt;/p&gt;
-499                  &lt;h3 class=&quot;project-card__title&quot;&gt;저자 식별&lt;/h3&gt;
-500  
-501                  &lt;div&gt;
-502                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
-503                    &lt;p class=&quot;field-body&quot;&gt;
-504                      GitHub Copilot으로 문장 특징을 비교하는 저자 식별과, 같은 사진을 걸러 모으는 스크립트를 만들었습니다.
-505                      장별 필기 요약은 뤼튼으로 정리했습니다.
-506                    &lt;/p&gt;
-507                  &lt;/div&gt;
-508  
-509                  &lt;div&gt;
-510                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
-511                    &lt;p class=&quot;field-body&quot;&gt;
-512                      2026년 10월 17일 실행에서 독테스트 14개가 통과했습니다. 미지 문서 넷 중 허클베리 핀은 디킨스 파일과
-513                      더 가깝게 나왔습니다.
-514                    &lt;/p&gt;
-515                  &lt;/div&gt;
-516  
-517                  &lt;div&gt;
-518                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
-519                    &lt;ul class=&quot;pill-list&quot;&gt;
-520                      &lt;li&gt;Python&lt;/li&gt;
-521                      &lt;li&gt;doctest&lt;/li&gt;
-522                      &lt;li&gt;VS Code&lt;/li&gt;
-523                      &lt;li&gt;GitHub Copilot&lt;/li&gt;
-524                      &lt;li&gt;뤼튼&lt;/li&gt;
-525                    &lt;/ul&gt;
-526                  &lt;/div&gt;
-527  
-528                  &lt;div&gt;
-529                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
-530                    &lt;p class=&quot;field-body&quot;&gt;
-531                      &lt;span class=&quot;path&quot;&gt;7_practice.py&lt;/span&gt;를 파이썬으로 실행. 사진 원본 폴더는 없습니다. 실제 호스팅은
-532                      완료 후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
-533                    &lt;/p&gt;
-534                  &lt;/div&gt;
-535  
-536                  &lt;div&gt;
-537                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
-538                    &lt;p class=&quot;field-body&quot;&gt;시그니처 비교, 독테스트, 내용이 같은 사진 건너뛰기&lt;/p&gt;
-539                  &lt;/div&gt;
-540                &lt;/div&gt;
-541              &lt;/article&gt;
-542              &lt;article class=&quot;project-card&quot;&gt;
-543                &lt;figure class=&quot;project-card__media&quot;&gt;
-544                  &lt;img src=&quot;img/proj-09-todo.png&quot; alt=&quot;2025년 7월 21일 캡처. 오늘의 할 일 달력과 Cursor 편집기&quot; /&gt;
-545                &lt;/figure&gt;
-546                &lt;div class=&quot;project-card__body&quot;&gt;
-547                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_09 · 2025.08.05&lt;/p&gt;
-548                  &lt;h3 class=&quot;project-card__title&quot;&gt;커서로 따라 만든 프로그램&lt;/h3&gt;
-549  
-550                  &lt;div&gt;
-551                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
-552                    &lt;p class=&quot;field-body&quot;&gt;
-553                      커서 AI 트렌드 책과 콜로소 강의로 할 일, 챗봇, 게시판, 차트, 파일 분류를 만들었습니다. 필기는
-554                      같은 폴더 이름에 _add_doc를 붙여 PROJ_09_add_doc 안에 둘로 나뉘어 있습니다.
-555                    &lt;/p&gt;
-556                  &lt;/div&gt;
-557  
-558                  &lt;div&gt;
-559                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
-560                    &lt;p class=&quot;field-body&quot;&gt;
-561                      책 쪽 add_doc은 에이전트 독서노트이고, 콜로소 쪽 add_doc은 프롤로그부터 8장입니다. 독서노트 요약은
-562                      뤼튼으로, 실습 정리는 OpenAI로 정리했습니다.
-563                    &lt;/p&gt;
-564                  &lt;/div&gt;
-565  
-566                  &lt;div&gt;
-567                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
-568                    &lt;ul class=&quot;pill-list&quot;&gt;
-569                      &lt;li&gt;Cursor&lt;/li&gt;
-570                      &lt;li&gt;PHP&lt;/li&gt;
-571                      &lt;li&gt;Python&lt;/li&gt;
-572                      &lt;li&gt;HTML&lt;/li&gt;
-573                      &lt;li&gt;JavaScript&lt;/li&gt;
-574                      &lt;li&gt;뤼튼&lt;/li&gt;
-575                    &lt;/ul&gt;
-576                  &lt;/div&gt;
-577  
-578                  &lt;div&gt;
-579                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
-580                    &lt;p class=&quot;field-body&quot;&gt;
-581                      PHP 페이지와 파이썬 스크립트. 화면은 폴더 안 캡처입니다. 전자명함 경로는 닷홈에서 404였습니다.
-582                    &lt;/p&gt;
-583                  &lt;/div&gt;
-584  
-585                  &lt;div&gt;
-586                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
-587                    &lt;p class=&quot;field-body&quot;&gt;할 일 달력, 챗봇 화면, 게시판, 차트, 파일 분류&lt;/p&gt;
-588                  &lt;/div&gt;
-589                &lt;/div&gt;
-590              &lt;/article&gt;
-591              &lt;!--
-592                다음 프로젝트 카드는 이 주석 아래에 같은 구조로 추가합니다.
-593                &lt;article class=&quot;project-card&quot;&gt; ... &lt;/article&gt;
-594              --&gt;
-595            &lt;/div&gt;
-596          &lt;/div&gt;
-597        &lt;/section&gt;
-598      &lt;/main&gt;
-599  
-600      &lt;footer class=&quot;site-footer&quot;&gt;
-601        &lt;div class=&quot;site-footer__inner&quot;&gt;
-602          &lt;nav class=&quot;site-sitemap&quot; aria-label=&quot;사이트맵&quot;&gt;
-603            &lt;p class=&quot;site-sitemap__label&quot;&gt;사이트맵&lt;/p&gt;
-604            &lt;ul class=&quot;site-sitemap__groups&quot;&gt;
-605              &lt;li&gt;
-606                &lt;a class=&quot;site-sitemap__page&quot; href=&quot;../index.html&quot;&gt;자기소개서&lt;/a&gt;
-607                &lt;ul class=&quot;site-sitemap__list&quot;&gt;
-608                  &lt;li&gt;&lt;a href=&quot;../index.html#section-motivation&quot;&gt;지원 동기&lt;/a&gt;&lt;/li&gt;
-609                  &lt;li&gt;&lt;a href=&quot;../index.html#section-growth&quot;&gt;성장·학습&lt;/a&gt;&lt;/li&gt;
-610                  &lt;li&gt;&lt;a href=&quot;../index.html#section-skills&quot;&gt;역량&lt;/a&gt;&lt;/li&gt;
-611                  &lt;li&gt;&lt;a href=&quot;../index.html#section-links&quot;&gt;자료&lt;/a&gt;&lt;/li&gt;
-612                  &lt;li&gt;&lt;a href=&quot;../index.html#section-strengths&quot;&gt;강점&lt;/a&gt;&lt;/li&gt;
-613                  &lt;li&gt;&lt;a href=&quot;../index.html#section-closing&quot;&gt;마치며&lt;/a&gt;&lt;/li&gt;
-614                  &lt;li&gt;&lt;a href=&quot;../index.html#section-refs&quot;&gt;참고&lt;/a&gt;&lt;/li&gt;
-615                &lt;/ul&gt;
-616              &lt;/li&gt;
-617              &lt;li&gt;
-618                &lt;a class=&quot;site-sitemap__page&quot; href=&quot;../cover_letter/profile.html&quot;&gt;자기소개 / 프로필&lt;/a&gt;
-619                &lt;ul class=&quot;site-sitemap__list&quot;&gt;
-620                  &lt;li&gt;&lt;a href=&quot;../cover_letter/profile.html#about&quot;&gt;소개&lt;/a&gt;&lt;/li&gt;
-621                  &lt;li&gt;&lt;a href=&quot;../cover_letter/profile.html#profile&quot;&gt;프로필&lt;/a&gt;&lt;/li&gt;
-622                  &lt;li&gt;&lt;a href=&quot;../cover_letter/profile.html#interests&quot;&gt;관심 분야&lt;/a&gt;&lt;/li&gt;
-623                  &lt;li&gt;&lt;a href=&quot;../cover_letter/profile.html#learning&quot;&gt;학습 · 경험&lt;/a&gt;&lt;/li&gt;
-624                &lt;/ul&gt;
-625              &lt;/li&gt;
-626              &lt;li&gt;
-627                &lt;a class=&quot;site-sitemap__page&quot; href=&quot;../online_business_card/business-card.html&quot;&gt;온라인 명함&lt;/a&gt;
-628                &lt;ul class=&quot;site-sitemap__list&quot;&gt;
-629                  &lt;li&gt;&lt;a href=&quot;../cv/resume.html&quot;&gt;이력서&lt;/a&gt;&lt;/li&gt;
-630                  &lt;li&gt;&lt;a href=&quot;../study_note_record_organization/dashboard/index.html&quot;&gt;학습록&lt;/a&gt;&lt;/li&gt;
-631                &lt;/ul&gt;
-632              &lt;/li&gt;
-633              &lt;li&gt;
-634                &lt;a class=&quot;site-sitemap__page&quot; href=&quot;index.html&quot; aria-current=&quot;page&quot;&gt;프로젝트 아카이브&lt;/a&gt;
-635                &lt;ul class=&quot;site-sitemap__list&quot;&gt;
-636                  &lt;li&gt;&lt;a href=&quot;#archive&quot;&gt;소개&lt;/a&gt;&lt;/li&gt;
-637                  &lt;li&gt;&lt;a href=&quot;#archive-list&quot;&gt;목록&lt;/a&gt;&lt;/li&gt;
-638                &lt;/ul&gt;
-639              &lt;/li&gt;
-640            &lt;/ul&gt;
-641          &lt;/nav&gt;
-642          &lt;p class=&quot;site-footer__note&quot;&gt;2026년 10월 17일 구성 · 코탐록 자료 카테고리의 프로젝트 아카이브&lt;/p&gt;
-643          &lt;p class=&quot;site-footer__disclosure&quot;&gt;
-644            자료를 제외한 문장이나 문구는 나의 생각을 프롬프트에 요청하여 생성한 문장이나 문구입니다.
-645          &lt;/p&gt;
-646          &lt;p class=&quot;site-footer__copyright&quot;&gt;© 2026 김신욱(깃허브 ackdark23358). All rights reserved.&lt;/p&gt;
-647        &lt;/div&gt;
-648      &lt;/footer&gt;
-649      &lt;script src=&quot;js/site.js&quot;&gt;&lt;/script&gt;
-650        &lt;script src=&quot;../js/protect-resources.js&quot;&gt;&lt;/script&gt;
-651    &lt;/body&gt;
-652  &lt;/html&gt;</pre>
+102              간단 설명, 핵심 기능을 담아 정리했습니다. PROJ_01부터 같은 형식으로 이어서 추가합니다. 기관에서 진행한
+103              과정은 PROJ_10부터 PROJ_15까지 같은 카드로 넣었습니다.
+104            &lt;/p&gt;
+105            &lt;dl class=&quot;hero__meta&quot;&gt;
+106              &lt;div class=&quot;hero__meta-row&quot;&gt;
+107                &lt;dt&gt;범위&lt;/dt&gt;
+108                &lt;dd&gt;PROJ_01부터 PROJ_09, 기관 과정 PROJ_10부터 PROJ_15&lt;/dd&gt;
+109              &lt;/div&gt;
+110              &lt;div class=&quot;hero__meta-row&quot;&gt;
+111                &lt;dt&gt;현재&lt;/dt&gt;
+112                &lt;dd&gt;
+113                  PROJ_01 파이썬 학습과 댓글 게시판 · 2025년 2월 17일, PROJ_02 원두 정기 구독 · 2025년 3월 29일, PROJ_03 오늘의 할 일 · 2025년 5월 22일, PROJ_04 전국 캠핑장 현황 · 2025년 5월 22일, PROJ_05 ChatGPT로 만든 프로그램 · 2025년 5월 22일, PROJ_06 코딩상자 · 2025년 6월 9일, PROJ_07 하루하루 스터디 · 2025년 7월 6일, PROJ_08 저자 식별 · 2025년 7월 14일, PROJ_09 커서로 따라 만든 프로그램 · 2025년 8월 5일, PROJ_10 콜로소 CursorAI · 2025년 7월 20일, PROJ_11 페스트캠퍼스 · 2024년 3월 24일, PROJ_12 인프런 · 2026년 2월 11일, PROJ_13 SSamz · 2022년 9월 15일, PROJ_14 유데미 · 2026년 5월 24일, PROJ_15 에듀펜 · 2017–2019
+114                &lt;/dd&gt;
+115              &lt;/div&gt;
+116              &lt;div class=&quot;hero__meta-row&quot;&gt;
+117                &lt;dt&gt;정리 방식&lt;/dt&gt;
+118                &lt;dd&gt;이 페이지에 프로젝트 카드를 직접 추가하여 기록을 모읍니다.&lt;/dd&gt;
+119              &lt;/div&gt;
+120            &lt;/dl&gt;
+121          &lt;/div&gt;
+122        &lt;/header&gt;
+123  
+124        &lt;section class=&quot;section&quot; id=&quot;archive-list&quot; aria-labelledby=&quot;heading-list&quot;&gt;
+125          &lt;div class=&quot;section__inner&quot;&gt;
+126            &lt;h2 id=&quot;heading-list&quot; class=&quot;section__title&quot;&gt;프로젝트 목록&lt;/h2&gt;
+127            &lt;p class=&quot;section-lead&quot;&gt;
+128              PROJ_01부터 PROJ_09 화면은 2026년 10월 17일에, 기관 과정 PROJ_10부터 PROJ_15는 2026년 10월 18일에 각 폴더를 열어 확인한 것입니다. 실제 호스팅은 완료 후 시간이 오래 지나 카드에 넣지 않았습니다.
+129            &lt;/p&gt;
+130            &lt;div class=&quot;archive-grid&quot;&gt;
+131              &lt;article class=&quot;project-card&quot;&gt;
+132                &lt;figure class=&quot;project-card__media&quot;&gt;
+133                  &lt;img src=&quot;img/proj-01-list.png&quot; alt=&quot;댓글 하나와 수정, 삭제, 등록 폼이 보이는 게시판 화면&quot; /&gt;
+134                &lt;/figure&gt;
+135                &lt;div class=&quot;project-card__body&quot;&gt;
+136                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_01 · 2025.02.17&lt;/p&gt;
+137                  &lt;h3 class=&quot;project-card__title&quot;&gt;파이썬 학습과 댓글 게시판&lt;/h3&gt;
+138  
+139                  &lt;div&gt;
+140                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+141                    &lt;p class=&quot;field-body&quot;&gt;
+142                      『Do it! 파이썬』 필기와 『Do it! 점프 투 파이썬』 실습을 뤼튼·OpenAI로 정리하고, 조코딩 게시판
+143                      예제를 참고한 댓글 게시판을 배포 전 시험 환경에서 실행한 기록입니다.
+144                    &lt;/p&gt;
+145                  &lt;/div&gt;
+146  
+147                  &lt;div&gt;
+148                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+149                    &lt;p class=&quot;field-body&quot;&gt;
+150                      문법, 파일 입출력, 클래스, 정규 표현식 실습을 문서로 남기고, 폼으로 받은 댓글을 SQLite에 저장해
+151                      목록·수정·삭제까지 확인했습니다.
+152                    &lt;/p&gt;
+153                  &lt;/div&gt;
+154  
+155                  &lt;div&gt;
+156                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+157                    &lt;ul class=&quot;pill-list&quot;&gt;
+158                      &lt;li&gt;Python&lt;/li&gt;
+159                      &lt;li&gt;CMD&lt;/li&gt;
+160                      &lt;li&gt;뤼튼&lt;/li&gt;
+161                      &lt;li&gt;Node.js&lt;/li&gt;
+162                      &lt;li&gt;Express&lt;/li&gt;
+163                      &lt;li&gt;EJS&lt;/li&gt;
+164                      &lt;li&gt;Sequelize&lt;/li&gt;
+165                      &lt;li&gt;SQLite&lt;/li&gt;
+166                      &lt;li&gt;Cloudtype&lt;/li&gt;
+167                    &lt;/ul&gt;
+168                  &lt;/div&gt;
+169  
+170                  &lt;div&gt;
+171                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+172                    &lt;p class=&quot;field-body&quot;&gt;
+173                      배포 전 시험. 로컬 &lt;span class=&quot;path&quot;&gt;node index.js&lt;/span&gt; · 포트 3000. 실제 호스팅은 프로젝트 완료
+174                      후 시간이 오래 지나 넣지 않았고, README에만 Cloudtype 주소가 남아 있습니다.
+175                    &lt;/p&gt;
+176                  &lt;/div&gt;
+177  
+178                  &lt;div&gt;
+179                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+180                    &lt;p class=&quot;field-body&quot;&gt;파이썬 실습 정리, 댓글 목록·등록·수정·삭제&lt;/p&gt;
+181                  &lt;/div&gt;
+182                &lt;/div&gt;
+183              &lt;/article&gt;
+184              &lt;article class=&quot;project-card&quot;&gt;
+185                &lt;figure class=&quot;project-card__media&quot;&gt;
+186                  &lt;img src=&quot;img/proj-02-hero.png&quot; alt=&quot;원두정기구독 첫 화면. 커피 원두 사진 위에 이메일 구독 폼&quot; /&gt;
+187                &lt;/figure&gt;
+188                &lt;div class=&quot;project-card__body&quot;&gt;
+189                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_02 · 2025.03.29&lt;/p&gt;
+190                  &lt;h3 class=&quot;project-card__title&quot;&gt;원두 정기 구독&lt;/h3&gt;
+191  
+192                  &lt;div&gt;
+193                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+194                    &lt;p class=&quot;field-body&quot;&gt;
+195                      『Do it! HTML+CSS+자바스크립트 웹 표준의 정석』의 넷플릭스형 랜딩을 따라 만든 스위커 원두 구독
+196                      페이지입니다. 확인 질문과 CSS·자바스크립트 필기를 함께 남겼습니다.
+197                    &lt;/p&gt;
+198                  &lt;/div&gt;
+199  
+200                  &lt;div&gt;
+201                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+202                    &lt;p class=&quot;field-body&quot;&gt;
+203                      이메일 구독, 로스트 선택, 원두 카드, FAQ를 HTML과 CSS로 구성했습니다. 질문 목록은 라디오와 CSS로
+204                      열고 닫습니다.
+205                    &lt;/p&gt;
+206                  &lt;/div&gt;
+207  
+208                  &lt;div&gt;
+209                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+210                    &lt;ul class=&quot;pill-list&quot;&gt;
+211                      &lt;li&gt;HTML&lt;/li&gt;
+212                      &lt;li&gt;CSS&lt;/li&gt;
+213                      &lt;li&gt;Font Awesome&lt;/li&gt;
+214                      &lt;li&gt;자바스크립트&lt;/li&gt;
+215                      &lt;li&gt;VS Code&lt;/li&gt;
+216                      &lt;li&gt;뤼튼&lt;/li&gt;
+217                    &lt;/ul&gt;
+218                  &lt;/div&gt;
+219  
+220                  &lt;div&gt;
+221                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+222                    &lt;p class=&quot;field-body&quot;&gt;
+223                      정적 페이지. &lt;span class=&quot;path&quot;&gt;Project/index.html&lt;/span&gt;을 브라우저에서 연 화면. 실제 호스팅은
+224                      완료 후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
+225                    &lt;/p&gt;
+226                  &lt;/div&gt;
+227  
+228                  &lt;div&gt;
+229                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+230                    &lt;p class=&quot;field-body&quot;&gt;구독 폼, 로스트 선택, 원두 카드, FAQ 아코디언, 반응형 배치&lt;/p&gt;
+231                  &lt;/div&gt;
+232                &lt;/div&gt;
+233              &lt;/article&gt;
+234              &lt;article class=&quot;project-card&quot;&gt;
+235                &lt;figure class=&quot;project-card__media&quot;&gt;
+236                  &lt;img src=&quot;img/proj-03-list.png&quot; alt=&quot;오늘의 할 일 화면. 취소선이 그어진 항목과 일반 항목, 완료와 삭제 버튼&quot; /&gt;
+237                &lt;/figure&gt;
+238                &lt;div class=&quot;project-card__body&quot;&gt;
+239                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_03 · 2025.05.22&lt;/p&gt;
+240                  &lt;h3 class=&quot;project-card__title&quot;&gt;오늘의 할 일&lt;/h3&gt;
+241  
+242                  &lt;div&gt;
+243                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+244                    &lt;p class=&quot;field-body&quot;&gt;
+245                      『Do it! 모던 자바스크립트』의 웹 스토리지 실습으로 만든 할 일 목록입니다. 유튜브 강의 요약은 뤼튼으로
+246                      정리했습니다.
+247                    &lt;/p&gt;
+248                  &lt;/div&gt;
+249  
+250                  &lt;div&gt;
+251                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+252                    &lt;p class=&quot;field-body&quot;&gt;
+253                      입력한 할 일을 localStorage에 저장하고, 완료 표시와 삭제를 버튼으로 처리합니다. 글을 새로고침해도
+254                      목록 문장은 다시 나타납니다.
+255                    &lt;/p&gt;
+256                  &lt;/div&gt;
+257  
+258                  &lt;div&gt;
+259                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+260                    &lt;ul class=&quot;pill-list&quot;&gt;
+261                      &lt;li&gt;HTML&lt;/li&gt;
+262                      &lt;li&gt;CSS&lt;/li&gt;
+263                      &lt;li&gt;JavaScript&lt;/li&gt;
+264                      &lt;li&gt;localStorage&lt;/li&gt;
+265                      &lt;li&gt;Canvas&lt;/li&gt;
+266                      &lt;li&gt;뤼튼&lt;/li&gt;
+267                    &lt;/ul&gt;
+268                  &lt;/div&gt;
+269  
+270                  &lt;div&gt;
+271                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+272                    &lt;p class=&quot;field-body&quot;&gt;
+273                      정적 페이지. &lt;span class=&quot;path&quot;&gt;todo-result.html&lt;/span&gt;을 브라우저에서 연 화면. 실제 호스팅은 완료
+274                      후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
+275                    &lt;/p&gt;
+276                  &lt;/div&gt;
+277  
+278                  &lt;div&gt;
+279                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+280                    &lt;p class=&quot;field-body&quot;&gt;할 일 추가, 완료 취소선, 삭제, localStorage 저장&lt;/p&gt;
+281                  &lt;/div&gt;
+282                &lt;/div&gt;
+283              &lt;/article&gt;
+284              &lt;article class=&quot;project-card&quot;&gt;
+285                &lt;figure class=&quot;project-card__media&quot;&gt;
+286                  &lt;img src=&quot;img/proj-04-map.png&quot; alt=&quot;전국 캠핑장 현황 제목만 보이고 지도 영역은 비어 있는 화면&quot; /&gt;
+287                &lt;/figure&gt;
+288                &lt;div class=&quot;project-card__body&quot;&gt;
+289                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_04 · 2025.05.22&lt;/p&gt;
+290                  &lt;h3 class=&quot;project-card__title&quot;&gt;전국 캠핑장 현황&lt;/h3&gt;
+291  
+292                  &lt;div&gt;
+293                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+294                    &lt;p class=&quot;field-body&quot;&gt;
+295                      『Do it! 모던 자바스크립트』의 공공데이터와 카카오맵 실습으로 만든 캠핑장 위치 페이지입니다. 유튜브
+296                      강의 요약은 뤼튼으로 정리했습니다.
+297                    &lt;/p&gt;
+298                  &lt;/div&gt;
+299  
+300                  &lt;div&gt;
+301                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+302                    &lt;p class=&quot;field-body&quot;&gt;
+303                      고캠핑 목록의 좌표로 마커를 만들고, 마우스를 올리면 시설명 창을 띄우며, 마커는 클러스터로 묶습니다.
+304                      소스의 지도 키와 공공데이터 키는 자리표시라 실행이 되지 않아, 실제 실행 환경은 포함하지 않았습니다.
+305                    &lt;/p&gt;
+306                  &lt;/div&gt;
+307  
+308                  &lt;div&gt;
+309                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+310                    &lt;ul class=&quot;pill-list&quot;&gt;
+311                      &lt;li&gt;HTML&lt;/li&gt;
+312                      &lt;li&gt;JavaScript&lt;/li&gt;
+313                      &lt;li&gt;Kakao Map&lt;/li&gt;
+314                      &lt;li&gt;공공데이터&lt;/li&gt;
+315                      &lt;li&gt;fetch&lt;/li&gt;
+316                      &lt;li&gt;Canvas&lt;/li&gt;
+317                      &lt;li&gt;뤼튼&lt;/li&gt;
+318                    &lt;/ul&gt;
+319                  &lt;/div&gt;
+320  
+321                  &lt;div&gt;
+322                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+323                    &lt;p class=&quot;field-body&quot;&gt;
+324                      지도 키와 공공데이터 키가 자리표시라 실행이 되지 않아, 실제 실행 환경은 포함하지 않았습니다. 실제
+325                      호스팅은 완료 후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
+326                    &lt;/p&gt;
+327                  &lt;/div&gt;
+328  
+329                  &lt;div&gt;
+330                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+331                    &lt;p class=&quot;field-body&quot;&gt;캠핑장 좌표 마커, 시설명 말풍선, 마커 클러스터&lt;/p&gt;
+332                  &lt;/div&gt;
+333                &lt;/div&gt;
+334              &lt;/article&gt;
+335              &lt;article class=&quot;project-card&quot;&gt;
+336                &lt;figure class=&quot;project-card__media&quot;&gt;
+337                  &lt;img src=&quot;img/proj-05-bricks.png&quot; alt=&quot;파란 벽돌 여러 행과 공, 아래 패들이 있는 화면&quot; /&gt;
+338                &lt;/figure&gt;
+339                &lt;div class=&quot;project-card__body&quot;&gt;
+340                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_05 · 2025.05.22&lt;/p&gt;
+341                  &lt;h3 class=&quot;project-card__title&quot;&gt;ChatGPT로 만든 프로그램&lt;/h3&gt;
+342  
+343                  &lt;div&gt;
+344                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+345                    &lt;p class=&quot;field-body&quot;&gt;
+346                      ChatGPT와 뤼튼으로 작은 프로그램을 만들어 본 폴더입니다. 벽돌 캔버스, 로또 공, 단어 연습, 두더지
+347                      잡기, 알람, 파일 도구가 한곳에 있습니다.
+348                    &lt;/p&gt;
+349                  &lt;/div&gt;
+350  
+351                  &lt;div&gt;
+352                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+353                    &lt;p class=&quot;field-body&quot;&gt;
+354                      2026년 10월 17일 실행에서 벽돌은 8열 12행으로 캔버스 안에 남고, 로또는 시작 뒤 번호 6개가 나왔습니다.
+355                      단어, 알람, 불쾌지수, 두더지, 5지선다, 워드클라우드 창도 찍었습니다.
+356                    &lt;/p&gt;
+357                  &lt;/div&gt;
+358  
+359                  &lt;div&gt;
+360                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+361                    &lt;ul class=&quot;pill-list&quot;&gt;
+362                      &lt;li&gt;Python&lt;/li&gt;
+363                      &lt;li&gt;Tkinter&lt;/li&gt;
+364                      &lt;li&gt;Flask&lt;/li&gt;
+365                      &lt;li&gt;HTML&lt;/li&gt;
+366                      &lt;li&gt;Canvas&lt;/li&gt;
+367                      &lt;li&gt;WebGL&lt;/li&gt;
+368                      &lt;li&gt;JavaFX&lt;/li&gt;
+369                      &lt;li&gt;ChatGPT&lt;/li&gt;
+370                      &lt;li&gt;뤼튼&lt;/li&gt;
+371                    &lt;/ul&gt;
+372                  &lt;/div&gt;
+373  
+374                  &lt;div&gt;
+375                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+376                    &lt;p class=&quot;field-body&quot;&gt;
+377                      HTML과 파이썬 창은 2026년 10월 17일에 실행했습니다. JavaFX와 pptx 변환은 필요한 파일이 없어 실행하지
+378                      못했습니다. 실제 호스팅은 완료 후 시간이 오래 지나 넣지 않았습니다.
+379                    &lt;/p&gt;
+380                  &lt;/div&gt;
+381  
+382                  &lt;div&gt;
+383                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+384                    &lt;p class=&quot;field-body&quot;&gt;벽돌·공 캔버스, 로또 번호, 단어 맞히기, 두더지 잡기, 파일 합치기와 백업&lt;/p&gt;
+385                  &lt;/div&gt;
+386                &lt;/div&gt;
+387              &lt;/article&gt;
+388              &lt;article class=&quot;project-card&quot;&gt;
+389                &lt;figure class=&quot;project-card__media&quot;&gt;
+390                  &lt;img src=&quot;img/proj-06-home.png&quot; alt=&quot;코딩상자 내비게이션과 파란 소개 영역, About Me 문단이 있는 화면&quot; /&gt;
+391                &lt;/figure&gt;
+392                &lt;div class=&quot;project-card__body&quot;&gt;
+393                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_06 · 2025.06.09&lt;/p&gt;
+394                  &lt;h3 class=&quot;project-card__title&quot;&gt;코딩상자&lt;/h3&gt;
+395  
+396                  &lt;div&gt;
+397                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+398                    &lt;p class=&quot;field-body&quot;&gt;
+399                      『지금 바로 만드는 5분 코딩』 그링노마드 종원 실습으로, Start Bootstrap Scrolling Nav 템플릿을 코딩상자
+400                      소개 페이지로 고친 기록입니다. 독서 노트는 생산자 관점, 개발자 도구, Netlify와 검색 등록, 구름IDE의
+401                      Expo 웹뷰, 다음 학습 주제까지 장 순서대로 적어 두었습니다.
+402                    &lt;/p&gt;
+403                  &lt;/div&gt;
+404  
+405                  &lt;div&gt;
+406                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+407                    &lt;p class=&quot;field-body&quot;&gt;
+408                      위 메뉴는 About Me로 스크롤하고, 서비스와 연락 구역은 주석으로 빠져 있습니다. 사이트맵의 마지막
+409                      수정은 2025년 6월 9일입니다.
+410                    &lt;/p&gt;
+411                  &lt;/div&gt;
+412  
+413                  &lt;div&gt;
+414                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+415                    &lt;ul class=&quot;pill-list&quot;&gt;
+416                      &lt;li&gt;HTML&lt;/li&gt;
+417                      &lt;li&gt;CSS&lt;/li&gt;
+418                      &lt;li&gt;Bootstrap&lt;/li&gt;
+419                      &lt;li&gt;JavaScript&lt;/li&gt;
+420                      &lt;li&gt;Netlify&lt;/li&gt;
+421                      &lt;li&gt;SEO&lt;/li&gt;
+422                    &lt;/ul&gt;
+423                  &lt;/div&gt;
+424  
+425                  &lt;div&gt;
+426                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+427                    &lt;p class=&quot;field-body&quot;&gt;
+428                      정적 페이지. &lt;span class=&quot;path&quot;&gt;index.html&lt;/span&gt;을 브라우저에서 연 화면. 파일 속 Netlify 주소는
+429                      2026년 10월 17일에 열리지 않았고, 실제 호스팅은 이 페이지에 다시 넣지 않았습니다.
+430                    &lt;/p&gt;
+431                  &lt;/div&gt;
+432  
+433                  &lt;div&gt;
+434                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+435                    &lt;p class=&quot;field-body&quot;&gt;스크롤 메뉴, 소개 문단, 메타 태그, robots.txt와 sitemap&lt;/p&gt;
+436                  &lt;/div&gt;
+437                &lt;/div&gt;
+438              &lt;/article&gt;
+439              &lt;article class=&quot;project-card&quot;&gt;
+440                &lt;figure class=&quot;project-card__media&quot;&gt;
+441                  &lt;img src=&quot;img/proj-07-home.png&quot; alt=&quot;오후의 블로그 헤더와 하루하루 스터디 제목, 노트 사진, Title 1 목록&quot; /&gt;
+442                &lt;/figure&gt;
+443                &lt;div class=&quot;project-card__body&quot;&gt;
+444                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_07 · 2025.07.06&lt;/p&gt;
+445                  &lt;h3 class=&quot;project-card__title&quot;&gt;하루하루 스터디&lt;/h3&gt;
+446  
+447                  &lt;div&gt;
+448                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+449                    &lt;p class=&quot;field-body&quot;&gt;
+450                      『Do it! Node.js 프로그래밍 입문』으로 만든 블로그입니다. 앞부분에서는 연락처 앱을 만들고, 영상 강의
+451                      요약은 뤼튼으로 정리했습니다.
+452                    &lt;/p&gt;
+453                  &lt;/div&gt;
+454  
+455                  &lt;div&gt;
+456                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+457                    &lt;p class=&quot;field-body&quot;&gt;
+458                      일반 화면은 글 목록과 본문, 관리자 화면은 로그인 뒤 글 등록·수정·삭제입니다. 2026년 10월 17일에는
+459                      MongoDB에 연결되지 않아 목록은 정적 예시입니다.
+460                    &lt;/p&gt;
+461                  &lt;/div&gt;
+462  
+463                  &lt;div&gt;
+464                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+465                    &lt;ul class=&quot;pill-list&quot;&gt;
+466                      &lt;li&gt;Node.js&lt;/li&gt;
+467                      &lt;li&gt;Express&lt;/li&gt;
+468                      &lt;li&gt;MongoDB&lt;/li&gt;
+469                      &lt;li&gt;Mongoose&lt;/li&gt;
+470                      &lt;li&gt;EJS&lt;/li&gt;
+471                      &lt;li&gt;JWT&lt;/li&gt;
+472                      &lt;li&gt;bcrypt&lt;/li&gt;
+473                      &lt;li&gt;뤼튼&lt;/li&gt;
+474                    &lt;/ul&gt;
+475                  &lt;/div&gt;
+476  
+477                  &lt;div&gt;
+478                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+479                    &lt;p class=&quot;field-body&quot;&gt;
+480                      &lt;span class=&quot;path&quot;&gt;myBlog/app.js&lt;/span&gt;. 포트는 환경 변수가 없으면 3000입니다. 실제 호스팅은 완료 후
+481                      시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
+482                    &lt;/p&gt;
+483                  &lt;/div&gt;
+484  
+485                  &lt;div&gt;
+486                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+487                    &lt;p class=&quot;field-body&quot;&gt;글 목록·본문, 관리자 로그인, 글 등록·수정·삭제, 연락처 CRUD&lt;/p&gt;
+488                  &lt;/div&gt;
+489                &lt;/div&gt;
+490              &lt;/article&gt;
+491              &lt;article class=&quot;project-card&quot;&gt;
+492                &lt;figure class=&quot;project-card__media&quot;&gt;
+493                  &lt;img src=&quot;img/proj-08-run.png&quot; alt=&quot;독테스트 14개 통과와 미지 문서 네 편의 비교. 네 번째는 charles_dickens.txt&quot; /&gt;
+494                &lt;/figure&gt;
+495                &lt;div class=&quot;project-card__body&quot;&gt;
+496                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_08 · 2025.07.14&lt;/p&gt;
+497                  &lt;h3 class=&quot;project-card__title&quot;&gt;저자 식별&lt;/h3&gt;
+498  
+499                  &lt;div&gt;
+500                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+501                    &lt;p class=&quot;field-body&quot;&gt;
+502                      GitHub Copilot으로 문장 특징을 비교하는 저자 식별과, 같은 사진을 걸러 모으는 스크립트를 만들었습니다.
+503                      장별 필기 요약은 뤼튼으로 정리했습니다.
+504                    &lt;/p&gt;
+505                  &lt;/div&gt;
+506  
+507                  &lt;div&gt;
+508                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+509                    &lt;p class=&quot;field-body&quot;&gt;
+510                      2026년 10월 17일 실행에서 독테스트 14개가 통과했습니다. 미지 문서 넷 중 허클베리 핀은 디킨스 파일과
+511                      더 가깝게 나왔습니다.
+512                    &lt;/p&gt;
+513                  &lt;/div&gt;
+514  
+515                  &lt;div&gt;
+516                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+517                    &lt;ul class=&quot;pill-list&quot;&gt;
+518                      &lt;li&gt;Python&lt;/li&gt;
+519                      &lt;li&gt;doctest&lt;/li&gt;
+520                      &lt;li&gt;VS Code&lt;/li&gt;
+521                      &lt;li&gt;GitHub Copilot&lt;/li&gt;
+522                      &lt;li&gt;뤼튼&lt;/li&gt;
+523                    &lt;/ul&gt;
+524                  &lt;/div&gt;
+525  
+526                  &lt;div&gt;
+527                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+528                    &lt;p class=&quot;field-body&quot;&gt;
+529                      &lt;span class=&quot;path&quot;&gt;7_practice.py&lt;/span&gt;를 파이썬으로 실행. 사진 원본 폴더는 없습니다. 실제 호스팅은
+530                      완료 후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
+531                    &lt;/p&gt;
+532                  &lt;/div&gt;
+533  
+534                  &lt;div&gt;
+535                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+536                    &lt;p class=&quot;field-body&quot;&gt;시그니처 비교, 독테스트, 내용이 같은 사진 건너뛰기&lt;/p&gt;
+537                  &lt;/div&gt;
+538                &lt;/div&gt;
+539              &lt;/article&gt;
+540              &lt;article class=&quot;project-card&quot;&gt;
+541                &lt;figure class=&quot;project-card__media&quot;&gt;
+542                  &lt;img src=&quot;img/proj-09-todo.png&quot; alt=&quot;2025년 7월 21일 캡처. 오늘의 할 일 달력과 Cursor 편집기&quot; /&gt;
+543                &lt;/figure&gt;
+544                &lt;div class=&quot;project-card__body&quot;&gt;
+545                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_09 · 2025.08.05&lt;/p&gt;
+546                  &lt;h3 class=&quot;project-card__title&quot;&gt;커서로 따라 만든 프로그램&lt;/h3&gt;
+547  
+548                  &lt;div&gt;
+549                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+550                    &lt;p class=&quot;field-body&quot;&gt;
+551                      커서 AI 트렌드 책과 콜로소 강의로 할 일, 챗봇, 게시판, 차트, 파일 분류를 만들었습니다. 필기는
+552                      같은 폴더 이름에 _add_doc를 붙여 PROJ_09_add_doc 안에 둘로 나뉘어 있습니다.
+553                    &lt;/p&gt;
+554                  &lt;/div&gt;
+555  
+556                  &lt;div&gt;
+557                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+558                    &lt;p class=&quot;field-body&quot;&gt;
+559                      책 쪽 add_doc은 에이전트 독서노트이고, 콜로소 쪽 add_doc은 프롤로그부터 8장입니다. 독서노트 요약은
+560                      뤼튼으로, 실습 정리는 OpenAI로 정리했습니다.
+561                    &lt;/p&gt;
+562                  &lt;/div&gt;
+563  
+564                  &lt;div&gt;
+565                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+566                    &lt;ul class=&quot;pill-list&quot;&gt;
+567                      &lt;li&gt;Cursor&lt;/li&gt;
+568                      &lt;li&gt;PHP&lt;/li&gt;
+569                      &lt;li&gt;Python&lt;/li&gt;
+570                      &lt;li&gt;HTML&lt;/li&gt;
+571                      &lt;li&gt;JavaScript&lt;/li&gt;
+572                      &lt;li&gt;뤼튼&lt;/li&gt;
+573                    &lt;/ul&gt;
+574                  &lt;/div&gt;
+575  
+576                  &lt;div&gt;
+577                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+578                    &lt;p class=&quot;field-body&quot;&gt;
+579                      PHP 페이지와 파이썬 스크립트. 화면은 폴더 안 캡처입니다. 전자명함 경로는 닷홈에서 404였습니다.
+580                    &lt;/p&gt;
+581                  &lt;/div&gt;
+582  
+583                  &lt;div&gt;
+584                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+585                    &lt;p class=&quot;field-body&quot;&gt;할 일 달력, 챗봇 화면, 게시판, 차트, 파일 분류&lt;/p&gt;
+586                  &lt;/div&gt;
+587                &lt;/div&gt;
+588              &lt;/article&gt;
+589              &lt;article class=&quot;project-card&quot;&gt;
+590                &lt;figure class=&quot;project-card__media&quot;&gt;
+591                  &lt;img src=&quot;img/proj-10-blog.png&quot; alt=&quot;나의 개발 블로그. 노트북 그림과 카테고리, 더 읽기 버튼&quot; /&gt;
+592                &lt;/figure&gt;
+593                &lt;div class=&quot;project-card__body&quot;&gt;
+594                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_10 · 2025.07.20&lt;/p&gt;
+595                  &lt;h3 class=&quot;project-card__title&quot;&gt;콜로소 CursorAI&lt;/h3&gt;
+596                  &lt;div&gt;
+597                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+598                    &lt;p class=&quot;field-body&quot;&gt;
+599                      콜로소 CursorAI 강의로 회사 홈페이지, 다국어 포트폴리오, 로또, 사과 게임을 만들었습니다. 필기는
+600                      1강부터 15강입니다.
+601                    &lt;/p&gt;
+602                  &lt;/div&gt;
+603                  &lt;div&gt;
+604                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+605                    &lt;p class=&quot;field-body&quot;&gt;
+606                      캡처는 2025년 7월 16일부터 20일입니다. 2강 화면은 websim으로 만든 개발 블로그입니다. 예시 계정과
+607                      메일 주소는 적지 않았습니다.
+608                    &lt;/p&gt;
+609                  &lt;/div&gt;
+610                  &lt;div&gt;
+611                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+612                    &lt;ul class=&quot;pill-list&quot;&gt;
+613                      &lt;li&gt;Cursor&lt;/li&gt;
+614                      &lt;li&gt;PHP&lt;/li&gt;
+615                      &lt;li&gt;Tailwind CSS&lt;/li&gt;
+616                      &lt;li&gt;JavaScript&lt;/li&gt;
+617                      &lt;li&gt;Python&lt;/li&gt;
+618                    &lt;/ul&gt;
+619                  &lt;/div&gt;
+620                  &lt;div&gt;
+621                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+622                    &lt;p class=&quot;field-body&quot;&gt;
+623                      PHP와 HTML. 2026년 10월 18일에는 저장된 캡처만 확인했습니다. 1강 노트의 닷홈 주소는 있고, 전자명함
+624                      경로는 404 캡처가 남아 있습니다.
+625                    &lt;/p&gt;
+626                  &lt;/div&gt;
+627                  &lt;div&gt;
+628                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+629                    &lt;p class=&quot;field-body&quot;&gt;회사 홈페이지, 작품 관리, 로또 번호, 사과 게임과 리더보드&lt;/p&gt;
+630                  &lt;/div&gt;
+631                &lt;/div&gt;
+632              &lt;/article&gt;
+633              &lt;article class=&quot;project-card&quot;&gt;
+634                &lt;figure class=&quot;project-card__media&quot;&gt;
+635                  &lt;img src=&quot;img/proj-11-card.png&quot; alt=&quot;2024 새해 카드. 복 자가 있는 노란 원과 청룡&quot; /&gt;
+636                &lt;/figure&gt;
+637                &lt;div class=&quot;project-card__body&quot;&gt;
+638                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_11 · 2024.03.24&lt;/p&gt;
+639                  &lt;h3 class=&quot;project-card__title&quot;&gt;페스트캠퍼스 디자인·안드로이드&lt;/h3&gt;
+640                  &lt;div&gt;
+641                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+642                    &lt;p class=&quot;field-body&quot;&gt;
+643                      디자인툴 초격차의 포토샵·일러스트레이터와, 안드로이드 코틀린 올인원 필기입니다. 폴더 철자는
+644                      페스트캠퍼스, kotrlin입니다.
+645                    &lt;/p&gt;
+646                  &lt;/div&gt;
+647                  &lt;div&gt;
+648                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+649                    &lt;p class=&quot;field-body&quot;&gt;
+650                      2024년 신년 카드 결과물이 있고, 안드로이드는 UI부터 Firebase 참고 파일까지입니다. 호반부 프로젝트
+651                      구간은 폴더 이름대로 빠져 있습니다.
+652                    &lt;/p&gt;
+653                  &lt;/div&gt;
+654                  &lt;div&gt;
+655                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+656                    &lt;ul class=&quot;pill-list&quot;&gt;
+657                      &lt;li&gt;Photoshop&lt;/li&gt;
+658                      &lt;li&gt;Illustrator&lt;/li&gt;
+659                      &lt;li&gt;Kotlin&lt;/li&gt;
+660                      &lt;li&gt;Android&lt;/li&gt;
+661                    &lt;/ul&gt;
+662                  &lt;/div&gt;
+663                  &lt;div&gt;
+664                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+665                    &lt;p class=&quot;field-body&quot;&gt;
+666                      강의 자료와 필기, 신년 카드 JPG. 안드로이드 스튜디오를 다시 열지는 않았고, 호스팅 주소도 없습니다.
+667                    &lt;/p&gt;
+668                  &lt;/div&gt;
+669                  &lt;div&gt;
+670                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+671                    &lt;p class=&quot;field-body&quot;&gt;포토샵·일러스트레이터 실습, 코틀린 UI·네트워크·탭·Firebase 참고&lt;/p&gt;
+672                  &lt;/div&gt;
+673                &lt;/div&gt;
+674              &lt;/article&gt;
+675              &lt;article class=&quot;project-card&quot;&gt;
+676                &lt;figure class=&quot;project-card__media&quot;&gt;
+677                  &lt;img src=&quot;img/proj-12-courses.png&quot; alt=&quot;인프런 네 과정 이름. 애니메이트, Dart, 중고신입 전략, 2026 AI 트렌드&quot; /&gt;
+678                &lt;/figure&gt;
+679                &lt;div class=&quot;project-card__body&quot;&gt;
+680                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_12 · 2026.02.11&lt;/p&gt;
+681                  &lt;h3 class=&quot;project-card__title&quot;&gt;인프런 과정&lt;/h3&gt;
+682                  &lt;div&gt;
+683                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+684                    &lt;p class=&quot;field-body&quot;&gt;
+685                      그린네모 애니메이트, 코딩펙토리 Dart, 중고신입 전략, 2026 AI 트렌드가 한 폴더에 있습니다. 부모
+686                      폴더 철자는 그리네모, 에니메이트, 일겅봐야입니다.
+687                    &lt;/p&gt;
+688                  &lt;/div&gt;
+689                  &lt;div&gt;
+690                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+691                    &lt;p class=&quot;field-body&quot;&gt;
+692                      Dart 필기는 타입, 클래스, 함수형, 비동기 네 장입니다. AI 트렌드 노트는 2026년 2월 11일에 p15 1.6부터
+693                      p24 1.12까지 봤다고 적습니다.
+694                    &lt;/p&gt;
+695                  &lt;/div&gt;
+696                  &lt;div&gt;
+697                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+698                    &lt;ul class=&quot;pill-list&quot;&gt;
+699                      &lt;li&gt;Animate&lt;/li&gt;
+700                      &lt;li&gt;Dart&lt;/li&gt;
+701                      &lt;li&gt;Flutter&lt;/li&gt;
+702                      &lt;li&gt;Perplexity&lt;/li&gt;
+703                    &lt;/ul&gt;
+704                  &lt;/div&gt;
+705                  &lt;div&gt;
+706                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+707                    &lt;p class=&quot;field-body&quot;&gt;노트, pdf, 예제 파일입니다. 전자책과 영상 본문은 카드에 넣지 않았고, 호스팅 주소도 없습니다.&lt;/p&gt;
+708                  &lt;/div&gt;
+709                  &lt;div&gt;
+710                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+711                    &lt;p class=&quot;field-body&quot;&gt;애니메이트 예제, Dart 언어 필기, 6일 치 취업 노트, AI 트렌드 읽기 기록&lt;/p&gt;
+712                  &lt;/div&gt;
+713                &lt;/div&gt;
+714              &lt;/article&gt;
+715              &lt;article class=&quot;project-card&quot;&gt;
+716                &lt;figure class=&quot;project-card__media&quot;&gt;
+717                  &lt;img src=&quot;img/proj-13-layout.png&quot; alt=&quot;손글씨 레이아웃 메모. Linear, Relative, Frame, Grid, Constraint&quot; /&gt;
+718                &lt;/figure&gt;
+719                &lt;div class=&quot;project-card__body&quot;&gt;
+720                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_13 · 2022.09.15&lt;/p&gt;
+721                  &lt;h3 class=&quot;project-card__title&quot;&gt;SSamz 안드로이드&lt;/h3&gt;
+722                  &lt;div&gt;
+723                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+724                    &lt;p class=&quot;field-body&quot;&gt;
+725                      폴더 이름은 프로젝트 진행까지 완료입니다. 필기는 06장 이전부터 21장 파이어베이스까지이고, 앱
+726                      소스는 백업 압축에 있습니다.
+727                    &lt;/p&gt;
+728                  &lt;/div&gt;
+729                  &lt;div&gt;
+730                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+731                    &lt;p class=&quot;field-body&quot;&gt;
+732                      백업 폴더 이름은 카카오 로그인, 할 일, 배터리, mp3, 카메라, 뉴스, 구글 지도, Firebase입니다. 장
+733                      폴더는 비어 있고, mp3·할 일 개선 폴더는 이름에 미완이 있으며 파일도 없습니다.
+734                    &lt;/p&gt;
+735                  &lt;/div&gt;
+736                  &lt;div&gt;
+737                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+738                    &lt;ul class=&quot;pill-list&quot;&gt;
+739                      &lt;li&gt;Kotlin&lt;/li&gt;
+740                      &lt;li&gt;Android Jetpack&lt;/li&gt;
+741                      &lt;li&gt;Firebase&lt;/li&gt;
+742                      &lt;li&gt;Retrofit&lt;/li&gt;
+743                      &lt;li&gt;Glide&lt;/li&gt;
+744                    &lt;/ul&gt;
+745                  &lt;/div&gt;
+746                  &lt;div&gt;
+747                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+748                    &lt;p class=&quot;field-body&quot;&gt;
+749                      안드로이드 스튜디오 프로젝트 압축과 한글 필기. 2026년 10월 18일에는 다시 빌드하지 않았습니다.
+750                      토큰과 서버 키는 적지 않았습니다.
+751                    &lt;/p&gt;
+752                  &lt;/div&gt;
+753                  &lt;div&gt;
+754                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+755                    &lt;p class=&quot;field-body&quot;&gt;레이아웃과 알림, 할 일·카메라·지도 앱, Firebase 메시징&lt;/p&gt;
+756                  &lt;/div&gt;
+757                &lt;/div&gt;
+758              &lt;/article&gt;
+759              &lt;article class=&quot;project-card&quot;&gt;
+760                &lt;figure class=&quot;project-card__media&quot;&gt;
+761                  &lt;img src=&quot;img/proj-14-resume.png&quot; alt=&quot;이력서 화면. 김신욱, 경력 세 곳, 학력, 아직 비어 있는 세 번째 구역&quot; /&gt;
+762                &lt;/figure&gt;
+763                &lt;div class=&quot;project-card__body&quot;&gt;
+764                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_14 · 2026.05.24&lt;/p&gt;
+765                  &lt;h3 class=&quot;project-card__title&quot;&gt;유데미&lt;/h3&gt;
+766                  &lt;div&gt;
+767                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+768                    &lt;p class=&quot;field-body&quot;&gt;
+769                      과정 앞부분을 50% 미만으로 들은 기록입니다. 코틀린 연산자·람다 필기와, HTML·CSS·자바스크립트
+770                      이력서 수업이 있습니다.
+771                    &lt;/p&gt;
+772                  &lt;/div&gt;
+773                  &lt;div&gt;
+774                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+775                    &lt;p class=&quot;field-body&quot;&gt;
+776                      2026년 10월 18일에 이력서 HTML을 열었습니다. 재직 끝 날짜는 연 날로 바뀌고, 세 번째 구역은
+777                      섹션제목 그대로입니다. 짧은 필기 파일 이름은 유메니로도 적혀 있습니다.
+778                    &lt;/p&gt;
+779                  &lt;/div&gt;
+780                  &lt;div&gt;
+781                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+782                    &lt;ul class=&quot;pill-list&quot;&gt;
+783                      &lt;li&gt;Kotlin&lt;/li&gt;
+784                      &lt;li&gt;HTML&lt;/li&gt;
+785                      &lt;li&gt;CSS&lt;/li&gt;
+786                      &lt;li&gt;jQuery&lt;/li&gt;
+787                    &lt;/ul&gt;
+788                  &lt;/div&gt;
+789                  &lt;div&gt;
+790                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+791                    &lt;p class=&quot;field-body&quot;&gt;브라우저에서 CLASSROOM/index.html을 직접 열었습니다. 호스팅 주소는 없습니다.&lt;/p&gt;
+792                  &lt;/div&gt;
+793                  &lt;div&gt;
+794                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+795                    &lt;p class=&quot;field-body&quot;&gt;재직 기간 계산, 이력서 칸, 코틀린 람다 필기&lt;/p&gt;
+796                  &lt;/div&gt;
+797                &lt;/div&gt;
+798              &lt;/article&gt;
+799              &lt;article class=&quot;project-card&quot;&gt;
+800                &lt;figure class=&quot;project-card__media&quot;&gt;
+801                  &lt;img src=&quot;img/proj-15-lost.png&quot; alt=&quot;에듀펜 2017년부터 2019년. 자바, 모바일 이클립스, 안드로이드 스튜디오. 파일 없음&quot; /&gt;
+802                &lt;/figure&gt;
+803                &lt;div class=&quot;project-card__body&quot;&gt;
+804                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_15 · 2017–2019&lt;/p&gt;
+805                  &lt;h3 class=&quot;project-card__title&quot;&gt;에듀펜&lt;/h3&gt;
+806                  &lt;div&gt;
+807                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+808                    &lt;p class=&quot;field-body&quot;&gt;
+809                      2017년부터 2019년까지 에듀펜에서 자바를 듣고, 모바일은 이클립스에서 안드로이드 스튜디오로 이어
+810                      갔다는 폴더 이름만 남아 있습니다.
+811                    &lt;/p&gt;
+812                  &lt;/div&gt;
+813                  &lt;div&gt;
+814                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+815                    &lt;p class=&quot;field-body&quot;&gt;폴더 이름 끝에 데이터 유실이라고 적혀 있고, 2026년 10월 18일에 열었을 때 파일이 없었습니다.&lt;/p&gt;
+816                  &lt;/div&gt;
+817                  &lt;div&gt;
+818                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+819                    &lt;ul class=&quot;pill-list&quot;&gt;
+820                      &lt;li&gt;Java&lt;/li&gt;
+821                      &lt;li&gt;Eclipse&lt;/li&gt;
+822                      &lt;li&gt;Android Studio&lt;/li&gt;
+823                    &lt;/ul&gt;
+824                  &lt;/div&gt;
+825                  &lt;div&gt;
+826                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+827                    &lt;p class=&quot;field-body&quot;&gt;실행할 소스와 캡처, 호스팅 주소가 없습니다.&lt;/p&gt;
+828                  &lt;/div&gt;
+829                  &lt;div&gt;
+830                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+831                    &lt;p class=&quot;field-body&quot;&gt;폴더 이름에 적힌 자바와 모바일 과정. 자료 파일은 없습니다.&lt;/p&gt;
+832                  &lt;/div&gt;
+833                &lt;/div&gt;
+834              &lt;/article&gt;
+835              &lt;!--
+836                다음 프로젝트 카드는 이 주석 아래에 같은 구조로 추가합니다.
+837                &lt;article class=&quot;project-card&quot;&gt; ... &lt;/article&gt;
+838              --&gt;
+839            &lt;/div&gt;
+840          &lt;/div&gt;
+841        &lt;/section&gt;
+842      &lt;/main&gt;
+843  
+844      &lt;footer class=&quot;site-footer&quot;&gt;
+845        &lt;div class=&quot;site-footer__inner&quot;&gt;
+846          &lt;nav class=&quot;site-sitemap&quot; aria-label=&quot;사이트맵&quot;&gt;
+847            &lt;p class=&quot;site-sitemap__label&quot;&gt;사이트맵&lt;/p&gt;
+848            &lt;ul class=&quot;site-sitemap__groups&quot;&gt;
+849              &lt;li&gt;
+850                &lt;a class=&quot;site-sitemap__page&quot; href=&quot;../index.html&quot;&gt;자기소개서&lt;/a&gt;
+851                &lt;ul class=&quot;site-sitemap__list&quot;&gt;
+852                  &lt;li&gt;&lt;a href=&quot;../index.html#section-motivation&quot;&gt;지원 동기&lt;/a&gt;&lt;/li&gt;
+853                  &lt;li&gt;&lt;a href=&quot;../index.html#section-growth&quot;&gt;성장·학습&lt;/a&gt;&lt;/li&gt;
+854                  &lt;li&gt;&lt;a href=&quot;../index.html#section-skills&quot;&gt;역량&lt;/a&gt;&lt;/li&gt;
+855                  &lt;li&gt;&lt;a href=&quot;../index.html#section-links&quot;&gt;자료&lt;/a&gt;&lt;/li&gt;
+856                  &lt;li&gt;&lt;a href=&quot;../index.html#section-strengths&quot;&gt;강점&lt;/a&gt;&lt;/li&gt;
+857                  &lt;li&gt;&lt;a href=&quot;../index.html#section-closing&quot;&gt;마치며&lt;/a&gt;&lt;/li&gt;
+858                  &lt;li&gt;&lt;a href=&quot;../index.html#section-refs&quot;&gt;참고&lt;/a&gt;&lt;/li&gt;
+859                &lt;/ul&gt;
+860              &lt;/li&gt;
+861              &lt;li&gt;
+862                &lt;a class=&quot;site-sitemap__page&quot; href=&quot;../cover_letter/profile.html&quot;&gt;자기소개 / 프로필&lt;/a&gt;
+863                &lt;ul class=&quot;site-sitemap__list&quot;&gt;
+864                  &lt;li&gt;&lt;a href=&quot;../cover_letter/profile.html#about&quot;&gt;소개&lt;/a&gt;&lt;/li&gt;
+865                  &lt;li&gt;&lt;a href=&quot;../cover_letter/profile.html#profile&quot;&gt;프로필&lt;/a&gt;&lt;/li&gt;
+866                  &lt;li&gt;&lt;a href=&quot;../cover_letter/profile.html#interests&quot;&gt;관심 분야&lt;/a&gt;&lt;/li&gt;
+867                  &lt;li&gt;&lt;a href=&quot;../cover_letter/profile.html#learning&quot;&gt;학습 · 경험&lt;/a&gt;&lt;/li&gt;
+868                &lt;/ul&gt;
+869              &lt;/li&gt;
+870              &lt;li&gt;
+871                &lt;a class=&quot;site-sitemap__page&quot; href=&quot;../online_business_card/business-card.html&quot;&gt;온라인 명함&lt;/a&gt;
+872                &lt;ul class=&quot;site-sitemap__list&quot;&gt;
+873                  &lt;li&gt;&lt;a href=&quot;../cv/resume.html&quot;&gt;이력서&lt;/a&gt;&lt;/li&gt;
+874                  &lt;li&gt;&lt;a href=&quot;../study_note_record_organization/dashboard/index.html&quot;&gt;학습록&lt;/a&gt;&lt;/li&gt;
+875                &lt;/ul&gt;
+876              &lt;/li&gt;
+877              &lt;li&gt;
+878                &lt;a class=&quot;site-sitemap__page&quot; href=&quot;index.html&quot; aria-current=&quot;page&quot;&gt;프로젝트 아카이브&lt;/a&gt;
+879                &lt;ul class=&quot;site-sitemap__list&quot;&gt;
+880                  &lt;li&gt;&lt;a href=&quot;#archive&quot;&gt;소개&lt;/a&gt;&lt;/li&gt;
+881                  &lt;li&gt;&lt;a href=&quot;#archive-list&quot;&gt;목록&lt;/a&gt;&lt;/li&gt;
+882                &lt;/ul&gt;
+883              &lt;/li&gt;
+884            &lt;/ul&gt;
+885          &lt;/nav&gt;
+886          &lt;p class=&quot;site-footer__note&quot;&gt;2026년 10월 17일 구성 · 코탐록 자료 카테고리의 프로젝트 아카이브&lt;/p&gt;
+887          &lt;p class=&quot;site-footer__disclosure&quot;&gt;
+888            자료를 제외한 문장이나 문구는 나의 생각을 프롬프트에 요청하여 생성한 문장이나 문구입니다.
+889          &lt;/p&gt;
+890          &lt;p class=&quot;site-footer__copyright&quot;&gt;© 2026 김신욱(깃허브 ackdark23358). All rights reserved.&lt;/p&gt;
+891        &lt;/div&gt;
+892      &lt;/footer&gt;
+893      &lt;script src=&quot;js/site.js&quot;&gt;&lt;/script&gt;
+894        &lt;script src=&quot;../js/protect-resources.js&quot;&gt;&lt;/script&gt;
+895    &lt;/body&gt;
+896  &lt;/html&gt;</pre>
 <h2>portfolio_achieve/js/site.js</h2>
 <pre>  1  (function () {
   2    &quot;use strict&quot;;
