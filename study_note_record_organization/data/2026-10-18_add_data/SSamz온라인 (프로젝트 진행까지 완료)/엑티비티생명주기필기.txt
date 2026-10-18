@@ -1,0 +1,27 @@
+A1-> A2
+onStop() -> onResume()
+A1 -> A2
+onStop(), onResume()
+
+생각하면서 안하면 유저가 사용안할때 베터리 사용량이 소모될수 있다.
+
+
+mainActivity -> detailActivity
+벡버튼누를때 디스토이가 디테일에서 하면안된다.
+
+onCreate()
+onStart()
+onStop()
+====== 화면에 뜨는 상태
+가로에서 세로 화면회전
+onResume() -> onDestory() -> onCreate() -> onResume()
+메모리해제됬다. 죽었다가 살아났다 데이터가 날아갔다.
+화면이 뜬다음에 유저 서버에서 넘어돈 데이터날아간다.
+
+onSaveInstanceState() => 죽을때 유지해야되는 데이터가 있다. 이함수에서 열심히 저장
+onRestoreInstanceState() => 복원
+
+onSaveInstanceState(saveInstancestate: Bundle){}
+onSaveInstanceState(saveInstanceState: Bundle){}
+onSaveInstanceState(onState: Bundle){}
+

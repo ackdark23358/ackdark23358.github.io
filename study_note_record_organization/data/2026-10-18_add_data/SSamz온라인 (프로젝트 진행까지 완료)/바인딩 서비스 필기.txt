@@ -1,0 +1,171 @@
+데이터 주고 받을일 없을경우 엑티비티=> 서비스 startService()
+
+데이터 주고받을 경우  엑티비티=> 서비스 bindService()
+뭔가가 어디에 탑제된다는 의미의 바인드
+
+객체를 하나 바인딩 시켜놓고 메소드를 활용해서 데이터를 주고받자
+
+
+서비스쪽
+class MyBinder : Binder(){
+	fun funA(arg: Int){
+	}
+
+	fun funB(arg: Int) : Int{
+		return arg * arg
+	}
+}
+
+override fun onBind(inetnt: Intent): IBinder? {
+	return MyBinder
+}
+
+엑티비티에서 객체를 전달받아 사용
+
+엑티비티쪽
+val connection: ServiceConnection = object: ServiceConnection {
+	onServiceConnected(name: ComponentName?, service: IBinder?){
+		serviceBinder = service as MyService.MyBinder
+	}
+
+	override fun onServiceDisconnected(name: ComponentName?){
+	}
+}
+
+serviceBinder.funA(10)
+
+메신져 바인딩 => IBinder() X
+메신저간 통신은 프로세스간 통신에도 사용할 수 있다.
+
+what: Int => int
+obj  => data
+
+class Myservice: Service(){
+	lateinit var message: Messanger
+	lateinit class IncomingHandler(
+		context: Context,
+		private val applicationContext: Context = context.applicationContext
+		) : Handler(Looper.getMainLooper()){
+		override fun handleMessage(msg: Messgae){
+			when(msg.what){
+				10 ->
+					Toast.makeText(applicationContext, "${msg.obj)",
+								Toast.LENGTH_SHORT).show()
+				20->
+					Toast.makeText(applicationContext, "$(msg.obj)",
+								Toast.LENGTH_SHORT).show()
+				else -> super.handleMessage(msg)
+
+			}
+		}
+	}
+
+	override fun onBind(intent: Intent): IBInder? {
+		messanger = Messanger(IncomingHandler(this))
+		return messanger.binder
+	}
+}
+
+
+class MainActivity: AppCompatActivity(){
+	lateinit var messanger: Messanger
+	override fun onCreate(savedInstanceState: Bundle?){
+		super.onCreate(saveInstanceState)
+		(.....생략....)
+		val intent = Intent(this, MyService::class.java)
+		bindService(intent, connection, Context.BIND_AUTO_CREATE)	
+	}
+	(....생략....)
+	val connection: ServiceCOnnetion = object: ServiceConnection{
+		override fun onServiceConnected(name: ComponentName?, service: IBinder?){
+			messenger = Messenger(service)
+		}
+
+		override fun onServiceDisconnected(name: ComponentName?){
+
+		}
+	}	
+}
+
+val msg = Message()msg.what = 10
+msg.what = 10
+msg.obj = "hello"
+messenger.send(msg)
+
+
+
+외부앱 연동
+App // process <=> process
+
+30버전 정도부터 외부에서 이용하려면 자신의 메니페스트 파일에 명시 해야한다.
+
+<manifest ... 생략>
+	(.... 생략 .....)
+	<queries>
+		<package android:name="com.example.test_outher" />
+	</queries>
+</manifest<
+
+<service
+	android:name=".MyService"
+	android:exported="true"
+	<intent-filter>
+		<action android:name="ACTION_OUTER_SERVICE"
+	<intent-filter>
+</service>
+
+실행시킬 앱의 패키지명 명시
+process <== (bindService) =>process
+
+val intent = Intent("ACTION_OUTER_SERVICE")
+intent.setPackage("com.example.text_outter")
+bindService(intent, connection, Context.BIND_AUTO_CREATE)
+
+번들 객체 이용
+val bundle = Bundle()
+
+bundle .putString("data1", "hello")
+bundle.putInt("data", 10)
+
+val msg = Message()
+msg.what = 10
+msg.obj= bundle
+messenger.send(msg)
+
+AIDL 방법을 이용하려면
+확장자가 aidl 파일을 미리 만들어둬야한다.
+package com.example.test_aidl;
+interface MyAIDLInterface{
+	void funA(String data);
+	int funB();
+}
+
+
+class MyAIDLService: Service(){ 
+	override fun onBind(intent: Intent): IBinder{
+		return object: MyAIDLInterface.Stub(){
+			override fun funA(data: String?){
+			}
+			override fun funB(): Int {
+				return 10
+			}
+		}
+	}
+}
+
+<service
+	android:name = ".MyAIDL.Serviece"
+	android.enabled="true"
+	android:exported="true"
+	<intent-filter>
+		<action android:name="ACTION_AIDDL_SERVICE" />
+	<intent-filter>
+
+<queries>
+	<package android:name="com.example.text_outter" />
+</queries>
+
+외부앱에서도 AIDL 파일 가지고 있어야한다.
+startService.fun("hello")
+
+

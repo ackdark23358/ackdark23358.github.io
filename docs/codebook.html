@@ -235,7 +235,7 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 9pt; backgro
 <h3>학습 카탈로그</h3>
 <p><code>normalize_study_title</code>은 확장자와 장·일차·독서노트 꼬리, 코딩면허, 실습 필기 꼬리를 떼고 과목 이름만 남긴다.</p>
 <p><code>collect_study_groups</code>는 <code>data/</code> 바로 아래 파일만 본다. <code>.hwpx</code>는 건너뛰고 이름만 따로 모은다. <code>.txt</code>와 <code>.docx</code>만 과목 이름 아래로 모은다. <code>STUDY_MERGE_ALIASES</code>에 있으면 별칭을 같은 과목 키로 합친다. 각 묶음은 <code>sort_key_unit</code>으로 정렬한다. 그룹 딕셔너리와 건너뛴 hwpx 목록을 돌려준다.</p>
-<p><code>build_study_catalog</code>는 그룹 수가 37이 아니면 <code>output/study-audit.txt</code>에 그룹 이름과 hwpx 목록을 쓰고 <code>SystemExit</code>로 중단한다. 37이면 제목순으로 <code>CatalogItem</code>을 만든다. <code>STUDY_META</code>에 있으면 슬러그, 한 줄 요약, 태그, 분류를 그대로 쓴다. 없으면 제목으로 슬러그를 만들고 요약은 <code>제목 학습 노트</code>, 태그는 <code>study</code>, 분류는 제목에 <code>Do it</code>이 있으면 <code>book</code> 아니면 <code>course</code>다. id는 <code>study-슬러그</code>다. 출처의 <code>unit</code>은 <code>parse_unit</code>이다.</p>
+<p><code>build_study_catalog</code>는 그룹 수가 41이 아니면 <code>output/study-audit.txt</code>에 그룹 이름과 hwpx 목록을 쓰고 <code>SystemExit</code>로 중단한다. 41이면 제목순으로 <code>CatalogItem</code>을 만든다. <code>STUDY_META</code>에 있으면 슬러그, 한 줄 요약, 태그, 분류를 그대로 쓴다. 없으면 제목으로 슬러그를 만들고 요약은 <code>제목 학습 노트</code>, 태그는 <code>study</code>, 분류는 제목에 <code>Do it</code>이 있으면 <code>book</code> 아니면 <code>course</code>다. id는 <code>study-슬러그</code>다. 출처의 <code>unit</code>은 <code>parse_unit</code>이다.</p>
 <p><code>STUDY_NARRATIVES</code>는 슬러그별 고정 서술이다. <code>build_study_narrative</code>는 그 문장과 원문에서 뽑은 단계 문단을 묶어 <code>overview</code>, <code>main</code>, <code>reflection</code>, <code>units</code>를 돌려준다. 원문이 짧으면 <code>weave_narrative</code>와 <code>soften_sentence</code>가 문장을 다듬고, 점이 없으면 안내 문장으로 채운다.</p>
 <h3>과제 카탈로그</h3>
 <p><code>find_assign_file</code>은 아직 <code>used</code>에 없는 파일 중 제외 문자열이 없고 키워드가 들어 있는 첫 파일을 돌려준다. 키워드 순서로 찾고, 없으면 <code>None</code>이다.</p>
@@ -248,7 +248,7 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 9pt; backgro
 <p>다른 항목은 출처 <code>text</code>를 이어 붙인다. 학습이면 <code>build_study_narrative</code>의 개요, 배운 점, 단위별 문단을 쓴다. 과제가 아닌데 학습 서술이 없으면 글머리표 요약이다. 글머리표도 없으면 원본이 짧거나 비었다는 한 줄을 넣는다. 과제면 <code>build_assignment_content_summary</code>의 문단과 <code>배운 점 / 적용</code> 고정 문장을 넣는다.</p>
 <p>맨 아래 <code>원본 출처</code>는 <code>source_link_target</code>의 링크다. 과제면 보이는 이름과 경로에 <code>mask_assignment_privacy</code>를 적용한다. 반환 문자열 전체에 <code>mask_secrets</code>를 한 번 더 적용한다.</p>
 <h3>main</h3>
-<p><code>output/study</code>, <code>output/assignment</code>, <code>output/_extracted</code>를 만든다. <code>build_study_catalog</code>가 37이 아니면 여기서 중단되므로 과제 카탈로그까지 가지 않는다. 통과하면 <code>build_assignment_catalog</code>를 부르고, 모든 항목에 <code>load_sources</code>를 한다.</p>
+<p><code>output/study</code>, <code>output/assignment</code>, <code>output/_extracted</code>를 만든다. <code>build_study_catalog</code>가 41이 아니면 여기서 중단되므로 과제 카탈로그까지 가지 않는다. 통과하면 <code>build_assignment_catalog</code>를 부르고, 모든 항목에 <code>load_sources</code>를 한다.</p>
 <p>이번 슬러그에 없는 예전 <code>.md</code>는 두 출력 폴더에서 지운다. 각 항목의 <code>render_markdown</code> 결과를 <code>study</code> 또는 <code>assignment</code> 폴더의 <code>슬러그.md</code>로 쓴다. <code>catalog.json</code>에는 id, 종류, 분류, 제목, 슬러그, 요약, 태그, 출력 경로, 출처 경로와 단위를 넣는다. <code>index.md</code>는 학습과 과제 링크 목록이다.</p>
 <p>그 다음 <code>scripts/build_static_site.py</code>를 현재 파이썬으로 실행한다. <code>check=False</code>라서 정적 빌드가 실패해도 이 함수는 예외를 올리지 않는다. 스크립트 파일이 없거나 실행 자체가 <code>OSError</code>면 그 예외만 삼킨다.</p>
 <h2>이 파일이 부르는 다른 파일</h2>

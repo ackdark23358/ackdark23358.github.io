@@ -1,0 +1,38 @@
+콘텐트 프로바이더
+
+외부에서 우리앱에 접근할수 있도록 콘텐츠 프로바이더를 만들어줘야 접근가능하다.
+
+MyContentProvider: ContentProvicder() {
+	getType()
+	insert()
+	delete()
+	query()
+	onCreate()}
+
+
+<provider
+	android:name=".MyContentProvider"
+	authorities="com.example.test._provider"
+	android:enabled= true
+	exported="true">
+</provider>
+
+
+외부앱에 접근하기위해서
+<queries>
+
+</queries>
+
+
+contentRegister.query{
+	Uri.parse("content//com.example.test_provider"),
+	null, null, null. null)
+}
+
+content://com.example.test_provider
+프로토콜 호스트
+
+content://com.example.test_provide(user/)
+
+provider 주소록 
+

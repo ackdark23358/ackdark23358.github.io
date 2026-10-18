@@ -1,0 +1,759 @@
+# SSamz 안드로이드 10강
+
+## 10-1 호환성문제
+
+notification 알람
+1버전 부터 사용됬기때문에 하위호환성에 문제되지 않늗나.
+notification.CallStyle은 31버전에서 추가된거다. 31버전 미만에서의 폰에선
+에러난다.
+ps. 28 버전에서 channel 클래스가 나오고 기능이 추가되게된다. .............
+minimum sdk 에 적용되게 개발해야한다.
+안드로이드 스튜디오가 경고를 띄운다.
+requireApi (Build.VERSION_CODE.S) 어노테이션을 주고 알고리즘적으로 해결하겠다
+https://developer.android.com/reference/android/app/Notification
+
+## 10-2 퍼미션 문제
+
+viewBinding{
+enabled=true
+}
+엑티비티 파일
+package com.example.chapter10.test1
+import android.content.pm.PackageManager
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import com.example.chapter10.databinding.ActivityPermissionPraBinding
+class PermissionPra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityPermissionPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+val requestLauncher = registerForActivityResult(
+ActivityResultContracts.RequestPermission()
+){ isGranted ->
+if(isGranted){
+Log.d("ackdark23", "callback... granted...")
+}else{
+Log.d("ackdark23", "calback... denied...")
+}
+}
+val status = ContextCompat.checkSelfPermission(this,
+"android.permission.ACCESS_FINE_LOCATION")
+if(status == PackageManager.PERMISSION_GRANTED){
+Log.d("ackdark23", "granted...")
+}else{
+requestLauncher.launch("android.permission.ACCESS_FINE_LOCATION")
+}
+}
+}
+메니페스트파일
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.example.chapter10">
+<!-- 추적 퍼미션션-->
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:roundIcon="@mipmap/ic_launcher_round"
+android:supportsRtl="true"
+android:theme="@style/Theme.SSamsStudyPra">
+<activity
+android:name=".test1.PermissionPra"
+android:exported="true" />
+<activity
+android:name=".MainActivity"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+</application>
+</manifest>
+2022-07-31 21:50:03.618 4486-4486/com.example.chapter10 D/ackdark23: callback... granted...
+2022-07-31 21:50:11.589 4557-4557/com.example.chapter10 D/ackdark23: granted...
+
+## 10-3-1 다양한 다이얼로그 - 토스트, 시간, 날짜 다이얼로그
+
+메인 엑티비티 파일
+데이트 피커와 타임피커 다이얼로그 사용해보기
+package com.example.chapter10.test2
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import android.widget.DatePicker
+import android.widget.TimePicker
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import com.example.chapter10.databinding.ActivityDialogPraBinding
+class DialogPra : AppCompatActivity() {
+@RequiresApi(Build.VERSION_CODES.R)
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityDialogPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+binding.button1.setOnClickListener {
+val toast = Toast.makeText(this, "종료하려면 한번만 더 누르세요",Toast.LENGTH_SHORT)
+toast.addCallback(
+object : Toast.Callback(){
+override fun onToastHidden() {
+super.onToastHidden()
+Log.d("fifo23", "toast hidden")
+}
+override fun onToastShown() {
+super.onToastShown()
+Log.d("fifo23", "toast show")
+}
+})
+toast.show()
+}
+binding.button2.setOnClickListener {
+DatePickerDialog(this, object : DatePickerDialog.OnDateSetListener{
+override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
+Log.d("fifo23", "date $p1, $p2, $p3")
+}
+}, 2022, 10, 3).show()
+}
+binding.button3.setOnClickListener {
+TimePickerDialog(this, object : TimePickerDialog.OnTimeSetListener{
+override fun onTimeSet(p0: TimePicker?, p1: Int, p2: Int) {
+Log.d("fifo23", "time : $p1, $p2" )
+}
+}, 15, 0, true).show()
+}
+}
+}
+xml파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".test2.DialogPra">
+<Button
+android:id="@+id/button1"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="48dp"
+android:text="Toast"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.498"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<Button
+android:id="@+id/button2"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="32dp"
+android:text="DatePicker"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.488"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toBottomOf="@+id/button1" />
+<Button
+android:id="@+id/button3"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="28dp"
+android:text="TimePicker"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.498"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toBottomOf="@+id/button2" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+메니페스트 파일
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.example.chapter10">
+<!-- 추적 퍼미션션 -->
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:roundIcon="@mipmap/ic_launcher_round"
+android:supportsRtl="true"
+android:theme="@style/Theme.SSamsStudyPra">
+<activity
+android:name=".test2.DialogPra"
+android:exported="true" />
+<activity
+android:name=".test1.PermissionPra"
+android:exported="true" />
+<activity
+android:name=".MainActivity"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+</application>
+</manifest>
+
+## 10-3-2 다양한 다이얼로그 - 알터 리스트 커스텀
+
+AlertDialog 알람다이얼로그
+DataPickerDialog
+TimePickerDialog
+자주쓰여서 만들어논 다이얼로그
+모두다 AlertDialog로 처리가가능하다.
+CustomDialog 개발자가 화면구성 하고 버튼정보 글자 출력부분 본문부분 방식
+Alert 다이얼로그 는 직접생성이 안되서 빌더로 만드는 방식이다.
+메니페스트 설정
+<activity
+android:name=".test2.DialogPra2"
+android:exported="true" />
+<activity
+다이얼러그 연습 xml파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".test2.DialogPra2">
+<Button
+android:id="@+id/ListDialogBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="104dp"
+android:text="리스트 다이얼로그"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.498"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<Button
+android:id="@+id/CustomDialogBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="48dp"
+android:text="커스텀 다이얼로그"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.498"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toBottomOf="@+id/ListDialogBtn" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+커스텀 다이얼로그 xml파일
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical">
+<EditText
+android:layout_width="match_parent"
+android:layout_height="wrap_content"/>
+<RadioGroup
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="horizontal">
+<RadioButton
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="male" />
+<RadioButton
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="female" />
+</RadioGroup>
+</LinearLayout>
+엑티비티 파일
+package com.example.chapter10.test2
+import android.content.DialogInterface
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AlertDialog
+import com.example.chapter10.databinding.ActivityDialogPra2Binding
+import com.example.chapter10.databinding.DialogInputBinding
+class DialogPra2 : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityDialogPra2Binding.inflate(layoutInflater)
+setContentView(binding.root)
+binding.ListDialogBtn.setOnClickListener {
+val items = arrayOf("사과", "복숭아", "수박")
+AlertDialog.Builder(this).run{
+setTitle("items test")
+setIcon(android.R.drawable.ic_dialog_alert)
+setMultiChoiceItems(
+items,
+booleanArrayOf(true, false, true),
+object : DialogInterface.OnMultiChoiceClickListener{
+override fun onClick(p0: DialogInterface?, p1: Int, p2: Boolean) {
+Log.d("fifo23", "${items[p1]} 이 ${if(p2) " 선택되었습니다. " else "선택해제되었습니다."}")
+}
+}
+)
+setPositiveButton("닫기", null)
+show()
+}
+}
+binding.CustomDialogBtn.setOnClickListener {
+val dialogBinding = DialogInputBinding.inflate(layoutInflater)
+AlertDialog.Builder(this).run{
+setTitle("input")
+setView(dialogBinding.root)
+setPositiveButton("닫기", null)
+show()
+}
+}
+}
+}
+2022-08-01 21:57:05.849 6946-6946/com.example.chapter10 D/fifo23: 복숭아 이  선택되었습니다.
+2022-08-01 21:57:05.852 531-5659/system_process I/system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+2022-08-01 21:57:05.852 531-5659/system_process I/system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+2022-08-01 21:57:05.986 531-545/system_process I/system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+2022-08-01 21:57:06.277 6946-6946/com.example.chapter10 D/fifo23: 복숭아 이 선택해제되었습니다.
+2022-08-01 21:57:06.279 531-5659/system_process I/system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+2022-08-01 21:57:06.407 531-545/system_process I/system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+2022-08-01 21:57:08.150 6946-6946/com.example.chapter10 D/fifo23: 수박 이 선택해제되었습니다.
+2022-08-01 21:57:08.157 531-5659/system_process I/system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+2022-08-01 21:57:08.289 531-545/system_process I/system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+2022-08-01 21:57:08.333 6946-6946/com.example.chapter10 D/fifo23: 수박 이  선택되었습니다.
+2022-08-01 21:57:08.335 531-5659/system_process I/system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+2022-08-01 21:57:08.465 531-2624/system_process I/system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+
+## 10-4 진동과 벨 알림
+
+엑티비티 파일
+package com.example.chapter10.test2
+import android.content.Context
+import android.media.RingtoneManager
+import android.os.*
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.example.chapter10.databinding.ActivityVibratorPraBinding
+class VibratorPra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityVibratorPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+binding.BeepBtn.setOnClickListener {
+Log.d("fifo23", "beep ~")
+val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+val ringtone = RingtoneManager.getRingtone(applicationContext, uri)
+ringtone.play()
+}
+binding.VibrateBtn.setOnClickListener {
+Log.d("fifo23", "vibrate ~")
+val vibrator = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+val manager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+manager.defaultVibrator
+}else{
+getSystemService(VIBRATOR_SERVICE) as Vibrator
+}
+if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
+}else{
+vibrator.vibrate(500)
+}
+}
+}
+}
+XML파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".test2.VibratorPra">
+<Button
+android:id="@+id/VibrateBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="168dp"
+android:text="Vibrate"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.498"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<Button
+android:id="@+id/BeepBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="72dp"
+android:text="beep"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.498"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+와이파이 디버깅 모드 페어링 하는방법
+휴대폰 소프트웨어 빌드번호 연타해서 개발자모드열고
+무선 디버깅 모드 설정 찾아서 사용하게 하고 터치해서 qr코드로 페어링하거나 다른방법
+숫자로 연결하거나 한다.
+D/fifo23: beep ~
+D/Ringtone: Successfully created local player
+D/fifo23: vibrate ~
+
+## 10-5-1 알림띄우기- 채널, 알림 객체
+
+xml 파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".test2.notificationPra">
+<Button
+android:id="@+id/notifyBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="104dp"
+android:text="Notification"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.498"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+엑티비티 파일
+package com.example.chapter10.test2
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.core.app.NotificationCompat
+import com.example.chapter10.databinding.ActivityNotificationPraBinding
+class notificationPra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityNotificationPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+binding.notifyBtn.setOnClickListener {
+val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+val builder : NotificationCompat.Builder
+if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+val channel = NotificationChannel("one", "one chnnel",
+NotificationManager.IMPORTANCE_LOW)
+channel.description="one description"
+manager.createNotificationChannel(channel)
+builder = NotificationCompat.Builder(this, "one")
+}else{
+builder = NotificationCompat.Builder(this)
+}
+builder.setSmallIcon(android.R.drawable.ic_notification_overlay)
+builder.setWhen(System.currentTimeMillis())
+builder.setContentTitle("Title")
+builder.setContentText("TEXT")
+manager.notify(11 ,builder.build())
+}
+}
+}
+메니페스트
+<activity
+android:name=".test2.notificationPra"
+android:exported="true" />
+
+## 10-5-2 알림구성 스타일
+
+다양한 알림 만들기
+notification 구성
+알람 터치 이벤트 => 엑티비티 화면 실행되게....
+유저가 터치
+Intent가 하나 있어야한다. => 이벤트 의뢰 PendingIntent
+화면에 실행
+getActivity
+---벡그라운드
+getBroadcast
+getService
+PandingIntent.FLAG_IMMITABLE
+FLAG_MUTABLE, FLAG_NO_CREATE, FLAG_ONE_SHOW, FLAGE_UPDATE_CURRENT
+31 이후 버전부터는 FLAG_MUTABLE과 FLAG_IMMUTABLE중 하나를 지정
+action 최대 3개 까지 추가가능 공유 연결 삭제
+ex ) 알람 앱 => Broadcast에 Action 이 등록되있으면벡그라운드에서 실행
+답장 알림에서 바로 답장 하게되는 알림
+누가썻는지 KEY_TEXT_REPLY을 String형식 (키) 으로 확인되게
+변수로 지정하고
+RemoteInput
+action
+프로그레스 를 알림 화면에
+대표적으로 페이스북
+스레드 사용
+알림 스타일
+큰 이미지 스타일  추가해서 띄우기
+BitmapFactory
+NotificationCompat.BigPictureStyle()
+BigPicture
+긴 텍스트 스타일
+NotificationCompatBigTextStyle()
+상자 스타일
+style = NofificationCompat.InboxStyle()
+메시지 객체
+사람과 사람이름의 메시지 정보
+사람이미지 준비
+Person 객체 생성
+메시지 객체 생성
+엑티비티 파일
+package com.example.chapter10.test2
+import android.app.*
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.media.AudioAttributes
+import android.media.Ringtone
+import android.media.RingtoneManager
+import android.net.Uri
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.core.app.NotificationCompat
+import androidx.core.app.RemoteInput
+import androidx.core.graphics.drawable.IconCompat
+import com.example.chapter10.R
+import com.example.chapter10.databinding.ActivityNotificationPra2Binding
+class notificationPra2 : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityNotificationPra2Binding.inflate(layoutInflater)
+setContentView(binding.root)
+binding.notificationBtn.setOnClickListener {
+val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+val builder : NotificationCompat.Builder
+if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+val channelId = "one-channel"
+val channelName = "My Channel One"
+val channel = NotificationChannel(channelId,channelName,
+NotificationManager.IMPORTANCE_DEFAULT).apply {
+description="one description"
+setShowBadge(true)
+val uri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+val autioAttribute = AudioAttributes.Builder()
+.setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+.setUsage(AudioAttributes.USAGE_ALARM)
+.build()
+setSound(uri, audioAttributes)
+enableVibration(true)
+}
+manager.createNotificationChannel(channel)
+builder = NotificationCompat.Builder(this,channelId)
+}else{
+builder = NotificationCompat.Builder(this)
+}
+builder.setSmallIcon(android.R.drawable.ic_notification_overlay)
+builder.setWhen(System.currentTimeMillis())
+builder.setContentTitle("Title")
+builder.setContentText("TEXT")
+builder.run {
+setSmallIcon(R.drawable.small)
+setWhen(System.currentTimeMillis())
+setContentTitle("홍길동")
+setContentText("안녕하세요.")
+setLargeIcon(BitmapFactory.decodeResource(resources,R.drawable.big))
+}
+// 알림 상태에서 답장 보내게 구현
+val KEY_TEXT_REPLY= "key_text_reply"
+var replyLabel : String = "답장"
+var remoteInput: RemoteInput = androidx.core.app.RemoteInput.Builder(KEY_TEXT_REPLY).run {
+setLabel(replyLabel)
+build()
+}
+val replyIntent = Intent(this, ReplyReciver::class.java)
+val replyPendingIntent = PendingIntent.getBroadcast(
+this, 30, replyIntent, PendingIntent.FLAG_MUTABLE)
+builder.addAction(
+NotificationCompat.Action.Builder(
+R.drawable.send,
+"답장",
+replyPendingIntent
+).addRemoteInput(remoteInput).build()
+)
+manager.notify(11,builder.build())
+}
+}
+}
+메니페스트 파일
+<receiver
+android:name=".test2.ReplyReciver"
+android:enabled="true"
+android:exported="true"></receiver>
+<activity
+android:name=".test2.notificationPra2"
+android:exported="true" />
+브로드케스트리시버
+package com.example.chapter10.test2
+import android.app.NotificationManager
+import android.app.RemoteInput
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+class ReplyReciver : BroadcastReceiver() {
+//알림의 입력 글 희득
+override fun onReceive(context: Context, intent: Intent) {
+// This method is called when the BroadcastReceiver is receiving an Intent broadcast.
+val replyTxt = RemoteInput.getResultsFromIntent(intent)?.getCharSequence("key_text_reply")
+Log.d("fifo23", "replyTxt : $replyTxt ")
+//알람 취소
+val manager = context.getSystemService(
+AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
+manager.cancel(11)
+}
+}
+xml 파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".test2.notificationPra2">
+<Button
+android:id="@+id/notificationBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="알림"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+2022-08-03 18:50:16.791 4166-4166/com.example.chapter10 D/fifo23: replyTxt : Sdfsfdjjj??
+2022-08-03 18:50:24.140 4166-4166/com.example.chapter10 D/fifo23: replyTxt : Werwerwetwet
+2022-08-03 18:50:27.705 4166-4166/com.example.chapter10 D/fifo23: replyTxt : Zzzzz
+2022-08-03 18:51:19.502 4166-4166/com.example.chapter10 D/fifo23: replyTxt : Fghfghfghfgh
+2022-08-03 18:51:22.787 4166-4166/com.example.chapter10 D/fifo23: replyTxt : Fghfgh
+2022-08-03 19:13:44.258 4429-4429/com.example.chapter10 D/fifo23: replyTxt : Tsuifnjoko
+
+## 10-6-카카오톡 알림 만들기
+
+카카오 알람
+엑티비티 파일
+바인딩 해주고 R이 안먹힐 때 패키지명. R 임포트 해주고해주고 해보자.
+메니페스트 파일 에러 뜰 때 CLOSE 해주고 했을 때 되는경우도 있다.
+package com.example.chapter10.test2
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.media.AudioAttributes
+import android.media.RingtoneManager
+import android.net.Uri
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.core.app.NotificationCompat
+import androidx.core.app.RemoteInput
+import com.example.chapter10.R
+import com.example.chapter10.databinding.ActivityKakaoAlramPraBinding
+class kakaoAlramPra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityKakaoAlramPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+binding.kakaoNotificaionBtn.setOnClickListener {
+val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+val builder: NotificationCompat.Builder
+if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+val channelId="cone_channel"
+val channelName = "My Channel One"
+val channel = NotificationChannel(
+channelId,
+channelName,
+NotificationManager.IMPORTANCE_DEFAULT
+).apply{
+description = "My Channel One Description"
+setShowBadge(true)
+val uri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+val audioAttributes = AudioAttributes.Builder()
+.setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+.setUsage(AudioAttributes.USAGE_ALARM)
+.build()
+setSound(uri, audioAttributes)
+enableVibration(true)
+}
+manager.createNotificationChannel(channel)
+builder = NotificationCompat.Builder(this,channelId)
+}else{
+builder = NotificationCompat.Builder(this)
+}
+builder.run {
+setSmallIcon(R.drawable.small)
+setWhen(System.currentTimeMillis())
+setContentTitle("홍길동")
+setContentText("안녕하세요.")
+setLargeIcon(BitmapFactory.decodeResource(resources,R.drawable.big))
+}
+val KEY_TEXT_REPLY = "key_text_reply"
+var replyLabel = "답장"
+var remoteInput: RemoteInput = RemoteInput.Builder(KEY_TEXT_REPLY).run{
+setLabel(replyLabel)
+build()
+}
+val replyIntent = Intent(this, kakaoBroadCast::class.java)
+val replyPendingIntent = PendingIntent.getBroadcast(
+this, 30, replyIntent, PendingIntent.FLAG_MUTABLE
+)
+builder.addAction(
+NotificationCompat.Action.Builder(
+R.drawable.send,
+"답장",
+replyPendingIntent
+).addRemoteInput(remoteInput).build()
+)
+manager.notify(11, builder.build())
+}
+}
+}
+프로드케스트리시버 파일
+package com.example.chapter10.test2
+import android.app.NotificationManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.RemoteInput
+class kakaoBroadCast : BroadcastReceiver() {
+override fun onReceive(context: Context, intent: Intent) {
+// This method is called when the BroadcastReceiver is receiving an Intent broadcast.
+val replyTxt = RemoteInput.getResultsFromIntent(intent)
+?.getCharSequence("key_text_reply")
+Log.d("fifo23", "replyTxt: $replyTxt")
+val manager = context.getSystemService(
+AppCompatActivity.NOTIFICATION_SERVICE
+) as NotificationManager
+manager.cancel(11)
+}
+}
+메니페스트 파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".test2.kakaoAlramPra">
+<Button
+android:id="@+id/kakaoNotificaionBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="알림"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+<receiver
+android:name=".test2.kakaoBroadCast"
+android:enabled="true"
+android:exported="true"></receiver>
+<activity
+android:name=".test2.kakaoAlramPra"
+android:exported="true" />

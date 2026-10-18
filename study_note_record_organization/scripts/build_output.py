@@ -347,6 +347,30 @@ STUDY_META: dict[str, tuple[str, str, list[str], str]] = {
     "프롬프트 텔링": ("prompt-telling", "프롬프트·스토리텔링", ["ai", "prompt"], "book"),
     "피지컬 컴퓨팅 데이터 수집 및 처리": ("physical-computing", "피지컬 컴퓨팅·센서", ["arduino", "iot"], "book"),
     "Do it android kotlin": ("doit-android-kotlin", "Android·Kotlin (Do it)", ["android", "kotlin"], "book"),
+    "SSamz 안드로이드": (
+        "ssamz-android",
+        "안드로이드 화면·서비스·Firebase",
+        ["android", "kotlin"],
+        "course",
+    ),
+    "유데미 코틀린": (
+        "udemy-kotlin",
+        "유데미 코틀린 연산자·람다·고차함수",
+        ["udemy", "kotlin"],
+        "course",
+    ),
+    "유데미 HTML CSS 자바스크립트 이력서": (
+        "udemy-html-resume",
+        "유데미 HTML·CSS·JS 이력서 화면",
+        ["udemy", "html", "css", "javascript"],
+        "course",
+    ),
+    "에듀펜": (
+        "edupen",
+        "자바·이클립스·안드로이드 스튜디오 입문",
+        ["java", "eclipse", "android"],
+        "course",
+    ),
     "AI 에전트 트렌드 & 활용백과 독서노트": (
         "ai-agent-encyclopedia",
         "AI 에이전트 트렌드·활용 통합 노트",
@@ -533,8 +557,28 @@ STUDY_NARRATIVES: dict[str, str] = {
     ),
     "fastcampus-photoshop": (
         "포토샵 기초 도구와 합성 입문을 배운 강의예요. "
-        "레이어·마스크·보정을 익히며 "
-        "이미지 편집의 첫 단계를 밟았어요."
+        "레이어·마스크·보정과 누끼·변형 도구를 익히고, "
+        "카드·가족 사진 같은 합성 실습까지 이어 갔어요."
+    ),
+    "ssamz-android": (
+        "SSamz 온라인으로 안드로이드 앱을 프로젝트까지 따라 한 강의예요. "
+        "레이아웃·이벤트·알림·프래그먼트에서 서비스, 지도, Firebase까지 "
+        "화면과 백그라운드, 서버 연동을 한 흐름으로 익혔어요."
+    ),
+    "udemy-kotlin": (
+        "유데미 코틀린 강의 앞부분에서 문법과 함수형 스타일을 적었어요. "
+        "비교·논리 연산자, 순수 함수, 람다와 고차 함수를 "
+        "짧은 예제로 정리한 학습이에요."
+    ),
+    "udemy-html-resume": (
+        "유데미에서 HTML·CSS·자바스크립트로 이력서 화면을 만드는 과정 앞부분이에요. "
+        "수업 폴더의 index.html, reset.css, style.css, ui.js를 그대로 남겨 두었고, "
+        "시작일과 종료일로 재직 기간을 계산하는 스크립트까지 따라 했어요."
+    ),
+    "edupen": (
+        "2017년부터 2019년까지 에듀펜에서 자바를 듣고, "
+        "모바일은 이클립스에서 안드로이드 스튜디오로 이어 간 과정이에요. "
+        "컴퓨터 교체와 에듀펜 온라인 서비스 종료로 원본 파일이 폴더에 남아 있지 않아요."
     ),
     "prompt-telling": (
         "프롬프트를 스토리처럼 설계하는 방법을 다룬 책이에요. "
@@ -608,14 +652,17 @@ def collect_study_groups() -> dict[str, list[str]]:
     return merged, skipped_hwpx
 
 
+EXPECTED_STUDY_GROUPS = 41
+
+
 def build_study_catalog() -> list[CatalogItem]:
-    """과목 그룹이 37개가 아니면 감사 파일을 남기고 중단한다. 맞으면 학습 CatalogItem 목록을 만든다."""
+    """과목 그룹이 기대 개수가 아니면 감사 파일을 남기고 중단한다. 맞으면 학습 CatalogItem 목록을 만든다."""
     groups, skipped_hwpx = collect_study_groups()
 
-    if len(groups) != 37:
+    if len(groups) != EXPECTED_STUDY_GROUPS:
         report = OUT / "study-audit.txt"
         lines = [
-            f"학습 그룹 수: {len(groups)} (기대: 37)",
+            f"학습 그룹 수: {len(groups)} (기대: {EXPECTED_STUDY_GROUPS})",
             f"제외 hwpx: {len(skipped_hwpx)}",
             "",
             "=== 그룹 목록 ===",
@@ -625,7 +672,9 @@ def build_study_catalog() -> list[CatalogItem]:
         if skipped_hwpx:
             lines.extend(["", "=== 제외 hwpx ===", *[f"  {x}" for x in skipped_hwpx]])
         report.write_text("\n".join(lines), encoding="utf-8")
-        raise SystemExit(f"학습 과목 수가 37개가 아닙니다 ({len(groups)}개). output/study-audit.txt 참고")
+        raise SystemExit(
+            f"학습 과목 수가 {EXPECTED_STUDY_GROUPS}개가 아닙니다 ({len(groups)}개). output/study-audit.txt 참고"
+        )
 
     items: list[CatalogItem] = []
     for title in sorted(groups.keys()):

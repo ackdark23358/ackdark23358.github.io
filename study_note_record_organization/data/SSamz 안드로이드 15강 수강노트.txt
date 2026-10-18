@@ -1,0 +1,471 @@
+# SSamz 안드로이드 15강
+
+## 15-3 백그라운드 제약
+
+startForegroundService()
+
+## 15 -1 서비스 이해하기
+
+서비스 이해하기
+명시적
+암시적
+val intent = Intent("ACTION-OUTER_SERVICE")
+intent.setPackage("com.example.test_other")
+startService(intent)
+val connection ServiceConnection = object: ServiceConnection{
+override fun onServiceConnection(name: ComponentName?, service: IBinder() {}
+override fun onServiceDisconnected(name: ComponentName? ) { }
+}
+Binder 사용
+val connection: ServiceConnection = object: ServiceConnection{
+override fun onService(name: ComponentName?, service : IBinder?){}
+override fun onServiceDisconnected(name: ComponentName?){ }
+}
+val intent = Intent(this, Myservice::class.java)
+bindService(intent, connection, Connection.BIND_AUTO_CREATE)
+ServicePra 엑티비티 xml 파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".Service.ServicePra">
+<Button
+android:id="@+id/startServiceBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="184dp"
+android:text="startService"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.498"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+tools:text="stratService" />
+<Button
+android:id="@+id/serviceStopBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginStart="25dp"
+android:layout_marginTop="90dp"
+android:text="stopService"
+app:layout_constraintStart_toStartOf="@+id/startServiceBtn"
+app:layout_constraintTop_toBottomOf="@+id/startServiceBtn"
+tools:text="serviceStopBtn" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+서비스 파일
+package com.example.chapter15.Service
+import android.app.Service
+import android.content.Intent
+import android.os.IBinder
+import android.widget.Toast
+class MyService : Service() {
+override fun onCreate() {
+super.onCreate()
+Toast.makeText(this,"service start", Toast.LENGTH_SHORT).show()
+}
+override fun onDestroy() {
+super.onDestroy()
+Toast.makeText(this,"service stop", Toast.LENGTH_SHORT).show()
+}
+override fun onBind(p0: Intent?): IBinder? {
+TODO("Not yet implemented")
+}
+}
+ServicePra 엑티비티 파일
+package com.example.chapter15.Service
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import com.example.chapter15.databinding.ActivityServicePraBinding
+class ServicePra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityServicePraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+binding.startServiceBtn.setOnClickListener{
+val intent = Intent(this, MyService::class.java)
+startService(intent)
+}
+binding.serviceStopBtn.setOnClickListener {
+val intetn = Intent(this, MyService::class.java)
+stopService(intetn)
+}
+}
+}
+
+## 15-2 바인딩 서비스
+
+데이터 주고 받을일 없을경우 엑티비티=> 서비스 startService()
+데이터 주고받을 경우  엑티비티=> 서비스 bindService()
+뭔가가 어디에 탑제된다는 의미의 바인드
+객체를 하나 바인딩 시켜놓고 메소드를 활용해서 데이터를 주고받자
+서비스쪽
+class MyBinder : Binder(){
+fun funA(arg: Int){
+}
+fun funB(arg: Int) : Int{
+return arg * arg
+}
+}
+override fun onBind(inetnt: Intent): IBinder? {
+return MyBinder
+}
+엑티비티에서 객체를 전달받아 사용
+엑티비티쪽
+val connection: ServiceConnection = object: ServiceConnection {
+onServiceConnected(name: ComponentName?, service: IBinder?){
+serviceBinder = service as MyService.MyBinder
+}
+override fun onServiceDisconnected(name: ComponentName?){
+}
+}
+serviceBinder.funA(10)
+메신져 바인딩 => IBinder() X
+메신저간 통신은 프로세스간 통신에도 사용할 수 있다.
+what: Int => int
+obj  => data
+class Myservice: Service(){
+lateinit var message: Messanger
+lateinit class IncomingHandler(
+context: Context,
+private val applicationContext: Context = context.applicationContext
+) : Handler(Looper.getMainLooper()){
+override fun handleMessage(msg: Messgae){
+when(msg.what){
+10 ->
+Toast.makeText(applicationContext, "${msg.obj)",
+Toast.LENGTH_SHORT).show()
+20->
+Toast.makeText(applicationContext, "$(msg.obj)",
+Toast.LENGTH_SHORT).show()
+else -> super.handleMessage(msg)
+}
+}
+}
+override fun onBind(intent: Intent): IBInder? {
+messanger = Messanger(IncomingHandler(this))
+return messanger.binder
+}
+}
+class MainActivity: AppCompatActivity(){
+lateinit var messanger: Messanger
+override fun onCreate(savedInstanceState: Bundle?){
+super.onCreate(saveInstanceState)
+(.....생략....)
+val intent = Intent(this, MyService::class.java)
+bindService(intent, connection, Context.BIND_AUTO_CREATE)
+}
+(....생략....)
+val connection: ServiceCOnnetion = object: ServiceConnection{
+override fun onServiceConnected(name: ComponentName?, service: IBinder?){
+messenger = Messenger(service)
+}
+override fun onServiceDisconnected(name: ComponentName?){
+}
+}
+}
+val msg = Message()msg.what = 10
+msg.what = 10
+msg.obj = "hello"
+messenger.send(msg)
+외부앱 연동
+App // process <=> process
+30버전 정도부터 외부에서 이용하려면 자신의 메니페스트 파일에 명시 해야한다.
+<manifest ... 생략>
+(.... 생략 .....)
+<queries>
+<package android:name="com.example.test_outher" />
+</queries>
+</manifest<
+<service
+android:name=".MyService"
+android:exported="true"
+<intent-filter>
+<action android:name="ACTION_OUTER_SERVICE"
+<intent-filter>
+</service>
+실행시킬 앱의 패키지명 명시
+process <== (bindService) =>process
+val intent = Intent("ACTION_OUTER_SERVICE")
+intent.setPackage("com.example.text_outter")
+bindService(intent, connection, Context.BIND_AUTO_CREATE)
+번들 객체 이용
+val bundle = Bundle()
+bundle .putString("data1", "hello")
+bundle.putInt("data", 10)
+val msg = Message()
+msg.what = 10
+msg.obj= bundle
+messenger.send(msg)
+AIDL 방법을 이용하려면
+확장자가 aidl 파일을 미리 만들어둬야한다.
+package com.example.test_aidl;
+interface MyAIDLInterface{
+void funA(String data);
+int funB();
+}
+class MyAIDLService: Service(){
+override fun onBind(intent: Intent): IBinder{
+return object: MyAIDLInterface.Stub(){
+override fun funA(data: String?){
+}
+override fun funB(): Int {
+return 10
+}
+}
+}
+}
+<service
+android:name = ".MyAIDL.Serviece"
+android.enabled="true"
+android:exported="true"
+<intent-filter>
+<action android:name="ACTION_AIDDL_SERVICE" />
+<intent-filter>
+<queries>
+<package android:name="com.example.text_outter" />
+</queries>
+외부앱에서도 AIDL 파일 가지고 있어야한다.
+startService.fun("hello")
+bindingPra 엑티비티
+package com.example.chapter15.bindService
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.os.IBinder
+import android.util.Log
+import com.example.chapter15.R
+import com.example.chapter15.databinding.ActivityBindingPraBinding
+class bindingPra : AppCompatActivity() {
+lateinit var serviceBinder: MyBindService.MyBinder
+val connection = object: ServiceConnection{
+override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+serviceBinder = p1 as MyBindService.MyBinder
+}
+override fun onServiceDisconnected(p0: ComponentName?) {
+TODO("Not yet implemented")
+}
+}
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityBindingPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+val intent = Intent(this, MyBindService::class.java)
+bindService(intent, connection, Context.BIND_AUTO_CREATE)
+binding.funABtn.setOnClickListener {
+serviceBinder.funA(10)
+}
+binding.funBBtn.setOnClickListener {
+Log.d("fifo23", "${serviceBinder.funB(20)}")
+}
+}
+}
+MyBindService 서비스 파일
+package com.example.chapter15.bindService
+import android.app.Service
+import android.content.Intent
+import android.os.Binder
+import android.os.IBinder
+import android.util.Log
+class MyBindService : Service() {
+class MyBinder: Binder(){
+fun funA(arg:Int){
+Log.d("fifo23", "funA... $arg")
+}
+fun funB(arg: Int): Int{
+Log.d("fifo23", "funB ... $arg")
+return arg*arg
+}
+}
+override fun onBind(intent: Intent): IBinder {
+return MyBinder()
+}
+}
+bindingPra xml 파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".bindService.bindingPra">
+<Button
+android:id="@+id/funABtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="106dp"
+android:text="funA"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<Button
+android:id="@+id/funBBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginStart="1dp"
+android:layout_marginTop="96dp"
+android:text="funB"
+app:layout_constraintStart_toStartOf="@+id/funABtn"
+app:layout_constraintTop_toBottomOf="@+id/funABtn" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+메니페스트 파일
+<service
+android:name=".bindService.MyBindService"
+android:enabled="true"
+android:exported="true"></service>
+<activity
+android:name=".bindService.bindingPra"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+2022-08-24 01:25:38.214 3034-3034/com.example.chapter15 D/fifo23: funA... 10
+2022-08-24 01:25:44.612 3034-3034/com.example.chapter15 D/fifo23: funA... 10
+2022-08-24 01:25:48.691 3034-3034/com.example.chapter15 D/fifo23: funB ... 20
+2022-08-24 01:25:48.691 3034-3034/com.example.chapter15 D/fifo23: 400
+
+## 15-4 잡 스케줄러
+
+잡 스케줄러
+서비스 벡그라운드 작업
+안드로이드5( api 21) 부터 제공
+조건을 명시해줘야한다.
+네트워크 타입
+베터리 충전 상태
+특정 앱의 콘텐츠 프로바이더 갱신(대표적으로 갤러리 앱)
+실행주기 한시간에 한번씩
+최소 지연 시간
+시스템 재구동시 현재 조건 유지 여부 => 부팅시에도 조건을 부여할거냐 날릴거냐
+잡서비스 : 백그라운드에서 처리할 작업을 구현한 서비스
+잡 인포 : 잡 서비스 정보와 실행될 조건을 지정
+참 스케줄러 : 잡 인포를 시스템에 등록
+<service
+android:name= ".MyJobService"
+android:enabled="true"
+android:export="true"
+android:permission="android.permission.BIND_JOB_SERVICE">
+</service>
+class MyJobService: JobService(){
+override onCreaate()
+override onDestory()
+override onStartJob() <= background 처리업무
+override onStopJab() <= 비정상 종료될떄
+}
+onStartJop() 리턴값
+(false: 벡그라운드 작업이 완벽히 종료 되었다.
+true: 벡그라운드 작업이 아직 완전히 종료되지 않았다.)
+onStartJob() 함수에서 false 리던
+*onStartjab() 에서 시간이 오래걸리는 작업을 Thread로 하고있다면 true 를 리턴해서 잠시 기다렸다가 실행
+onStopjab() 은 비정상 종료될때만 실행 된다. 조건이 바꼇을때 혹은 외부에서 캔슬시켰을때
+잡스케쥴러에 직접접근하는게 아니라 데이터를 담고 시스템에 요청을 하고 잡스케쥴러 에서 onStartJab()
+뽑아서 사용한다.
+메니페스트 파일 수정
+<!-- 서비스 코틀린 파일을 만들고 잡스케쥴러 클래스를 상속받고 퍼미션 부여하는 xml 코드
+안드로이드 스튜디오 툴 blankservice 파일 만들고 했다. -->
+<service
+android:name=".JabService.JobService"
+android:enabled="true"
+android:exported="true"
+android:permission="android.permission.BIND_JOB_SERVICE">
+</service>
+<activity
+android:name=".JabService.JabServicePra"
+android:exported="true" /
+>
+JabServicePra 엑티비티 파일
+package com.example.chapter15.JabService
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
+import android.content.ComponentName
+import android.net.Uri
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.os.PersistableBundle
+import com.example.chapter15.databinding.ActivityJabServicePraBinding
+class JabServicePra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityJabServicePraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+binding.jobServiceStartBtn.setOnClickListener {
+//시스템에 요청하기 위해 잡스케쥴라변수와 데이터를 넣을 extras 변수 생성
+val scheduler = getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
+val extras = PersistableBundle()
+//번들에 데이타를 담는 작업
+extras.putString("extra_data", "hello fifo23")
+//빌더로 시스템의 조건을 JobInfo에 네트워크 가 끊겼을때의 상황을 담고 데이터를 잠고 빌더를 빌드하고
+// 시스템에 의뢰해서 잡스케쥴러에 등록실행
+val builder = JobInfo.Builder(1, ComponentName(this,JobService::class.java))
+builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+builder.setExtras(extras)
+scheduler.schedule(builder.build())
+}
+}
+}
+잡 서비스 파일
+package com.example.chapter15.JabService
+import android.app.Service
+import android.app.job.JobParameters
+import android.app.job.JobService
+import android.content.Intent
+import android.os.IBinder
+import android.os.SystemClock
+import android.util.Log
+class JobService : JobService() {
+override fun onCreate() {
+super.onCreate()
+Log.d("fifo23", "jobService.. onCreate")
+}
+override fun onStartJob(p0: JobParameters?): Boolean {
+val param = p0?.extras?.getString("extra_data")
+Log.d("fifo23", "jobService.. onCreate $param ...")
+//3초간 덧샘연산하는 쓰래드 생성
+Thread(Runnable {
+var sum = 0
+for(i in 1..3){
+sum += i
+SystemClock.sleep(1000)
+}
+Log.d("fifo23", "JobService ... onStartJob.. thread $sum..")
+//로그를 찍고 업무끝났다고 보고
+jobFinished(p0,false)
+}).start()
+return true
+}
+override fun onStopJob(p0: JobParameters?): Boolean {
+//쓰래드를 생성하고 쓰레드를 사용하고있으니까 완벽하게 업무가 끝나지 않았으니까 false를 리턴하자.
+Log.d("fifo23", "JoService onStopJob ..............")
+return false
+}
+override fun onDestroy() {
+super.onDestroy()
+}
+}
+JabServicePra xml 파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".JabService.JabServicePra">
+<Button
+android:id="@+id/jobServiceStartBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="197dp"
+android:text="JabService"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+2022-08-24 06:03:31.241 3459-3459/? D/fifo23: jobService.. onCreate
+2022-08-24 06:03:31.245 3459-3459/? D/fifo23: jobService.. onCreate hello fifo23 ...
+2022-08-24 06:03:34.251 3459-3706/? D/fifo23: JobService ... onStartJob.. thread 6..

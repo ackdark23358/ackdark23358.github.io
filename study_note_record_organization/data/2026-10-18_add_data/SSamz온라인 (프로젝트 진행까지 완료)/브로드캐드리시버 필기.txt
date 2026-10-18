@@ -1,0 +1,56 @@
+브로드캐드 리시버
+
+엑티비티, 서비스, 브로드캐드 리시버, 컨텐트 프로바이더
+4대 컴포넌트
+
+Event Model(시스템의 특정상황) 로 실행 되는 컴포넌트
+
+라이프 사이클을논하기 힘들다
+onRecive() 호출되면 객체가 소멸된다.
+sendBroadCast로 객체가 생성됬다가 소멸된다.
+
+A S R P
+
+명시적으로 내부적으로만 실행하는 경우
+외부에서 접근가능하고 암시적으로 인텐트 필터를 사용해서 실행하는 경우
+
+그림
+
+런처앱처럼 우리앱도 구동될수 없을까
+가능은한데 악성앱처럼 보인다.
+
+Activity Intent - 하나도 없으면 x , 하나 있으면하나, 여러개있으면 하나만
+receiver Intent   - 하나도 없으면 그냥말고, 10개의 리시버가 실행되는 상황이면 다 실행된다.
+
+ex) 브로드 캐스트 ... kbs에서 전국의 공중파를 송출을 하는데 천만데 수신기에서 kbs에서 하나도 시청을안하면
+kbs 폭파된다. Activity였으면 폭파된다. Error
+
+
+서비스를 만들고 어플리케이션을 구동시키기 위한 준비동작하는 방식으로 우리 앱에 만들기도한다.
+장시간동안 실행되는 로직보다는 폰이 실행될때 혹은
+특정상황 화면이 꺼진다거나 와이파이가 불안정하거나 할떄
+유저가 설정한 작업이 폰이 켜지고 실행되게 할떄
+잠깐 실행되거나 시스템 이벤트 sns가 전달될때, 알람서비스
+악성앱x안되는 방향으로
+
+1. 메니페스트에 작성하는 방법 정적등록
+<receiver
+	android:name:".MainReceiver"
+	android:enabled="true"
+	android:exported"true">
+</receiver>
+
+2. 시스템에 등록하는 방법 동적등록
+
+동적등록이 꽤많이 사용된다.
+
+val receiver = object: BroadcastReciver(){
+	override fun onReceive(context: Context?, intent: Intent?){
+
+	}
+}
+
+val filter = IntentFilter("ACTION_RECEIVER")
+registerReceiver(register, filter)
+
+

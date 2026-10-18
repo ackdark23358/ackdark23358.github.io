@@ -1,0 +1,306 @@
+# SSamz 안드로이드 8강
+
+## 08-1 터치이벤트와 키이벤트
+
+터치이벤트와 키이벤트
+그래들 바인딩 추가
+viewBinding{
+enabled=true
+}
+엑티비티 코틀린 파일
+package com.example.chapter8.test
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import android.view.KeyEvent
+import android.view.MotionEvent
+import com.example.chapter8.test.databinding.ActivityMainBinding
+class EventPra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityMainBinding.inflate(layoutInflater)
+setContentView(binding.root)
+}
+override fun onTouchEvent(event: MotionEvent?): Boolean {
+when(event?.action){
+MotionEvent.ACTION_DOWN -> {
+Log.d("kkang", "touch down : ${event.x}, rawX: ${event.rawX}" )
+}
+MotionEvent.ACTION_UP ->{
+Log.d("kkang", "touch up : ${event.y} rawY: ${event.rawY}")
+}
+}
+return super.onTouchEvent(event)
+}
+override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+when(keyCode){
+KeyEvent.KEYCODE_BACK -> Log.d("kkang", "back button click...")
+KeyEvent.KEYCODE_VOLUME_UP -> Log.d("kkang", "volumn_up button click...")
+KeyEvent.KEYCODE_VOLUME_DOWN -> Log.d( "kkang",  "volumn_down click...")
+}
+return super.onKeyDown(keyCode, event)
+}
+}
+xml 별도의 수정 없음.
+<activity
+android:name=".EventPra"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+결과
+보마일 화면을 터치면....
+2022-07-27 12:54:56.399 3359-3359/com.example.chapter8 D/kkang: touch up : 782.959 rawY: 782.959
+2022-07-27 12:54:56.671 3359-3359/com.example.chapter8 D/kkang: touch down : 159.99023, rawX: 159.99023
+2022-07-27 12:54:56.892 3359-3359/com.example.chapter8 D/kkang: touch up : 317.96875 rawY: 317.96875
+2022-07-27 12:54:57.395 3359-3359/com.example.chapter8 D/kkang: touch down : 440.97656, rawX: 440.97656
+2022-07-27 12:54:57.646 3359-3359/com.example.chapter8 D/kkang: touch up : 760.9619 rawY: 760.9619
+2022-07-27 12:54:57.897 3359-3359/com.example.chapter8 D/kkang: touch down : 220.98633, rawX: 220.98633
+2022-07-27 12:54:58.057 3359-3359/com.example.chapter8 D/kkang: touch up : 459.98535 rawY: 459.98535
+2022-07-27 12:54:58.450 3359-3359/com.example.chapter8 D/kkang: touch down : 237.97852, rawX: 237.97852
+2022-07-27 12:54:58.554 3359-3359/com.example.chapter8 D/kkang: touch up : 752.9541 rawY: 752.9541
+2022-07-27 12:54:59.189 3359-3359/com.example.chapter8 D/kkang: touch down : 436.97754, rawX: 436.97754
+2022-07-27 12:54:59.284 3359-3359/com.example.chapter8 D/kkang: touch up : 644.9707 rawY: 644.9707
+2022-07-27 12:55:00.002 689-689/com.android.systemui D/KeyguardClockSwitch: Updating clock: 3?55
+
+## 08-2 뷰 이벤트
+
+뷰 이벤트
+매니페스트 파일
+// 메니페스트 페키지 만들고 바인딩 하는 과정에서 최상단 package 속성 부분 수정해줘 보았다.
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.example.chapter8.test">
+<application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:roundIcon="@mipmap/ic_launcher_round"
+android:supportsRtl="true"
+android:theme="@style/Theme.SSamsStudyPra">
+<activity
+android:name=".ViewEventPra"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+<activity
+android:name=".EventPra"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+<activity
+android:name=".MainActivity"
+android:exported="true"></activity>
+</application>
+</manifest>
+엑티비티 파일
+package com.example.chapter8.test
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import android.widget.CompoundButton
+import com.example.chapter8.test.databinding.ActivityViewEventPraBinding
+class ViewEventPra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityViewEventPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+// 기본적인 버튼 클릭리스너 장착후 로그출력
+binding.checkBtn.setOnClickListener {
+Log.d("ackdark23", "button click")
+}
+//컴파운드버튼 클레스를 상속받아서 메소드가 하나인 인터페이스를 구현하는방법
+//외부 클래스를 생성해서 핸들러를 사용하는 방법
+//binding.checkView.setOnCheckedChangeListener(MyHandler())
+//온크리에이트 메소드 내에서 작성하는 방법
+//binding.checkView.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener{
+//    override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+//        Log.d("ackdark23", "checkclick... $p1")
+//    }
+//})
+//간결하게 람다를 사용해서 매게변수를 가져와 리스너를 장착하는 방법
+binding.checkView.setOnCheckedChangeListener{
+p0: CompoundButton?, p1: Boolean->
+Log.d("ackdark23", "checkclick... $p1")
+}
+}
+}
+class MyHandler: CompoundButton.OnCheckedChangeListener{
+override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+Log.d("ackdark23", "check click..... $p1")
+}
+}
+XML 파일
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".ViewEventPra">
+<CheckBox
+android:id="@+id/checkView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="check"/>
+<Button
+android:id="@+id/checkBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="check" />
+</LinearLayout>
+gradle 뷰바인딩
+viewBinding{
+enabled=true
+}
+2022-07-28 09:20:11.142 1532-1532/com.example.chapter8 D/ackdark23: checkclick... false
+2022-07-28 09:20:11.152 533-920/system_process I/system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+2022-07-28 09:20:11.286 533-920/system_process I/system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+2022-07-28 09:20:11.738 1532-1532/com.example.chapter8 D/ackdark23: checkclick... true
+2022-07-28 09:20:11.750 533-1443/system_process I/system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+2022-07-28 09:20:11.883 533-1443/system_process I/system_server: oneway function results will be dropped but finished with status OK and parcel size 4
+2022-07-28 09:20:12.707 1532-1532/com.example.chapter8 D/ackdark23: button click
+
+## 08-3 시계 앱의 스톱워치 기능 만들기
+
+스톱워치 만들어보기
+모듈수준 그래들 바인딩 추가
+viewBinding{
+enabled=true
+}
+xml코드 작성
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<Chronometer
+android:id="@+id/chronometer"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginTop="10dp"
+android:gravity="center_horizontal"
+android:textSize="40dp" />
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_alignParentBottom="true"
+android:layout_marginBottom="70dp"
+android:layout_marginLeft="10dp"
+android:layout_marginRight="10dp"
+android:gravity="center_horizontal"
+android:orientation="horizontal">
+<Button
+android:id="@+id/startButton"
+android:layout_width="100dp"
+android:layout_height="wrap_content"
+android:layout_weight="1"
+android:background="@drawable/round_button"
+android:text="Start"
+android:textColor="#ffffff"
+android:textStyle="bold" />
+<Button
+android:id="@+id/stopButton"
+android:layout_width="100dp"
+android:layout_height="wrap_content"
+android:layout_marginLeft="10dp"
+android:background="@drawable/round_button"
+android:layout_weight="1"
+android:text="stop"
+android:enabled = "false"
+android:textColor="#ffffff"
+android:textStyle="bold" />
+<Button
+android:id="@+id/resetButton"
+android:layout_width="100dp"
+android:layout_height="wrap_content"
+android:layout_marginLeft="10dp"
+android:background="@drawable/round_button"
+android:layout_weight="1"
+android:text="reset"
+android:enabled = "false"
+android:textColor="#ffffff"
+android:textStyle="bold" />
+</LinearLayout>
+</RelativeLayout>
+엑티비티 코드작성
+package com.example.chapter8_event
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.os.SystemClock
+import android.view.KeyEvent
+import android.widget.Toast
+import com.example.chapter8_event.databinding.ActivityMainBinding
+class MainActivity : AppCompatActivity() {
+var initTime = 0L
+var pauseTime = 0L
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityMainBinding.inflate(layoutInflater)
+setContentView(binding.root)
+binding.startButton.setOnClickListener {
+binding.chronometer.base = SystemClock.elapsedRealtime()+pauseTime
+binding.chronometer.start()
+binding.stopButton.isEnabled = true
+binding.resetButton.isEnabled = true
+binding.startButton.isEnabled = false
+}
+binding.stopButton.setOnClickListener {
+pauseTime = binding.chronometer.base - SystemClock.elapsedRealtime()
+binding.chronometer.stop()
+binding.stopButton.isEnabled = false
+binding.resetButton.isEnabled = true
+binding.startButton.isEnabled = true
+}
+binding.resetButton.setOnClickListener {
+pauseTime = 0L
+binding.chronometer.base = SystemClock.elapsedRealtime()
+binding.chronometer.stop()
+binding.stopButton.isEnabled = false
+binding.resetButton.isEnabled = false
+binding.startButton.isEnabled = true
+}
+}
+override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+if(keyCode === KeyEvent.KEYCODE_BACK){
+if(System.currentTimeMillis() - initTime > 3000){
+Toast.makeText(this, "종료하려면 한번더 누르세요!!", Toast.LENGTH_SHORT).show()
+initTime = System.currentTimeMillis()
+return true
+}
+}
+return super.onKeyDown(keyCode, event)
+}
+}
+메니페스트 파일 확인 및 수정
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.example.chapter8_event">
+<application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:roundIcon="@mipmap/ic_launcher_round"
+android:supportsRtl="true"
+android:theme="@style/Theme.SSamsStudyPra">
+<activity
+android:name=".MainActivity"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+</application>
+</manifest>

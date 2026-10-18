@@ -471,7 +471,7 @@ HTML 조각은 `#hero`, `#hero-stage`, `#hero-img-a`, `#hero-img-b`다. 두 이�
 
 `collect_study_groups`는 `data/` 바로 아래 파일만 본다. `.hwpx`는 건너뛰고 이름만 따로 모은다. `.txt`와 `.docx`만 과목 이름 아래로 모은다. `STUDY_MERGE_ALIASES`에 있으면 별칭을 같은 과목 키로 합친다. 각 묶음은 `sort_key_unit`으로 정렬한다. 그룹 딕셔너리와 건너뛴 hwpx 목록을 돌려준다.
 
-`build_study_catalog`는 그룹 수가 37이 아니면 `output/study-audit.txt`에 그룹 이름과 hwpx 목록을 쓰고 `SystemExit`로 중단한다. 37이면 제목순으로 `CatalogItem`을 만든다. `STUDY_META`에 있으면 슬러그, 한 줄 요약, 태그, 분류를 그대로 쓴다. 없으면 제목으로 슬러그를 만들고 요약은 `제목 학습 노트`, 태그는 `study`, 분류는 제목에 `Do it`이 있으면 `book` 아니면 `course`다. id는 `study-슬러그`다. 출처의 `unit`은 `parse_unit`이다.
+`build_study_catalog`는 그룹 수가 41이 아니면 `output/study-audit.txt`에 그룹 이름과 hwpx 목록을 쓰고 `SystemExit`로 중단한다. 41이면 제목순으로 `CatalogItem`을 만든다. `STUDY_META`에 있으면 슬러그, 한 줄 요약, 태그, 분류를 그대로 쓴다. 없으면 제목으로 슬러그를 만들고 요약은 `제목 학습 노트`, 태그는 `study`, 분류는 제목에 `Do it`이 있으면 `book` 아니면 `course`다. id는 `study-슬러그`다. 출처의 `unit`은 `parse_unit`이다.
 
 `STUDY_NARRATIVES`는 슬러그별 고정 서술이다. `build_study_narrative`는 그 문장과 원문에서 뽑은 단계 문단을 묶어 `overview`, `main`, `reflection`, `units`를 돌려준다. 원문이 짧으면 `weave_narrative`와 `soften_sentence`가 문장을 다듬고, 점이 없으면 안내 문장으로 채운다.
 
@@ -501,7 +501,7 @@ HTML 조각은 `#hero`, `#hero-stage`, `#hero-img-a`, `#hero-img-b`다. 두 이�
 
 ### main
 
-`output/study`, `output/assignment`, `output/_extracted`를 만든다. `build_study_catalog`가 37이 아니면 여기서 중단되므로 과제 카탈로그까지 가지 않는다. 통과하면 `build_assignment_catalog`를 부르고, 모든 항목에 `load_sources`를 한다.
+`output/study`, `output/assignment`, `output/_extracted`를 만든다. `build_study_catalog`가 41이 아니면 여기서 중단되므로 과제 카탈로그까지 가지 않는다. 통과하면 `build_assignment_catalog`를 부르고, 모든 항목에 `load_sources`를 한다.
 
 이번 슬러그에 없는 예전 `.md`는 두 출력 폴더에서 지운다. 각 항목의 `render_markdown` 결과를 `study` 또는 `assignment` 폴더의 `슬러그.md`로 쓴다. `catalog.json`에는 id, 종류, 분류, 제목, 슬러그, 요약, 태그, 출력 경로, 출처 경로와 단위를 넣는다. `index.md`는 학습과 과제 링크 목록이다.
 

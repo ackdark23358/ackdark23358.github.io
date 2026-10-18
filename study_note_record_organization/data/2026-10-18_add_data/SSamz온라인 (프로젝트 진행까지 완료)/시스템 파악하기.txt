@@ -1,0 +1,89 @@
+시스템 상태 파악하기
+
+부팅완료 시점에 브로드케스트 리시버와 인텐트 필터 등록
+
+여러상황에 사용되는 브로드캐스트를
+
+시스템에서 부팅이 됬을때 사용되는경우
+<receiver
+	android:name=".MyReceiver"
+	android:enabled="true"
+	android:exported="true"
+	
+	<intent-filter>
+		<action android:name="android.intent.action.BOOT_COMPLETED" />
+	</intent-filter>
+</receiver>
+
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED />
+
+이렇게만 하고 사용하면 부팅시 구동되는데 유저입장에서 민감할 수 있다.
+서비스랑 가치 사용하게되기도 하는데 벡그라운드 제약설정해줘야하는 부분도 있다.
+
+스크린 온/오프
+
+이부분은 동적으로 사용하는게 강제 사항이다.
+
+receiver = object: BroadcastReceiver(){
+	override fun onReceiver(context: Context?, intent: Intent){
+		when(intent?.action){
+			Intent.ACTION_SCREEN_ON -> Log.d("Kang", "screen on")
+			Intent.ACTION_SCREEN_OFF -> Log.d("kang", "screen off")
+		}
+	}
+}
+
+val filter = IntentFilter(Intent.ACTION_SCREEN_ON).apply{
+	addAction(Intent.ACTION_SCREEN_OFF)
+}
+
+registerReceiver(receiver, filter) 리시버 등록
+unregisterReceiver(receiver) 리시버 등록해제
+
+베터리 상태
+
+BATTERY_LOW 베터리가 낮은 상태로 변경되는 순간
+BATTERY_OKEY : 베터리가 정상 상태로 변경되는 순간
+BATTERY_CHANGED 충전 상태가 변경되는 순간
+ACTION_POWER_COMPLETED 전원이 공급되기 시작한 순간
+ACTION_POWER_DISCONNECTED 전원 공급을 끊은 순간
+
+receiver = object : BroadcastReceiver(){
+	override fun onreceiver(context: Context?, intent: Intent?){
+		when(intent?.action){
+			Intent.ACTION_BATTERY_OKEY -> Log.d("kkang",  "ACTION_BATTERY_OKAY")
+			Intent.ACTION_BATTERY_LOW -> Log.d("kkang", "ACTION_BATTERY_LOW")
+			Intent.ACTION_BATTERY_CHANGED -> Log.d("kkang", "ACTION_BATTERY_CHANGED")
+			Intent.ACTION_POWER_CONNECTED -> Log.d("kkang", "ACTION_POWER_CONNECTED")
+			intent.ACTION_POWER_DISCONNECTED -> Log.d("kkang", "ACTION_POWER_DISCONNECTED")
+		}
+	}
+}
+
+배터리 상황파악
+val intentfilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+val batteryStatus = registerREceiver(null, intentFilter)
+
+val status = batteryStatus!!.getIntentExtra(BatteryManager.EXTRA_STATUS, -1)
+if(status == BatteryManager.Battery_STATUS_CHARGIN){
+	//전원이 공급되고 잇다면
+	val chargePlug = batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)
+
+	when(chargePlug){
+		BatteryManager.BATTERY_PLUGGED_USB-> Log.d("kkang", "usb charge")
+		BatteryManager.BATTERY_PLUGGED_AC -> Log.d("kkang", "ac charge")
+	}
+}
+
+
+//전원이 공급되고 있는지 얼마나 충전되었는지
+
+val level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVER, -1)
+val scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
+
+val batteryPct = level / scale.toFloat() = 100
+
+Log.d("kkang", "batteryPct: $batteryPct")
+
+
+

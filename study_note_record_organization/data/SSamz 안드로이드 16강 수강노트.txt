@@ -1,0 +1,460 @@
+# SSamz 안드로이드 16강
+
+## 16-1 콘텐츠 프로바이더
+
+콘텐트 프로바이더
+외부에서 우리앱에 접근할수 있도록 콘텐츠 프로바이더를 만들어줘야 접근가능하다.
+MyContentProvider: ContentProvicder() {
+getType()
+insert()
+delete()
+query()
+onCreate()}
+<provider
+android:name=".MyContentProvider"
+authorities="com.example.test._provider"
+android:enabled= true
+exported="true">
+</provider>
+외부앱에 접근하기위해서
+<queries>
+</queries>
+contentRegister.query{
+Uri.parse("content//com.example.test_provider"),
+null, null, null. null)
+}
+content://com.example.test_provider
+프로토콜 호스트
+content://com.example.test_provide(user/)
+provider 주소록
+contentProviderPra  엑티비티 파일
+package com.example.chapter16.ContentProvider
+import android.content.ContentResolver
+import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import com.example.chapter16.R
+import com.example.chapter16.databinding.ActivityContentProviderPraBinding
+class contentProviderPra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityContentProviderPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+binding.providerBtn.setOnClickListener {
+// 콘텐츠 프로바이더에 쿼리를 줘서 데이타를 출력하는 코드작성
+// 보통 외부앱과 연동하거나 모듈에서 데이터를 주고 받을때 사용한다.
+val cursor = contentResolver.query(Uri.parse("content://com.my.provider"),
+null, null, null, null)
+while (cursor?.moveToNext() ?: false) {
+Log.d("fifo23", cursor?.getString(0) ?: "")
+}
+}
+}
+}
+콘텐츠 프로바이더 파일
+package com.example.chapter16.ContentProvider
+import android.content.ContentProvider
+import android.content.ContentValues
+import android.database.Cursor
+import android.database.MatrixCursor
+import android.net.Uri
+class MyContentProvider : ContentProvider() {
+override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
+TODO("Implement this to handle requests to delete one or more rows")
+return 0
+}
+override fun getType(uri: Uri): String? {
+return null
+}
+override fun insert(uri: Uri, values: ContentValues?): Uri? {
+return null
+}
+override fun onCreate(): Boolean {
+return false
+}
+override fun query(
+uri: Uri, projection: Array<String>?, selection: String?,
+selectionArgs: Array<String>?, sortOrder: String?
+): Cursor? {
+//쿼리가 오면 담아줄 데이터 작성
+val cursor = MatrixCursor(arrayOf("data"))
+cursor.addRow(arrayOf("hello"))
+cursor.addRow(arrayOf("world"))
+return cursor
+}
+override fun update(
+uri: Uri, values: ContentValues?, selection: String?,
+selectionArgs: Array<String>?
+): Int {
+TODO("Implement this to handle requests to update one or more rows.")
+}
+}
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".ContentProvider.contentProviderPra">
+<Button
+android:id="@+id/providerBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginEnd="132dp"
+android:text="providerBtn"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+2022-08-24 23:45:58.261 4581-4581/com.example.chapter16 D/fifo23: hello
+2022-08-24 23:45:58.261 4581-4581/com.example.chapter16 D/fifo23: world
+
+## 16-2 안드로이드 기본 앱과 연동하기
+
+안드로이드 기본 앱과 연동하기
+외부앱에서 화면이 필요해서
+겔러리앱과 연동하거나
+주소록앱과 연동할떄
+화면 => 인텐트
+데이타 => 컨텐트 프로바이더
+주소록앱 => 목록화면이 나오면 전화번호와 이메일 address를 희득하는경우
+android.permission.READ_CONTACTS
+홍길동의 식별자가 넘어오는걸 사용해서 연동
+파일이미지 서버에서 오는 이미지 를 유용하게 사용할때
+Bitmap을 사용하는데 BitmapFactory로 생성해서 사용한다.
+OCM 문제를 고려하면서 이미지 로딩을 해야한다.
+data -> size -> 줄여서 8mb 면 80k로 줄여서 로딩 할수 있다.
+이미지 전문라이브러리
+glide나 picasso 라이브러리를 사용해서 처리할 수 있다.
+카메라 앱연 연동
+android.permission.WRITE_EXTENAL_STORAGE
+카메라로 사진을 찍거나 이미지를 업로드
+FileProvider 클래스 기본으로제공되는 API라이브러리를 사용해서 공유 하게할수있따.
+<paths xmlns:android:="http://schemas.android.com/apk/res/android">
+<external-path name="myfiles" path=Android/data.com.example.test16/files/Pictures/>
+</paths>
+<provide
+anadroid:name= "androidx.core.content.fileProvider"
+android:authorities="com.example.test16.fileprovider"
+android:exported="false"
+android:grantUriPermissions="true">
+<meta-data
+android:name="android.support.FILE_PROVIDER_PATHS"
+android:resource="@xml/file_paths"><//meta-datqa>
+</provide>
+지도앱 연동
+val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:37.5662952,126.9779451)
+위도경도 값넘겨주고 엑션뷰
+인텐트만 잘날리면 된다.
+전화앱 연동
+<uses-permission android:name="android.permission.CALL_PHONE" />
+val intent(Intent(Intent.ACTION_CALL, Uri.parse("tel:82-120"))
+인테트만 보냈을때도 전화화면뜨는것도 앱이고 엑티비티다
+gladle viewBinding{ enabled= true }
+메니페스트 파일
+<activity
+android:name=".AppConnector.Jusorok"
+android:exported="true" />
+<provider
+android:name=".ContentProvider.MyContentProvider"
+android:authorities="com.my.provider"
+android:enabled="true"
+android:exported="true" />
+package com.example.chapter16.AppConnector
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.database.Cursor
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.provider.ContactsContract
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import com.example.chapter16.databinding.ActivityJusorokBinding
+class Jusorok : AppCompatActivity() {
+lateinit var binding: ActivityJusorokBinding
+lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
+lateinit var intentlauncher: ActivityResultLauncher<Intent>
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+binding = ActivityJusorokBinding.inflate(layoutInflater)
+setContentView(binding.root)
+//주소록에 사람을 등록되있을때 주소록 접근에 대한 권한부여를 위한 코드를작성하자
+//권한이 없다면 토스트 메시지를 띄어주자.
+permissionLauncher = registerForActivityResult(
+ActivityResultContracts.RequestMultiplePermissions()
+){
+for(entry in it.entries){
+if(entry.key == "android.permission.READ_CONTACTS" && entry.value){
+//주소록 목록..
+val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
+intentlauncher.launch(intent)
+}else{
+Toast.makeText(this, "required permission..", Toast.LENGTH_SHORT).show()
+}
+}
+}
+//쿼리를 하는 커서를 만들고 데이터를 뽑아내고 이름과 전화번호를 출력하는 코드
+intentlauncher = registerForActivityResult(
+ActivityResultContracts.StartActivityForResult()
+){
+if(it.resultCode == RESULT_OK){
+val curssor = contentResolver.query(
+it!!.data!!.data!!,
+arrayOf(
+ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+ContactsContract.CommonDataKinds.Phone.NUMBER
+),
+null, null, null
+)
+if(curssor!!.moveToNext()){
+binding.UserInfoView.text = "name: ${curssor?.getString(0)}, phone: ${curssor?.getString(1)}"
+}
+}
+}
+//버튼을 클릭했을때 주소록 목록을 띄우고 해당 유저의 정보를 얻어올때 READ_CONTACTS 권한이 있다면 정보를 얻어오는 코드작성
+binding.personSelectBtn.setOnClickListener {
+if (ContextCompat.checkSelfPermission(
+this,
+"android.permission.READ_CONTACTS"
+) != PackageManager.PERMISSION_GRANTED){
+permissionLauncher.launch(arrayOf("android.permission.READ_CONTACTS"))
+}else{
+//주소록 목록..
+val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
+intentlauncher.launch(intent)
+}
+}
+}
+}
+contentProviderPra xml 코드
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".ContentProvider.contentProviderPra">
+<Button
+android:id="@+id/providerBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="providerBtn"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+## 16-3 카메라앱과 겔러리앱 연동
+
+겔러리앱에 요청을 해서 사진을 선택하면 사진을 이미지 뷰에 출력하고
+카메라앱이 실행되게 요청해서 사진을 찍으면 찍은 사진이 이미지 뷰레 출력되게 하는 실습
+dimension xml파일을 작성하고 파일 Path를 얻어오기뒤해서 file_pather xml 파일을 작성한 후에 메니페스트에 FileProvider를 사용하기 위해 provider를 작성해주고 페키지설정을 해 준다음에 카메라 앱에 접근 하기위한 코드를 작성하고 겔러리 앱에 접근하기 위한 코드를 작성하였다.
+메인 엑티비티 파일
+package com.example.chapter16_cameraapppra
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
+import com.example.chapter16_cameraapppra.databinding.ActivityMainBinding
+import java.io.File
+import java.sql.Date
+import java.text.SimpleDateFormat
+import java.util.*
+class MainActivity : AppCompatActivity() {
+lateinit var binding: ActivityMainBinding
+lateinit var filePath: String
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+binding = ActivityMainBinding.inflate(layoutInflater)
+setContentView(binding.root)
+//gallery request launcher..................
+val requestLauncher = registerForActivityResult(
+ActivityResultContracts.StartActivityForResult())
+{
+try{
+val calRatio = calculateInSampleSize(
+it.data!!.data!!,
+resources.getDimensionPixelOffset(R.dimen.imgSize),
+resources.getDimensionPixelOffset(R.dimen.imgSize)
+)
+val option = BitmapFactory.Options()
+option.inSampleSize = calRatio
+var inputStream = contentResolver.openInputStream(it.data!!.data!!)
+val bitmap = BitmapFactory.decodeStream(inputStream,null, option)
+inputStream!!.close()
+inputStream = null
+bitmap?.let {
+binding.userImageView.setImageBitmap(bitmap)
+} ?: {
+Log.d("fifo23", "bitmap null")
+}
+}catch (e: Exception){
+e.printStackTrace()
+}
+}
+binding.galleryButton.setOnClickListener {
+val intent = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+intent.type = "image/*"
+requestLauncher.launch(intent)
+}
+//camera request launcher.................
+val requestCemeraFileLauncher = registerForActivityResult(
+ActivityResultContracts.StartActivityForResult()){
+val calRatio = calculateInSampleSize(
+Uri.fromFile(File(filePath)),
+resources.getDimensionPixelSize(R.dimen.imgSize),
+resources.getDimensionPixelSize(R.dimen.imgSize)
+)
+val option = BitmapFactory.Options()
+option.inSampleSize = calRatio
+val bitmap = BitmapFactory.decodeFile(filePath, option)
+bitmap?.let {
+binding.userImageView.setImageBitmap(bitmap)
+}
+}
+binding.cameraButton.setOnClickListener {
+//camera app......................
+//파일 준비...............
+val timeStamep: String =
+SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+val file = File.createTempFile(
+"JPEG_${timeStamep}_",
+".jpg",
+storageDir
+)
+filePath = file.absolutePath
+val photoUri: Uri = FileProvider.getUriForFile(this,
+"com.example.chapter16_cameraapppra",
+file
+)
+val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+requestCemeraFileLauncher.launch(intent)
+}
+}
+private fun calculateInSampleSize(fileUri: Uri, reqWidth: Int, reqHeight: Int): Int {
+val options = BitmapFactory.Options()
+options.inJustDecodeBounds = true
+try {
+var inputStream = contentResolver.openInputStream(fileUri)
+//inJustDecodeBounds 값을 true 로 설정한 상태에서 decodeXXX() 를 호출.
+//로딩 하고자 하는 이미지의 각종 정보가 options 에 설정 된다.
+BitmapFactory.decodeStream(inputStream, null, options)
+inputStream!!.close()
+inputStream = null
+} catch (e: Exception) {
+e.printStackTrace()
+}
+//비율 계산........................
+val (height: Int, width: Int) = options.run { outHeight to outWidth }
+var inSampleSize = 1
+//inSampleSize 비율 계산
+if (height > reqHeight || width > reqWidth) {
+val halfHeight: Int = height / 2
+val halfWidth: Int = width / 2
+while (halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth) {
+inSampleSize *= 2
+}
+}
+return inSampleSize
+}
+}
+메니페스트
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.example.chapter16_cameraapppra">
+<application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:roundIcon="@mipmap/ic_launcher_round"
+android:supportsRtl="true"
+android:theme="@style/Theme.MainActivity">
+<activity
+android:name=".MainActivity"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+<!-- FileProvider를 사용하기 위한 xml 코드 anme 속성과 authorities 속성을 살펴보자-->
+<provider
+android:name="androidx.core.content.FileProvider"
+android:authorities="com.example.chapter16_cameraapppra"
+android:exported="false"
+android:grantUriPermissions="true">
+<meta-data
+android:name="android.support.FILE_PROVIDER_PATHS"
+android:resource="@xml/file_pathes">
+</meta-data>
+</provider>
+</application>
+</manifest>
+메인 xml 레이아웃
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity"
+android:orientation="vertical"
+android:gravity="center">
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="프로필 사진 교체"
+android:textStyle="bold"
+android:layout_marginBottom="24dp"/>
+<androidx.cardview.widget.CardView
+android:layout_width="150dp"
+android:layout_height="150dp"
+app:cardCornerRadius="75dp"
+app:cardElevation="0dp"
+>
+<ImageView
+android:id="@+id/userImageView"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:src="@drawable/user_basic"
+android:scaleType="centerCrop"
+/>
+</androidx.cardview.widget.CardView>
+<Button
+android:id="@+id/galleryButton"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Gallery App"
+android:layout_marginTop="24dp"/>
+<Button
+android:id="@+id/cameraButton"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Camera App"
+android:layout_marginTop="24dp"/>
+</LinearLayout>
+filePath xml파일
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+<external-path
+name="myfiles"
+path="Android/data/com.example.chapter16_cameraapppra/files/Pictures" />
+</paths>
+values 폴더 dimenstion 파일
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<dimen name="imgSize">150dp</dimen>
+</resources>

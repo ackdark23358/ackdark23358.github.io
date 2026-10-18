@@ -1,0 +1,709 @@
+# SSamz 안드로이드 12강
+
+## 12-1 Appbar Metarial
+
+12 metirial lib
+구글의 철학적 관점
+다른 분야에서도 화재
+실사물처럼 디자인
+화면을 디자인하자는게 목적
+엑티비티 파일
+package com.example.chpater12.AppbarPra
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.Menu
+import com.example.chpater12.R
+import com.example.chpater12.databinding.ActivityAppbarPraBinding
+class AppbarPra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityAppbarPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+setSupportActionBar(binding.toolbar)
+}
+override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+menuInflater.inflate(R.menu.menu_appbar, menu)
+return super.onCreateOptionsMenu(menu)
+}
+}
+xml파일
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".AppbarPra.AppbarPra">
+<com.google.android.material.appbar.AppBarLayout
+android:id="@+id/appbarPra"
+android:layout_width="match_parent"
+android:layout_height="242dp"
+android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+<androidx.appcompat.widget.Toolbar
+android:id="@+id/toolbar"
+android:layout_width="match_parent"
+android:layout_height="?attr/actionBarSize" />
+<ImageView
+android:id="@+id/appimage"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:scaleType="centerCrop"
+android:src="@drawable/baseball" />
+<TextView
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:text="hello" />
+</com.google.android.material.appbar.AppBarLayout>
+</LinearLayout>
+메뉴폴더 추가하고 작성한 xml파일
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 아이템 3개 -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto">
+<item android:title="search"
+app:showAsAction="always"
+app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+<item android:title="setting" />
+<item android:title="setting"
+android:icon="@android:drawable/ic_menu_help"
+app:showAsAction="always"/>
+</menu>
+메니페스트
+<activity
+android:name=".AppbarPra.AppbarPra"
+android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
+android:exported="true" />
+그레들
+viewBinding{
+enabled= true
+}
+
+## 12-2 TabLayout 기본
+
+프레그먼트 파일 세 개 복사하거나
+쌍으로 만들어준다음에 벡그라운드 색상 설정하고
+메니페스트 설정
+<activity
+android:name=".tabLayoutPra.tabPagerActivity"
+android:exported="true" />
+템 엑티비티 파일
+package com.example.chpater12.tabLayoutPra
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.example.chpater12.R
+import com.example.chpater12.databinding.ActivityTablayoutPraBinding
+import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.pager_tab.*
+class TablayoutPra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityTablayoutPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+supportFragmentManager.beginTransaction().add(R.id.tabContent, FragmentOne()).commit()
+binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+override fun onTabReselected(tab: TabLayout.Tab?) {
+}
+override fun onTabSelected(tab: TabLayout.Tab?) {
+val transaction = supportFragmentManager.beginTransaction()
+when(tab?.text){
+"Tab1" -> transaction.replace(R.id.tabContent, FragmentOne())
+"Tab2" -> transaction.replace(R.id.tabContent, FragmentTwo())
+"Tab3" -> transaction.replace(R.id.tabContent, FragmentThree())
+}
+transaction.commit()
+}
+override fun onTabUnselected(tab: TabLayout.Tab?) {
+}
+})
+}
+}
+텝 레이아웃 xml파일
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".tabLayoutPra.TablayoutPra">
+<com.google.android.material.tabs.TabLayout
+android:id="@+id/tabs"
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
+<com.google.android.material.tabs.TabItem
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Tab1"/>
+<com.google.android.material.tabs.TabItem
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Tab2"/>
+<com.google.android.material.tabs.TabItem
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Tab3"/>
+</com.google.android.material.tabs.TabLayout>
+<FrameLayout
+android:id="@+id/tabContent"
+android:layout_width="match_parent"
+android:layout_height="match_parent" />
+</LinearLayout>
+
+## 12-3,4네비게이션뷰 확장된 플로팅 액션버튼
+
+플로팅 엑티비티 파일
+package com.example.chpater12.floatingBtnPra
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import com.example.chpater12.databinding.ActivityFloatingPraBinding
+class FloatingPraActivity : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityFloatingPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+}
+}
+플로팅 엑티비티 레이아웃 파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:id="@+id/floation_drawer"
+tools:context=".MainActivity">
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Hello World!" />
+<com.google.android.material.navigation.NavigationView
+android:layout_width="wrap_content"
+android:layout_height="match_parent"
+android:layout_gravity="start"
+app:headerLayout="@layout/navigation_header"
+app:menu="@menu/menu_navigation" />
+</androidx.drawerlayout.widget.DrawerLayout>
+메뉴 아이템 xml파일
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:icon="@android:drawable/ic_menu_help"
+android:title="item1"/>
+<item android:icon="@android:drawable/ic_menu_help"
+android:title="item1"/>
+<item android:icon="@android:drawable/ic_menu_help"
+android:title="item1"/>
+<item android:icon="@android:drawable/ic_menu_help"
+android:title="item1"/>
+<item android:icon="@android:drawable/ic_menu_help"
+android:title="item1"/>
+</menu>
+네비게이션 헤더파일
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="200dp"
+android:layout_height="200dp"
+android:background="#FF1C1C">
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Nagation Title"
+android:textColor="@color/white"
+android:textStyle="bold"
+android:textSize="20dp"
+android:layout_alignParentBottom="true"
+android:layout_alignParentLeft="true"
+android:layout_marginBottom="30dp"
+android:layout_marginLeft="30dp" />
+</RelativeLayout>
+
+## 12-5-머티리얼 라이브러리로 화면 구성하기
+
+테마 xml 파일 no actionbar 지정
+<style name="Theme.MainActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+gradle 바인딩 설정
+viewBinding{
+enabled=true
+}
+프레그먼트 세 개 만들기
+프레그먼트 kt파일
+package com.example.chapter12_meterial
+import android.content.Context
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.chapter12_meterial.databinding.FragmentMeterialOneBinding
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+/**
+* A simple [Fragment] subclass.
+* Use the [meterialFragmentOne.newInstance] factory method to
+* create an instance of this fragment.
+*/
+class meterialFragmentOne : Fragment() {
+// TODO: Rename and change types of parameters
+private var param1: String? = null
+private var param2: String? = null
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+arguments?.let {
+param1 = it.getString(ARG_PARAM1)
+param2 = it.getString(ARG_PARAM2)
+}
+}
+override fun onCreateView(
+inflater: LayoutInflater, container: ViewGroup?,
+savedInstanceState: Bundle?
+): View? {
+// Inflate the layout for this fragment
+val binding = FragmentMeterialOneBinding.inflate(inflater,container,false)
+val datas = mutableListOf<String>()
+for(i in 1..247){
+datas.add("item $i")
+}
+val layoutManager = LinearLayoutManager(activity)
+//리사이클러뷰에 리니아웃 메니저로 ........
+binding.meterialRecyclerview.layoutManager=layoutManager
+//어뎁터에 데이터 생성해서 .....
+val adapter = MyAdapter(datas)
+binding.meterialRecyclerview.adapter = MyAdapter(datas)
+//데코레이션 장착
+binding.meterialRecyclerview.addItemDecoration(Mydecoration(activity as Context))
+return binding.root
+}
+companion object {
+/**
+* Use this factory method to create a new instance of
+* this fragment using the provided parameters.
+*
+* @param param1 Parameter 1.
+* @param param2 Parameter 2.
+* @return A new instance of fragment meterialFragmentOne.
+*/
+// TODO: Rename and change types and number of parameters
+@JvmStatic
+fun newInstance(param1: String, param2: String) =
+meterialFragmentOne().apply {
+arguments = Bundle().apply {
+putString(ARG_PARAM1, param1)
+putString(ARG_PARAM2, param2)
+}
+}
+}
+}
+프레그먼트1 xml파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+tools:context=".meterialFragmentOne"
+android:id="@+id/meterial_recyclerview"
+android:background="#29DA55"
+app:layout_behavior="@string/appbar_scrolling_view_behavior">
+</androidx.recyclerview.widget.RecyclerView>
+프레그먼트2 kt파일
+package com.example.chapter12_meterial
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+/**
+* A simple [Fragment] subclass.
+* Use the [meterialFragmentTwo.newInstance] factory method to
+* create an instance of this fragment.
+*/
+class meterialFragmentTwo : Fragment() {
+// TODO: Rename and change types of parameters
+private var param1: String? = null
+private var param2: String? = null
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+arguments?.let {
+param1 = it.getString(ARG_PARAM1)
+param2 = it.getString(ARG_PARAM2)
+}
+}
+override fun onCreateView(
+inflater: LayoutInflater, container: ViewGroup?,
+savedInstanceState: Bundle?
+): View? {
+// Inflate the layout for this fragment
+return inflater.inflate(R.layout.fragment_meterial_two, container, false)
+}
+companion object {
+/**
+* Use this factory method to create a new instance of
+* this fragment using the provided parameters.
+*
+* @param param1 Parameter 1.
+* @param param2 Parameter 2.
+* @return A new instance of fragment meterialFragmentTwo.
+*/
+// TODO: Rename and change types and number of parameters
+@JvmStatic
+fun newInstance(param1: String, param2: String) =
+meterialFragmentTwo().apply {
+arguments = Bundle().apply {
+putString(ARG_PARAM1, param1)
+putString(ARG_PARAM2, param2)
+}
+}
+}
+}
+프레그먼트2 xml파일
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#F662BB"
+tools:context=".meterialFragmentTwo">
+<!-- TODO: Update blank fragment layout -->
+<TextView
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:text="@string/hello_blank_fragment" />
+</FrameLayout>
+프레그먼트3 kt파일
+package com.example.chapter12_meterial
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+/**
+* A simple [Fragment] subclass.
+* Use the [meterialFragmentThree.newInstance] factory method to
+* create an instance of this fragment.
+*/
+class meterialFragmentThree : Fragment() {
+// TODO: Rename and change types of parameters
+private var param1: String? = null
+private var param2: String? = null
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+arguments?.let {
+param1 = it.getString(ARG_PARAM1)
+param2 = it.getString(ARG_PARAM2)
+}
+}
+override fun onCreateView(
+inflater: LayoutInflater, container: ViewGroup?,
+savedInstanceState: Bundle?
+): View? {
+// Inflate the layout for this fragment
+return inflater.inflate(R.layout.fragment_meterial_three, container, false)
+}
+companion object {
+/**
+* Use this factory method to create a new instance of
+* this fragment using the provided parameters.
+*
+* @param param1 Parameter 1.
+* @param param2 Parameter 2.
+* @return A new instance of fragment meterialFragmentThree.
+*/
+// TODO: Rename and change types and number of parameters
+@JvmStatic
+fun newInstance(param1: String, param2: String) =
+meterialFragmentThree().apply {
+arguments = Bundle().apply {
+putString(ARG_PARAM1, param1)
+putString(ARG_PARAM2, param2)
+}
+}
+}
+}
+프레그먼트3 xml파일
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#D39090"
+tools:context=".meterialFragmentThree">
+<!-- TODO: Update blank fragment layout -->
+<TextView
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:text="@string/hello_blank_fragment" />
+</FrameLayout>
+리사이클러뷰 아이템 xml파일 작성
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="horizontal"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:padding="16dp"
+android:layout_margin="8dp">
+<TextView
+android:id="@+id/item_data"
+android:layout_width="0dp"
+android:layout_height="wrap_content"
+android:layout_weight="1"
+android:textStyle="bold"
+android:textSize="16dp" />
+</LinearLayout>
+네비게이션 헤더 xml파일 작성
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Navigation Title"
+android:textColor="@color/white"
+android:textStyle="bold"
+android:textSize="20dp"
+android:layout_alignParentBottom="true"
+android:layout_alignParentLeft="true"
+android:layout_marginBottom="30dp"
+android:layout_marginLeft="30dp"/>
+</RelativeLayout>
+엑션바 메뉴 xml작성
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto">
+<item android:title="search" app:showAsAction="always"
+app:actionViewClass="androidx.appcompat.widget.SearchView" />
+<item android:title="setting" />
+</menu>
+네비게이션 아이템 xml작성
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:icon="@android:drawable/ic_menu_share" android:title="아이템1" />
+<item android:icon="@android:drawable/ic_menu_help" android:title="아이템2" />
+<item android:icon="@android:drawable/ic_menu_search" android:title="아이템3" />
+<item android:icon="@android:drawable/ic_menu_add" android:title="아이템4" />
+</menu>
+토글 버튼 string.xml 작성
+drawable폴더에 베이스볼 이미지 추가
+어뎁터 클레스 kt파일 작성
+package com.example.chapter12_meterial
+import android.content.Context
+import android.graphics.Color
+import android.graphics.Rect
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.recyclerview.widget.RecyclerView
+import com.example.chapter12_meterial.databinding.ItemRecylerviewBinding
+//뷰홀더 클레스 정의 리사이클러뷰 사용할거기 떄문에 리사이클러뷰 홀더 사용 인자값으로 바인딩 아이템 데이타
+class MyViewHolder(val binding: ItemRecylerviewBinding): RecyclerView.ViewHolder(binding.root)
+//어뎁터 클레스 정의 데이타는 list 형식으로 문자열값
+class MyAdapter(val datas: MutableList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+override fun getItemCount(): Int {
+return datas.size
+}
+override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
+= MyViewHolder(ItemRecylerviewBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+val binding = (holder as MyViewHolder).binding
+binding.itemData.text=datas[position]
+}
+}
+//데코레이션 작업하기 위한 클레스 정의 컨텍스트를 받고 리사이클러뷰를 구성할대에서에 대한 데코레이션작업
+class Mydecoration(val context: Context) : RecyclerView.ItemDecoration() {
+override fun getItemOffsets(
+outRect: Rect,
+view: View,
+parent: RecyclerView,
+state: RecyclerView.State
+) {
+super.getItemOffsets(outRect, view, parent, state)
+val index = parent.getChildAdapterPosition(view) +1
+//3개씩 묶기
+if (index % 3 == 0 ) //left, top,right, bottom
+outRect.set(10,10,10,60)
+else
+outRect.set(10,10,10,10)
+//16진수로 배경색 컬러지정
+view.setBackgroundColor(Color.parseColor("#28a0ff"))
+//엘리베이션 효과 적용
+ViewCompat.setElevation(view, 20.0f)
+}
+}
+메니페스 파일 작성 수정
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.example.chapter12_meterial">
+<application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:roundIcon="@mipmap/ic_launcher_round"
+android:supportsRtl="true"
+android:theme="@style/Theme.MainActivity">
+<activity
+android:name=".MainActivity"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+</application>
+</manifest>
+메인엑티비티 xml 작성
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity"
+android:id="@+id/meterial_drawer">
+<!-- 드로열 레이아웃에 구성할 뷰들을 코디네이터 레이아웃으로 묶었다. -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+android:id="@+id/meterial_main_content"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+<!-- 머터리얼 엑션바 등록-->
+<com.google.android.material.appbar.AppBarLayout
+android:id="@+id/meterial_appBar"
+android:layout_width="match_parent"
+android:layout_height="247dp"
+android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
+<com.google.android.material.appbar.CollapsingToolbarLayout
+android:layout_width="match_parent"
+android:layout_height="247dp"
+app:contentScrim="?attr/colorPrimary"
+app:expandedTitleMarginBottom="50dp"
+app:expandedTitleMarginStart="40dp"
+app:layout_scrollFlags="scroll|exitUntilCollapsed"
+app:title="AppBar title">
+<ImageView
+android:id="@+id/mererial_backdrop"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:scaleType="centerCrop"
+android:src="@drawable/baseball"/>
+<androidx.appcompat.widget.Toolbar
+android:id="@+id/meterial_toolbar"
+android:layout_width="match_parent"
+android:layout_height="?attr/actionBarSize"
+app:layout_collapseMode="pin" />
+<com.google.android.material.tabs.TabLayout
+android:id="@+id/meterial_tabs"
+android:layout_width="match_parent"
+android:layout_height="50dp"
+android:layout_gravity="bottom"
+android:background="#000000"
+app:layout_collapseMode="parallax"
+app:tabMode="scrollable"
+app:tabTextColor="#ffffff" />
+</com.google.android.material.appbar.CollapsingToolbarLayout>
+</com.google.android.material.appbar.AppBarLayout>
+<!-- 페이저 등록 -->
+<androidx.viewpager2.widget.ViewPager2
+android:id="@+id/meterial_viewpager"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+<!-- 확장된 플로팅 버튼 등록 -->
+<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+android:id="@+id/meterial_fab"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_margin="10dp"
+android:text="Txtended FAB"
+app:icon="@android:drawable/ic_input_add"
+app:layout_anchor="@id/meterial_viewpager"
+app:layout_anchorGravity="bottom|right" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+<!-- 네이게이션 뷰 를 화면에 정의하고 왼쪽에서 오른쪽으로 start 되게 헤더 xml 파일과 menu xml파일 등록 -->
+<com.google.android.material.navigation.NavigationView
+android:id="@+id/main_drawer_vieww"
+android:layout_width="wrap_content"
+android:layout_height="match_parent"
+android:layout_gravity="start"
+app:headerLayout="@layout/navigation_header"
+app:menu="@menu/menu_navigation" />
+</androidx.drawerlayout.widget.DrawerLayout>
+메인엑티비티 파일 작성
+package com.example.chapter12_meterial
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.chapter12_meterial.databinding.ActivityMainBinding
+import com.google.android.material.tabs.TabLayoutMediator
+class MainActivity : AppCompatActivity() {
+//토글버튼 인스턴스화 될때 사용할라고 선언해놓고
+lateinit var toggle: ActionBarDrawerToggle
+//어뎁터 하나 만들어놓고
+class MyFragmentPagerAdapter(activity: FragmentActivity): FragmentStateAdapter(activity){
+var fragments: List<Fragment>
+init {
+fragments= listOf(meterialFragmentOne(), meterialFragmentTwo(), meterialFragmentThree())
+}
+override fun getItemCount(): Int = fragments.size
+override fun createFragment(position: Int): Fragment = fragments[position]
+}
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityMainBinding.inflate(layoutInflater)
+setContentView(binding.root)
+//no Action바 해놓고 메인xml 구성되있는 엑션바 장착
+setSupportActionBar(binding.meterialToolbar)
+//토글버튼 인스턴트화 엑션바에 토글버튼 그리고 인스턴스화 시킨다.
+toggle = ActionBarDrawerToggle(this, binding.meterialDrawer, R.string.meterial_drawer_opened,
+R.string.meterial_drawer_closed)
+supportActionBar?.setDisplayHomeAsUpEnabled(true)
+toggle.syncState()
+//어뎁터 생성
+val adapter = MyFragmentPagerAdapter(this)
+//페이저에 어뎁터 장착
+binding.meterialViewpager.adapter = adapter
+//텝과 페이저 연동
+TabLayoutMediator(binding.meterialTabs, binding.meterialViewpager){
+tab, position ->
+tab.text = "Tab${(position + 1)}"
+}.attach()
+}
+// 상당 옵션메뉴 구성 하기위해 호출되는 메소드 오버라이딩
+// menu 폴더의 main_menu 화면에 인플레이션
+override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+menuInflater.inflate(R.menu.menu_main, menu)
+return super.onCreateOptionsMenu(menu)
+}
+// 상단 옵션메뉴 클릭했을때 호출되는 메소드 오버라이딩
+override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//이벤트가 토글버튼에서 제공된거라면
+if(toggle.onOptionsItemSelected(item)){
+Log.d("fifo23", "토글버튼에서 아이템이 선택되었다.")
+return true
+}
+return super.onOptionsItemSelected(item)
+}
+}
+텝 페이져 연동되있고 토클 버튼 클릭하면 네비게이션 레이아웃나오고 아이템들 나온다.

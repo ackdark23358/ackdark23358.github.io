@@ -1,0 +1,169 @@
+비동기 프로그래밍
+
+
+//Stream, Future, Acync, 
+작업할때 가장 작은 작업 유닛 cpu
+
+작업1 시작 => cpu사용 x
+자업2 시작 => pcu사용 x
+
+서버요청할때 주소정보를 가져온다고할때 아무리 빠르더라도 어쨋든 시간이 걸리고
+응답이 돌아오게되는데 작업1이 끝날때까지 cpu를 사용할 수 없다.
+
+작업2 시작되고 완료될때까지 cpu가놀게 된다
+
+그래서 Async 이 생겨나게된다.
+작업1이 시작되고 작업2도 시작하고 하게된다. 그래서 cpu 사용가능하다.
+작업1을 하면서 작업2를 할 수 있다.
+
+
+void main() {
+  addNumbers(10, 20);
+}
+
+// 1+ 1 =2;
+// 2 + 2=4;
+
+void addNumbers(int number1, int number2){
+  print('계산중: $number1 : $number2');
+  
+  print('계산 완료 : ${number1 + number2}');
+}
+
+----------------------------------------------------------------
+
+//future -미래
+//미래에 받아올 값
+
+//Future<String> name = Future.value('코드 팩토리');
+
+void main() {
+ //Future - 미래
+  //미래에 받아올 값
+  
+  Future<String> name = Future.value('코드 팩토리');
+  Future<int> number = Future.value(1);
+  Future<bool> isTrue = Future.value(true);
+  
+
+  addNumbers(1,1);
+  
+  addNumbers(2,2);
+  //두개의 파라미터
+//delayed - 지연되다.
+//1 번 파라미터 - 지연 기간(얼마나 지연할 건지 ) Duration
+//2번 파라미터 - 지금 시간이 지난 후 실행할 함수
+//   Future.delayed(Duration(seconds: 2), (){
+//     print('Delay 끝');
+//   });
+  
+}
+
+void addNumbers(int number1, int number2) async {
+  print('계산 시작: $number1 +  $number2');
+  
+  //서버 시뮬레이션
+  await Future.delayed(Duration(seconds:2), (){
+    print('계산 완료: $number1 + $number2 = ${number1 + number2}');
+  });
+
+  print('함수 완료 : $number1 + $number2');
+}
+
+Future => await 하면서 값을 받을 대기를 할 수있다.
+값을 여러개 받을 수 없을까 해서 나온게
+
+Stream
+반환값1,2,3,4..... 가 있고
+일드라는 키워드로 값을 받을 수있다.
+
+실행 => 완료
+
+지속적으로 받을 수 있다.
+
+---------------------------------------------------------------
+
+import 'dart:async';
+
+
+void main() {
+  final centroller = StreamController();
+  final stream = centroller.stream.asBroadcastStream();
+  
+  //짝수
+  final streamListener1 = stream.where((val) => val % 2 == 0).listen((val){
+    print('listener 1: $val');
+  });
+  
+  //홀수
+  final streamListener2 = stream.where((val) => val % 2 == 1).listen((val){
+    print('Listener 2: $val');
+  });
+  
+  
+  centroller.sink.add(1);
+  centroller.sink.add(2);
+  centroller.sink.add(3);
+  centroller.sink.add(4);
+  centroller.sink.add(5);
+  
+  
+}
+
+import 'dart:async';
+
+
+void main() {
+  calculate(2).listen((val){
+    print('calculate(2) : $val');
+    
+  });
+  
+  calculate(4).listen((val){
+    print('calculate(4) : $val');
+    
+  });
+}
+
+Stream<int> calculate(int number) async* {
+  for(int i=0; i < 5; i++){
+    yield i * number;
+    
+    await Future.delayed(Duration(seconds: 1));
+  }
+}
+
+import 'dart:async';
+
+
+void main() {
+  playAllStream().listen((val){
+    print(val);
+  });
+  
+  calculate(2).listen((val){
+    print('calculate(2) : $val');
+  });
+  
+  calculate(4).listen((val){
+    print('calculate(4) : $val');
+  });
+  
+  
+}
+
+//동시x 하려면 ..?
+Stream<int> playAllStream()async*{
+  yield* calculate(2);
+  yield* calculate(4);
+  
+}
+Stream<int> calculate(int number) async* {
+  for(int i=0; i < 5; i++){
+    yield i * number;
+    
+    await Future.delayed(Duration(seconds: 1));
+  }
+}
+
+

@@ -1,0 +1,2022 @@
+# SSamz 안드로이드 6강
+
+## 06 이전 강의노트
+
+03-2-1
+변수
+자바 같은 경우 int a= 10;
+type name
+var - mutable
+val a : Int - immutable
+a = > name
+코틀린에서는 타입이 존재하지 않는 언어가 아니다.
+자바스크립트에서는 타입이 존재하지 않는 변수가 존재한다.
+함수내에 있는애들은 초기값을 할당하지 않아도 되지만
+이용하기 전에는 무조건 초기값이 할당되있어야한다.
+클래스나 탑래밸(전역) 에서는 초기값을 할당해줘야한다.
+초기값을 미루는 방식이있다.
+lateinit // by lazy
+lateinit var data : String
+lateinit는 약간의 제약이 있다.
+lateinit는 var에서만 사용가능하다.
+기초데이타 타입 에는 사용이 불가능하다.(
+초기값을 다 지정해주는게 맞지만 실행이 되데 로직이 실행되고 초기화가 이루어지는 경우에 사용하는 것이
+좋다.
+by lazy 는 변수를 선언했는데
+val data : Int by lazy{
+println(“in lazy.....”)
+....
+....
+....
+10
+}
+로직이있는 부분이 있어야 한다..
+lazy를 쓴다는 것은 late inite와 다름없이
+단순히 초기시점을 미루는 것이 아니라 로직이 처음부터 실행될필요가 없는 경우
+실제 이용되는 경우
+코틀린에서 모든 변수는 객체다.
+문자열 템플릿
+“hello” + name +　＂, 재깅“ + a1
+“hello $name, world $a1 ”
+${a()}, $name ${10+20}
+Any 코틀린에서의 최상위 객체
+Unit 반환문이 없는 함수 리턴문이 없다.
+Nothing null이나 예외를 명시적으로 선언할떄 사용
+nullable notnullable
+val a: Int ?= null
+val a: Int = 10
+variablepra.kt
+package
+com.example.ssamsstudypra.kotlinpra
+val
+data1
+=
+10
+var
+data2
+=
+10
+fun
+myFun
+(){
+//data1 = 20// error
+data2
+=
+20
+}
+// error lateinit var data1: Int
+class
+User
+lateinit var
+user
+: User
+lateinit var
+data3
+: String
+val
+data4
+by
+lazy
+{
+println
+(
+"in lazy...."
+)
+10
+}
+fun
+main
+(){
+println
+(
+"main....."
+)
+println
+(
+data4
+)
+//
+메인이 먼저 실행되고 레이지 블럭부분이 실행된다
+.
+println
+(
+data4
+)
+someFun
+()
+}
+type.kt
+package
+com.example.ssamsstudypra.kotlinpra
+fun
+someFun
+(){
+var
+data1: Int =
+10
+var
+data2: Int ?=
+10
+data2 =
+null
+class
+User
+var
+user1: User = User()
+//error user1 = null
+fun
+sum
+(no: Int): Int{
+var
+sum =
+0
+for
+(i
+in
+1
+..no){
+sum += i
+}
+return
+sum
+}
+val
+name = “shinwook“
+println
+(
+"name: "
++ name +
+", sum : "
++sum(
+10
+)+
+", plus"
+)
+println
+(
+"name:
+$
+name
+, sum:
+${
+sum(
+10
+)
+}
+, plus"
+)
+}
+03-2-2 변수와 함수 컬렉션
+함수의 매게변수는 기본이 val 이다.
+ArrayOf
+IntArrayOf
+ByteArrayOF
+....
+자바호환성문제로 사용
+Array<Int>() ..를 사용하기도한다.
+package
+com.example.ssamsstudypra.kotlinpra
+import
+kotlin.math.sign
+fun
+main
+(){
+//
+디폴트 아귀먼트
+data2 = 10
+fun
+some
+(data1:Int
+,
+data2: Int =
+10
+): Int{
+return
+data1 + data2
+}
+some(
+10
+)
+some(
+10
+,
+20
+)
+//
+네임드파라미터
+some(
+data2 =
+20
+,
+data1 =
+10
+)
+val
+data1: Array<Int> = Array(
+3
+,
+{
+0
+}
+)
+data1[
+0
+] =
+10
+data1[
+2
+] =
+20
+data1.set(
+2
+,
+30
+)
+println
+(
+"
+${
+data1.
+size
+}
+,
+${
+data1[
+0
+]
+}
+,
+${
+data1.get(
+2
+)
+}
+"
+)
+val
+data2 =
+arrayOf
+<Int>
+(
+10
+,
+20
+,
+30
+)
+//List...........................
+//
+이뮤타블
+immutable
+값 불변경
+var
+list =
+listOf
+<Int>
+(
+10
+,
+20
+,
+30
+)
+var
+list2 =
+mutableListOf
+<Int>
+(
+10
+,
+20
+,
+30
+)
+list2.get(
+0
+)
+list2.set(
+1
+,
+30
+)
+}
+Expression =>결과가 나오는 구문
+standard =>결과 x
+결과가 나오면 변수에 담을 수 있다.
+val
+03-3
+if문
+while문
+when 문기문 (switch 문이랑 비슷하다.)
+for문 – 자바나 다른언어랑 다소차이가 있다.
+fun
+main
+(){
+var
+data =
+10
+//
+익스프레션에서는
+else
+문 생략불가
+val
+result =
+if
+(data>
+0
+){
+println
+(
+"data > 0"
+)
+10
+}
+else
+{
+println
+(
+"data <= 0"
+)
+0
+}
+println
+(result)
+var
+data2: Any =
+"ackdark23"
+val
+result3 =
+when
+(data2){
+is
+String ->
+println
+(
+"String...."
+)
+20
+,
+30
+->
+println
+(
+"20,30"
+)
+in
+1
+..
+10
+->
+println
+(
+"1..10"
+)
+else
+->
+println
+(
+"else......"
+)
+}
+println
+(result3)
+var
+data3 =
+arrayOf
+(
+10
+,
+20
+,
+30
+)
+//
+해당 인덱스를 참조하는 방법
+for
+(i
+in
+data3.
+indices
+){
+println
+(data3[i])
+}
+//
+값까지 같이 얻고싶다
+.
+for
+((index
+,
+value)
+in
+data3.
+withIndex
+()){
+println
+(value)
+}
+}
+04-1-1
+클래스와 생성자
+자바와 다르게 주생성자와 보조 생성자가 있다.
+자바
+class User {User(){}}
+new User();
+코틀린
+무조건 constructor()
+특별한 예약어가 없다.
+class User{} => default 주생성자 삽입된다.
+package
+com.example.ssamsstudypra.kotlinpra
+//
+자바 스타일
+/*
+class Users (name: String, count:Int){
+var name : String
+var count : Int
+init {
+this.name = name
+this.count = count
+}
+fun someFun(){
+println("name $name, count $count")
+}
+}
+*/
+//
+코틀린 스타일
+class
+Users(
+val
+name
+: String
+, val
+count
+: Int){
+fun
+someFun
+(){
+println
+(
+"name
+$
+name
+, count
+$
+count
+"
+)
+}
+}
+fun
+main
+(){
+val
+users = Users(
+"ackdark23"
+,
+10
+)
+users.someFun()
+}
+04-1-2
+주생성자와 보조생성자
+주생성자와 보조생성자가 있을 때
+보조생성자에서 주생성자를 실핼되게 해줘야한다.
+this라는 예약어로 주생성자와 보조 생성자를 연결해주는게 권장사항이다.
+package
+com.example.ssamsstudypra.kotlinpra
+class
+User(name: String) {
+constructor
+(name: String
+,
+count: Int) :
+this
+(name){
+println
+(
+"constroctor(name : String, count: Int)...."
+)
+}
+constructor
+(name: String
+,
+count: Int
+,
+email: String) :
+this
+(name
+,
+count) {
+println
+(
+"constructor(name: String, count: Int, email: String)......."
+)
+}
+}
+fun
+main
+(){
+val
+user = User(
+"ackdark23"
+,
+10
+,
+"a@a.com"
+)
+}
+04-2
+OOP
+OOP의 꽃은 다형성이다. ( 폴리모피즘) 상속, 오버라이드 .....
+자바에서는 extens 라는 예약어를 사용하지만
+코틀린에서는 : Super() 사용한다.
+코틀린에서는 기본이 상속이 불가이고
+open 예약어를 써줘야 사용할 수 있다.
+open class AAA：Super()
+상속이가능하게되는 이유는 서브클레스에서 생성자가 호출되면서 슈퍼클레스의 생성자를 호출되기떄문에 가능하다.
+상속하는 클래스의 매게변수에 맞게 해야한다.
+오버라이딩 = 재정의
+접근제한자
+package
+com.example.ssamsstudypra.kotlinpra
+open class
+Super{
+var
+publicData
+=
+10
+protected var
+protectedData
+=
+10
+private var
+privateData
+=
+10
+open var
+someData
+=
+10
+open fun
+someFun
+(){}
+}
+class
+Sub: Super() {
+override var
+someData
+=
+10
+override fun
+someFun
+() {
+publicData
+++
+protectedData
+++
+//      privateData ++ //error
+}
+}
+fun
+main
+(){
+val
+obj = Sub()
+obj.
+publicData
+++
+//obj.proctedData ++ // error
+//obj.privateData ++ // error
+}
+04-3-2
+Data class
+Data를 표현하는 class
+사용하는 곳에따라 용어가 차이가난다.
+Vo(value-object)
+Entply (Value- Object) - 데이터 DB
+DTO (서버와 연동할 때 설계)
+data class User(val name: String, val email: String)
+obj1.equals (obj2) = > true
+equals는 주생성자만 보고 판단한다.
+package
+com.example.ssamsstudypra.kotlinpra
+class
+NonDataClass(
+val
+name
+: String
+, val
+email
+: String
+, val
+age
+: Int)
+data class
+DataClass(
+val
+name
+: String
+, val
+email
+: String
+, val
+age
+: Int)
+fun
+main
+(){
+val
+non1 = NonDataClass(
+"ackdark23"
+,
+"fifo23@naver.com"
+,
+32
+)
+val
+non2 = NonDataClass(
+"ackdark23"
+,
+"fifo23@naver.com"
+,
+32
+)
+val
+obj1 = DataClass(
+"ackdark23"
+,
+"fifo23@naver.com"
+,
+32
+)
+val
+obj2 = DataClass(
+"ackdark23"
+,
+"fifo23@naver.com"
+,
+32
+)
+//equal
+는 객체의 데이터를 비교하기떄문에 일반클래스는
+false
+가 된다
+.
+println
+(
+"non1.equals(non2)
+${
+non1.equals(non2)
+}
+"
+)
+println
+(
+"obj2.equals(obj2)
+${
+obj1.equals(obj2)
+}
+"
+)
+//
+데이터 값을 변수에 저장해서 출력
+val
+name = obj1.
+name
+val
+email = obj1.
+email
+//
+데이타가 여러개 쓸때가 있는데 한줄로 끈난다
+.
+val
+(name1
+,
+email1) = obj1
+println
+(
+"
+$
+name1
+,
+$
+email1
+"
+)
+}
+04-3-2코틀린 클래스의 종류
+오프젝트 클레스와 컴페니언 클레스
+val obj = object{}
+=> 익명 클래스 – 클래스 명이 없는 클래스
+실제 타입은 Any 타입
+컴페니언 클레스
+class myClass
+companion object{
+var data = 10
+fun some(){
+println(data)
+}
+}
+}
+자바에서의 스테티탁과 동일한 효과 객체생성없이
+접근이 가능하다.
+object.kt
+package
+com.example.ssamsstudypra.kotlinpra
+open class
+Super1{
+open var
+data1
+=
+10
+open fun
+some
+(){
+}
+}
+//
+소프트웨어 개발시에 사용되는 익명 클래스
+//
+이름이 없기떄문에 선언하면서 바로 생성 사용
+val
+obj
+=
+object
+: Super1(){
+var
+data
+=
+10
+override var
+data1
+=
+10
+override fun
+some
+(){
+data1
+++
+}
+}
+fun
+main
+(){
+obj
+.
+data1
+++
+//Super
+타입
+// error obj.data
+companion class
+package
+com.example.ssamsstudypra.kotlinpra
+class
+MyClass{
+var
+data
+=
+10
+companion object
+{
+var
+data1
+=
+10
+fun
+some
+(){
+}
+}
+}
+fun
+main
+(){
+// error MyClass.data ++
+MyClass().
+data
+++
+// MyClass.data ++ // error
+MyClass.some()
+MyClass.
+data1
+}
+}
+05- 1람다 함수 = 익명함수
+여러 소프트웨어에서 사용되는 함수
+고차함수, let, run, apply, with ...
+리턴타입이 있을수도 있고 없을수도 있고..
+fun 예약어 안쓰겠다.
+람다함수 자체가 중요한게 아니라 기법정인 부분이 중요하다.
+{매개번수 -> 함수본문}
+val sum = {no1:Int , no2: Int-> no1 + no2}
+선언과 동시에 콜
+{no1 = Int, no2: Int -> no1+ no2} (10,20)
+매개변수를 it으로 대체 타입을 지정해줘야한다.
+val some: (Int) -> Unit = {println(it)}
+람다함수에서 리턴값이 있다면 마지막의 연산결과
+val some = (no1: Int, no2: Int ->
+println(“lamda is amaziong”)
+no1 * no2
+}
+val some: (Int, Int) -> Int { no1: Int, no2: Int -> no1 * no2}
+typealias 지정된 타입을 여러곳에서 쓸때사용
+typeralias MyInt = Int
+typealias MyFunType = (Int, Int) -> Boolean
+fun main(){
+val someFun : MyFunType = {no1: Int, no2: Int -> no1 * no2}
+}
+no1 , no2 의 매개변수는 유추해서 타입을 생략할 수 있다.
+high- order Function(hof) - 고차함수
+함수가 함수를 콜하고 매개변수를 함수로 하는 .....
+package
+com.example.chpater5out.gocha
+fun
+hofFun
+(arg: (Int) -> Boolean) : () -> String{
+val
+result =
+if
+(arg(
+10
+)) {
+"vaild "
+}
+else
+{
+"invaild"
+}
+return
+{
+"hofFun result:
+$
+result
+"
+}
+}
+fun
+main
+(){
+//val result = hofFun({no: Int -> no > 10})
+val
+result =
+hofFun
+(
+{it
+>
+20
+}
+)
+result()
+}
+fun
+main
+(){
+{
+no: Int
+->
+println
+(no)
+}
+(
+10
+)
+val
+some1 : (Int) -> Unit =
+{
+no: Int
+->
+println
+(no)
+}
+val
+some2 =
+{
+no: Int
+->
+println
+(no)
+}
+val
+some3 =
+{
+no: Int
+->
+println
+(no)
+}
+val
+some4: (Int) -> Unit =
+{
+println
+(
+it
+)
+}
+}
+05-2 null safety
+null safety => null 개념 없다(x) => npe 오류 발생 않게 (o)
+nullable , non-null -> type구분
+val data: String? = “ackdark23”
+val length = data.length //오류
+val length = data?.length //성공
+null이면 데이터에 접근을 안하고 null이 아니면 접근을 한다.
+엘비스 연산자 ?:
+val data :String ?= “ackdark23”
+data?.length ?: -1 //널이면 –1을 대입
+예외발생 연산자 !!
+fun some(data: String?): Int{return data!!.length}
+fun main(){
+println(some(“ackdark23”))
+println(null)
+}
+package
+com.example.chpater5out.nullable
+//return
+타입이
+null
+일수 도 있기떄문에 리턴타입 뒤에
+?
+를 붙여준다
+.
+fun
+some
+(data: String?): Int? {
+return
+data?.
+length
+//    return data?.length ?: 0 // ?
+를 붙히지 않아도된다
+.
+}
+fun
+main
+() {
+var
+data: String? =
+"ackdark23"
+println
+(
+"data:
+$
+data
+:
+${
+data?.
+length
+?: -
+1
+}
+"
+)
+data =
+null
+println
+(
+"data:
+$
+data
+:
+${
+data
+?.
+length
+?: -
+1
+}
+"
+)
+}
+06-1 화면구성
+엑티비티 – 뷰 구조
+엑티비티에서 화면출력을 수성하면 화면이 나오는 구조
+TextView,ImageView .....
+Activity 화면을
+엑티비티 코틀린파일에서 하는 방법
+xml 파일에서 하는 방법
+매니페스트 파일
+<?
+xml version
+="1.0"
+encoding
+="utf-8"
+?>
+<manifest
+xmlns:
+android
+="http://schemas.android.com/apk/res/android"
+package
+="com.example.chapter6"
+>
+<application
+android
+:allowBackup
+="true"
+android
+:icon
+="@mipmap/ic_launcher"
+android
+:label
+="@string/app_name"
+android
+:roundIcon
+="@mipmap/ic_launcher_round"
+android
+:supportsRtl
+="true"
+android
+:theme
+="@style/Theme.SSamsStudyPra"
+>
+<activity
+android
+:name
+=".test2"
+android
+:exported
+="true"
+>
+<intent-filter>
+<action
+android
+:name
+="android.intent.action.MAIN"
+/>
+<category
+android
+:name
+="android.intent.category.LAUNCHER"
+/>
+</intent-filter>
+</activity>
+<activity
+android
+:name
+=".test1"
+android
+:exported
+="true"
+>
+</activity>
+<activity
+android
+:name
+=".MainActivity"
+android
+:exported
+="true"
+>
+<intent-filter>
+<action
+android
+:name
+="android.intent.action.MAIN"
+/>
+<category
+android
+:name
+="android.intent.category.LAUNCHER"
+/>
+</intent-filter>
+</activity>
+</application>
+</manifest>
+방법1
+package
+com.example.chapter6
+import
+android.graphics.Typeface
+import
+androidx.appcompat.app.AppCompatActivity
+import
+android.os.Bundle
+import
+android.view.Gravity
+import
+android.view.ViewGroup.LayoutParams.
+WRAP_CONTENT
+import
+android.widget.ImageView
+import
+android.widget.LinearLayout
+import
+android.widget.TextView
+import
+androidx.core.content.ContextCompat
+class
+test1 : AppCompatActivity() {
+override fun
+onCreate
+(savedInstanceState: Bundle?) {
+super
+.onCreate(savedInstanceState)
+setContentView(R.layout.
+activity_test1
+)
+val
+name = TextView(
+this
+).
+apply
+{
+typeface
+= Typeface.
+DEFAULT_BOLD
+text
+=
+"Lake Lovies"
+}
+val
+image = ImageView(
+this
+).
+also
+{
+it
+.setImageDrawable(ContextCompat.getDrawable(
+this,
+R.drawable.
+lake_1
+))
+}
+val
+address = TextView(
+this
+).
+apply
+{
+typeface
+= Typeface.
+DEFAULT_BOLD
+text
+=
+"lake Louse, AB,
+캐나다다
+"
+}
+val
+layout = LinearLayout(
+this
+).
+apply
+{
+orientation
+= LinearLayout.
+VERTICAL
+gravity
+= Gravity.
+CENTER
+addView(name
+,
+WRAP_CONTENT
+,
+WRAP_CONTENT
+)
+addView(image
+,
+WRAP_CONTENT
+,
+WRAP_CONTENT
+)
+addView(address
+,
+WRAP_CONTENT
+,
+WRAP_CONTENT
+)
+}
+setContentView(layout)
+}
+}
+방법2
+<?
+xml version
+="1.0"
+encoding
+="utf-8"
+?>
+<LinearLayout
+xmlns:
+android
+="http://schemas.android.com/apk/res/android"
+xmlns:
+app
+="http://schemas.android.com/apk/res-auto"
+xmlns:
+tools
+="http://schemas.android.com/tools"
+android
+:layout_width
+="match_parent"
+android
+:layout_height
+="match_parent"
+android
+:orientation
+="vertical"
+android
+:gravity
+="center"
+tools
+:context
+=".test2"
+>
+<TextView
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:text
+="Lake Lovies"
+android
+:textSize
+="50dp"
+/>
+<ImageView
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:src
+="@drawable/lake_1"
+/>
+<TextView
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:text
+="Lake Lovise, AB
+캐나다
+"
+android
+:textStyle
+="bold"
+/>
+</LinearLayout>
+package
+com.example.chapter6
+import
+androidx.appcompat.app.AppCompatActivity
+import
+android.os.Bundle
+class
+test2 : AppCompatActivity() {
+override fun
+onCreate
+(savedInstanceState: Bundle?) {
+super
+.onCreate(savedInstanceState)
+setContentView(R.layout.
+activity_test2
+)
+}
+}
+06.2-1
+뷰 클래스, 기본구조
+setContentView(view) 로 구성(사용) 할 수 있다.
+ImageView
+View
+ViewGroup
+TextView
+LinearLayout
+RelativeLayout
+묶음 개체입니다.
+UI쪽 최상위 클래스 View
+자체UI없이 그릇역활을 하는 ViewGroup 클래스의 LinearLayout, RelativeLayout (여러개를 묶어서 사용하는 목적)
+UI역활을 하는 TextView, ImageView등으로 구성된다. (화면출력)
+레이아웃은 중첩해서 사용할 수 있다.
+l***Layout.xml
+런타임시에 객채를 참조해서 텍스트를 변경하거나 해야하는대 객체를 얻을 수 있는 방법은 xml의 id속성을 사용하면 된다.
+android:id=“@+id/Button1”
+val button: Button = findViewByid(R.id.Button1)
+val button = findViewById<Button>(R.id.Button1)
+package
+com.example.chapter6
+import
+androidx.appcompat.app.AppCompatActivity
+import
+android.os.Bundle
+class
+LayoutPraActivity : AppCompatActivity() {
+override fun
+onCreate
+(savedInstanceState: Bundle?) {
+super
+.onCreate(savedInstanceState)
+setContentView(R.layout.
+activity_layout_pra
+)
+}
+}
+<?
+xml version
+="1.0"
+encoding
+="utf-8"
+?>
+<LinearLayout
+xmlns:
+android
+="http://schemas.android.com/apk/res/android"
+xmlns:
+app
+="http://schemas.android.com/apk/res-auto"
+xmlns:
+tools
+="http://schemas.android.com/tools"
+android
+:layout_width
+="match_parent"
+android
+:layout_height
+="match_parent"
+android
+:orientation
+="vertical"
+tools
+:context
+=".LayoutPraActivity"
+>
+<Button
+android
+:id
+="@+id/button1"
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:text
+="
+버튼
+1"
+/>
+<LinearLayout
+android
+:layout_width
+="match_parent"
+android
+:layout_height
+="wrap_content"
+android
+:orientation
+="horizontal"
+>
+<Button
+android
+:id
+="@+id/button2"
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:text
+="
+버튼
+2"
+/>
+<Button
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:text
+="
+버튼
+3"
+/>
+</LinearLayout>
+</LinearLayout>
+엑티비티 관련 오류가 났을떄
+매니페스트 파일에서 export를 true, false를 조정하거나
+edit configurations에서 런처 엑티비티 속성을 디폴트엑티비티로 하거나
+특별한 엑티비티로 변경해서 해보자.
+<intent-filter>
+<action
+android
+:name
+="android.intent.action.MAIN"
+/>
+<category
+android
+:name
+="android.intent.category.LAUNCHER"
+/>
+</intent-filter>
+<?
+xml version
+="1.0"
+encoding
+="utf-8"
+?>
+런쳐엑티비티를 설정하는 코드
+<manifest
+xmlns:
+android
+="http://schemas.android.com/apk/res/android"
+package
+="com.example.chapter6"
+>
+<application
+android
+:allowBackup
+="true"
+android
+:icon
+="@mipmap/ic_launcher"
+android
+:label
+="@string/app_name"
+android
+:roundIcon
+="@mipmap/ic_launcher_round"
+android
+:supportsRtl
+="true"
+android
+:theme
+="@style/Theme.SSamsStudyPra"
+>
+<activity
+android
+:name
+=".LayoutPraActivity"
+android
+:exported
+="true"
+>
+<intent-filter>
+<action
+android
+:name
+="android.intent.action.MAIN"
+/>
+<category
+android
+:name
+="android.intent.category.LAUNCHER"
+/>
+</intent-filter>
+</activity>
+<activity
+android
+:name
+=".test2"
+android
+:exported
+="true"
+>
+</activity>
+<activity
+android
+:name
+=".test1"
+android
+:exported
+="true"
+></activity>
+<activity
+android
+:name
+=".MainActivity"
+android
+:exported
+="true"
+>
+<intent-filter>
+<action
+android
+:name
+="android.intent.action.MAIN"
+/>
+<category
+android
+:name
+="android.intent.category.LAUNCHER"
+/>
+</intent-filter>
+</activity>
+</application>
+</manifest>
+06.2-2기본적인 뷰 크기 / 테그에들어가는 주요 속성들
+layout width, layout height =>
+wrap_contents(내용물크기만큼) , match_parents(부모 컨텐츠의 사이즈만큼)
+숫자값으로 주자말라는게 권장사항이냐면 폰의 기기별로 봤을 때
+match_parents 로 했을 때 크기가 사이즈가 자동으로 확보가 되기떄문에다.
+padding => 4방향 뷰 내의 간격 paddin=5 4방향 5 , padding_left = 5 왼쪽....
+margin => 뷰와 뷰 사이의 간격
+margin=5 4방향 5, maring_right = 5 오른쪽...
+view의 visible 속성 => 뷰들이 나올거냐 안나올거냐
+뷰를 처음부터 뿌릴 필요가 없는경우
+invisible 화면에 안보이지만 사이즈 확보
+gone 화면에 안보이지만 사이즈를 확보하지않고 있다.
+visible
+gradle6 부분에 추가
+id
+'kotlin-android-extensions’
+package
+com.example.chapter6
+import
+androidx.appcompat.app.AppCompatActivity
+import
+android.os.Bundle
+import
+android.view.View
+import
+kotlinx.android.synthetic.main.activity_viewsocksung_pra.*
+class
+viewsocksungPra : AppCompatActivity() {
+override fun
+onCreate
+(savedInstanceState: Bundle?) {
+super
+.onCreate(savedInstanceState)
+setContentView(R.layout.
+activity_viewsocksung_pra
+)
+button1.setOnClickListener
+{
+invisibleBtn.
+visibility
+= View.
+VISIBLE
+}
+button2.setOnClickListener
+{
+goneBtn.
+visibility
+= View.
+VISIBLE
+}
+button3.setOnClickListener
+{
+invisibleBtn.
+visibility
+= View.
+INVISIBLE
+goneBtn.
+visibility
+= View.
+GONE
+}
+}
+}
+<?
+xml version
+="1.0"
+encoding
+="utf-8"
+?>
+<LinearLayout
+xmlns:
+android
+="http://schemas.android.com/apk/res/android"
+xmlns:
+app
+="http://schemas.android.com/apk/res-auto"
+xmlns:
+tools
+="http://schemas.android.com/tools"
+android
+:layout_width
+="match_parent"
+android
+:layout_height
+="match_parent"
+tools
+:context
+=".viewsocksungPra"
+android
+:orientation
+="vertical"
+android
+:gravity
+="center"
+>
+<LinearLayout
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:orientation
+="horizontal"
+>
+<Button
+android
+:id
+="@+id/button1"
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:text
+="button1"
+android
+:textSize
+="12dp"
+android
+:visibility
+="visible"
+/>
+<Button
+android
+:id
+="@+id/button2"
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:textSize
+="12dp"
+android
+:text
+="button2"
+android
+:visibility
+="visible"
+/>
+<Button
+android
+:id
+="@+id/button3"
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:text
+="button3"
+android
+:textSize
+="12dp"
+android
+:visibility
+="visible"
+/>
+</LinearLayout>
+<LinearLayout
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:orientation
+="horizontal"
+>
+<Button
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:text
+="button1"
+android
+:textSize
+="12dp"
+android
+:visibility
+="visible"
+/>
+<Button
+android
+:id
+="@+id/invisibleBtn"
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:text
+="invisibleBtn"
+android
+:textSize
+="12dp"
+android
+:visibility
+="invisible"
+/>
+<Button
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:text
+="button3"
+android
+:textSize
+="12dp"
+android
+:visibility
+="visible"
+/>
+</LinearLayout>
+<LinearLayout
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:orientation
+="horizontal"
+>
+<Button
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:text
+="button1"
+android
+:textSize
+="12dp"
+android
+:visibility
+="visible"
+/>
+<Button
+android
+:id
+="@+id/goneBtn"
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:text
+="goneBtn"
+android
+:textSize
+="12dp"
+android
+:visibility
+="gone"
+/>
+<Button
+android
+:layout_width
+="wrap_content"
+android
+:layout_height
+="wrap_content"
+android
+:text
+="button3"
+android
+:textSize
+="12dp"
+android
+:visibility
+="visible"
+/>
+</LinearLayout>
+</LinearLayout>
+06-3-1
+기본적인 뷰들..
+text 속성 => android:text=“hellow”, android:text=“@string/hello”
+textColor 속성 => androdi:textColor=“#ff0000” 16진수
+textSize 속성 = android:textSize=“20sp”
+textStyle 속성 = android:textStyle=“bold”
+0
+http\://www.ssamz.com;1;0;0;
+http://www.ssamz.com
+HWPHYPERLINK_TYPE_URL
+HWPHYPERLINK_TARGET_BOOKMARK
+HWPHYPERLINK_JUMP_CURRENTTAB
+http://www.ssamz.com
+android:autoLink="web|email|phone"/>
+maxlines="3"
+기본적으로개행이 되지만
+.....
+ellipsize = "end" middle, start 3
+줄만표시되고
+...
+singleLine="true"
+아무리길어도 한줄로 표현
+ImageView
+android:src="@drawable/test'
+checkbox
+radiobutton => radio group
+으로묶어서 사용
+editText => lines=
+처음보여줄 라인수
+, multiline=true
+InputType="text"
+한줄밖에 입력을 못하게끔phone 폰좌판 나오게
+더많 속성들은 책 참조
+Empty activity
+만들때 독립적으로 돌릴때launch activity 체크
+공유폴더test.jpg 파일복사
+공유폴더String.xml 복사
+레이아웃
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".viewsocksungPra2">
+<TextView
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="쌤즈, 쌤과 함께........ 사이트 : http://www.ssamz.com, 전화면호 : 02-0000-0001, 이메일 : shinwook1989@gmail.com"
+android:autoLink="email|phone|web" />
+<TextView
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="@string/long_text"
+android:singleLine="true"
+android:ellipsize="middle" />
+<ImageView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:src="@drawable/test"
+android:maxWidth="100dp"
+android:maxHeight="100dp"
+android:adjustViewBounds="true"
+android:background="#0000ff"
+/>
+<EditText
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:inputType="phone"/>
+</LinearLayout>
+메니페스트 수정 혹은 런치엑티비 체크
+<activity
+android:name=".viewsocksungPra2"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+
+## 06-4 뷰바인딩
+
+viewBinding
+모듈수준 buildgradle 파일에
+android{
+(생략)
+viewBinding{
+enable=true
+}
+}
+추가하면 binding 클래스가 자동으로 만들어진다.
+id를 추가해주면 손쉽게 사용가능하다.
+item.xml => itembing
+a.xml => abbing <= view
+//바인딩 객체 희득
+val blinging = ActivityMainBinding.inflate(layoutInflater)
+//엑테비티 화면 출력
+setContentView(binging.root)
+xml에 tools:viewBindingIgnore="true" 이 추가된다.
+실습 부분
+그래들에 추가해주자
+viewBinding{
+enabled = true
+}
+빈엑티비티 생성
+xml 수정
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".viewBindingPra">
+<Button
+android:id="@+id/visibleBtn"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="visible" />
+<TextView
+android:id="@+id/targetView"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:background="#FF0000"
+android:text="hello"
+android:textColor="#FFFFFF"
+android:visibility="visible" />
+<Button
+android:id="@+id/invisibleBtn"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="invisible" />
+</LinearLayout>
+엑티비티 수정
+package com.example.chapter6
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.View
+import com.example.chapter6.databinding.ActivityViewBindingPraBinding
+class viewBindingPra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityViewBindingPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+binding.visibleBtn.setOnClickListener {
+binding.targetView.visibility = View.VISIBLE
+}
+binding.invisibleBtn.setOnClickListener {
+binding.targetView.visibility = View.INVISIBLE
+}
+}
+}
+
+## 06-5 카카오톡 비밀번호 화면 만들기
+
+카카오톡 비밀번호 화면 만들기
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".MainActivity">
+<TextView
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Hello World!"
+android:textSize="17dp"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<TextView
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="fifo23@naver.com"
+android:layout_marginTop="10dp"
+android:textColor="#CFCFCE" />
+<View
+android:layout_width="match_parent"
+android:layout_height="1dp"
+android:layout_marginTop="10dp"
+android:background="#101000" />
+<EditText
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:hint="비밀번호"
+android:inputType="textPassword"/>
+<TextView
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginTop="10dp"
+android:text="@string/password_text" />
+<Button
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginTop="10dp"
+android:text="확인" />
+</LinearLayout>
+OLE 개체입니다.

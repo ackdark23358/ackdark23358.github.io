@@ -1,0 +1,391 @@
+# SSamz 안드로이드 9강
+
+## 09-1 리소스 종류와 특징
+
+09-1 리소스의 종류와 특징
+09-1 리소스
+res 폴더
+drawable - 이미지
+layout - ui xml
+mipmap - app icon
+values - 기타등등 문자열 값
+animator - 속성 에니메이션 xml
+anim - 트윈 에니메이션 xml
+color - 색상 상태 목록 정의 xml
+drawable - 이미지 소스
+정적에니메이션 0.5만에 화면에서 사라진다.
+고정적인 에니메이션 같은경우 xml로 지정한다.
+세부적인 리소스 폴더
+mipmap - 앱실행 레이아웃 리소스
+layout - 레이아웃 xml
+raw - 원시 형태로 이용되는 리소스 파일
+values - 단순 값으로 이용되는 리소스
+font - 글꼴 리소스
+=============================
+*menu - 메뉴 구성 xml
+*xml - 특정 디렉터리가 정의되지 않은 나머지 xml 파일
+다이얼로그 구성이나 커스텀 메뉴구성 할때 사용되기도 한다.
+xml 이미지 속성
+<shape> rectangle, oval, line, ring ...
+<corners>둥근모서리 shape값이 rectangle 일때
+<gradient> 그라데이션
+<size> 도형의 크기
+<solid> 도형의 색상
+<stroke> 윤곽선
+drawable/ a.png
+layout/ b.xml
+values/ string.xml, diemnsion.xml(글자 사이즈), color.xml)
+뷰 바인딩
+viewBinding{
+enabled=true
+}
+공유파일 글꼴 폰트 디렉터리 만들어서 넣고
+color 디렉터리 만들어서 버튼텍스트 xml 만들고
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:color="#ffff0000" android:state_pressed="true"></item>
+<item android:color="#ff0000ff" android:state_focused="true"></item>
+<item android:color="#ff000000" />
+</selector>
+drawable 디렉터리에 gradiation.xml 만들고
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+android:shape="rectangle">
+<gradient
+android:startColor="#ffff0000"
+android:endColor="#80ff00ff"
+android:angle="45"/>
+<corners android:radius="8dp" />
+</shape>
+엑티비티 레이아웃 xml 파일
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".TestActivity">
+<ImageView
+android:layout_width="300dp"
+android:layout_height="300dp"
+android:src="@drawable/dradient_box" />
+<Button
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="click_me"
+android:textColor="@color/button_text" />
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Hello World"
+android:textSize="20dp"
+android:fontFamily="@font/pacifico"
+/>
+</LinearLayout>
+엑티비티 파일
+package com.example.chapter9
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import com.example.chapter9.test.databinding.ActivityTestBinding
+class TestActivity : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityTestBinding.inflate(layoutInflater)
+setContentView(binding.root)
+}
+}
+버튼눌렀을 때 글자색도 바뀐다.
+추가적인 코드로 바인딩을 생략하고 이미지뷰와 버튼에 클릭리스너를 장착 하되
+drawable 폴더에 animation-list를 사용해서 xml파일을 작성하고 layout xml에서 src 값을 지정해서 그림을 참조한후 엑티비티에서 에니메이션 드로어블로 캐스팅후 에니메이션 리스트 로 작성한 gif 움짤 애니메이션을 구현
+val animStartBtn : Button
+apply{
+animStartBtn = findViewById<Button>(R.id.button)
+}
+val imgv = findViewById<ImageView>(R.id.imgv)
+val imgAnim = imgv.drawable as AnimationDrawable
+imgAnim.start()
+imgv.setOnClickListener {
+imgAnim.stop()
+}
+animStartBtn.setOnClickListener {
+imgAnim.start()
+}
+
+## 09-2 리소스 조건 설정
+
+09-2 리소스 조건 설정
+화면별 해상도를 지정하는 것처럼 drawable 폴더를 우클릭하고 locale 에 특정 국가를 추가해서 지역코드 ko uk .... 해서 서비스 지역에서 폰의 렝기지가 변경되었을 때 이미지를 변경해서 출력하는 실습 코드...
+test 국기 이미지 us버전과 ko 버전 두 개를 추가하고
+xml 리소스 코드 작성
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical">
+<ImageView
+android:id="@+id/imgv"
+android:layout_width="300dp"
+android:layout_height="300dp"
+android:src="@drawable/animaiontest2" />
+<Button
+android:id="@+id/button"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="click_me"
+android:textColor="@color/button_text" />
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Hello World"
+android:textSize="20dp"
+android:fontFamily="@font/pacifico"
+/>
+</LinearLayout>
+메인엑티비티와 메니페스트 작성 수정 후 런
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+<ImageView
+android:id="@+id/imageView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.498"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_bias="0.499"
+android:src="@drawable/test" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+package com.example.chpater5out
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+class MainActivity : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+setContentView(R.layout.activity_main)
+}
+}
+
+## 09-3 폰 화면 크기별 설정
+
+px 로 수치값을 조정해서 폰크기별 해상도 작업을 할수도 있지만
+dp나 sp 로 작업하면 기기별 호완성있는 글자크기를 작업해준다.
+근대 kt 파일 에서 작업하려면 px로 작업할수 밖에 없어서
+values/dimens.xml 에 사이즈를 dp, sp , 이름 속성을 지정해놓고
+R.dimens.a 같은 방식으로 사용하기도 한다.
+기기의 화면 정보를 가져오는 방법
+과거에는 displayMetrics 로 크기정보를 가져왔었지만
+30버전 이상부터는 (deprecation).windowMetrics를 이용
+해야 한다.
+if(Build.VERSION.SDK_INT >= Build.VERSION_CODE.R){
+윈도우 메트릭스
+}else{
+디스플레이 메트릭스
+}
+가로값, dp값, 세로값, ldp폰이냐 m xd냐도 얻을 수 있다.
+메인엑티비티 파일
+package com.example.chapter9.test
+import android.hardware.display.DisplayManager
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.Display
+import android.view.WindowMetrics
+import com.example.chapter9.test.databinding.ActivityPhoneSizePraBinding
+class MainActivity : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityPhoneSizePraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+val windowsMatrix: WindowMetrics = windowManager.currentWindowMetrics
+binding.textView.text = "width : ${windowsMatrix.bounds.width()}, height : ${windowsMatrix.bounds.height()}"
+} else {
+val display = windowManager.defaultDisplay
+val displayMetrics = DisplayMetrics()
+display?.getRealMetrics(displayMetrics)
+binding.textView.text = "width: ${displayMetrics.widthPixels}, height : ${displayMetrics.heightPixels}"
+}
+}
+}
+constraint 툴의 도움을 받아 xml 코드 작성
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".PhoneSizePra">
+<TextView
+android:id="@+id/textView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="TextView"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+메니페스트 파일 작성 및 수정
+gradle에
+viewBinding{
+enabled= true
+}
+추가 동기화 후 런
+
+## 09-4 메신져 화면 만들기
+
+리소스 파일 지역 설정 해주는 부분
+리소스파일 가로모드 세로모드 UI 작업할 때 해주는 부분 orientation => landscape
+string.xml 작성 지역설정에서 한국/미국 한글 영어
+activity_main.xml두개가 되있는게 가로모드 세로모드 전환 설정해줘서이다.
+공유폴더에 intro.png랑 round_button.xml drawable폴더에 넣어주면된다.
+메니페스트 부분 오류나면 수정 바인딩 하고 R참조 하는 부분 아직 해결  x
+<resources>
+<string name="app_name">Chpter9_Resource</string>
+<string name="intro_main">
+Find your phone contacts on Messanger
+</string>
+<string name = "intro_detail">
+Continously Uploading your contacts helps Facebook and Messanger suggess connections
+and provide and improve ads for you and others, and offer a better service.
+</string>
+<string name="intro_more">Learn More</string>
+<string name="intro_button">TURN ON</string>
+<string name="intro_delay">NOT NOW</string>
+</resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+<string name="app_name">Chpter9_Resource</string>
+<string name="introduce" tools:ignore="ExtraTranslation"> Messanger에서 휴대폰 연락처에 있는 사람들을 찾아보세요. </string>
+<string name="intro_main">
+Find your phone contacts on Messanger
+</string>
+<string name="intro_detail">
+연락처를 계속 업로드 하면 Facebook및 Messanger에서 연결된 연락처를 추천하고 회원님과 다른
+사람들에게 더욱 관련성 높은 광고를 표시하여 더 나은 서비스를 제공하는데 도움이 됩니다.
+</string>
+<string name="intro_more">더 알아보기</string>
+<string name="intro_button">설정</string>
+<string name="intro_delay">나중에 하기</string>
+</resources>
+엑티비티 파일
+package com.example.chpter9_resource
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+class MainActivity : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+setContentView(R.layout.activity_main)
+}
+}
+세로모트 xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity"
+android:padding="20dp">
+<ImageView
+android:id="@+id/imageView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_centerHorizontal="true"
+android:src="@drawable/intro"/>
+<TextView
+android:id="@+id/mainTextView"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_below="@id/imageView"
+android:layout_centerHorizontal="true"
+android:layout_marginTop="20dp"
+android:gravity="center_horizontal"
+android:text="@string/intro_main"
+android:textSize="20dp"
+android:textStyle="bold"/>
+<TextView
+android:id="@+id/detailTextView"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_below="@id/mainTextView"
+android:layout_centerHorizontal="true"
+android:layout_marginTop="20dp"
+android:text="@string/intro_detail"/>
+<TextView
+android:id="@+id/delayTextView"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_alignParentBottom="true"
+android:layout_centerHorizontal="true"
+android:layout_marginBottom="20dp"
+android:gravity="center_horizontal"
+android:text="@string/intro_delay" />
+<Button
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_above="@id/delayTextView"
+android:layout_centerHorizontal="true"
+android:layout_marginBottom="20dp"
+android:background="@drawable/round_button"
+android:text="@string/intro_button"
+android:textColor="#FFFFFF"/>
+</RelativeLayout>
+가로모드.xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity"
+android:padding="20dp">
+<TextView
+android:id="@+id/mainTextView"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_centerHorizontal="true"
+android:layout_marginTop="20dp"
+android:gravity="center_horizontal"
+android:text="@string/intro_main"
+android:textSize="20dp"
+android:textStyle="bold"/>
+<TextView
+android:id="@+id/detailTextView"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_below="@id/mainTextView"
+android:layout_centerHorizontal="true"
+android:layout_marginTop="20dp"
+android:text="@string/intro_detail"/>
+<TextView
+android:id="@+id/delayTextView"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_alignParentBottom="true"
+android:layout_centerHorizontal="true"
+android:layout_marginBottom="20dp"
+android:gravity="center_horizontal"
+android:text="@string/intro_delay" />
+<Button
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_above="@id/delayTextView"
+android:layout_centerHorizontal="true"
+android:layout_marginBottom="20dp"
+android:text="@string/intro_button"
+android:background="@drawable/round_button"
+android:textColor="#FFFFFF"/>
+</RelativeLayout>
+가로므드에서 이미지뷰를 제거 해주는 방법으로 레이아웃 구성
+런하면

@@ -1,0 +1,40 @@
+인텐트
+Intent
+
+다른 컴포넌트를 실행시키기 위해서 시스템에 띄우는 메시지
+
+app
+
+a1엑티비티 a2 엑티비티
+
+val intent = Intent(this, p2::class.java)
+
+startActivity(intent)
+sendBroadcast(...)
+startService(....)
+
+메니페스트에 인텐트 설정 해줘야지 엑티비티에서 인텐트 코드작성해서 할수 있다.
+메니페스트에 등록해야지 시스템에서 인지한다.
+
+val Intent: Intent = Intent(this,  DataActivity::class.java)
+
+intent.putExtras()
+.........
+startActivity(intent)
+
+겔러리앱 사진 선택하고 데이터를 넘길떄 
+
+주소록 앱 에서 앱의 메인화면이 있고
+목록보기에서 listAcivity 를 클릭했을때 홍길동으로 가고 홍길동에서 다시 리스트 목록화면으로
+나오는 화면 구성할때..
+
+startAcitivty()
+
+벡버튼눌렀을때 메인화면으로 되돌아갈때 자동으로
+startAcitivtyForResult()
+
+유저가 누르는 순간 벡버튼을 누르는 순간 을두고 startAtivity를 할지 startActivityForResult() 정해서해주자
+사후 처리 할떄 staartActivityForResult() 로 확인하고
+
+ActivityResultLauncher 사용을 권장하고있고 사후 처리와 퍼미션 부여를 한다.
+

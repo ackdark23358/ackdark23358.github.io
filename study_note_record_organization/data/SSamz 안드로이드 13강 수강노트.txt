@@ -1,0 +1,540 @@
+# SSamz 안드로이드 13강
+
+## 13-1-1 인텐트 필기
+
+OLE 개체입니다.
+인텐트
+Intent
+다른 컴포넌트를 실행시키기 위해서 시스템에 띄우는 메시지
+app
+a1엑티비티 a2 엑티비티
+val intent = Intent(this, p2::class.java)
+startActivity(intent)
+sendBroadcast(...)
+startService(....)
+메니페스트에 인텐트 설정 해줘야지 엑티비티에서 인텐트 코드작성해서 할수 있다.
+메니페스트에 등록해야지 시스템에서 인지한다.
+val Intent: Intent = Intent(this,  DataActivity::class.java)
+intent.putExtras()
+.........
+startActivity(intent)
+겔러리앱 사진 선택하고 데이터를 넘길떄
+주소록 앱 에서 앱의 메인화면이 있고
+목록보기에서 listAcivity 를 클릭했을때 홍길동으로 가고 홍길동에서 다시 리스트 목록화면으로
+나오는 화면 구성할때..
+startAcitivty()
+벡버튼눌렀을때 메인화면으로 되돌아갈때 자동으로
+startAcitivtyForResult()
+유저가 누르는 순간 벡버튼을 누르는 순간 을두고 startAtivity를 할지 startActivityForResult() 정해서해주자
+사후 처리 할떄 staartActivityForResult() 로 확인하고
+ActivityResultLauncher 사용을 권장하고있고 사후 처리와 퍼미션 부여를 한다.
+메니페스트 파일
+<activity
+android:name=".intentPra.IntentPra"
+android:exported="true" />
+<activity
+android:name="DetailActivity"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+디테일 엑티비티 xml 파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".DetailActivity">
+<TextView
+android:id="@+id/detailTextView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="72dp"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.498"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<Button
+android:id="@+id/detailButton"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="176dp"
+android:text="디테일 버튼"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.498"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toBottomOf="@+id/detailTextView" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+인텐트 프레 xml 파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".intentPra.IntentPra">
+<TextView
+android:id="@+id/resultView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="88dp"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.498"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<Button
+android:id="@+id/button"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="176dp"
+android:text="가자 디테일로"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.498"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toBottomOf="@+id/resultView" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+디테일 엑티비티 파일
+package com.example.chapter13
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import com.example.chapter13.databinding.ActivityDetailBinding
+class DetailActivity : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityDetailBinding.inflate(layoutInflater)
+setContentView(binding.root)
+val data1 = intent.getStringExtra("data1")
+val data2 = intent.getIntExtra("data2", 0)
+binding.detailTextView.text = "$data1, $data2"
+binding.detailButton.setOnClickListener {
+intent.putExtra("result", "world")
+setResult(RESULT_OK, intent)
+finish()
+}
+}
+}
+인텐트 프레 엑티비티 파일
+package com.example.chapter13.intentPra
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import com.example.chapter13.DetailActivity
+import com.example.chapter13.databinding.ActivityIntentPraBinding
+class IntentPra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityIntentPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+val requestLauncher : ActivityResultLauncher<Intent> = registerForActivityResult(
+ActivityResultContracts.StartActivityForResult()){
+val resultData = it.data?.getStringExtra("result")
+binding.resultView.text = "result: $resultData"
+}
+binding.button.setOnClickListener {
+val intent = Intent(this, DetailActivity::class.java)
+intent.putExtra("data1","Hello")
+intent.putExtra("data2", 10)
+requestLauncher.launch(intent)
+}
+}
+}
+
+## 13-1-2 인텐트 세부사항 필기
+
+intent 필터 ..
+인텐트를 이용해서를 실행
+A1 , A2 // 다른어플리케이션의 컴포넌트 B2
+명시적
+Intent(this, A2:class::java)
+퍼미션 관련
+명시적 인텐트 : ? 리플렉션 정보
+암시적 인텐트 : 다른정보
+암시적 인텐트
+val intent = Intent()
+startActivity(intent)
+명시적인텐트만 반응하겠다. 외부에 공개하지 않겠다.
+a1 <activity name="a1"
+외부에서 접근 허용
+암시적인텐트 접근 설정
+a2 <activity name="a2"
+<intent-filter>
+<action name="AAA"/>
+<category name="BBB"/>
+<data scheme="http" />
+<host
+<port
+<type
+</intent-filter>
+</activity>
+val intent = Intent()
+intent.setAction("AAA")
+intent.setcategory("BBB")
+intent.setData(Uri.parse("http://~~~"))
+startActivity(intent)
+겔러리 주소록 암시적인텐트다. 상당히 중요하다.
+퍼미션 부여라던가..
+메니스트에 보통
+action , catagory, data 태그사용
+만일 지정안하면 default로 지정된다.
+IntentPRa2 엑티비티 파일
+package com.example.chapter13.intentPra
+import android.content.Intent
+import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import com.example.chapter13.databinding.ActivityIntentPra2Binding
+class IntentPra2 : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+//xml 바인딩
+val binding = ActivityIntentPra2Binding.inflate(layoutInflater)
+setContentView(binding.root)
+//메니페스트 파일에 디테일 엑티비티 xml 테그설정을 해준뒤
+//암시적 인텐트 가능하게 인텐트 생성하고 전달
+//데이타로 인터넷주소 전달
+//암시적 방법 사용
+binding.detailBtn.setOnClickListener {
+val intent = Intent()
+intent.action = "ACTION_EDIT"
+intent.data = Uri.parse("http://www.gogle.com")
+startActivity(intent)
+}
+//명시적으로 전달 권장사항
+//좌표를 지정하고 맵페키지 세팅
+binding.mapBtn.setOnClickListener {
+val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:37.77.127.41"))
+intent.setPackage("com.google.android.apps.maps")
+startActivity(intent)
+}
+}
+}
+xml파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".intentPra.IntentPra2">
+<Button
+android:id="@+id/detailBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginEnd="133dp"
+android:layout_marginBottom="8dp"
+android:text="goDetatil"
+app:layout_constraintBottom_toTopOf="@+id/mapBtn"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintVertical_chainStyle="packed" />
+<Button
+android:id="@+id/mapBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginStart="14dp"
+android:layout_marginTop="8dp"
+android:layout_marginBottom="17dp"
+android:text="goMap"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintStart_toStartOf="@+id/detailBtn"
+app:layout_constraintTop_toBottomOf="@+id/detailBtn" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+직전의 intentPra파일과 xml 파일은 수정하지 않고 사용하였다.
+메니페스트 파일
+추가수정된 사항들
+<activity
+android:name=".intentPra.IntentPra2"
+android:exported="true">
+</activity>
+<activity
+android:name=".DetailActivity"
+android:exported="true">
+<intent-filter>
+<action android:name = "ACTION_EDIT" />
+<category android:name = "android.intent.category.DEFAULT"/>
+<data android:scheme="http"/>
+</intent-filter>
+</activity>
+2022-08-15 10:44:09.349 13582-13582/com.example.chapter13 D/fifo: null, 0, http://www.gogle.com
+
+## 13-2 엑티비티 생명주기
+
+A1-> A2
+onStop() -> onResume()
+A1 -> A2
+onStop(), onResume()
+생각하면서 안하면 유저가 사용안할때 베터리 사용량이 소모될수 있다.
+mainActivity -> detailActivity
+벡버튼누를때 디스토이가 디테일에서 하면안된다.
+onCreate()
+onStart()
+onStop()
+====== 화면에 뜨는 상태
+가로에서 세로 화면회전
+onResume() -> onDestory() -> onCreate() -> onResume()
+메모리해제됬다. 죽었다가 살아났다 데이터가 날아갔다.
+화면이 뜬다음에 유저 서버에서 넘어돈 데이터날아간다.
+onSaveInstanceState() => 죽을때 유지해야되는 데이터가 있다. 이함수에서 열심히 저장
+onRestoreInstanceState() => 복원
+onSaveInstanceState(saveInstancestate: Bundle){}
+onSaveInstanceState(saveInstanceState: Bundle){}
+onSaveInstanceState(onState: Bundle){}
+LifecyclePra 엑티비티 파일
+package com.example.chapter13.ActivityLifeCycle
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.os.PersistableBundle
+import com.example.chapter13.databinding.ActivityLifecyclePraBinding
+class LifecyclePra : AppCompatActivity() {
+var count = 0
+lateinit var binding: ActivityLifecyclePraBinding
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+//xml 파인딩
+binding = ActivityLifecyclePraBinding.inflate(layoutInflater)
+//버튼 클릭하면 count 증가 텍스트뷰에 변경되는값 지정 출력
+binding.countButton.setOnClickListener {
+count ++
+binding.resultView.text = "${count}"
+}
+setContentView(binding.root)
+}
+//데이터 손실을 방지하기위해 데이터 저장
+override fun onSaveInstanceState(outState: Bundle) {
+super.onSaveInstanceState(outState)
+outState.putInt("count",count)
+}
+//데이터 출력
+override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+super.onRestoreInstanceState(savedInstanceState)
+val data = savedInstanceState.getInt("count")
+binding.resultView.text = "$data"
+}
+}
+LifecyclePra  xml 파일
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.example.chapter13">
+<application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:roundIcon="@mipmap/ic_launcher_round"
+android:supportsRtl="true"
+android:theme="@style/Theme.MainActivity">
+<activity
+android:name=".ActivityLifeCycle.LifecyclePra"
+android:exported="true" />
+<activity
+android:name=".intentPra.IntentPra2"
+android:exported="true"></activity>
+<activity
+android:name=".intentPra.IntentPra"
+android:exported="true" />
+<activity
+android:name=".DetailActivity"
+android:exported="true">
+<intent-filter>
+<action android:name="ACTION_EDIT" />
+<category android:name="android.intent.category.DEFAULT" />
+<data android:scheme="http" />
+</intent-filter>
+</activity>
+<activity
+android:name=".MainActivity"
+android:exported="true" />
+</application>
+</manifest>
+
+## 13-3 - 엑티비티 제어
+
+메니페스트 수정
+<!-- 머터리얼 디자인 no actionbar로 bar 숨기기설정-->
+<activity
+android:name=".ActivityControl.ActivityControlPra"
+android:exported="true"
+android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+</activity>
+ActivityControlPra 파일
+package com.example.chapter13.ActivityControl
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.WindowInsets
+import android.view.WindowInsetsController
+import android.view.WindowManager
+import com.example.chapter13.R
+import com.example.chapter13.databinding.ActivityControlPraBinding
+class ActivityControlPra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityControlPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+//스플레시 엑티비티 도 참조하자 개복치 강사의 치한터치앱 만들어보기를 참조하자.
+//엑티비티 제어 30 이후에
+if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+window.setDecorFitsSystemWindows(false)
+//네비게이션, 상태바 숨기고 전체화면 구성하기위해 컨트롤러 변수에 할당
+val controller = window.insetsController
+//컨트롤러가 null 이아니면 상태바와 네비게이션 숨기기
+//이전버전에서는 풀스크린 모드 적용하기위해 else {} Flag속성 지정
+if (controller != null) {
+controller.hide(
+WindowInsets.Type.statusBars() or
+WindowInsets.Type.navigationBars()
+)
+//투명하게나올거냐 반투명하게 나올거냐 정도
+controller.systemBarsBehavior =
+WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+} else {
+//이전버전에서의 전체화면
+window.setFlags(
+WindowManager.LayoutParams.FLAG_FULLSCREEN,
+WindowManager.LayoutParams.FLAG_FULLSCREEN
+)
+}
+}
+}
+}
+ActivityControlPra xml파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".ActivityControl.ActivityControlPra">
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+## 13-4-태스크 관리
+
+테스트 관리
+시스템에서 테스크 관리
+a - app
+b - app
+intent(A엑티비티에서 계속 생성)나 외부 에서 접근가능하게되었을떄나
+유저가 앱을 실행하고 홈버튼을 누르거나 백버튼을 눌렀을떄
+notification, 카톡 대화 알람같은 경우
+테스크 관리가 필요한 경우가 있다.
+a- process
+b-task
+B- process
+B- task
+프로세스 : 어플리케이션의 물리적인 실행단위
+테스크 : 유저입장을 고려한 프로그램의 논리적인 단위
+반드시 테스크와 프로세스- 테스크 하나만 맵핑 되지않는다.
+singletask : 유저가 새로운 앱을 실행시켰을때 여기서부터는 새로운앱이야할때 사용
+프로세스를 하나더 만들어서 올린다.
+singleTop : 탑에 없으면 생성하자. 카톡 채팅
+standard : 인텐트가 발생하면 매번 테스트에 올리자
+메니페스트에 설정하면 매번 디폴트로 설정
+코드에서할때는 한번만 flag로
+
+## 13-5-액티비티 ANR 문제와 코루틴
+
+ANR(ACtivity Not Response)
+엑티비티가 반응하지 않는 상태
+엑티비티가 죽는상황
+Activity, Event, event Queue
+5초룰
+네트워킹 시간이 오레걸린다는 가정하에 프로그램을 짠다.
+모바일 네트워킹이라 수시로 안될수 있다.
+Thread / 코루틴 kotlin언어로 해결
+Thread / coroutline
+main Thread
+쓰래드와 코루틴으로 계속작업을 하고
+메인쓰레드에서 작업을 하게되서 해결하게된다.
+UI Asynctask 디플리케이션 되는 추세 지만 추상화개념
+코루틴 스코프 사용
+코루틴 비동기 처리
+경량, 메모리누스 적다, 제어가 편아하다. 많은 제트펙 라이브러리에 적용되있다.
+implemantion 하고 쓰자
+메니페스트 파일
+<activity
+android:name=".Corutine.CorutinePra"
+android:exported="true" />
+CorutinePra 엑티비티 파일
+package com.example.chapter13.Corutine
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import com.example.chapter13.R
+import com.example.chapter13.databinding.ActivityCorutinePraBinding
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.consumeEach
+import kotlin.system.measureNanoTime
+class CorutinePra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+//데이터 바인딩 준비
+val binding = ActivityCorutinePraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+binding.button.setOnClickListener {
+val channel = Channel<Int>()
+//코루틴으로 비동기 처리 연산 코드 작성
+val scope = CoroutineScope(Dispatchers.Default + Job())
+scope.launch {
+var sum = 0L
+//5초내로 응답가능하게 해야하므로 나노 밀리 세컨드 사용하자
+var time = measureNanoTime {
+for(i in 1..2_000_000_000){
+sum += i
+}
+}
+//코루틴에서 비동기처리로 연산을 하면서 계산되는 값을 메은쓰레드로 넘겨주자
+channel.send(sum.toInt())
+}
+//스코프 생성 하고 런치(구동) 해서 텍스트 뷰에 찍어주자
+val mainScope = GlobalScope.launch(Dispatchers.Main){
+channel.consumeEach{
+binding.textView.text = "sum : $it"
+}
+}
+}
+}
+}
+CorutinePra xml 파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".Corutine.CorutinePra">
+<Button
+android:id="@+id/button"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="204dp"
+android:text="Button"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintHorizontal_bias="0.498"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<TextView
+android:id="@+id/textView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginStart="18dp"
+android:layout_marginTop="66dp"
+android:text="TextView"
+app:layout_constraintStart_toStartOf="@+id/button"
+app:layout_constraintTop_toBottomOf="@+id/button" />
+<EditText
+android:id="@+id/editTextTextPersonName"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="68dp"
+android:ems="10"
+android:inputType="textPersonName"
+android:text="Name"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toBottomOf="@+id/textView" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'

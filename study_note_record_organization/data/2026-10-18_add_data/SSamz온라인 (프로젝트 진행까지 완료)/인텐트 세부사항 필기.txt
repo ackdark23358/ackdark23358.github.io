@@ -1,0 +1,51 @@
+intent 필터 ..
+
+인텐트를 이용해서를 실행
+
+A1 , A2 // 다른어플리케이션의 컴포넌트 B2
+
+명시적
+Intent(this, A2:class::java)
+
+퍼미션 관련
+명시적 인텐트 : ? 리플렉션 정보
+암시적 인텐트 : 다른정보
+
+암시적 인텐트
+
+val intent = Intent()
+
+startActivity(intent)
+
+명시적인텐트만 반응하겠다. 외부에 공개하지 않겠다.
+a1 <activity name="a1"
+
+외부에서 접근 허용
+암시적인텐트 접근 설정
+a2 <activity name="a2"
+	<intent-filter>
+		<action name="AAA"/>
+		<category name="BBB"/>
+		<data scheme="http" />
+		<host
+		<port
+		<type
+	
+</intent-filter>
+</activity>
+
+
+
+val intent = Intent()
+intent.setAction("AAA")
+intent.setcategory("BBB")
+intent.setData(Uri.parse("http://~~~"))
+startActivity(intent)
+
+겔러리 주소록 암시적인텐트다. 상당히 중요하다.
+퍼미션 부여라던가..
+
+메니스트에 보통 
+action , catagory, data 태그사용
+만일 지정안하면 default로 지정된다.
+

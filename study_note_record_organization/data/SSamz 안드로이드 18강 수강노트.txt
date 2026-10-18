@@ -1,0 +1,543 @@
+# SSamz 안드로이드 18강
+
+## 18-1 스마트폰 정보 구하기
+
+네트워크 프로그래밍
+외브 라이브러리
+이미지 글라이드
+볼리
+네트워크 레트로빛
+전화 상태 변화 감지하기
+TephonyManager
+전화기 상태 파악
+12(sdk30)버전 부터 변경
+phoneStateListener를 구현해서 작성
+권장
+TelephonyCallback
+onCallStateChanged(전화 송수신 상태 전화대기 벨이 울리는 상태 대기상태.....)
+onServiceStateChanged (비행기 모드인지 폰의 화면이 꺼져있는지........)
+TelephoneyCallback
+<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+getNetworkCountryIso() 네트워크 제공 국가
+getNetworkOperatorName() 네트워크 제공 사업자
+getLineINumber() 유저 스마트폰 번호 주로 이걸 얻는데 사용된다.
+상태를 알아내고 특정순간에 네트워킹이 가능한지 와이파이가 붙어있는지 파악하는코드
+ConnectivityManager 네트워킹 상태
+getActivityNetwork() 네트워킹 가능한지 안한지
+23버전 부터 제공된다.
+하위버전에서는 getActivityNetworkInfo()
+null이면 network 안된다. 현재 네트워킹이 안됩니다. 나중에 다시 이용해주세요..... 라던가
+requestNetwork() 상태를 받고 콜벡 메소드를 재정의
+메니페스트 파일 수정
+<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+<uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+<activity
+android:name=".phonInfo.PhoneInfoPra"
+android:exported="true" />
+xml 파일 디폴트
+엑티비티 파일 작성
+package com.example.chapter18.phonInfo
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.telephony.PhoneStateListener
+import android.telephony.TelephonyCallback
+import android.telephony.TelephonyManager
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.example.chapter18.databinding.ActivityPhoneInfoPraBinding
+class PhoneInfoPra : AppCompatActivity() {
+lateinit var telephonyManager: TelephonyManager
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityPhoneInfoPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+telephonyManager = getSystemService(TELEPHONY_SERVICE) as TelephonyManager
+val permissionLauncher = registerForActivityResult(
+ActivityResultContracts.RequestMultiplePermissions()
+) {
+if (it.all { permission -> permission.value == true }){
+callChanged()
+phoneinfo()
+}else {
+Toast.makeText(this,"permission denied...", Toast.LENGTH_SHORT).show()
+}
+}
+if(ContextCompat.checkSelfPermission(this, "android.permission.READ_PHONE_NUMBERS") == PackageManager.PERMISSION_GRANTED &&
+ContextCompat.checkSelfPermission(this, "android.permission.READ_PHONE_STATE") == PackageManager.PERMISSION_GRANTED){
+callChanged()
+phoneinfo()
+}else{
+permissionLauncher.launch(
+arrayOf(
+"android.permission.READ_PHONE_NUMBERS",
+"android.permission.READ_PHONE_STATE"
+)
+)
+}
+}
+private fun callChanged(){
+if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+telephonyManager.registerTelephonyCallback(
+mainExecutor,
+object : TelephonyCallback(), TelephonyCallback.CallStateListener{
+override fun onCallStateChanged(p0: Int) {
+when(p0){
+TelephonyManager.CALL_STATE_IDLE ->{
+Log.d("fifo23", "idle")
+}
+TelephonyManager.CALL_STATE_OFFHOOK ->{
+Log.d("fifo23", "offhook...")
+}
+TelephonyManager.CALL_STATE_RINGING ->{
+Log.d("fifo23", "ringring...")
+}
+}
+}
+}
+)
+}else{
+val listener = object: PhoneStateListener(){
+override fun onCallStateChanged(state: Int, phoneNumber: String?) {
+when(state){
+TelephonyManager.CALL_STATE_IDLE ->{
+Log.d("fifo23", "idle....")
+}
+TelephonyManager.CALL_STATE_OFFHOOK ->{
+Log.d("fifo23", "offhook")
+}
+TelephonyManager.CALL_STATE_RINGING ->{
+Log.d("fifo23", "ringing")
+}
+}
+}
+}
+telephonyManager.listen(listener, PhoneStateListener.LISTEN_CALL_STATE)
+}
+}
+private fun phoneinfo(){
+val countryIso = telephonyManager.networkCountryIso
+val operatorName = telephonyManager.networkOperatorName
+val phoneNumber = if (ActivityCompat.checkSelfPermission(
+this,
+Manifest.permission.READ_SMS
+) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+this,
+Manifest.permission.READ_PHONE_NUMBERS
+) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+this,
+Manifest.permission.READ_PHONE_STATE
+) != PackageManager.PERMISSION_GRANTED
+) {
+// TODO: Consider calling
+//    ActivityCompat#requestPermissions
+// here to request the missing permissions, and then overriding
+//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                                          int[] grantResults)
+// to handle the case where the user grants the permission. See the documentation
+// for ActivityCompat#requestPermissions for more details.
+return
+} else {
+}
+telephonyManager.line1Number
+Log.d("fifo23", "$countryIso, $operatorName, $phoneNumber")
+}
+}
+
+## 18-2 HTTP 통신하기 - Volley 라이브러리
+
+<uses-permission android:name="android.permission.INTERNET" />
+http://~~~
+https://~~~~
+android에서 http:s//~~~가 기본이다.
+xml폴더에 xml파일 작성해야 http:통신이 가능하다.
+<network-security-config>
+<domain-config cleartextTrafficPermitted="true">
+<domain includeSubdomains="true">***.***.***.***</domain>
+</domain-config>
+</network-security-config>
+or
+<application
+(....생략....)
+android:usesClearTextTraffice="true">
+platform API -> java.net => 코드중복
+간단하게 쉽게 사용할수 있도록 제공되는 라이브러리 volley => Gogle
+Retrofit2
+volley 구글에서 제공되는 라이브러리
+RequestQueue 서버 요청자
+xxxRequest: xxx 타입의 결과를 받는 요청정보 - add URL, method calback - 성공 or 실패
+StringRequest... jsonRequest....
+queqe 변수를 만들고 통신
+서버에 통신할떄 Map , key value값으로 주고받게된다.
+이미지 받을때
+서버이미지를 다이렉트로 이미지만 그대로 출력하는경우
+아닐경우에 NetworkImageView 이용하자 여기서 캐싱하는 경우 트레픽 개선
+json 받을떄 여기서 json 데이터객체가 복잡한경우
+p581 참조하자
+메니페스트 파일
+<!-- volley 라이브러리 사용하기 위한 퍼미션 -->
+<uses-permission android:name="android.permission.INTERNET" />
+package com.example.chapter18.network
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import com.example.chapter18.databinding.ActivityNetworkPraBinding
+import org.json.JSONObject
+class VollyNetworkPra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityNetworkPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+val queue = Volley.newRequestQueue(this)
+binding.vollyNetBtn.setOnClickListener {
+val request = JsonObjectRequest(
+Request.Method.GET,
+"https://reqres.in/api/users/2",
+null,
+Response.Listener<JSONObject> { response ->
+val dataJson = response.getJSONObject("data")
+val id = dataJson.getString("id")
+val email = dataJson.getString("email")
+Log.d("fifo23", "$id,$email")
+},
+Response.ErrorListener { error ->
+Log.d("fifo23", "error....$error")
+}
+)
+queue.add(request)
+}
+}
+}
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".network.VollyNetworkPra">
+<Button
+android:id="@+id/vollyNetBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginStart="148dp"
+android:layout_marginTop="194dp"
+android:text="NetworkStart"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+2022-08-28 22:23:29.802 4452-4452/com.example.chapter18 D/fifo23: 2,janet.weaver@reqres.in
+
+## 18-3 HTTP 통신하기 Retrofit2
+
+gradle 추가
+viewBinding{
+enabled = true
+}
+implementation 'com.android.volley:volley:1.2.1'
+implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+implementation 'com.google.code.gson:gson:2.8.9'
+implementation 'com.squareup.retrofit2:converter-gson:2.9.0’
+엑티비티 파일
+package com.example.chapter18.network
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.chapter18.R
+import com.example.chapter18.databinding.ActivityRetrofit2PraBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+class retrofit2PRa : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityRetrofit2PraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+/*
+메인엑티비티 혹은 retrofit httpok 코드장성할 메인엑티비티파일을 구성할 xml 파일을
+RecyclerView로만 구성된 xml파을로 작성하고
+MyAdapter 클래스를 만들거나 재사용해서
+코틀린 파일을 만들고 핸들러와 데이터 객체전달받아서 어뎁터에 등록했을때
+인플레이션 시켜주는 작업이  이루어지는 코드를 수정하자
+Application이 생성될때 한번만 실행되게 하는 MyApplication 클래스를 작성하고 메니페스트에 등록하고
+init 블럭에서 네트워크 서비스가 가능하게하기위해 서버로 요청하는 INetworkService 인터페이스를 만들고
+create시켜주자 ps 레트로핏 Call 객체를 사용하자.
+메니페스트 Application 속성값에 android:name=".network.MyApplication" 추가해주자.
+서버로부터 넘어오는 데이터들의 값을 얻어올때 받아올 형식을 어노테이션을 사용해서 꼬챙이에 찍어서
+변수에 담고 리스트에 담는 작업을 하고 레트로핏pra 엑티비티 혹은 메인엑티비티에서 데이터를 요청하는 코드를 작성
+하고 My 어뎁터클래스에 데이터를 전달하고 온 바인드 될때 이미지를 조정해서 리사이클러뷰를 통해 출력해주자.
+(서버로부터 받아오는 데이터가 복잡한 부분이있기떄문에 모델을 두개로 분리시켜 받아왔다.)
+*/
+val networkService = (applicationContext as MyApplication).networkService
+val userListCall = networkService.dogetUserList("1")
+userListCall.enqueue(object: Callback<UserListModel>{
+override fun onFailure(call: Call<UserListModel>, t: Throwable) {
+Log.d("fifo23", "cancel....")
+call.cancel()
+}
+override fun onResponse(call: Call<UserListModel>, response: Response<UserListModel>) {
+val userList = response.body()
+binding.retrofitRecylerView.adapter = MyAdapter(this@retrofit2PRa, userList?.data)
+/*binding.retrofitRecylerView.addItemDecoration(
+DividerItemDecoration(this@retrofit2PRa,LinearLayoutManager.VERTICAL)
+)*/
+}
+})
+}
+}
+리사이클러뷰에 담을 xml 레이아웃 파일
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:padding="16dp">
+<ImageView
+android:id="@+id/avatarView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content" />
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginLeft="20dp"
+android:orientation="vertical">
+<TextView
+android:id="@+id/id"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content" />
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal">
+<TextView
+android:id="@+id/firstNameView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content" />
+<TextView
+android:id="@+id/lastNameView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginLeft="20dp"/>
+</LinearLayout>
+</LinearLayout>
+</LinearLayout>
+레트로핏 pra xml파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".network.retrofit2PRa"
+android:id="@+id/retrofitRecylerView"
+app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+</androidx.recyclerview.widget.RecyclerView>
+Myadapter 코틀린파일
+package com.example.chapter18.network
+import android.content.Context
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.Rect
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.core.view.ViewCompat
+import androidx.recyclerview.widget.RecyclerView
+import com.example.chapter18.databinding.ItemRetrofitBinding
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+class MyViewHolder(val binding: ItemRetrofitBinding): RecyclerView.ViewHolder(binding.root)
+class MyAdapter(val context: Context, val datas: List<UserModel>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+override fun getItemCount(): Int{
+return datas?.size ?: 0
+}
+override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
+= MyViewHolder(ItemRetrofitBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+val binding=(holder as MyViewHolder).binding
+val user = datas?.get(position)
+binding.id.text=user?.id
+binding.firstNameView.text=user?.firstName
+binding.lastNameView.text=user?.lastName
+user?.avatar?.let {
+val avatarImageCall = (context.applicationContext as MyApplication).networkService.getAvatarImage(it)
+avatarImageCall.enqueue(object : Callback<ResponseBody> {
+override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+if (response.isSuccessful) {
+if (response.body() != null) {
+val bitmap = BitmapFactory.decodeStream(response.body()!!.byteStream())
+binding.avatarView.setImageBitmap(bitmap)
+}
+}
+}
+override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+call.cancel()
+}
+})
+}
+}
+}
+MyApplication 코틀린파일
+package com.example.chapter18.network
+import android.app.Application
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+//이렇게 작성하면 어플리케이션 생성시 최초에 한번만 실행시켜준다.
+class MyApplication: Application() {
+var networkService: INetworkService
+val rerofit: Retrofit
+get() = Retrofit.Builder()
+.baseUrl("https:///reqres.in/")
+.addConverterFactory(GsonConverterFactory.create())
+.build()
+init{
+networkService = rerofit.create(INetworkService::class.java)
+}
+}
+Usermodel 코틀린파일
+package com.example.chapter18.network
+import android.graphics.Bitmap
+import com.google.gson.annotations.SerializedName
+class UserModel (
+var id: String,
+@SerializedName("first_name")
+var firstName: String,
+var lastName: String,
+var avatar: String,
+var avatarBitmap: Bitmap,
+)
+UserListModel 코틀린파일
+package com.example.chapter18.network
+import com.google.gson.annotations.SerializedName
+class UserListModel (
+var page: String,
+@SerializedName("per_page")
+var perPage: String,
+var total: String,
+@SerializedName("total_pages")
+var totalPages: String,
+var data: List<UserModel>? = null
+)
+inetwork 인터페이스 코틀린파일
+package com.example.chapter18.network
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.http.GET
+import retrofit2.http.Query
+import retrofit2.http.Url
+interface INetworkService {
+@GET("api/users")
+fun dogetUserList(@Query("page") page:String): Call<UserListModel>
+@GET
+fun getAvatarImage(@Url url: String): Call<ResponseBody>
+}
+메니페스트 파일
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.example.chapter18">
+<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+<uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" /> <!-- volley 라이브러리 사용하기 위한 퍼미션 -->
+<uses-permission android:name="android.permission.INTERNET" />
+<!--MyApplication 파일 등록 -->
+<application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:roundIcon="@mipmap/ic_launcher_round"
+android:supportsRtl="true"
+android:theme="@style/Theme.MainActivity"
+android:name=".network.MyApplication">
+<activity
+android:name=".network.retrofit2PRa"
+android:exported="true" />
+<activity
+android:name=".network.VollyNetworkPra"
+android:exported="true" />
+<activity
+android:name=".phonInfo.PhoneInfoPra"
+android:exported="true" />
+<activity
+android:name=".MainActivity"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+</application>
+</manifest>
+
+## 18-4 이미지 Glide 라이브러리
+
+Glide 라이브러리
+서버로부터 얻어오는 이미지 쉽게 처리 핸들링하기위한 라이브러리
+gif 에니메이션도 제공된다.
+이미지 전문 라이브러리 피카소
+placeholder이미지 기본 이미지가 있다가 이미지가 로딩될때 바꿔주는 작업이나
+서버에서 이미지 얻어올때 수비게 이미지를 핸들링해서 얻어올수 있다.
+Drawable 이나 Bitmap 으로 전달받아서 사용
+p590 참조
+GlidePra 엑티비티
+package com.example.chapter18.ImageLibrary
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import com.bumptech.glide.Glide
+import com.example.chapter18.R
+import com.example.chapter18.databinding.ActivityGlidePraBinding
+class GlidePra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityGlidePraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+val url = "https://blogfiles.pstatic.net/MjAyMTEyMDlfMTQy/MDAxNjM5MDQ3MDc1OTgy.z8U5dy42-MNOWysYeWwrMXd1zv7WppyF0mKotX3ozqIg.gJuWRP2Oev2WotYwuu0tCqMIOu8L9lQ0IYtiQpDfkYIg.PNG.fifo23/image.png"
+Glide.with(this)
+.load(url)
+.override(200,200)
+.placeholder(R.drawable.loading)
+.error(R.drawable.error)
+.into(binding.glideImageView)
+}
+}
+메니페스트
+<activity
+android:name=".ImageLibrary.GlidePra"
+android:exported="true" />
+gradle
+viewBinding{ enabled}
+//이미지 관련 라이브러리
+implementation 'com.github.bumptech.glide:glide:4.12.0'
+GlidePra xml 파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".ImageLibrary.GlidePra">
+<ImageView
+android:id="@+id/glideImageView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+tools:srcCompat="@tools:sample/avatars" />
+</androidx.constraintlayout.widget.ConstraintLayout>

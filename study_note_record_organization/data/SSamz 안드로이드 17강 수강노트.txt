@@ -1,0 +1,323 @@
+# SSamz 안드로이드 17강
+
+## 17-1 DatabasePra xml 엑티비티 파일
+
+DatabasePra xml 엑티비티 파일
+package com.example.chapter17.Database
+import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import com.example.chapter17.databinding.ActivityDatabasePraBinding
+import java.lang.Exception
+class DatabasePra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityDatabasePraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+//쿼리를 본낼 db 객체 생성
+val db = openOrCreateDatabase("testdb", Context.MODE_PRIVATE, null)
+//execSql로 데이터베이스에 테이블을 생성하고 데이타를 추가하는 인설트문을 추가로 쿼리하는 코드
+try {
+db.execSQL("create table USER_TB ("+
+"_id integer primary key autoincrement," +
+"name not null," +
+"phone)")
+db.execSQL("insert into User_TB (name, phone) values (?,?)",
+arrayOf("fifo23", "01000011"))
+db.execSQL("insert into USER_TB (name, phone) values (?,?)",
+arrayOf("kim", "010000022"))
+}catch (e: Exception){ }
+// 커서객체에 쿼리를 참고하게 해서 row 값 한줄씩 참조해갈때 fifo23으로 된 데이터 에서
+// name과 phone을 뽑아서 로그에 출력하는 코드
+binding.databaseBtn.setOnClickListener {
+val cursor = db.rawQuery("select * from USER_TB", null)
+//로우를 하나씩 지칭
+while (cursor.moveToNext()){
+val name = cursor.getString(1)
+val phone = cursor.getString(2)
+Log.d("fifo23", "$name, $phone")
+}
+}
+}
+}
+DatabasePra xml 코드
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".Database.DatabasePra">
+<Button
+android:id="@+id/databaseBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginStart="141dp"
+android:layout_marginTop="176dp"
+android:text="Databasse"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+2022-08-27 19:25:56.998 12287-12287/com.example.chapter17 D/fifo23: fifo23, 01000011
+2022-08-27 19:25:56.999 12287-12287/com.example.chapter17 D/fifo23: kim, 010000022
+
+## 17-2 파일에 보관하기
+
+파일에 보관하기
+file
+p545 참조
+플렛폼에서 제공되는 API
+File 파일 디렉터리를 지칭하는 클레스
+FileInputStream/ FileOutputStream ByteData 주로이미지
+FileRead/ fileWriter 문자열 데이타
+내장 메모리공간/ 외장 메모리공간
+내부 - 앨범 저장소 App 만 Access
+외장 - 공용저장소(모든앱)  / 앱별 저장소 (App만 Access 허용된다면 외부도 가능)
+앱이 설치되면 하나씩 만들어지는 내장 메모리공간 외부에서 접근 X
+java 에서 제공되는 IO
+val file = File(fileDir, "test.txt")
+val writeStream: OutputStreamWriter = file.write()
+writeStream.write("hello world")
+writeStream.flush()
+val readStream: BufferedReader = file.read().buffered()
+readStream.forEachLine{
+Log.d("kkang", "$it")
+}
+Context객체의 함수사용
+openFileOutput("test.txt", Context.MODE_PRIVATE).use{
+it.write("hello world!!".toByteArray())
+}
+openFileInput("test.txt").vufferedReader().forEachLine{
+Log.d("fifo23", "$it")
+}
+외장 메모리의 파일 이용하기
+Environment.getExternalStorageState()
+앱이 저장메모리공간이 있는지 확인
+android:permission.READ_EXTERNAL_STORAG,
+android:permission.WRITE_EXTERNAL_STORAGE
+개선되면서 프로바이더가 저장 권한을 관리해준다면.... 선언x
+직접파일을 access 한다면 걸어야한다.
+10버전 R부턴 메니페스트에 선언해줘야한다.
+과거방식 지원해줘 requestLegacyExternalStorage값도 추가 설정
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<application
+(... 생략 ...)
+android:requestLegacyExternalStorage="true">
+(...생략 ...)
+</application>
+</manifest>
+val file: File? = getExternalFileDir(null)
+Log.d("kkang"", "$(file?.absolutePath)")
+/storage/emulated/O/Android/data/패키지명/files
+Envirorment.DIRECTORY_PICTURES
+Envirorment.DIRECTORY_DOCUMENTS
+Envirorment.DIRECTORY_MUSIC
+Envirorment.DIRECTORY_MOVIES
+/storage/emulated/O/Android/data/페키지명/files/Pictures
+//파일 쓰기
+val file: File = File(getExternalFilesDir(null), "test.txt")
+val writeStream: OutputStreamWriter = file.write()
+writeStream.write("hello world")
+writeStream.flush()
+//파일 읽기
+val readStream: BufferedReader = file.read().buffered()
+readStream.forEachLine{
+Log.d("fifo23", "$it")
+}
+//외장 메모리의 앱별 저장소파일을 다른앱에서 접근
+val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss).format(Date())
+val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+val file = File.createTempFile(
+"JPEG_${timeStampe)_",
+".jpg",
+storageDir
+)
+filePath = file.absolutePath
+// 파일 Uri희득
+val photoURI: Uri = FileProvider.getUriForFile(
+this,
+"com.example.test17.fileprovider", file
+)
+//카메라 앱 실행
+val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+Intent.putExtra(MEdiaStore.EXTRA_OUTPUT, photoURI);
+requestCameraFileLauncher.launch(intentt)
+외장 -> 공용
+(내장 외장 앱별) 삭제되면 다사라진다.
+공용 이면 삭제되지 않는다.
+공용공간 이용하기위해 콘텐츠 프로바이더 리졸버 사용
+하여 래지스터 ........
+엑티비티 파일
+package com.example.chapter17.Database
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import com.example.chapter17.databinding.ActivityDatabasePra2Binding
+import java.io.File
+class DatabasePra2 : AppCompatActivity() {
+lateinit var file: File
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityDatabasePra2Binding.inflate(layoutInflater)
+setContentView(binding.root)
+//java Io를 사용해서
+//내부 저장소에 파일 쓰기
+binding.fileWriteBtn.setOnClickListener {
+file = File(filesDir, "test.txt")
+val writeStream = file.writer()
+writeStream.write("hello world")
+writeStream.flush()
+}
+//파일 읽기
+binding.fileReadBtn.setOnClickListener {
+val readStream = file.reader().buffered()
+readStream.forEachLine {
+Log.d("fifo23", "$it")
+}
+}
+}
+}
+xml파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/Database"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".Database.DatabasePra2">
+<Button
+android:id="@+id/fileWriteBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginStart="141dp"
+android:layout_marginTop="115dp"
+android:text="FileWrite"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<Button
+android:id="@+id/fileReadBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginStart="145dp"
+android:layout_marginTop="325dp"
+android:text="FileRead"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+<activity
+android:name=".Database.DatabasePra2"
+android:exported="true" />
+
+## 17-3 공유된 프리퍼런스에 보관하기
+
+공유된 프리퍼런스에 보관하기
+getPreferences <- 에티비티 단위로 데이터를 저장할때 사용
+//엑티비티의 데이터 저장
+val sharedPref = getPreferences(Context.MODE_PRIVATE)
+//앱 전체의 데이터 저장
+val sharedPref = getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+sharedPref.edit().run {
+putString("data1", "hello")
+put.Int("data2", 10)
+commit()
+}
+val data1 = sharedPref.getString("data1", "world")
+val data2 = sharedPref.getInt("data2", 10)
+자동화
+preference - key-value // app 설정 자동화기능 저장할때
+설정화면 => Activity/Fragment (xml) // UserEvent // 설정 Data 저장
+User Event 설정 Data 저장
+안드로이드 10 이후 API 29 이후부터는 Jetpack 라이브러리를 이용하게되있다.
+xml 만들고 Preference 속성에 intent 코드 작성하고 간편하게 작업할 수 있다.
+코드작업 많이 없다.
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<SwitchPreferenceCompat
+app:key="notification"
+app:title="Enable message notifications" />
+<Preference
+app:key="feedack"
+app:title="send feedback"
+app:summary="Report technical issues or suggest new features" />
+</PreferenceScreen>
+PreferenceFragmentCaompat() 상속받고
+setPreferenceFromResorce(R.xml.settings,rootkey)
+<fragment
+...
+class="com.example.test17.....MySettingFragment
+/>
+항목까지 묶기
+PreferenceCategory
+두개화면을 프레그먼트로 구성해서했을때 뒤로가기를 가능하기 위해서
+엑티비티 코드를 추가 p 557
+인텐트를 발생시키는데 암시적인 설정
+설정화면이 하나에서 분리됬을떄 p558
+xml -> Fragment -> Activity
+id값 key값 으로 제어
+유저설정하거나 유저가 설정한 값 제어하고 서머리 제공
+카톡을 예를 들면 유저가 카톡에 대한 알람설정을 하거나 했을때 id 유저분 설정한 부분입니다.
+수정하고 설정 저장 하는 부분
+엑티비티 파일
+package com.example.chapter17.Database
+import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import com.example.chapter17.databinding.ActivityPreferencePraBinding
+class PreferencePra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityPreferencePraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+//공유 저장공간을 얻어와서 변수에 저장
+val sharedPref = getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+//데이터 입력
+binding.preferenceSetBtn.setOnClickListener {
+sharedPref.edit().run {
+putString("data1", "hello")
+putInt("data2", 10)
+commit()
+}
+}
+//데이터 조회
+binding.preferenceGetBtn.setOnClickListener {
+val data1 = sharedPref.getString("data1","world")
+val data2 = sharedPref.getInt("data2",10)
+Log.d("fifo23","data1 : $data1, data2 : $data2")
+}
+}
+}
+xml 파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/Database"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".Database.DatabasePra2">
+<Button
+android:id="@+id/fileWriteBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginStart="141dp"
+android:layout_marginTop="115dp"
+android:text="FileWrite"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+<Button
+android:id="@+id/fileReadBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginStart="145dp"
+android:layout_marginTop="325dp"
+android:text="FileRead"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+<activity
+android:name=".Database.PreferencePra"
+android:exported="true" />
+2022-08-28 08:08:37.605 14447-14447/com.example.chapter17 D/fifo23: data1 : hello, data2 : 10

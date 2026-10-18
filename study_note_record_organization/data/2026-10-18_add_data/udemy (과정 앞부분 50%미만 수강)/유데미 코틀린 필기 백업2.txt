@@ -1,0 +1,94 @@
+코틀린은 다중 페러다임 언어
+
+함수형 프로그래밍(FP)
+객체 지향 프로그래밍(OOP)
+
+함수형 프로그래밍
+코드 간략, 테스트나 재사용성 증가
+람다식, 고차함수를 사용해 구성
+순수함수           
+
+함수를 함수를 변수로 한다거나 함수를 리턴할 수 있다.
+이때 유용하게 사용할 수 있는게 람다식
+
+순수함수
+부작용이 없는 함수 동일한 입력인자에 대해서 항상같은 결과
+fun sum(a: Int, b: Int) = a+b
+
+같은 인자에 대해서 항상 같은 값반환
+함수 외부의 어떤 상태도 바꾸지 않는다.
+
+순수함수가 아닌경우
+check(){ val test = User.grade() if(test !=null) process(test)}
+test가 User.grade()의실행결과에 따라 달라지고 check()함수에 없는 외부의 User 객체를 사용 A가 나온다음 유저의 B가나올 수 있다.
+
+fun main(){ val num1 = 10, val num2 = 3, val result = noPureFUnction 
+} 외부의 값변경
+fun noPureFunction(a:Int, b: Int): Int{ return a+ b + global }  외부값에 의해 변경
+
+순수함수를 사용하게되면 함수들과 조합해도 부작용이 없다.
+병행작업시 안전하고 값을 추적하고 예측 할 수 있어서 테스트와 디버깅에 유리하다.
+
+고차함수 사용 함수를 변수나 데이터에 저장
+읽기쉽고 심플하게 작성하자.
+
+람다식
+익명함수의 하나의 형태로 이름 없이 사용 및 실행이 가능, 람다대수로 부터 유래
+{x, y => x+ y }
+람다식의 이용 람다식은 고차함수에서 인자로 넘기거나 결과값으로 반환등을 할 수 있다. 람다식도 일종의 함수
+
+고든이라는 사람이 있는데 입사를 했는데 사고가 난다. 고든은 빠루로 외계인들을 떄려잡게된다.
+ 화살표로 외계인들을 때려잡는다. 화살표가 무조건 들어가는건아니다.
+
+일급객체 First Class citizen 일등시민 => 함수의 인자, 반환값에 사용, 변수에 담기가능
+1급함수라고도 한다.
+
+fun main(){
+	println(hightFunc({x,y -> x+y}, 10, 20)) //람다식 함수를 인자로넘김
+}
+
+fun highFunc(sum: (Int, Int) -> Int, a: Int, b: Int): Int = sum(a,b) //sum 매개변수 함수
+
+고차 함수 (x, y) -> x + y  
+
+var result: Int
+
+val multi = {x: Int, y: Int -> x * y}
+result = multi(10,20)
+
+result = muti(10,20)
+
+println(result)
+
+val multi : (Int, Int) -> Int = {x: Int, y: Int -> x * y} 프린트물 참조
+val multi = {x,y -> x*y}
+
+표현식 두줄 이상일떄
+val multi2: (Int, Int) -> Int = {x: Int, y: Int -> 
+	println("x *y")
+	x*y
+}
+
+자료형의 생략
+val multi: (Int, Int) -> Int = { x: Int, y: Int -> x*y} //생략되지 않은 전체 표현
+val multi = {x: Int, y: Int -> x*y} // 선언 자료형 생략
+val multi: (Int, Int) -> Int = {x, y -> x*y} // 람다식 매개변수 3자료형의 생략
+val multi = {x,y -> x*y} //에러
+
+반환 자료형이 없거나 매개 변수가 하나 있을떄
+val gread: ()->Unit = { println("Hello world!") }
+val square: (Int) ->Int = {x -> x *x}
+
+람다식 안에 람다식이 있는 경우?
+val nested(Lamda: ()->()->Unit = { { println("nested") } }
+
+선언부의 자료형 갱략
+val greet ={println("Hello world!")}
+val square = {x: Int -> x * x}
+val nestedLambda = { { println("neted") } }
+
+고차함수 값에 의한 호출
+함수가 인자로 전달되었을경우 람다식 함수는 값으로 처리되며 그즉시 함수가 수행된후 값을 전달
+
+
+

@@ -1,0 +1,391 @@
+# SSamz 안드로이드 14강
+
+## 14-1 브로드캐드 리시버
+
+브로드캐드 리시버
+엑티비티, 서비스, 브로드캐드 리시버, 컨텐트 프로바이더
+4대 컴포넌트
+Event Model(시스템의 특정상황) 로 실행 되는 컴포넌트
+라이프 사이클을논하기 힘들다
+onRecive() 호출되면 객체가 소멸된다.
+sendBroadCast로 객체가 생성됬다가 소멸된다.
+A S R P
+명시적으로 내부적으로만 실행하는 경우
+외부에서 접근가능하고 암시적으로 인텐트 필터를 사용해서 실행하는 경우
+런처앱처럼 우리앱도 구동될수 없을까
+가능은한데 악성앱처럼 보인다.
+Activity Intent - 하나도 없으면 x , 하나 있으면하나, 여러개있으면 하나만
+receiver Intent   - 하나도 없으면 그냥말고, 10개의 리시버가 실행되는 상황이면 다 실행된다.
+ex) 브로드 캐스트 ... kbs에서 전국의 공중파를 송출을 하는데 천만데 수신기에서 kbs에서 하나도 시청을안하면
+kbs 폭파된다. Activity였으면 폭파된다. Error
+서비스를 만들고 어플리케이션을 구동시키기 위한 준비동작하는 방식으로 우리 앱에 만들기도한다.
+장시간동안 실행되는 로직보다는 폰이 실행될때 혹은
+특정상황 화면이 꺼진다거나 와이파이가 불안정하거나 할떄
+유저가 설정한 작업이 폰이 켜지고 실행되게 할떄
+잠깐 실행되거나 시스템 이벤트 sns가 전달될때, 알람서비스
+악성앱x안되는 방향으로
+1. 메니페스트에 작성하는 방법 정적등록
+<receiver
+android:name:".MainReceiver"
+android:enabled="true"
+android:exported"true">
+</receiver>
+2. 시스템에 등록하는 방법 동적등록
+동적등록이 꽤많이 사용된다.
+val receiver = object: BroadcastReciver(){
+override fun onReceive(context: Context?, intent: Intent?){
+}
+}
+val filter = IntentFilter("ACTION_RECEIVER")
+registerReceiver(register, filter)
+엑티비티 파일
+package com.example.chapter14.BroadcastReceiver
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import com.example.chapter14.R
+import com.example.chapter14.databinding.ActivityBroadCastPraBinding
+class BroadCastPra : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+//바인딩 설정
+val binding = ActivityBroadCastPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+//리스너 장착 브로드케스트 실행
+binding.BrocastExecBtn.setOnClickListener {
+val intent = Intent(this, MyReceiver::class.java)
+sendBroadcast(intent)
+}
+}
+}
+브로드캐드 리시버 파일
+package com.example.chapter14.BroadcastReceiver
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.widget.Toast
+class MyReceiver : BroadcastReceiver() {
+override fun onReceive(context: Context, intent: Intent) {
+// This method is called when the BroadcastReceiver is receiving an Intent broadcast.
+//브로드 캐스트가 생성 호출됬다면 토스트 메시지를 띄어주자.
+Toast.makeText(context,"receiver....", Toast.LENGTH_SHORT).show()
+}
+}
+메니페스트 설정
+<!-- 정적으로 브로드캐드 리시버 등록 -->
+<receiver
+android:name=".BroadcastReceiver.MyReceiver"
+android:enabled="true"
+android:exported="true"></receiver>
+<activity
+android:name=".BroadcastReceiver.BroadCastPra"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+BroadCastPra엑티비티 xml 파일
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".BroadcastReceiver.BroadCastPra">
+<Button
+android:id="@+id/BrocastExecBtn"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="ExecReceiver"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+## 14-2-시스템 상태 파악하기
+
+BatteryPra 엑티비티 파일
+package com.example.chapter14.Battery
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import com.example.chapter14.databinding.ActivityBatteryPraBinding
+class BatteryPra : AppCompatActivity() {
+lateinit var receiver: BroadcastReceiver
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityBatteryPraBinding.inflate(layoutInflater)
+setContentView(binding.root)
+//메니페스트 파일 정적으로 등록하지 않고 동적으로 등록해서 사용하자.
+receiver = object : BroadcastReceiver(){
+override fun onReceive(p0: Context?, p1: Intent?) {
+when(p1?.action){
+//화면이 켜진상태라면, screen on 를 로그에 찍자..
+//화면이 꺼진상태라면, screen off 를 로그에 찍자..
+Intent.ACTION_SCREEN_ON -> Log.d("fifo23", "screen on,,")
+Intent.ACTION_SCREEN_OFF -> Log.d("fifo23", "screen off,,")
+}
+}
+}
+//intent filter 등록 하기위해 필터 변수에 .....
+val filter = IntentFilter().apply {
+addAction(Intent.ACTION_SCREEN_ON)
+addAction(Intent.ACTION_SCREEN_OFF)
+}
+//리시버 등록
+registerReceiver(receiver, filter)
+}
+override fun onDestroy() {
+super.onDestroy()
+//리시버 해제
+unregisterReceiver(receiver)
+}
+}
+메니페스트 파일
+BroadcastReceiver를 동적으로 동적하기위해 메니페스트파일에 receiver를 등록하진 않았다.
+<activity
+android:name=".Battery.BatteryPra"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+BatteryPra xml파일
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".Battery.BatteryPra">
+</androidx.constraintlayout.widget.ConstraintLayout>
+2022-08-22 17:13:40.448 4897-4897/com.example.chapter14 D/fifo23: screen off,,
+2022-08-22 17:13:43.678 4897-4897/com.example.chapter14 D/fifo23: screen on,,
+
+## 14-3-배터리 정보 앱 만들기
+
+베터리 상태 앱 만들기
+메니페스트 파일
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.example.chapter14_battery">
+<application
+android:allowBackup="true"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:roundIcon="@mipmap/ic_launcher_round"
+android:supportsRtl="true"
+android:theme="@style/Theme.MainActivity">
+<receiver
+android:name=".MyReceiver"
+android:enabled="true"
+android:exported="true"></receiver>
+<activity
+android:name=".MainActivity"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+</activity>
+</application>
+</manifest>
+gradle
+ViewBinding{
+enabled = true
+}
+설정
+MainActivity xml 파일
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity"
+android:orientation="vertical"
+android:gravity="center">
+<ImageView
+android:id="@+id/chargingImageView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"/>
+<TextView
+android:id="@+id/chargingResultView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:textSize="25dp"
+android:textStyle="bold"/>
+<TextView
+android:id="@+id/percentResultView"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="20dp"
+android:textSize="20dp"
+android:textStyle="bold"/>
+<Button
+android:id="@+id/button"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="run receiver"/>
+</LinearLayout>
+메인 엑티비티 파일
+package com.example.chapter14_battery
+import android.content.Intent
+import android.content.IntentFilter
+import android.graphics.BitmapFactory
+import android.os.BatteryManager
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import com.example.chapter14_battery.databinding.ActivityMainBinding
+class MainActivity : AppCompatActivity() {
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+val binding = ActivityMainBinding.inflate(layoutInflater)
+setContentView(binding.root)
+//add...........
+//베터리 상황만 희득만 하기위해 null
+//베터리 상태가 플러그되었는지 언플러그 되었는지 플러그 되있다면 AC고속충전중인지 USB 충전중인지 확인하고 이미지를 전환하는 코드작성
+registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))!!.apply {
+when(getIntExtra(BatteryManager.EXTRA_STATUS, -1)){
+BatteryManager.BATTERY_STATUS_CHARGING ->{
+when(getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)){
+BatteryManager.BATTERY_PLUGGED_USB -> {
+binding.chargingResultView.text = "USEB Plugged"
+binding.chargingImageView.setImageBitmap(BitmapFactory.decodeResource(
+resources, R.drawable.usb
+))
+}
+BatteryManager.BATTERY_PLUGGED_AC -> {
+binding.chargingResultView.text = "AC Plugged"
+binding.chargingImageView.setImageBitmap(BitmapFactory.decodeResource(
+resources, R.drawable.ac
+))
+}
+}
+}
+else -> {
+binding.chargingResultView.text = "Not Plugged"
+}
+}
+//베터리 퍼센트 계산하는 로직
+val level = getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
+val scale = getIntExtra(BatteryManager.EXTRA_SCALE, -1)
+val batteryPct = level / scale.toFloat() * 100
+binding.percentResultView.text = "$batteryPct"
+}
+//버튼에 클릭리스너를 달고
+binding.button.setOnClickListener {
+val intent = Intent(this, MyReceiver::class.java)
+sendBroadcast(intent)
+}
+}
+}
+브로드캐스트리시버 파일
+package com.example.chapter14_battery
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.media.AudioAttributes
+import android.media.RingtoneManager
+import android.net.Uri
+import android.os.Build
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+class MyReceiver : BroadcastReceiver() {
+override fun onReceive(context: Context, intent: Intent) {
+// This method is called when the BroadcastReceiver is receiving an Intent broadcast.
+Log.d("fifo23", "MyReceiver......")
+val manager = context.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
+val builder: NotificationCompat.Builder
+if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+//26버전 이상
+val channelId = "one-channel"
+val channelName = "MyChannel One"
+val channel = NotificationChannel(
+channelId,
+channelName,
+NotificationManager.IMPORTANCE_DEFAULT
+).apply {
+//채널 정보설정
+description = "My Channel One Description"
+setShowBadge(true)
+val uri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+val audioAttributes = AudioAttributes.Builder()
+.setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+.setUsage(AudioAttributes.USAGE_ALARM)
+.build()
+setSound(uri,audioAttributes)
+enableVibration(true)
+}
+//채널을 NotificationManage 에  등록
+manager.createNotificationChannel(channel)
+//채널을 이용하여 builder 생성
+builder = NotificationCompat.Builder(context, channelId)
+} else{
+//26 버전 이하
+builder = NotificationCompat.Builder(context)
+}
+builder.run {
+//알람의 기본 정보
+setSmallIcon(android.R.drawable.ic_notification_overlay)
+setWhen(System.currentTimeMillis())
+setContentTitle("홍길동")
+setContentText("안녕하세요")
+}
+manager.notify(11, builder.build())
+}
+}
+
+## 시스템 파악하기
+
+시스템 상태 파악하기
+부팅완료 시점에 브로드케스트 리시버와 인텐트 필터 등록
+여러상황에 사용되는 브로드캐스트를
+시스템에서 부팅이 됬을때 사용되는경우
+android:exported="true"
+<action android:name="android.intent.action.BOOT_COMPLETED" />
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED />
+이렇게만 하고 사용하면 부팅시 구동되는데 유저입장에서 민감할 수 있다.
+서비스랑 가치 사용하게되기도 하는데 벡그라운드 제약설정해줘야하는 부분도 있다.
+이부분은 동적으로 사용하는게 강제 사항이다.
+override fun onReceiver(context: Context?, intent: Intent){
+when(intent?.action){
+Intent.ACTION_SCREEN_ON -> Log.d("Kang", "screen on")
+Intent.ACTION_SCREEN_OFF -> Log.d("kang", "screen off")
+val filter = IntentFilter(Intent.ACTION_SCREEN_ON).apply{
+registerReceiver(receiver, filter) 리시버 등록
+unregisterReceiver(receiver) 리시버 등록해제
+BATTERY_LOW 베터리가 낮은 상태로 변경되는 순간
+BATTERY_OKEY : 베터리가 정상 상태로 변경되는 순간
+BATTERY_CHANGED 충전 상태가 변경되는 순간
+ACTION_POWER_COMPLETED 전원이 공급되기 시작한 순간
+ACTION_POWER_DISCONNECTED 전원 공급을 끊은 순간
+override fun onreceiver(context: Context?, intent: Intent?){
+Intent.ACTION_BATTERY_OKEY -> Log.d("kkang",  "ACTION_BATTERY_OKAY")
+Intent.ACTION_BATTERY_LOW -> Log.d("kkang", "ACTION_BATTERY_LOW")
+Intent.ACTION_BATTERY_CHANGED -> Log.d("kkang", "ACTION_BATTERY_CHANGED")
+Intent.ACTION_POWER_CONNECTED -> Log.d("kkang", "ACTION_POWER_CONNECTED")
+intent.ACTION_POWER_DISCONNECTED -> Log.d("kkang", "ACTION_POWER_DISCONNECTED")
+val intentfilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+val batteryStatus = registerREceiver(null, intentFilter)
+val status = batteryStatus!!.getIntentExtra(BatteryManager.EXTRA_STATUS, -1)
+if(status == BatteryManager.Battery_STATUS_CHARGIN){
+//전원이 공급되고 잇다면
+val chargePlug = batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)
+when(chargePlug){
+BatteryManager.BATTERY_PLUGGED_USB-> Log.d("kkang", "usb charge")
+BatteryManager.BATTERY_PLUGGED_AC -> Log.d("kkang", "ac charge")
+//전원이 공급되고 있는지 얼마나 충전되었는지
+val level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVER, -1)
+val scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
+val batteryPct = level / scale.toFloat() = 100
+Log.d("kkang", "batteryPct: $batteryPct")

@@ -1,0 +1,67 @@
+안드로이드 기본 앱과 연동하기
+
+외부앱에서 화면이 필요해서
+
+겔러리앱과 연동하거나
+주소록앱과 연동할떄
+
+화면 => 인텐트
+데이타 => 컨텐트 프로바이더
+
+주소록앱 => 목록화면이 나오면 전화번호와 이메일 address를 희득하는경우
+
+android.permission.READ_CONTACTS
+
+홍길동의 식별자가 넘어오는걸 사용해서 연동
+
+파일이미지 서버에서 오는 이미지 를 유용하게 사용할때
+Bitmap을 사용하는데 BitmapFactory로 생성해서 사용한다.
+
+OCM 문제를 고려하면서 이미지 로딩을 해야한다.
+data -> size -> 줄여서 8mb 면 80k로 줄여서 로딩 할수 있다.
+
+이미지 전문라이브러리
+glide나 picasso 라이브러리를 사용해서 처리할 수 있다.
+
+
+카메라 앱연 연동
+
+android.permission.WRITE_EXTENAL_STORAGE
+
+카메라로 사진을 찍거나 이미지를 업로드
+
+FileProvider 클래스 기본으로제공되는 API라이브러리를 사용해서 공유 하게할수있따.
+
+<paths xmlns:android:="http://schemas.android.com/apk/res/android">
+<external-path name="myfiles" path=Android/data.com.example.test16/files/Pictures" />
+</paths>
+
+<provide
+	anadroid:name= "androidx.core.content.fileProvider"
+	android:authorities="com.example.test16.fileprovider"
+	android:exported="false"
+	android:grantUriPermissions="true">
+
+	<meta-data
+		android:name="android.support.FILE_PROVIDER_PATHS"
+		android:resource="@xml/file_paths"><//meta-datqa>
+</provide>
+
+
+지도앱 연동
+
+val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:37.5662952,126.9779451)
+
+위도경도 값넘겨주고 엑션뷰
+인텐트만 잘날리면 된다.
+
+
+전화앱 연동
+
+<uses-permission android:name="android.permission.CALL_PHONE" />
+
+val intent(Intent(Intent.ACTION_CALL, Uri.parse("tel:82-120"))
+
+인테트만 보냈을때도 전화화면뜨는것도 앱이고 엑티비티다
+
+

@@ -1,0 +1,195 @@
+enum Status{
+  approved, //승인
+  pending, //대기
+  rejected, //거절
+}
+void main() {
+  //var , dynamic, const, final, Int, String, bool
+  // ??= null이면 바꿔라 , is!
+  // var a? = 12
+  
+  //list add, remove
+  //index
+  
+  //Map addAll, remove, values, keys
+  //Key / value key 중복x
+  
+  //set add, remove, contains
+  //중복값 x
+  
+  //if문
+  //switch문
+  //for문
+  //while문
+  
+  //enum
+  //함수
+  
+  //세개의 숫자 (x,y,z)를 더하고 짝수인지 홀수인지 알려주는 함수
+  //parameter / argument - 매개변수
+  //positional parameter - 순서가 중요한 파라미터
+
+  //optional 파라미터 있어도되고 없어도 되는 파라미터
+  // [int x=20, int? y, int? z=50] , x=35
+  //
+  //named 파라미터 이름이 있는 파라미터(순서가 중요하지 않다.)
+  // required
+  // ({
+  //    required int x,
+  //    required int y,
+  //    required int z
+  // })
+
+  //void 공허하다라는뜻 리턴 값이 없다.
+  //반환값이 없는 함수
+  //반환값이 있는 함수
+
+
+  //arrow 함수
+
+  //typedef
+  //signature
+  List<String> blackPink = ['제니','지수','로제','슬기','리사'];
+  Map<String, bool> isHero = {
+    'hulk' : true,
+    'spider man' : true,
+    'rara' : true,
+    'Iron man' : true,
+  };
+  
+  final Set<String> names = {
+    'Code Factory',
+    'Flutter',
+    'Black Pink',
+  };
+  
+  Status status = Status.approved;
+  
+  if(status == Status.approved){
+    print('승인입니다.');
+  }else if(status == Status.pending){
+    print('대기중입니다.');
+  }else{
+    print('거절입니다.');
+  }
+  
+  
+  //named
+  addNumbers(10,20,30);
+  
+  addNumbers2(10,20,30);
+  addNumbers2(10,20);
+  
+  addNumbers3(x:10, y:20,z:30);
+  
+  var result = addNumbers4();
+  
+  addNumber4(10,y:20);
+  
+
+  Operation operation = add;
+
+  int result2 = operation(10,20,30);
+  
+  operation = subtract;
+  print(result2);
+  
+  int result3 = operation(10,20,30);
+  print(result3);
+
+  
+  int result5 = calculate(30,40,50,add);
+  
+  print(result5);
+  int result6 = calculate(40,50,60,subtract);
+ 
+  print(result6);
+}
+
+//signature
+typedef Operation = int Function(int x, int y, int z);
+
+//더하기
+int add(int x, int y, int z) => x + y + z;
+
+//빼기
+int subtract(int x, int y, int z) => x - y - z;
+  
+//계산
+int calculate(int x, int y, int z, Operation opration){
+    return opration(x,y,z);
+}
+
+int addNumbers4(){
+  return 1;
+}
+addNumbers(int x, int y, int z){
+  print('addnumbers 실행');
+  int x = 10;
+  int y = 20;
+  int z = 30;
+  
+  int sum = x + y + z;
+  
+  print('x : $x');
+  print('y : $y');
+  print('z : $z');
+  
+  if(sum % 2 == 0){
+    print('짝수입니다.');
+  }else{
+    print('홀수입니다.');
+  }
+}
+addNumbers2(int x,[int? y, int? z=20]){
+  print('addnumbers 실행');
+  int x = 10;
+  int y = 20;
+  int z = 30;
+  
+  int sum = x + y + z;
+  
+  print('x : $x');
+  print('y : $y');
+  print('z : $z');
+  
+  if(sum % 2 == 0){
+    print('짝수입니다.');
+  }else{
+    print('홀수입니다.');
+  }
+}
+addNumbers3({
+  required int x,
+  required int y,
+  required int z,
+  int t = 20,
+  int? f = 30
+}){
+  print('addnumbers 실행');
+  int x = 10;
+  int y = 20;
+  int z = 30;
+  
+  int sum = x + y + z;
+  
+  print('x : $x');
+  print('y : $y');
+  print('z : $z');
+  
+  if(sum % 2 == 0){
+    print('짝수입니다.');
+  }else{
+    print('홀수입니다.');
+  }
+}
+
+void addNumber4(int x, {
+  required int y,
+  int z = 30,
+}) => x + y + z;
+
+
+
+
+

@@ -1,0 +1,30 @@
+ANR(ACtivity Not Response) 
+
+엑티비티가 반응하지 않는 상태
+엑티비티가 죽는상황
+
+Activity, Event, event Queue
+
+5초룰
+
+네트워킹 시간이 오레걸린다는 가정하에 프로그램을 짠다.
+모바일 네트워킹이라 수시로 안될수 있다.
+
+Thread / 코루틴 kotlin언어로 해결
+
+Thread / coroutline
+main Thread
+
+쓰래드와 코루틴으로 계속작업을 하고
+메인쓰레드에서 작업을 하게되서 해결하게된다.
+
+UI Asynctask 디플리케이션 되는 추세 지만 추상화개념 
+
+
+코루틴 스코프 사용
+
+코루틴 비동기 처리
+
+경량, 메모리누스 적다, 제어가 편아하다. 많은 제트펙 라이브러리에 적용되있다.
+implemantion 하고 쓰자
+

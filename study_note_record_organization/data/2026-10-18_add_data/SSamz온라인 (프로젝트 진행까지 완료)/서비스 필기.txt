@@ -1,0 +1,24 @@
+서비스 이해하기
+
+명시적
+암시적
+val intent = Intent("ACTION-OUTER_SERVICE")
+intent.setPackage("com.example.test_other")
+startService(intent)
+
+val connection ServiceConnection = object: ServiceConnection{
+	override fun onServiceConnection(name: ComponentName?, service: IBinder() {}
+	override fun onServiceDisconnected(name: ComponentName? ) { }
+}
+
+Binder 사용
+
+val connection: ServiceConnection = object: ServiceConnection{
+	override fun onService(name: ComponentName?, service : IBinder?){}
+	override fun onServiceDisconnected(name: ComponentName?){ }
+}
+
+val intent = Intent(this, Myservice::class.java)
+
+bindService(intent, connection, Connection.BIND_AUTO_CREATE)
+
