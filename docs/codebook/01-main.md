@@ -11,7 +11,7 @@
 - 자료 드롭다운: 같은 페이지의 `#section-links`, 그리고 자기소개, 명함, 이력서, 학습 기록으로 나가는 링크
 - `main#main`: 히어로 문구와 본문 절
 
-`css/site-header.css`는 `html[data-theme="light"]`일 때의 색, 링크와 햄버거 버튼의 포커스, 768px 이하에서 메뉴를 접는 배치를 정한다. 769px 이상에서는 메뉴가 한 줄로 펼쳐진다. `css/styles.css`는 메인 본문의 히어로, 절, 카드 간격을 정하고 테마 변수에 맞춰 글자색을 바꾼다.
+`css/site-header.css`는 `html[data-theme="light"]`일 때의 색, 링크와 햄버거 버튼의 포커스, 768px 이하에서 메뉴를 접는 배치를 정한다. 열린 패널은 `calc(100dvh - 헤더)`까지 허용하고 `overflow-y: auto`로 스크롤한다. 769px 이상에서는 메뉴가 한 줄로 펼쳐진다. `css/styles.css`는 메인 본문의 히어로, 절, 카드 간격과 메인 전용 자료 드롭다운·모바일 `#site-nav` 스크롤을 정하고 테마 변수에 맞춰 글자색을 바꾼다.
 
 ## 읽는 순서
 
@@ -20,7 +20,7 @@
 1. `prefersReducedMotion`, `queryAll`, `queryAllIn`
 2. `initSmoothNav`, `initResourceDropdown`, `initThemeToggle`
 3. `applyTheme`, `getStoredTheme`, `setStoredTheme`
-4. `setResourceDropdown`, `closeResourceDropdowns`, `closeMobileNav`, `setMobileNav`, `debounce`
+4. `scrollMobileNavToDropdown`, `setResourceDropdown`, `closeResourceDropdowns`, `closeMobileNav`, `setMobileNav`, `debounce`
 5. `initSectionTargets`
 6. `DOMContentLoaded` 또는 이미 준비된 문서에서 초기화
 
@@ -70,9 +70,13 @@ if (window.innerWidth > 768 && nav && toggle) {
 
 `getStoredTheme`는 `localStorage.getItem` 결과를 돌려준다. 읽기가 실패하면 `null`이다. `setStoredTheme`는 같은 키에 쓴다. 쓰기가 실패하면 예외를 삼키므로 메모리와 화면만 바뀌고 다음 방문에는 기본값으로 돌아간다.
 
+### scrollMobileNavToDropdown
+
+768px 이하이고 `#site-nav`가 열려 있을 때만 동작한다. 드롭다운 메뉴의 아래쪽이 패널 밖으로 나가면 `#site-nav`의 `scrollTop`을 올려 **프로젝트 아카이브** 같은 마지막 링크까지 보이게 한다. `requestAnimationFrame` 한 번 뒤에 위치를 본다.
+
 ### setResourceDropdown, closeResourceDropdowns
 
-`setResourceDropdown(dropdown, open)`은 `is-open` 클래스, 버튼의 `aria-expanded`, 메뉴의 `hidden`을 같이 맞춘다. `closeResourceDropdowns(except)`는 `except`와 같은 요소만 남기고 나머지를 닫는다. `except`를 생략하면 전부 닫는다.
+`setResourceDropdown(dropdown, open)`은 `is-open` 클래스, 버튼의 `aria-expanded`, 메뉴의 `hidden`을 같이 맞춘다. `open`이 참이면 `scrollMobileNavToDropdown`을 이어서 부른다. `closeResourceDropdowns(except)`는 `except`와 같은 요소만 남기고 나머지를 닫는다. `except`를 생략하면 전부 닫는다.
 
 ### closeMobileNav, setMobileNav
 

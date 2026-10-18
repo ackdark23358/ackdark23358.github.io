@@ -39,7 +39,7 @@ flowchart TD
 - 학습 기록: `study_note_record_organization/dashboard/index.html`
 - 프로젝트 아카이브: `portfolio_achieve/index.html`
 
-좁은 화면에서는 상단 메뉴가 접혀 있다가 햄버거 버튼으로 열린다.
+좁은 화면에서는 상단 메뉴가 접혀 있다가 햄버거 버튼으로 열린다. 패널은 화면 높이에 맞추고, **자료** 하위 항목이 많을 때는 패널 안에서 스크롤한다.
 
 ## 자기소개
 

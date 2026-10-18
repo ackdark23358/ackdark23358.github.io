@@ -370,14 +370,18 @@ a {
   }
 
   .site-nav.is-open {
-    max-height: 34rem;
+    max-height: calc(100dvh - var(--header-h));
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     opacity: 1;
     pointer-events: auto;
   }
 
   .site-nav__list {
     flex-direction: column;
-    padding: 1rem var(--space-gutter) 1.25rem;
+    padding: 1rem var(--space-gutter) 1.75rem;
     gap: 0.5rem;
   }
 

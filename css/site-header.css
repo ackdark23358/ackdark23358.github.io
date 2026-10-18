@@ -191,7 +191,11 @@ html[data-theme="light"] {
   }
 
   .site-nav.is-open {
-    max-height: 18rem;
+    max-height: calc(100dvh - var(--site-header-height));
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     opacity: 1;
     pointer-events: auto;
   }

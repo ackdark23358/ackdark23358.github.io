@@ -177,8 +177,24 @@ toggle.setAttribute(&quot;aria-label&quot;, normalizedTheme === &quot;dark&quot;
 <pre>시도
   localStorage.setItem(THEME_KEY, theme)
   } catch (e)</pre>
+<h4>scrollMobileNavToDropdown</h4>
+<p><code>js/main.js:209</code></p>
+<pre>function scrollMobileNavToDropdown(dropdown)</pre>
+<p>좁은 화면에서 자료 드롭다운 하단이 메뉴 패널 밖으로 나가면 #site-nav를 스크롤한다.</p>
+<ul><li>인자: dropdown: Element 드롭다운 루트</li><li>반환: 없음</li></ul>
+<p>유사코드</p>
+<pre>만약 !window.matchMedia(&quot;(max-width: 768px)&quot;).matches) return
+nav ← document.getElementById(&quot;site-nav&quot;)
+만약 !nav || !nav.classList.contains(&quot;is-open&quot;)) return
+menu ← dropdown.querySelector(&quot;.site-nav__dropdown-menu&quot;)
+만약 !menu) return
+requestAnimationFrame(function ()
+  navRect ← nav.getBoundingClientRect()
+  menuRect ← menu.getBoundingClientRect()
+  만약 menuRect.bottom &gt; navRect.bottom - 8
+    nav.scrollTop += menuRect.bottom - navRect.bottom + 16</pre>
 <h4>setResourceDropdown</h4>
-<p><code>js/main.js:210</code></p>
+<p><code>js/main.js:229</code></p>
 <pre>function setResourceDropdown(dropdown, open)</pre>
 <p>자료 드롭다운 하나의 열림 상태, 버튼 표시, 메뉴 숨김을 맞춘다.</p>
 <ul><li>인자: dropdown: Element 드롭다운 루트, open: boolean 열지 여부</li><li>반환: 없음</li></ul>
@@ -187,9 +203,10 @@ toggle.setAttribute(&quot;aria-label&quot;, normalizedTheme === &quot;dark&quot;
 menu ← dropdown.querySelector(&quot;.site-nav__dropdown-menu&quot;)
 dropdown.classList.toggle(&quot;is-open&quot;, open)
 만약 toggle) toggle.setAttribute(&quot;aria-expanded&quot;, open ? &quot;true&quot; : &quot;false&quot;
-만약 menu) menu.hidden = !open</pre>
+만약 menu) menu.hidden = !open
+만약 open) scrollMobileNavToDropdown(dropdown</pre>
 <h4>closeResourceDropdowns</h4>
-<p><code>js/main.js:222</code></p>
+<p><code>js/main.js:242</code></p>
 <pre>function closeResourceDropdowns(except)</pre>
 <p>지정한 하나를 제외한 자료 드롭다운을 모두 닫는다.</p>
 <ul><li>인자: except: Element= 닫지 않을 드롭다운</li><li>반환: 없음</li></ul>
@@ -198,14 +215,14 @@ dropdown.classList.toggle(&quot;is-open&quot;, open)
   만약 except &amp;&amp; dropdown === except) return
   setResourceDropdown(dropdown, false)</pre>
 <h4>closeMobileNav</h4>
-<p><code>js/main.js:234</code></p>
+<p><code>js/main.js:254</code></p>
 <pre>function closeMobileNav(nav, toggle)</pre>
 <p>모바일 내비게이션을 닫고, 함께 열려 있던 자료 드롭다운도 닫는다.</p>
 <ul><li>인자: nav: HTMLElement | null 내비게이션 요소, toggle: HTMLElement | null 햄버거 버튼</li><li>반환: 없음</li></ul>
 <p>유사코드</p>
 <pre>setMobileNav(nav, toggle, false)</pre>
 <h4>setMobileNav</h4>
-<p><code>js/main.js:245</code></p>
+<p><code>js/main.js:265</code></p>
 <pre>function setMobileNav(nav, toggle, open)</pre>
 <p>모바일 내비게이션의 열림 클래스와 버튼 안내 문구를 설정한다. 닫을 때는 자료 드롭다운도 함께 닫는다.</p>
 <ul><li>인자: nav: HTMLElement | null 내비게이션 요소, toggle: HTMLElement | null 햄버거 버튼, open: boolean 열지 여부</li><li>반환: 없음</li></ul>
@@ -216,7 +233,7 @@ toggle.setAttribute(&quot;aria-expanded&quot;, open ? &quot;true&quot; : &quot;f
 toggle.setAttribute(&quot;aria-label&quot;, open ? &quot;메뉴 닫기&quot; : &quot;메뉴 열기&quot;)
 만약 !open) closeResourceDropdowns</pre>
 <h4>debounce</h4>
-<p><code>js/main.js:260</code></p>
+<p><code>js/main.js:280</code></p>
 <pre>function debounce(fn, wait)</pre>
 <p>연속 호출을 모아 마지막 호출만 wait 밀리초 뒤에 실행하는 함수를 만든다. 창 크기 변경처럼 자주 일어나는 이벤트에서 메뉴를 한 번만 닫기 위해 쓴다.</p>
 <ul><li>인자: fn: () =&gt; void 지연 실행할 함수, wait: number 대기 시간(밀리초)</li><li>반환: Function</li></ul>
@@ -226,7 +243,7 @@ toggle.setAttribute(&quot;aria-label&quot;, open ? &quot;메뉴 닫기&quot; : &
   clearTimeout(t)
   t = window.setTimeout(fn, wait)</pre>
 <h4>initSectionTargets</h4>
-<p><code>js/main.js:271</code></p>
+<p><code>js/main.js:291</code></p>
 <pre>function initSectionTargets()</pre>
 <p>id가 있는 섹션에 tabindex -1을 넣어, 메뉴 이동 뒤 키보드 포커스를 받을 수 있게 한다.</p>
 <ul><li>인자: 없음</li><li>반환: 없음</li></ul>
@@ -1348,7 +1365,7 @@ n ← int(nums[0]) if nums else 99
       아니면
         cache_extract(s.path, s.text)</pre>
 <h4>normalize_study_title</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:562</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:606</code></p>
 <pre>def normalize_study_title(filename: str) -&gt; str</pre>
 <p>노트 파일 이름에서 장·일차 번호와 독서노트·수강노트 꼬리를 떼고 과목 이름만 남긴다.</p>
 <ul><li>인자: filename: str</li><li>반환: str</li></ul>
@@ -1363,7 +1380,7 @@ n ← re.sub(&#x27;\\s+실습위주.*$&#x27;, &#x27;&#x27;, n, flags=re.I)
 n ← re.sub(&#x27;\\s+통합\\(단순합치기\\).*$&#x27;, &#x27;&#x27;, n)
 반환 n.strip()</pre>
 <h4>collect_study_groups</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:580</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:624</code></p>
 <pre>def collect_study_groups() -&gt; dict[str, list[str]]</pre>
 <p>data 폴더의 텍스트·워드 노트를 과목 이름으로 묶는다. hwpx는 빼고, 별칭은 같은 과목으로 합친 뒤 장·강 순으로 정렬한다.</p>
 <ul><li>인자: 없음</li><li>반환: dict[str, list[str]]</li></ul>
@@ -1389,21 +1406,21 @@ merged ← {}
   paths.sort(key=lambda p: sort_key_unit(parse_unit(os.path.basename(p))))
 반환 (merged, skipped_hwpx)</pre>
 <h4>build_study_catalog</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:611</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:658</code></p>
 <pre>def build_study_catalog() -&gt; list[CatalogItem]</pre>
-<p>과목 그룹이 37개가 아니면 감사 파일을 남기고 중단한다. 맞으면 학습 CatalogItem 목록을 만든다.</p>
+<p>과목 그룹이 기대 개수가 아니면 감사 파일을 남기고 중단한다. 맞으면 학습 CatalogItem 목록을 만든다.</p>
 <ul><li>인자: 없음</li><li>반환: list[CatalogItem]</li></ul>
 <p>유사코드</p>
 <pre>(groups, skipped_hwpx) ← collect_study_groups()
-만약 len(groups) != 37
+만약 len(groups) != EXPECTED_STUDY_GROUPS
   report ← OUT / &#x27;study-audit.txt&#x27;
-  lines ← [f&#x27;학습 그룹 수: {len(groups)} (기대: 37)&#x27;, f&#x27;제외 hwpx: {len(skipped_hwpx)}&#x27;, &#x27;…
+  lines ← [f&#x27;학습 그룹 수: {len(groups)} (기대: {EXPECTED_STUDY_GROUPS})&#x27;, f&#x27;제외 hwpx: {l…
   반복 k ← sorted(groups)
     lines.append(f&#x27; [{len(groups[k]):2d}] {k}&#x27;)
   만약 skipped_hwpx
     lines.extend([&#x27;&#x27;, &#x27;=== 제외 hwpx ===&#x27;, *[f&#x27; {x}&#x27; for x in skipped_hwpx]])
   report.write_text(&#x27;\n&#x27;.join(lines), encoding=&#x27;utf-8&#x27;)
-  중단 SystemExit(f&#x27;학습 과목 수가 37개가 아닙니다 ({len(groups)}개). output/study-audit.tx…
+  중단 SystemExit(f&#x27;학습 과목 수가 {EXPECTED_STUDY_GROUPS}개가 아닙니다 ({len(groups)}개). …
 items ← []
 반복 title ← sorted(groups.keys())
   paths ← groups[title]
@@ -1418,7 +1435,7 @@ items ← []
   items.append(CatalogItem(id=f&#x27;study-{slug}&#x27;, type=&#x27;study&#x27;, category=cat…
 반환 items</pre>
 <h4>find_assign_file</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:660</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:709</code></p>
 <pre>def find_assign_file(files: list[str], keywords: list[str], used: set[str], exclude_contains: list[str] | None=None) -&gt; str | None</pre>
 <p>아직 쓰지 않은 과제 파일 중 키워드가 들어 있고 제외어가 없는 첫 파일을 찾는다.</p>
 <ul><li>인자: files: list[str], keywords: list[str], used: set[str], exclude_contains: list[str] | None = None</li><li>반환: str | None</li></ul>
@@ -1434,7 +1451,7 @@ items ← []
       반환 f
 반환 None</pre>
 <h4>build_assignment_catalog</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:674</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:723</code></p>
 <pre>def build_assignment_catalog() -&gt; list[CatalogItem]</pre>
 <p>과제 폴더의 파일 이름과 과목 키워드를 맞춰 과제 카탈로그를 만든다. 윈도우 프로그래밍1은 텍스트 문서가 없어 출처 목록을 비워 둔다.</p>
 <ul><li>인자: 없음</li><li>반환: list[CatalogItem]</li></ul>
@@ -1463,7 +1480,7 @@ items.append(CatalogItem(id=&#x27;assignment-windows-programming-1&#x27;, type=&
 add(&#x27;windows-programming&#x27;, &#x27;윈도우프로그래밍2&#x27;, [&#x27;윈도우프로그래밍2&#x27;], [&#x27;document&#x27;])
 반환 items</pre>
 <h4>build_assignment_catalog.add</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:683</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:732</code></p>
 <pre>def add(slug: str, title: str, keywords: list[str], tags: list[str], exclude_contains: list[str] | None=None, extra_sources: list[SourceRef] | None=None)</pre>
 <p>키워드로 과제 파일을 하나 묶어 과제 CatalogItem을 목록에 추가한다. 추가 출처가 있으면 같이 넣는다.</p>
 <ul><li>인자: slug: str, title: str, keywords: list[str], tags: list[str], exclude_contains: list[str] | None = None, extra_sources: list[SourceRef] | None = None</li><li>반환: 없음</li></ul>
@@ -1477,7 +1494,7 @@ srcs ← []
   srcs.extend(extra_sources)
 items.append(CatalogItem(id=f&#x27;assignment-{slug}&#x27;, type=&#x27;assignment&#x27;, ca…</pre>
 <h4>extract_meta_assignment</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:738</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:787</code></p>
 <pre>def extract_meta_assignment(text: str) -&gt; dict[str, str]</pre>
 <p>과제 본문에서 학번, 수강번호, 이름, 지도교수, 제출일 값을 정규식으로 골라 딕셔너리로 돌려준다.</p>
 <ul><li>인자: text: str</li><li>반환: dict[str, str]</li></ul>
@@ -1490,14 +1507,14 @@ patterns ← [(&#x27;학번&#x27;, &#x27;학\\s*번\\s*[:：]\\s*(\\d+)&#x27;), 
     meta[key] ← m.group(1)
 반환 meta</pre>
 <h4>_assignment_line_inner</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:776</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:825</code></p>
 <pre>def _assignment_line_inner(line: str) -&gt; str</pre>
 <p>줄 앞의 글머리표와 중복 공백을 제거한 속 내용을 돌려준다.</p>
 <ul><li>인자: line: str</li><li>반환: str</li></ul>
 <p>유사코드</p>
 <pre>반환 re.sub(&#x27;\\s+&#x27;, &#x27; &#x27;, line.strip().lstrip(&#x27;•-*· &#x27;).strip())</pre>
 <h4>_is_assignment_meta_line</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:781</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:830</code></p>
 <pre>def _is_assignment_meta_line(line: str) -&gt; bool</pre>
 <p>학번, 제출일, 과목명, 학과 줄처럼 과제 표지 메타인지 판별한다.</p>
 <ul><li>인자: line: str</li><li>반환: bool</li></ul>
@@ -1516,7 +1533,7 @@ inner ← _assignment_line_inner(s)
   반환 True
 반환 False</pre>
 <h4>strip_assignment_cover_block</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:798</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:847</code></p>
 <pre>def strip_assignment_cover_block(text: str) -&gt; str</pre>
 <p>표지·과제주제 라벨·학번/제출일 등 메타 구간을 본문(서론·목차 등) 전까지 제거.</p>
 <ul><li>인자: text: str</li><li>반환: str</li></ul>
@@ -1561,7 +1578,7 @@ skip_topic_lines ← False
     kept.append(ln)
 반환 &#x27;\n&#x27;.join(kept)</pre>
 <h4>strip_assignment_meta_text</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:842</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:891</code></p>
 <pre>def strip_assignment_meta_text(text: str) -&gt; str</pre>
 <p>과제 원본에서 학번·제출일·과제주제 표지 등 메타 블록을 제거.</p>
 <ul><li>인자: text: str</li><li>반환: str</li></ul>
@@ -1586,7 +1603,7 @@ kept ← []
   kept.append(ln)
 반환 &#x27;\n&#x27;.join(kept)</pre>
 <h4>is_assignment_meta_bullet</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:878</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:927</code></p>
 <pre>def is_assignment_meta_bullet(bullet: str) -&gt; bool</pre>
 <p>요약 목록에 넣으면 안 되는 표지 정보, 경로, 코드 잡음인지 판별한다.</p>
 <ul><li>인자: bullet: str</li><li>반환: bool</li></ul>
@@ -1607,7 +1624,7 @@ inner ← _assignment_line_inner(s)
   반환 True
 반환 False</pre>
 <h4>summarize_assignment_bullets</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:897</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:946</code></p>
 <pre>def summarize_assignment_bullets(text: str, max_items: int=10) -&gt; list[str]</pre>
 <p>과제 본문에서 표지 메타를 뺀 뒤, 요약에 쓸 불릿을 최대 개수만큼 고른다.</p>
 <ul><li>인자: text: str, max_items: int = 10</li><li>반환: list[str]</li></ul>
@@ -1623,7 +1640,7 @@ out ← []
     반복 종료
 반환 out</pre>
 <h4>_clip_prose</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:911</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:960</code></p>
 <pre>def _clip_prose(s: str, max_len: int=200) -&gt; str</pre>
 <p>문장을 최대 길이로 자르고 말끝을 부드럽게 다듬는다.</p>
 <ul><li>인자: s: str, max_len: int = 200</li><li>반환: str</li></ul>
@@ -1637,7 +1654,7 @@ s ← re.sub(&#x27;^[•\\-\\*·]\\s*&#x27;, &#x27;&#x27;, s)
 clipped ← s[:max_len - 1].rsplit(&#x27; &#x27;, 1)[0]
 반환 soften_sentence(clipped + &#x27;…&#x27;)</pre>
 <h4>_is_readable_assignment_prose</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:923</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:972</code></p>
 <pre>def _is_readable_assignment_prose(line: str) -&gt; bool</pre>
 <p>과제 줄이 사람이 읽을 산문인지 본다. 공백 없는 긴 토큰은 제외한다.</p>
 <ul><li>인자: line: str</li><li>반환: bool</li></ul>
@@ -1649,7 +1666,7 @@ clipped ← s[:max_len - 1].rsplit(&#x27; &#x27;, 1)[0]
   반환 False
 반환 True</pre>
 <h4>extract_assignment_points</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:933</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:982</code></p>
 <pre>def extract_assignment_points(text: str, max_items: int=15) -&gt; list[str]</pre>
 <p>과제 본문에서 서로 다른 읽을 수 있는 줄을 앞에서부터 최대 개수만큼 모은다.</p>
 <ul><li>인자: text: str, max_items: int = 15</li><li>반환: list[str]</li></ul>
@@ -1671,7 +1688,7 @@ seen ← set()
     반복 종료
 반환 points</pre>
 <h4>_split_assignment_sections</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:953</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1002</code></p>
 <pre>def _split_assignment_sections(text: str) -&gt; dict[str, str]</pre>
 <p>서론, 본론, 결론 제목을 기준으로 과제 본문을 세 구간 문자열로 나눈다.</p>
 <ul><li>인자: text: str</li><li>반환: dict[str, str]</li></ul>
@@ -1692,14 +1709,14 @@ active ← &#x27;intro&#x27;
   buffers[active].append(ln)
 반환 {k: &#x27;\n&#x27;.join(v) for k, v in buffers.items() if any((x.strip() for x in…</pre>
 <h4>_has_assignment_section_markers</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:972</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1021</code></p>
 <pre>def _has_assignment_section_markers(text: str) -&gt; bool</pre>
 <p>본문에 서론과 본론 제목이 둘 다 있는지 확인한다.</p>
 <ul><li>인자: text: str</li><li>반환: bool</li></ul>
 <p>유사코드</p>
 <pre>반환 bool(re.search(&#x27;^서론\\s*$&#x27;, text, re.M)) and bool(re.search(&#x27;^본론\\s*$&#x27;, …</pre>
 <h4>_extract_assignment_topics</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:979</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1028</code></p>
 <pre>def _extract_assignment_topics(text: str) -&gt; list[str]</pre>
 <p>목차나 짧은 제목 줄에서 과제 주제 후보를 최대 여섯 개 고른다.</p>
 <ul><li>인자: text: str</li><li>반환: list[str]</li></ul>
@@ -1743,7 +1760,7 @@ prefer ← False
       반복 종료
 반환 topics</pre>
 <h4>_assignment_summary_filler</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:1021</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1070</code></p>
 <pre>def _assignment_summary_filler(item: CatalogItem, index: int) -&gt; str</pre>
 <p>요약 문장이 부족할 때 순번에 맞춰 넣는 기본 문장을 돌려준다.</p>
 <ul><li>인자: item: CatalogItem, index: int</li><li>반환: str</li></ul>
@@ -1751,7 +1768,7 @@ prefer ← False
 <pre>fillers ← [f&#x27;{item.title} 총괄과제에서 요구한 주제랑 형식에 맞춰 답안·산출물을 구성했어요.&#x27;, &#x27;본문·코드·도표·발표 자료 …
 반환 fillers[min(index, len(fillers) - 1)]</pre>
 <h4>_sentence_from_section</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:1039</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1088</code></p>
 <pre>def _sentence_from_section(points: list[str], item: CatalogItem, section_name: str) -&gt; str</pre>
 <p>서론·본론·결론 구간의 첫 문장을 그 구간에 맞는 말투의 한 문장으로 만든다.</p>
 <ul><li>인자: points: list[str], item: CatalogItem, section_name: str</li><li>반환: str</li></ul>
@@ -1762,7 +1779,7 @@ prefer ← False
 core ← _clip_prose(points[0], 52).rstrip(&#x27;.&#x27;)
 반환 f&#x27;{section_name}에서는 {core}를 중심으로 {verb}&#x27;</pre>
 <h4>_compose_summary_from_topics</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:1048</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1097</code></p>
 <pre>def _compose_summary_from_topics(item: CatalogItem, topics: list[str]) -&gt; list[str]</pre>
 <p>주제 세 개로 개요, 본문, 마무리 형식의 요약 문장 세 개를 만든다.</p>
 <ul><li>인자: item: CatalogItem, topics: list[str]</li><li>반환: list[str]</li></ul>
@@ -1773,7 +1790,7 @@ core ← _clip_prose(points[0], 52).rstrip(&#x27;.&#x27;)
 (t0, t1, t2) ← (picks[0], picks[1], picks[2])
 반환 [f&#x27;과제는 「{t0}」 주제로 개요와 배경부터 소개했어요.&#x27;, f&#x27;「{t1}」 파트에서 개념·사례·조사 자료를 표와 도표로 정…</pre>
 <h4>_sentence_from_points</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:1061</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1110</code></p>
 <pre>def _sentence_from_points(points: list[str], opener: str, fallback: str=&#x27;&#x27;) -&gt; str</pre>
 <p>고른 문장의 앞부분을 시작 말과 이어 요약 한 문장으로 만든다.</p>
 <ul><li>인자: points: list[str], opener: str, fallback: str = &#x27;&#x27;</li><li>반환: str</li></ul>
@@ -1784,7 +1801,7 @@ core ← _clip_prose(points[0], 52).rstrip(&#x27;.&#x27;)
 core ← _clip_prose(points[0], 52).rstrip(&#x27;.&#x27;)
 반환 f&quot;{opener.rstrip(&#x27;.&#x27;)} {core}를 다루며 정리했어요.&quot;</pre>
 <h4>build_assignment_content_summary</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:1070</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1119</code></p>
 <pre>def build_assignment_content_summary(item: CatalogItem, all_text: str) -&gt; list[str]</pre>
 <p>과제 본문에서 구어체 한 문장 요약 3개 생성.</p>
 <ul><li>인자: item: CatalogItem, all_text: str</li><li>반환: list[str]</li></ul>
@@ -1831,7 +1848,7 @@ chunks ← [points[:third], points[third:third * 2], points[third * 2:]]
 openers ← [&#x27;앞부분에서는&#x27;, &#x27;중간에서는&#x27;, &#x27;마무리에서는&#x27;]
 …</pre>
 <h4>is_prose_line</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:1148</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1197</code></p>
 <pre>def is_prose_line(line: str) -&gt; bool</pre>
 <p>한글이 있고 코드·로그·너무 짧거나 긴 줄이 아닌 서술 줄인지 판별한다.</p>
 <ul><li>인자: line: str</li><li>반환: bool</li></ul>
@@ -1850,7 +1867,7 @@ ascii_ratio ← sum((1 for c in s if ord(c) &lt; 128)) / len(s)
   반환 False
 반환 True</pre>
 <h4>extract_study_points</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:1165</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1214</code></p>
 <pre>def extract_study_points(text: str, max_items: int=8) -&gt; list[str]</pre>
 <p>노트에서 서술에 쓸 만한 한국어 문장만 추출.</p>
 <ul><li>인자: text: str, max_items: int = 8</li><li>반환: list[str]</li></ul>
@@ -1871,7 +1888,7 @@ seen ← set()
     반복 종료
 반환 points</pre>
 <h4>soften_sentence</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:1184</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1233</code></p>
 <pre>def soften_sentence(s: str) -&gt; str</pre>
 <p>문장 끝의 불필요한 마침표와 &#x27;등의&#x27;를 정리하고, 끝이 없으면 마침표를 붙인다.</p>
 <ul><li>인자: s: str</li><li>반환: str</li></ul>
@@ -1882,7 +1899,7 @@ s ← re.sub(&#x27;\\s*등의\\s*$&#x27;, &#x27;&#x27;, s)
   s ← s 연산 &#x27;.&#x27;
 반환 s</pre>
 <h4>weave_narrative</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:1193</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1242</code></p>
 <pre>def weave_narrative(opener: str, points: list[str], fallback: str=&#x27;&#x27;) -&gt; str</pre>
 <p>고른 문장을 구어체 서술 한 덩어리로 이어 붙인다. 쓸 문장이 없으면 fallback으로 채운다.</p>
 <ul><li>인자: opener: str, points: list[str], fallback: str = &#x27;&#x27;</li><li>반환: str</li></ul>
@@ -1899,7 +1916,7 @@ rest ← &#x27; &#x27;.join(cleaned[3:6])
   반환 f&quot;{opener.rstrip(&#x27;.&#x27;)} {first} 같은 내용을 먼저 잡았고, 이어서 {rest} 부분까지 넓혀 가며 정리했…
 반환 f&quot;{opener.rstrip(&#x27;.&#x27;)} {first} 흐름으로 전반적인 내용을 익혔어요.&quot;</pre>
 <h4>_phase_unit_narratives</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:1213</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1262</code></p>
 <pre>def _phase_unit_narratives(item: CatalogItem) -&gt; list[tuple[str, str]]</pre>
 <p>장·강·일차가 많을 때 앞·중·뒤 구간만 구어체로 요약.</p>
 <ul><li>인자: item: CatalogItem</li><li>반환: list[tuple[str, str]]</li></ul>
@@ -1929,7 +1946,7 @@ blocks ← []
   blocks.append((unit_label, para))
 반환 blocks</pre>
 <h4>build_study_narrative</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:1255</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1304</code></p>
 <pre>def build_study_narrative(item: CatalogItem) -&gt; dict[str, Any]</pre>
 <p>과목 전체를 서술형 구어체로 요약 (원문 나열 없음).</p>
 <ul><li>인자: item: CatalogItem</li><li>반환: dict[str, Any]</li></ul>
@@ -1946,7 +1963,7 @@ main ← STUDY_NARRATIVES.get(item.slug)
 reflection ← f&#x27;돌이켜 보면 {item.title}에서 {item.summary}와 관련된 내용을 차근차근 쌓아 갔어요. 원본 문장을 그대로…
 반환 {&#x27;overview&#x27;: overview, &#x27;main&#x27;: main, &#x27;reflection&#x27;: reflection, &#x27;units&#x27;:…</pre>
 <h4>summarize_bullets</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:1292</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1341</code></p>
 <pre>def summarize_bullets(text: str, max_items: int=10) -&gt; list[str]</pre>
 <p>글머리표, 번호 목록, 긴 줄을 중복 없이 최대 개수만큼 모아 요약 불릿으로 만든다.</p>
 <ul><li>인자: text: str, max_items: int = 10</li><li>반환: list[str]</li></ul>
@@ -1975,7 +1992,7 @@ out ← []
     반복 종료
 반환 out</pre>
 <h4>make_overview</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:1317</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1366</code></p>
 <pre>def make_overview(item: CatalogItem, bullets: list[str]) -&gt; str</pre>
 <p>학습이면 노트 수와 키워드로, 과제이면 수행 기록과 원본 파일 수로 한눈에 보기 문장을 만든다.</p>
 <ul><li>인자: item: CatalogItem, bullets: list[str]</li><li>반환: str</li></ul>
@@ -1987,7 +2004,7 @@ out ← []
   반환 f&#x27;「{item.title}」 학습을 진행하며 {len(item.sources)}개 단위의 노트를 남겼습니다. 주요 키워드: {…
 반환 f&#x27;「{item.title}」 관련 학습 노트를 정리했습니다. 원본 메모가 짧거나 키워드 수준일 수 있습니다.&#x27;</pre>
 <h4>render_windows_programming1_markdown</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:1337</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1386</code></p>
 <pre>def render_windows_programming1_markdown(item: CatalogItem) -&gt; str</pre>
 <p>실행 파일 제출 과제 — 텍스트 원문 없이 프로그램 화면으로 설명.</p>
 <ul><li>인자: item: CatalogItem</li><li>반환: str</li></ul>
@@ -1995,7 +2012,7 @@ out ← []
 <pre>lines ← [&#x27;---&#x27;, f&#x27;id: {item.id}&#x27;, f&#x27;type: {item.type}&#x27;, f&#x27;category: {item.categ…
 반환 &#x27;\n&#x27;.join(lines)</pre>
 <h4>render_markdown</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:1392</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1441</code></p>
 <pre>def render_markdown(item: CatalogItem) -&gt; str</pre>
 <p>카탈로그 항목 하나의 프론트매터와 본문 마크다운을 만든다. 윈도우 프로그래밍1은 별도 형식을 쓴다.</p>
 <ul><li>인자: item: CatalogItem</li><li>반환: str</li></ul>
@@ -2042,7 +2059,7 @@ lines.append(overview + &#x27;\n&#x27;)
   반복 para ← summary_lines
 …</pre>
 <h4>main</h4>
-<p><code>study_note_record_organization/scripts/build_output.py:1476</code></p>
+<p><code>study_note_record_organization/scripts/build_output.py:1525</code></p>
 <pre>def main() -&gt; None</pre>
 <p>학습·과제 요약을 output에 쓰고 catalog.json과 index.md를 갱신한 뒤 정적 사이트 빌드를 호출한다.</p>
 <ul><li>인자: 없음</li><li>반환: None</li></ul>
@@ -2634,7 +2651,7 @@ print(f&#x27; -&gt; PDF 완성: {PDF_PATH} ({PDF_PATH.stat().st_size // 1024} KB
 print(&#x27;[4/4] 빌드 완료! 성공적으로 포트폴리오 북이 생성되었습니다.&#x27;)</pre>
 <h2 class="">생성 산출물</h2>
 <p>다음 파일은 사람이 함수를 적어 둔 소스가 아니다. build_static_site.py를 다시 실행하면 data.js, hero-images.js, sources JSON의 본문이 바뀌므로 그 안에 설명 주석을 넣지 않았다.</p>
-<ul><li>study_note_record_organization/dashboard/js/data.js — 카드 목록, 요약 HTML, 원본 파일 지도를 window.SITE_DATA로 넣는다.</li><li>study_note_record_organization/dashboard/js/hero-images.js — data/image 경로를 window.HERO_IMAGES 배열로 넣는다.</li><li>study_note_record_organization/dashboard/js/sources/*.json — 원본 텍스트 141개. 키와 본문만 담는다.</li></ul>
+<ul><li>study_note_record_organization/dashboard/js/data.js — 카드 목록, 요약 HTML, 원본 파일 지도를 window.SITE_DATA로 넣는다.</li><li>study_note_record_organization/dashboard/js/hero-images.js — data/image 경로를 window.HERO_IMAGES 배열로 넣는다.</li><li>study_note_record_organization/dashboard/js/sources/*.json — 원본 텍스트 168개. 키와 본문만 담는다.</li></ul>
 <h2 class="">학습 원본 파일 목록</h2>
 <p>data 폴더의 노트, 과제 문서, 이미지다. 함수가 없어 파일마다 한 줄만 적는다. 코드 파일은 넣지 않았고, 원문 전문도 넣지 않았다. 학번과 이름은 가렸다.</p>
 <h3>.docx</h3>
@@ -2650,5 +2667,5 @@ print(&#x27;[4/4] 빌드 완료! 성공적으로 포트폴리오 북이 생성�
 <h3>.psd</h3>
 <ul><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/2024신년카드만들기.psd — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/가족사진-2.psd — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/가족사진-편집1.psd — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/가족사진.psd — 학습 기록 원본</li></ul>
 <h3>.txt</h3>
-<ul><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/ANR문제해결 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/바인딩 서비스 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/브로드캐드리시버 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/서비스 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/시스템 파악하기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/안드로이드 기본 앱과 연동하기 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/엑티비티생명주기필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/인텐트 세부사항 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/인텐트 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/잡 스케쥴러.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/콘텐츠 프로바이더.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/테스크관리 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/파이어베이스 쿨라우드 메시징 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/udemy (과정 앞부분 50%미만 수강)/유데미 코틀린 필기 백업2.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/udemy (과정 앞부분 50%미만 수강)/유메니 코틀린 필기 백업.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/1일차 강의노트.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/2일차 강의노트.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/3일차 강의노트.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/4일차 강의노트.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/5일차 강의노트.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/6일차 강의노트.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/1.Flutter Dart 언어 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/2. dart flutter oop 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/3. dart 함수형 프로그래밍.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/4. dart 비동기 프로그래밍.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/코딩펙토리 만원쿠폰.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/10강/10강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/11강/11강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/12강/12강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/13강/13강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/14강/14강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/15강/15강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/1강/1강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/2강/2강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/3강/3강 기록.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/4강/4강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/5강/5강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/6강/6강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/7강/7강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/9강/9강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/일러스트레이터 강의자료 필기/(정리)일러스트레이터 팁.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/일러스트레이터 강의자료 필기/(정리)일스트레이터 입문.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/(정리)포토샵 복습 페스트 캠퍼스.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/Chapter1 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/Chapter2 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/포토샵 파트3 필기 chapter1.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/포토샵 합성 chapter2 요약 정리하기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/포토샵 합성 chapter2 요약.txt — 학습 기록 원본</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 1장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 2장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 3장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 4장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 4장 영상노트.txt — 수강 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 5장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 5장 영상노트.txt — 수강 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 6장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 7장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 8장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 1장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 2장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 3장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 4장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 5장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 6장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 7장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 8장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 코딩면허 시험 문제 풀어보기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/Do it 첫 알고리즘 1장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 첫 알고리즘 2장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 첫 알고리즘 3장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 첫 알고리즘 4장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 첫 알고리즘 5장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 커서로 시작하는 AI 코딩 입문 1일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 커서로 시작하는 AI 코딩 입문 2일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 커서로 시작하는 AI 코딩 입문 3일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 커서로 시작하는 AI 코딩 입문 4일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 커서로 시작하는 AI 코딩 입문 5일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 커서로 시작하는 AI 코딩 입문 6일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! HTML + CSS + 자바스크립트 웹 표준의 정석 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 10일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 11일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 12일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 13일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 14일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 15일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 1일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 2일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 3일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 4일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 5일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 6일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 7일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 8일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 9일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! 모던 자바스크립트 프로그래밍의 정석 실습 필기는 실습위주.txt — 학습 기록 원본</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 10장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 11장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 12장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 1장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 2장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 3장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 4장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 5장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 6장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 7장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 8장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 9장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 서론 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/가장 쉬운 독학 노션 첫걸음 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/과제분류하기/C언어1_총괄과졔 OOO(OOOOOOOO).txt — 과제 제출 원본</li><li>study_note_record_organization/data/과제분류하기/자료구조 최종 과제 (OOOOOOOO OOO).txt — 과제 제출 원본</li><li>study_note_record_organization/data/과제분류하기/컴퓨터네트워크_총괄과제 OOO(OOOOOOOO).txt — 과제 제출 원본</li><li>study_note_record_organization/data/과학동아 323호 AI 공정한가 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/된다! 블로그 10분 작성법 1~2일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/된다! 블로그 10분 작성법 3~ 4일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/된다! 블로그 10분 작성법 5일차 독서 노트.txt — 독서 노트</li><li>study_note_record_organization/data/된다! 블로그 10분 작성법 6일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/된다! 블로그 10분 작성법 7일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/맛있는 디자인 에프터 이펙트 노트는 실습 위주.txt — 학습 기록 원본</li><li>study_note_record_organization/data/맛있는 디자인 일러스트레이터 노트는 실습 위주.txt — 학습 기록 원본</li><li>study_note_record_organization/data/맛있는 디자인 포토샵 노트는 실습 위주.txt — 학습 기록 원본</li><li>study_note_record_organization/data/맛있는 디자인 프리미어 프로 노트는 실습 위주.txt — 학습 기록 원본</li><li>study_note_record_organization/data/소스 코드, 더 비기닝  독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/스마트폰으로 AI영상 제작 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/스토리가 스펙을 이긴다 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 1일차 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 2일차 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 3일차 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 4일차 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 5일차 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 6일차 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 1장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 2장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 3~4장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 5장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 6장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 7장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 8장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 부록 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 프롤로그 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/코딩펙토리 flutter Dart 1강 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/코딩펙토리 flutter Dart 2강 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/코딩펙토리 flutter Dart 3강 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/코딩펙토리 flutter Dart 4강 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 10강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 11강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 12강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 13강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 14강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 15강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 1강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 2강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 3강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 4강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 5강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 6강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 7강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 9강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/트렌드 코리아 2026 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/페스트캠퍼스 일스트레이터 입문 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/페스트캠퍼스 일스트레이터 입문 팁 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/페스트캠퍼스 포토샵 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/프롬프트 텔링 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/피지컬 컴퓨팅 데이터 수집 및 처리 - 노시훈 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/피지컬 컴퓨팅 데이터 수집 및 처리 독서노트.txt — 독서 노트</li></ul>
+<ul><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/ANR문제해결 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/바인딩 서비스 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/브로드캐드리시버 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/서비스 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/시스템 파악하기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/안드로이드 기본 앱과 연동하기 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/엑티비티생명주기필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/인텐트 세부사항 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/인텐트 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/잡 스케쥴러.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/콘텐츠 프로바이더.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/테스크관리 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/파이어베이스 쿨라우드 메시징 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/udemy (과정 앞부분 50%미만 수강)/유데미 코틀린 필기 백업2.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/udemy (과정 앞부분 50%미만 수강)/유메니 코틀린 필기 백업.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/1일차 강의노트.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/2일차 강의노트.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/3일차 강의노트.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/4일차 강의노트.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/5일차 강의노트.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/6일차 강의노트.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/1.Flutter Dart 언어 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/2. dart flutter oop 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/3. dart 함수형 프로그래밍.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/4. dart 비동기 프로그래밍.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/코딩펙토리 만원쿠폰.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/10강/10강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/11강/11강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/12강/12강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/13강/13강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/14강/14강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/15강/15강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/1강/1강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/2강/2강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/3강/3강 기록.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/4강/4강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/5강/5강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/6강/6강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/7강/7강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/9강/9강.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/일러스트레이터 강의자료 필기/(정리)일러스트레이터 팁.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/일러스트레이터 강의자료 필기/(정리)일스트레이터 입문.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/(정리)포토샵 복습 페스트 캠퍼스.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/Chapter1 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/Chapter2 필기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/포토샵 파트3 필기 chapter1.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/포토샵 합성 chapter2 요약 정리하기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/포토샵 합성 chapter2 요약.txt — 학습 기록 원본</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 1장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 2장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 3장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 4장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 4장 영상노트.txt — 수강 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 5장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 5장 영상노트.txt — 수강 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 6장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 7장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 5일만에 끝내는 깃&amp;깃허브 입문 8장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 1장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 2장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 3장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 4장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 5장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 6장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 7장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 8장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 점프 투 파이썬 코딩면허 시험 문제 풀어보기.txt — 학습 기록 원본</li><li>study_note_record_organization/data/Do it 첫 알고리즘 1장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 첫 알고리즘 2장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 첫 알고리즘 3장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 첫 알고리즘 4장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 첫 알고리즘 5장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 커서로 시작하는 AI 코딩 입문 1일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 커서로 시작하는 AI 코딩 입문 2일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 커서로 시작하는 AI 코딩 입문 3일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 커서로 시작하는 AI 코딩 입문 4일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 커서로 시작하는 AI 코딩 입문 5일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it 커서로 시작하는 AI 코딩 입문 6일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! HTML + CSS + 자바스크립트 웹 표준의 정석 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 10일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 11일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 12일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 13일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 14일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 15일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 1일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 2일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 3일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 4일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 5일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 6일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 7일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 8일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 9일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/Do it! 모던 자바스크립트 프로그래밍의 정석 실습 필기는 실습위주.txt — 학습 기록 원본</li><li>study_note_record_organization/data/SSamz 안드로이드 10강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/SSamz 안드로이드 11강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/SSamz 안드로이드 12강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/SSamz 안드로이드 13강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/SSamz 안드로이드 14강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/SSamz 안드로이드 15강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/SSamz 안드로이드 16강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/SSamz 안드로이드 17강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/SSamz 안드로이드 18강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/SSamz 안드로이드 19강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/SSamz 안드로이드 20강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/SSamz 안드로이드 21강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/SSamz 안드로이드 6강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/SSamz 안드로이드 7강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/SSamz 안드로이드 8강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/SSamz 안드로이드 9강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 10장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 11장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 12장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 1장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 2장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 3장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 4장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 5장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 6장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 7장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 8장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 9장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/UI디자인&amp;프로그래밍 서론 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/가장 쉬운 독학 노션 첫걸음 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/과제분류하기/C언어1_총괄과졔 OOO(OOOOOOOO).txt — 과제 제출 원본</li><li>study_note_record_organization/data/과제분류하기/자료구조 최종 과제 (OOOOOOOO OOO).txt — 과제 제출 원본</li><li>study_note_record_organization/data/과제분류하기/컴퓨터네트워크_총괄과제 OOO(OOOOOOOO).txt — 과제 제출 원본</li><li>study_note_record_organization/data/과학동아 323호 AI 공정한가 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/된다! 블로그 10분 작성법 1~2일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/된다! 블로그 10분 작성법 3~ 4일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/된다! 블로그 10분 작성법 5일차 독서 노트.txt — 독서 노트</li><li>study_note_record_organization/data/된다! 블로그 10분 작성법 6일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/된다! 블로그 10분 작성법 7일차 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/맛있는 디자인 에프터 이펙트 노트는 실습 위주.txt — 학습 기록 원본</li><li>study_note_record_organization/data/맛있는 디자인 일러스트레이터 노트는 실습 위주.txt — 학습 기록 원본</li><li>study_note_record_organization/data/맛있는 디자인 포토샵 노트는 실습 위주.txt — 학습 기록 원본</li><li>study_note_record_organization/data/맛있는 디자인 프리미어 프로 노트는 실습 위주.txt — 학습 기록 원본</li><li>study_note_record_organization/data/소스 코드, 더 비기닝  독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/스마트폰으로 AI영상 제작 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/스토리가 스펙을 이긴다 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/에듀펜 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/유데미 HTML CSS 자바스크립트 이력서 1강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/유데미 HTML CSS 자바스크립트 이력서 2강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/유데미 HTML CSS 자바스크립트 이력서 3강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/유데미 HTML CSS 자바스크립트 이력서 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/유데미 코틀린 1강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/유데미 코틀린 2강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 1일차 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 2일차 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 3일차 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 4일차 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 5일차 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 6일차 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 1장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 2장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 3~4장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 5장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 6장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 7장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 8장 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 부록 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/커서AI 트랜드 &amp;활용백과 프롤로그 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/코딩펙토리 flutter Dart 1강 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/코딩펙토리 flutter Dart 2강 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/코딩펙토리 flutter Dart 3강 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/코딩펙토리 flutter Dart 4강 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 10강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 11강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 12강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 13강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 14강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 15강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 1강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 2강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 3강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 4강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 5강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 6강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 7강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/콜로소 바이브 코딩 9강 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/트렌드 코리아 2026 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/페스트캠퍼스 일스트레이터 입문 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/페스트캠퍼스 일스트레이터 입문 팁 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/페스트캠퍼스 포토샵 1장 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/페스트캠퍼스 포토샵 2장 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/페스트캠퍼스 포토샵 3장 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/페스트캠퍼스 포토샵 4장 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/페스트캠퍼스 포토샵 수강노트.txt — 수강 노트</li><li>study_note_record_organization/data/프롬프트 텔링 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/피지컬 컴퓨팅 데이터 수집 및 처리 - 노시훈 독서노트.txt — 독서 노트</li><li>study_note_record_organization/data/피지컬 컴퓨팅 데이터 수집 및 처리 독서노트.txt — 독서 노트</li></ul>
 </body></html>

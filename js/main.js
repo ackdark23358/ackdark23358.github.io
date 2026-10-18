@@ -203,6 +203,25 @@
   }
 
   /**
+   * 좁은 화면에서 자료 드롭다운 하단이 메뉴 패널 밖으로 나가면 #site-nav를 스크롤한다.
+   * @param {Element} dropdown 드롭다운 루트
+   */
+  function scrollMobileNavToDropdown(dropdown) {
+    if (!window.matchMedia("(max-width: 768px)").matches) return;
+    var nav = document.getElementById("site-nav");
+    if (!nav || !nav.classList.contains("is-open")) return;
+    var menu = dropdown.querySelector(".site-nav__dropdown-menu");
+    if (!menu) return;
+    requestAnimationFrame(function () {
+      var navRect = nav.getBoundingClientRect();
+      var menuRect = menu.getBoundingClientRect();
+      if (menuRect.bottom > navRect.bottom - 8) {
+        nav.scrollTop += menuRect.bottom - navRect.bottom + 16;
+      }
+    });
+  }
+
+  /**
    * 자료 드롭다운 하나의 열림 상태, 버튼 표시, 메뉴 숨김을 맞춘다.
    * @param {Element} dropdown 드롭다운 루트
    * @param {boolean} open 열지 여부
@@ -213,6 +232,7 @@
     dropdown.classList.toggle("is-open", open);
     if (toggle) toggle.setAttribute("aria-expanded", open ? "true" : "false");
     if (menu) menu.hidden = !open;
+    if (open) scrollMobileNavToDropdown(dropdown);
   }
 
   /**

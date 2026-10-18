@@ -312,9 +312,38 @@ function setStoredTheme(theme)
 ```
 
 
+#### scrollMobileNavToDropdown
+
+`js/main.js:209`
+
+```
+function scrollMobileNavToDropdown(dropdown)
+```
+
+좁은 화면에서 자료 드롭다운 하단이 메뉴 패널 밖으로 나가면 #site-nav를 스크롤한다.
+
+- 인자: dropdown: Element 드롭다운 루트
+- 반환: 없음
+
+유사코드
+
+```
+만약 !window.matchMedia("(max-width: 768px)").matches) return
+nav ← document.getElementById("site-nav")
+만약 !nav || !nav.classList.contains("is-open")) return
+menu ← dropdown.querySelector(".site-nav__dropdown-menu")
+만약 !menu) return
+requestAnimationFrame(function ()
+  navRect ← nav.getBoundingClientRect()
+  menuRect ← menu.getBoundingClientRect()
+  만약 menuRect.bottom > navRect.bottom - 8
+    nav.scrollTop += menuRect.bottom - navRect.bottom + 16
+```
+
+
 #### setResourceDropdown
 
-`js/main.js:210`
+`js/main.js:229`
 
 ```
 function setResourceDropdown(dropdown, open)
@@ -333,12 +362,13 @@ menu ← dropdown.querySelector(".site-nav__dropdown-menu")
 dropdown.classList.toggle("is-open", open)
 만약 toggle) toggle.setAttribute("aria-expanded", open ? "true" : "false"
 만약 menu) menu.hidden = !open
+만약 open) scrollMobileNavToDropdown(dropdown
 ```
 
 
 #### closeResourceDropdowns
 
-`js/main.js:222`
+`js/main.js:242`
 
 ```
 function closeResourceDropdowns(except)
@@ -360,7 +390,7 @@ queryAll(".site-nav__dropdown").forEach(function (dropdown)
 
 #### closeMobileNav
 
-`js/main.js:234`
+`js/main.js:254`
 
 ```
 function closeMobileNav(nav, toggle)
@@ -380,7 +410,7 @@ setMobileNav(nav, toggle, false)
 
 #### setMobileNav
 
-`js/main.js:245`
+`js/main.js:265`
 
 ```
 function setMobileNav(nav, toggle, open)
@@ -404,7 +434,7 @@ toggle.setAttribute("aria-label", open ? "메뉴 닫기" : "메뉴 열기")
 
 #### debounce
 
-`js/main.js:260`
+`js/main.js:280`
 
 ```
 function debounce(fn, wait)
@@ -427,7 +457,7 @@ t
 
 #### initSectionTargets
 
-`js/main.js:271`
+`js/main.js:291`
 
 ```
 function initSectionTargets()
@@ -2570,7 +2600,7 @@ def load_sources(self) -> None
 
 #### normalize_study_title
 
-`study_note_record_organization/scripts/build_output.py:562`
+`study_note_record_organization/scripts/build_output.py:606`
 
 ```
 def normalize_study_title(filename: str) -> str
@@ -2598,7 +2628,7 @@ n ← re.sub('\\s+통합\\(단순합치기\\).*$', '', n)
 
 #### collect_study_groups
 
-`study_note_record_organization/scripts/build_output.py:580`
+`study_note_record_organization/scripts/build_output.py:624`
 
 ```
 def collect_study_groups() -> dict[str, list[str]]
@@ -2637,13 +2667,13 @@ merged ← {}
 
 #### build_study_catalog
 
-`study_note_record_organization/scripts/build_output.py:611`
+`study_note_record_organization/scripts/build_output.py:658`
 
 ```
 def build_study_catalog() -> list[CatalogItem]
 ```
 
-과목 그룹이 37개가 아니면 감사 파일을 남기고 중단한다. 맞으면 학습 CatalogItem 목록을 만든다.
+과목 그룹이 기대 개수가 아니면 감사 파일을 남기고 중단한다. 맞으면 학습 CatalogItem 목록을 만든다.
 
 - 인자: 없음
 - 반환: list[CatalogItem]
@@ -2652,15 +2682,15 @@ def build_study_catalog() -> list[CatalogItem]
 
 ```
 (groups, skipped_hwpx) ← collect_study_groups()
-만약 len(groups) != 37
+만약 len(groups) != EXPECTED_STUDY_GROUPS
   report ← OUT / 'study-audit.txt'
-  lines ← [f'학습 그룹 수: {len(groups)} (기대: 37)', f'제외 hwpx: {len(skipped_hwpx)}', '…
+  lines ← [f'학습 그룹 수: {len(groups)} (기대: {EXPECTED_STUDY_GROUPS})', f'제외 hwpx: {l…
   반복 k ← sorted(groups)
     lines.append(f' [{len(groups[k]):2d}] {k}')
   만약 skipped_hwpx
     lines.extend(['', '=== 제외 hwpx ===', *[f' {x}' for x in skipped_hwpx]])
   report.write_text('\n'.join(lines), encoding='utf-8')
-  중단 SystemExit(f'학습 과목 수가 37개가 아닙니다 ({len(groups)}개). output/study-audit.tx…
+  중단 SystemExit(f'학습 과목 수가 {EXPECTED_STUDY_GROUPS}개가 아닙니다 ({len(groups)}개). …
 items ← []
 반복 title ← sorted(groups.keys())
   paths ← groups[title]
@@ -2679,7 +2709,7 @@ items ← []
 
 #### find_assign_file
 
-`study_note_record_organization/scripts/build_output.py:660`
+`study_note_record_organization/scripts/build_output.py:709`
 
 ```
 def find_assign_file(files: list[str], keywords: list[str], used: set[str], exclude_contains: list[str] | None=None) -> str | None
@@ -2708,7 +2738,7 @@ excludes ← exclude_contains or []
 
 #### build_assignment_catalog
 
-`study_note_record_organization/scripts/build_output.py:674`
+`study_note_record_organization/scripts/build_output.py:723`
 
 ```
 def build_assignment_catalog() -> list[CatalogItem]
@@ -2750,7 +2780,7 @@ add('windows-programming', '윈도우프로그래밍2', ['윈도우프로그래�
 
 #### build_assignment_catalog.add
 
-`study_note_record_organization/scripts/build_output.py:683`
+`study_note_record_organization/scripts/build_output.py:732`
 
 ```
 def add(slug: str, title: str, keywords: list[str], tags: list[str], exclude_contains: list[str] | None=None, extra_sources: list[SourceRef] | None=None)
@@ -2777,7 +2807,7 @@ items.append(CatalogItem(id=f'assignment-{slug}', type='assignment', ca…
 
 #### extract_meta_assignment
 
-`study_note_record_organization/scripts/build_output.py:738`
+`study_note_record_organization/scripts/build_output.py:787`
 
 ```
 def extract_meta_assignment(text: str) -> dict[str, str]
@@ -2803,7 +2833,7 @@ patterns ← [('학번', '학\\s*번\\s*[:：]\\s*(\\d+)'), ('수강번호', '�
 
 #### _assignment_line_inner
 
-`study_note_record_organization/scripts/build_output.py:776`
+`study_note_record_organization/scripts/build_output.py:825`
 
 ```
 def _assignment_line_inner(line: str) -> str
@@ -2823,7 +2853,7 @@ def _assignment_line_inner(line: str) -> str
 
 #### _is_assignment_meta_line
 
-`study_note_record_organization/scripts/build_output.py:781`
+`study_note_record_organization/scripts/build_output.py:830`
 
 ```
 def _is_assignment_meta_line(line: str) -> bool
@@ -2855,7 +2885,7 @@ inner ← _assignment_line_inner(s)
 
 #### strip_assignment_cover_block
 
-`study_note_record_organization/scripts/build_output.py:798`
+`study_note_record_organization/scripts/build_output.py:847`
 
 ```
 def strip_assignment_cover_block(text: str) -> str
@@ -2913,7 +2943,7 @@ skip_topic_lines ← False
 
 #### strip_assignment_meta_text
 
-`study_note_record_organization/scripts/build_output.py:842`
+`study_note_record_organization/scripts/build_output.py:891`
 
 ```
 def strip_assignment_meta_text(text: str) -> str
@@ -2951,7 +2981,7 @@ kept ← []
 
 #### is_assignment_meta_bullet
 
-`study_note_record_organization/scripts/build_output.py:878`
+`study_note_record_organization/scripts/build_output.py:927`
 
 ```
 def is_assignment_meta_bullet(bullet: str) -> bool
@@ -2985,7 +3015,7 @@ inner ← _assignment_line_inner(s)
 
 #### summarize_assignment_bullets
 
-`study_note_record_organization/scripts/build_output.py:897`
+`study_note_record_organization/scripts/build_output.py:946`
 
 ```
 def summarize_assignment_bullets(text: str, max_items: int=10) -> list[str]
@@ -3014,7 +3044,7 @@ out ← []
 
 #### _clip_prose
 
-`study_note_record_organization/scripts/build_output.py:911`
+`study_note_record_organization/scripts/build_output.py:960`
 
 ```
 def _clip_prose(s: str, max_len: int=200) -> str
@@ -3041,7 +3071,7 @@ clipped ← s[:max_len - 1].rsplit(' ', 1)[0]
 
 #### _is_readable_assignment_prose
 
-`study_note_record_organization/scripts/build_output.py:923`
+`study_note_record_organization/scripts/build_output.py:972`
 
 ```
 def _is_readable_assignment_prose(line: str) -> bool
@@ -3066,7 +3096,7 @@ s ← line.strip()
 
 #### extract_assignment_points
 
-`study_note_record_organization/scripts/build_output.py:933`
+`study_note_record_organization/scripts/build_output.py:982`
 
 ```
 def extract_assignment_points(text: str, max_items: int=15) -> list[str]
@@ -3101,7 +3131,7 @@ seen ← set()
 
 #### _split_assignment_sections
 
-`study_note_record_organization/scripts/build_output.py:953`
+`study_note_record_organization/scripts/build_output.py:1002`
 
 ```
 def _split_assignment_sections(text: str) -> dict[str, str]
@@ -3135,7 +3165,7 @@ active ← 'intro'
 
 #### _has_assignment_section_markers
 
-`study_note_record_organization/scripts/build_output.py:972`
+`study_note_record_organization/scripts/build_output.py:1021`
 
 ```
 def _has_assignment_section_markers(text: str) -> bool
@@ -3155,7 +3185,7 @@ def _has_assignment_section_markers(text: str) -> bool
 
 #### _extract_assignment_topics
 
-`study_note_record_organization/scripts/build_output.py:979`
+`study_note_record_organization/scripts/build_output.py:1028`
 
 ```
 def _extract_assignment_topics(text: str) -> list[str]
@@ -3212,7 +3242,7 @@ prefer ← False
 
 #### _assignment_summary_filler
 
-`study_note_record_organization/scripts/build_output.py:1021`
+`study_note_record_organization/scripts/build_output.py:1070`
 
 ```
 def _assignment_summary_filler(item: CatalogItem, index: int) -> str
@@ -3233,7 +3263,7 @@ fillers ← [f'{item.title} 총괄과제에서 요구한 주제랑 형식에 맞
 
 #### _sentence_from_section
 
-`study_note_record_organization/scripts/build_output.py:1039`
+`study_note_record_organization/scripts/build_output.py:1088`
 
 ```
 def _sentence_from_section(points: list[str], item: CatalogItem, section_name: str) -> str
@@ -3257,7 +3287,7 @@ core ← _clip_prose(points[0], 52).rstrip('.')
 
 #### _compose_summary_from_topics
 
-`study_note_record_organization/scripts/build_output.py:1048`
+`study_note_record_organization/scripts/build_output.py:1097`
 
 ```
 def _compose_summary_from_topics(item: CatalogItem, topics: list[str]) -> list[str]
@@ -3281,7 +3311,7 @@ picks ← topics[:3]
 
 #### _sentence_from_points
 
-`study_note_record_organization/scripts/build_output.py:1061`
+`study_note_record_organization/scripts/build_output.py:1110`
 
 ```
 def _sentence_from_points(points: list[str], opener: str, fallback: str='') -> str
@@ -3305,7 +3335,7 @@ core ← _clip_prose(points[0], 52).rstrip('.')
 
 #### build_assignment_content_summary
 
-`study_note_record_organization/scripts/build_output.py:1070`
+`study_note_record_organization/scripts/build_output.py:1119`
 
 ```
 def build_assignment_content_summary(item: CatalogItem, all_text: str) -> list[str]
@@ -3365,7 +3395,7 @@ openers ← ['앞부분에서는', '중간에서는', '마무리에서는']
 
 #### is_prose_line
 
-`study_note_record_organization/scripts/build_output.py:1148`
+`study_note_record_organization/scripts/build_output.py:1197`
 
 ```
 def is_prose_line(line: str) -> bool
@@ -3397,7 +3427,7 @@ ascii_ratio ← sum((1 for c in s if ord(c) < 128)) / len(s)
 
 #### extract_study_points
 
-`study_note_record_organization/scripts/build_output.py:1165`
+`study_note_record_organization/scripts/build_output.py:1214`
 
 ```
 def extract_study_points(text: str, max_items: int=8) -> list[str]
@@ -3431,7 +3461,7 @@ seen ← set()
 
 #### soften_sentence
 
-`study_note_record_organization/scripts/build_output.py:1184`
+`study_note_record_organization/scripts/build_output.py:1233`
 
 ```
 def soften_sentence(s: str) -> str
@@ -3455,7 +3485,7 @@ s ← re.sub('\\s*등의\\s*$', '', s)
 
 #### weave_narrative
 
-`study_note_record_organization/scripts/build_output.py:1193`
+`study_note_record_organization/scripts/build_output.py:1242`
 
 ```
 def weave_narrative(opener: str, points: list[str], fallback: str='') -> str
@@ -3485,7 +3515,7 @@ rest ← ' '.join(cleaned[3:6])
 
 #### _phase_unit_narratives
 
-`study_note_record_organization/scripts/build_output.py:1213`
+`study_note_record_organization/scripts/build_output.py:1262`
 
 ```
 def _phase_unit_narratives(item: CatalogItem) -> list[tuple[str, str]]
@@ -3528,7 +3558,7 @@ blocks ← []
 
 #### build_study_narrative
 
-`study_note_record_organization/scripts/build_output.py:1255`
+`study_note_record_organization/scripts/build_output.py:1304`
 
 ```
 def build_study_narrative(item: CatalogItem) -> dict[str, Any]
@@ -3558,7 +3588,7 @@ reflection ← f'돌이켜 보면 {item.title}에서 {item.summary}와 관련된
 
 #### summarize_bullets
 
-`study_note_record_organization/scripts/build_output.py:1292`
+`study_note_record_organization/scripts/build_output.py:1341`
 
 ```
 def summarize_bullets(text: str, max_items: int=10) -> list[str]
@@ -3600,7 +3630,7 @@ out ← []
 
 #### make_overview
 
-`study_note_record_organization/scripts/build_output.py:1317`
+`study_note_record_organization/scripts/build_output.py:1366`
 
 ```
 def make_overview(item: CatalogItem, bullets: list[str]) -> str
@@ -3625,7 +3655,7 @@ def make_overview(item: CatalogItem, bullets: list[str]) -> str
 
 #### render_windows_programming1_markdown
 
-`study_note_record_organization/scripts/build_output.py:1337`
+`study_note_record_organization/scripts/build_output.py:1386`
 
 ```
 def render_windows_programming1_markdown(item: CatalogItem) -> str
@@ -3646,7 +3676,7 @@ lines ← ['---', f'id: {item.id}', f'type: {item.type}', f'category: {item.cate
 
 #### render_markdown
 
-`study_note_record_organization/scripts/build_output.py:1392`
+`study_note_record_organization/scripts/build_output.py:1441`
 
 ```
 def render_markdown(item: CatalogItem) -> str
@@ -3706,7 +3736,7 @@ lines.append(overview + '\n')
 
 #### main
 
-`study_note_record_organization/scripts/build_output.py:1476`
+`study_note_record_organization/scripts/build_output.py:1525`
 
 ```
 def main() -> None
@@ -4749,7 +4779,7 @@ print('[4/4] 빌드 완료! 성공적으로 포트폴리오 북이 생성되었�
 
 - study_note_record_organization/dashboard/js/data.js — 카드 목록, 요약 HTML, 원본 파일 지도를 window.SITE_DATA로 넣는다.
 - study_note_record_organization/dashboard/js/hero-images.js — data/image 경로를 window.HERO_IMAGES 배열로 넣는다.
-- study_note_record_organization/dashboard/js/sources/*.json — 원본 텍스트 141개. 키와 본문만 담는다.
+- study_note_record_organization/dashboard/js/sources/*.json — 원본 텍스트 168개. 키와 본문만 담는다.
 
 
 ## 학습 원본 파일 목록
@@ -5086,6 +5116,22 @@ data 폴더의 노트, 과제 문서, 이미지다. 함수가 없어 파일마�
 - study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 8일차 독서노트.txt — 독서 노트
 - study_note_record_organization/data/Do it! Node.js 프로그래밍 입문 9일차 독서노트.txt — 독서 노트
 - study_note_record_organization/data/Do it! 모던 자바스크립트 프로그래밍의 정석 실습 필기는 실습위주.txt — 학습 기록 원본
+- study_note_record_organization/data/SSamz 안드로이드 10강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/SSamz 안드로이드 11강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/SSamz 안드로이드 12강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/SSamz 안드로이드 13강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/SSamz 안드로이드 14강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/SSamz 안드로이드 15강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/SSamz 안드로이드 16강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/SSamz 안드로이드 17강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/SSamz 안드로이드 18강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/SSamz 안드로이드 19강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/SSamz 안드로이드 20강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/SSamz 안드로이드 21강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/SSamz 안드로이드 6강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/SSamz 안드로이드 7강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/SSamz 안드로이드 8강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/SSamz 안드로이드 9강 수강노트.txt — 수강 노트
 - study_note_record_organization/data/UI디자인&프로그래밍 10장 독서노트.txt — 독서 노트
 - study_note_record_organization/data/UI디자인&프로그래밍 11장 독서노트.txt — 독서 노트
 - study_note_record_organization/data/UI디자인&프로그래밍 12장 독서노트.txt — 독서 노트
@@ -5116,6 +5162,13 @@ data 폴더의 노트, 과제 문서, 이미지다. 함수가 없어 파일마�
 - study_note_record_organization/data/소스 코드, 더 비기닝  독서노트.txt — 독서 노트
 - study_note_record_organization/data/스마트폰으로 AI영상 제작 독서노트.txt — 독서 노트
 - study_note_record_organization/data/스토리가 스펙을 이긴다 독서노트.txt — 독서 노트
+- study_note_record_organization/data/에듀펜 수강노트.txt — 수강 노트
+- study_note_record_organization/data/유데미 HTML CSS 자바스크립트 이력서 1강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/유데미 HTML CSS 자바스크립트 이력서 2강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/유데미 HTML CSS 자바스크립트 이력서 3강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/유데미 HTML CSS 자바스크립트 이력서 수강노트.txt — 수강 노트
+- study_note_record_organization/data/유데미 코틀린 1강 수강노트.txt — 수강 노트
+- study_note_record_organization/data/유데미 코틀린 2강 수강노트.txt — 수강 노트
 - study_note_record_organization/data/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 1일차 수강노트.txt — 수강 노트
 - study_note_record_organization/data/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 2일차 수강노트.txt — 수강 노트
 - study_note_record_organization/data/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 3일차 수강노트.txt — 수강 노트
@@ -5152,6 +5205,10 @@ data 폴더의 노트, 과제 문서, 이미지다. 함수가 없어 파일마�
 - study_note_record_organization/data/트렌드 코리아 2026 독서노트.txt — 독서 노트
 - study_note_record_organization/data/페스트캠퍼스 일스트레이터 입문 수강노트.txt — 수강 노트
 - study_note_record_organization/data/페스트캠퍼스 일스트레이터 입문 팁 수강노트.txt — 수강 노트
+- study_note_record_organization/data/페스트캠퍼스 포토샵 1장 수강노트.txt — 수강 노트
+- study_note_record_organization/data/페스트캠퍼스 포토샵 2장 수강노트.txt — 수강 노트
+- study_note_record_organization/data/페스트캠퍼스 포토샵 3장 수강노트.txt — 수강 노트
+- study_note_record_organization/data/페스트캠퍼스 포토샵 4장 수강노트.txt — 수강 노트
 - study_note_record_organization/data/페스트캠퍼스 포토샵 수강노트.txt — 수강 노트
 - study_note_record_organization/data/프롬프트 텔링 독서노트.txt — 독서 노트
 - study_note_record_organization/data/피지컬 컴퓨팅 데이터 수집 및 처리 - 노시훈 독서노트.txt — 독서 노트

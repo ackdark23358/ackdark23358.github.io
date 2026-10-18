@@ -34,10 +34,10 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 9pt; backgro
 <p><code>index.html</code>은 지원 동기, 성장·학습, 역량, 자료, 강점, 마치며, 참고 절을 담은 정적 페이지다. 동작은 <code>js/main.js</code>가 맡는다. 즉시 실행 함수 하나가 내비게이션, 자료 드롭다운, 테마를 연결한다. 상단 막대의 배치와 색은 <code>css/site-header.css</code>가, 본문 절의 배치는 <code>css/styles.css</code>가 맡는다.</p>
 <p><code>index.html</code>의 읽는 조각은 이렇다.</p>
 <ul><li><code>header.site-header</code>: 브랜드, <code>nav#site-nav</code>, 테마 버튼</li><li>절 링크: <code>#section-motivation</code>, <code>#section-growth</code>, <code>#section-skills</code>, <code>#section-strengths</code>, <code>#section-closing</code>, <code>#section-refs</code></li><li>자료 드롭다운: 같은 페이지의 <code>#section-links</code>, 그리고 자기소개, 명함, 이력서, 학습 기록으로 나가는 링크</li><li><code>main#main</code>: 히어로 문구와 본문 절</li></ul>
-<p><code>css/site-header.css</code>는 <code>html[data-theme=&quot;light&quot;]</code>일 때의 색, 링크와 햄버거 버튼의 포커스, 768px 이하에서 메뉴를 접는 배치를 정한다. 769px 이상에서는 메뉴가 한 줄로 펼쳐진다. <code>css/styles.css</code>는 메인 본문의 히어로, 절, 카드 간격을 정하고 테마 변수에 맞춰 글자색을 바꾼다.</p>
+<p><code>css/site-header.css</code>는 <code>html[data-theme=&quot;light&quot;]</code>일 때의 색, 링크와 햄버거 버튼의 포커스, 768px 이하에서 메뉴를 접는 배치를 정한다. 열린 패널은 <code>calc(100dvh - 헤더)</code>까지 허용하고 <code>overflow-y: auto</code>로 스크롤한다. 769px 이상에서는 메뉴가 한 줄로 펼쳐진다. <code>css/styles.css</code>는 메인 본문의 히어로, 절, 카드 간격과 메인 전용 자료 드롭다운·모바일 <code>#site-nav</code> 스크롤을 정하고 테마 변수에 맞춰 글자색을 바꾼다.</p>
 <h2>읽는 순서</h2>
 <p>파일은 저장 키와 도우미부터 선언하고, 맨 아래에서 DOM이 준비되면 초기화 함수 넷을 부른다.</p>
-<ol><li><code>prefersReducedMotion</code>, <code>queryAll</code>, <code>queryAllIn</code></li><li><code>initSmoothNav</code>, <code>initResourceDropdown</code>, <code>initThemeToggle</code></li><li><code>applyTheme</code>, <code>getStoredTheme</code>, <code>setStoredTheme</code></li><li><code>setResourceDropdown</code>, <code>closeResourceDropdowns</code>, <code>closeMobileNav</code>, <code>setMobileNav</code>, <code>debounce</code></li><li><code>initSectionTargets</code></li><li><code>DOMContentLoaded</code> 또는 이미 준비된 문서에서 초기화</li></ol>
+<ol><li><code>prefersReducedMotion</code>, <code>queryAll</code>, <code>queryAllIn</code></li><li><code>initSmoothNav</code>, <code>initResourceDropdown</code>, <code>initThemeToggle</code></li><li><code>applyTheme</code>, <code>getStoredTheme</code>, <code>setStoredTheme</code></li><li><code>scrollMobileNavToDropdown</code>, <code>setResourceDropdown</code>, <code>closeResourceDropdowns</code>, <code>closeMobileNav</code>, <code>setMobileNav</code>, <code>debounce</code></li><li><code>initSectionTargets</code></li><li><code>DOMContentLoaded</code> 또는 이미 준비된 문서에서 초기화</li></ol>
 <p>테마 저장 키는 <code>portfolio-theme-v2</code>다. 다른 페이지의 테마 스크립트도 같은 키를 쓴다.</p>
 <h2>구간 설명</h2>
 <h3>prefersReducedMotion</h3>
@@ -61,8 +61,10 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 9pt; backgro
 <p>인자 <code>theme</code>은 <code>light</code>만 라이트로 두고 나머지는 <code>dark</code>로 정규화한다. 되돌리는 값은 없다. <code>html</code>의 <code>data-theme</code>를 바꾸고, 버튼의 <code>aria-pressed</code>는 다크일 때 <code>true</code>다. <code>aria-label</code>은 지금 테마의 반대로 전환한다고 안내하고, <code>[data-theme-label]</code> 문구는 <code>다크</code> 또는 <code>라이트</code>다.</p>
 <h3>getStoredTheme, setStoredTheme</h3>
 <p><code>getStoredTheme</code>는 <code>localStorage.getItem</code> 결과를 돌려준다. 읽기가 실패하면 <code>null</code>이다. <code>setStoredTheme</code>는 같은 키에 쓴다. 쓰기가 실패하면 예외를 삼키므로 메모리와 화면만 바뀌고 다음 방문에는 기본값으로 돌아간다.</p>
+<h3>scrollMobileNavToDropdown</h3>
+<p>768px 이하이고 <code>#site-nav</code>가 열려 있을 때만 동작한다. 드롭다운 메뉴의 아래쪽이 패널 밖으로 나가면 <code>#site-nav</code>의 <code>scrollTop</code>을 올려 <strong>프로젝트 아카이브</strong> 같은 마지막 링크까지 보이게 한다. <code>requestAnimationFrame</code> 한 번 뒤에 위치를 본다.</p>
 <h3>setResourceDropdown, closeResourceDropdowns</h3>
-<p><code>setResourceDropdown(dropdown, open)</code>은 <code>is-open</code> 클래스, 버튼의 <code>aria-expanded</code>, 메뉴의 <code>hidden</code>을 같이 맞춘다. <code>closeResourceDropdowns(except)</code>는 <code>except</code>와 같은 요소만 남기고 나머지를 닫는다. <code>except</code>를 생략하면 전부 닫는다.</p>
+<p><code>setResourceDropdown(dropdown, open)</code>은 <code>is-open</code> 클래스, 버튼의 <code>aria-expanded</code>, 메뉴의 <code>hidden</code>을 같이 맞춘다. <code>open</code>이 참이면 <code>scrollMobileNavToDropdown</code>을 이어서 부른다. <code>closeResourceDropdowns(except)</code>는 <code>except</code>와 같은 요소만 남기고 나머지를 닫는다. <code>except</code>를 생략하면 전부 닫는다.</p>
 <h3>closeMobileNav, setMobileNav</h3>
 <p><code>closeMobileNav</code>는 <code>setMobileNav(..., false)</code>다. <code>setMobileNav</code>는 <code>nav</code>나 <code>toggle</code>이 없으면 아무 것도 하지 않는다. 열림이면 <code>is-open</code>과 <code>메뉴 닫기</code>, 닫힘이면 클래스 제거와 <code>메뉴 열기</code>다. 닫을 때만 <code>closeResourceDropdowns</code>를 부른다.</p>
 <h3>debounce</h3>
