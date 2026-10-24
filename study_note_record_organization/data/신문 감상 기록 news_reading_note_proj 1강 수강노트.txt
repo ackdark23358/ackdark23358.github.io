@@ -1,0 +1,15 @@
+1강
+
+Cursor AI 바이브 코딩으로 news_reading_note_proj(신문 감상 기록)를 기획했다.
+매일경제를 읽으며 남긴 글을 한곳에 모아, 날짜·주제·강조로 다시 읽고 싶었다.
+
+블로그 형태보다 book.php에서 책처럼 넘기며 읽는 UI를 선택했다.
+감상 본문은 내가 직접 쓴 글이고, 화면·빌드·문서 구조는 Cursor AI와 함께 작성·다듬었다.
+
+스택은 PHP 8.1+, MySQL, Vanilla CSS/JS.
+Ask·Plan으로 요구와 닷홈 배포 제약을 정리하고, Agent로 PHP·CSS·관리 화면을 구현하는 패턴을 익혔다.
+
+공개 화면: index.php(통계·최근·주제), archive.php(차례), note.php(날짜별 글),
+theme.php(주제별), book.php(양장본 노트). /admin/은 비공개 링크로 CRUD.
+
+원문 백업 txt → build.php → seed.sql·dist 배포 모델을 README에 먼저 고정하는 습관을 들였다.

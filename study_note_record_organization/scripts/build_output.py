@@ -377,6 +377,18 @@ STUDY_META: dict[str, tuple[str, str, list[str], str]] = {
         ["ai", "agent"],
         "book",
     ),
+    "신문 감상 기록 news_reading_note_proj": (
+        "news-reading-note-proj",
+        "Cursor·PHP·MySQL 매일경제 감상 아카이브·노트 UI",
+        ["cursor", "ai", "php", "mysql", "web"],
+        "course",
+    ),
+    "하루일과 milestone_schdule": (
+        "milestone-schdule",
+        "Cursor·PHP·MySQL 날짜별 할일 캘린더(Aurora UI)",
+        ["cursor", "ai", "php", "mysql", "javascript"],
+        "course",
+    ),
 }
 
 # 과목별 서술형 구어체 요약 (원문 메모를 그대로 나열하지 않음)
@@ -600,6 +612,16 @@ STUDY_NARRATIVES: dict[str, str] = {
         "에이전트 개념·도구·활용 방향을 훑으며 "
         "Cursor·AI 코딩과 연결해 본 학습이었어요."
     ),
+    "news-reading-note-proj": (
+        "Cursor AI로 매일경제 감상을 모아 두는 news_reading_note_proj를 직접 만든 기록이에요. "
+        "txt 원문·build.php·MySQL·book.php 노트 UI까지 바이브 코딩으로 이어 갔고, "
+        "닷홈 배포와 documentation PDF 파이프라인까지 한 저장소에서 맞춰 두었어요."
+    ),
+    "milestone-schdule": (
+        "날짜별 할일을 캘린더에 남기는 milestone_schdule(하루일과)를 Cursor로 구현한 프로젝트예요. "
+        "Aurora UI·PHP JSON API·MySQL journals CRUD를 바닐라 JS 한 페이지에 묶었고, "
+        "doc-publication PDF와 닷홈 FTP 배포까지 정리해 둔 학습이에요."
+    ),
 }
 
 
@@ -652,7 +674,7 @@ def collect_study_groups() -> dict[str, list[str]]:
     return merged, skipped_hwpx
 
 
-EXPECTED_STUDY_GROUPS = 41
+EXPECTED_STUDY_GROUPS = 43
 
 
 def build_study_catalog() -> list[CatalogItem]:

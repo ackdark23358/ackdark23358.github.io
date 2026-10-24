@@ -1,0 +1,16 @@
+2강
+
+php scripts/build.php 가 매일경제신문 감상노트 백업 txt를 읽어 database/seed.sql을 만들고
+공개용 PHP를 dist/에 모은다. 백업 텍스트 자체는 빌드가 수정하지 않는다.
+
+scripts/lib/journal.php 로 txt 파싱·주제·하이라이트 날짜를 맞출 수 있다.
+MySQL이 없어도 site/를 문서 루트로 띄우면 fallback으로 공개 화면을 채울 수 있다.
+
+로컬: php -S localhost:8000 -t site (DB 없이 빠르게)
+DB와 동일하게: schema.sql → seed.sql import 후 dist 또는 site 서빙.
+
+book.php UX를 Cursor와 반복 설계했다.
+양면·단면, 방향키·스와이프, 책갈피·차례 모달, 가로 화면 차단, 페이지 높이는 창에 맞춤.
+넘치는 페이지만 내부 스크롤. CSS/JS는 캐시 무효화로 배포 후 새로고침 반영.
+
+database/sync_from_localhost_sql.php 로 닷홈 덤프와 백업 txt·seed를 맞추는 흐름도 정리했다.

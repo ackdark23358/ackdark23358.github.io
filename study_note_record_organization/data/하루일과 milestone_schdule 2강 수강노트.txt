@@ -1,0 +1,19 @@
+2강
+
+api/ PHP: db.php(PDO·JSON·세션), login.php(config admin만), session.php, logout.php.
+journal.php·save-journal.php·list-dates.php로 날짜별 할일 JSON CRUD.
+
+config.sample.php → config.php (DB·admin password_hash). 공개 저장소에는 올리지 않음.
+security 블록: debug_db_enabled false, login_max_attempts IP 제한.
+
+브라우저 localStorage: haru_theme 다크 모드, 캘린더 ✓ 표시 보조 캐시.
+「DB 날짜 새로고침」→ list-dates.php로 ✓ 날짜 갱신.
+해당 날짜 할일을 모두 지우고 저장하면 DB journal·캘린더 ✓ 제거.
+
+js/app.js 에 로그인·캘린더·모달 CRUD·테마·API 호출이 모여 있다.
+user-validation.js 로 아이디·닉네임·비밀번호 클라이언트 검증.
+
+로컬 실행: npx serve . 또는 php -S localhost:8080.
+DB API는 localhost 또는 HTTPS 권장.
+
+Cursor Agent로 API·스타일·반응형(1280/960/768/640px, 100dvh, 가로 스와이프 방지)을 iteratively 수정했다.
