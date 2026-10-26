@@ -2,7 +2,7 @@
 
 ## 이 파일이 맡는 일
 
-`portfolio_achieve/index.html`은 지원자가 실습하고 개발한 9개 실습 프로젝트(`PROJ_01` ~ `PROJ_09`) 및 6개 기관 과정 프로젝트(`PROJ_10` ~ `PROJ_15`)를 카드로 모아 총 15개 프로젝트를 제공하는 아카이브 메인 페이지다.
+`portfolio_achieve/index.html`은 지원자가 실습하고 개발한 9개 실습 프로젝트(`PROJ_01` ~ `PROJ_09`), 6개 기관 과정(`PROJ_10` ~ `PROJ_15`), Cursor 바이브 코딩 완성 2건(`PROJ_16` 신문 감상 기록, `PROJ_17` 하루일과)을 카드로 모아 총 17개 프로젝트를 제공하는 아카이브 메인 페이지다.
 
 각 프로젝트 카드는 소개, 사용 도구(Pill 태그), 실행 환경, 간단 설명, 핵심 기능을 균일한 시맨틱 카드(`<article class="project-card">`) 구조로 담고 있으며, 외부 이동 없이 단일 페이지 내에서 일목요연하게 열람할 수 있도록 구성되었다.
 
@@ -15,7 +15,7 @@
 1. 테마 및 리소스 보호 메타 태그 (`robots`, `tdm-reservation`, `referrer`)
 2. 상단 헤더 및 자료 드롭다운 네비게이션
 3. 히어로 소개 구역 (`#archive`)
-4. 프로젝트 카드 그리드 목록 (`#archive-list`, `PROJ_01` ~ `PROJ_15`)
+4. 프로젝트 카드 그리드 목록 (`#archive-list`, `PROJ_01` ~ `PROJ_17`)
 5. 전개형 사이트맵 및 저작권·선언문 푸터
 6. 테마 및 인터랙션 스크립트 (`js/site.js`, `../js/protect-resources.js`)
 
