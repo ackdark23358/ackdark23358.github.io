@@ -36,7 +36,7 @@ HTML 조각은 `#subtitle`, `#info-compose`, `#note`, `#footer-count`, `#search`
 
 ### renderIntro
 
-카탈로그를 돌며 `type`이 `study`와 `assignment`인 개수를 센다. 그 외 종류는 총계에만 들어간다. `#subtitle`에는 고정 소개 문구를 넣는다. `#info-compose`에는 학습 건수와 과제 건수를 HTML로 넣는다. 숫자는 카탈로그에서 세므로 태그가 되지 않는다. `#note`에는 총개수와 두 빌드 명령을 적는다. `#footer-count`는 `총 N개 기록`이다. 요소가 없으면 그 칸만 건너뛴다.
+카탈로그를 돌며 `type`이 `study`와 `assignment`인 개수를 센다. 그 외 종류는 총계에만 들어간다. `#subtitle`에는 고정 소개 문구를 넣는다. `#info-compose`에는 학습 건수와 과제 건수를 HTML로 넣는다. 숫자는 카탈로그에서 세므로 태그가 되지 않는다. `#note`에는 총개수와 두 빌드 명령을 적는다. `#footer-count`는 `총 N개 기록`이다. 푸터 줄은 그 기록 수, 정적 HTML/CSS/JavaScript, 코탐록 메인 링크만 두고 빌드 명령은 적지 않는다. 요소가 없으면 그 칸만 건너뛴다.
 
 ### filteredItems, renderGrid
 

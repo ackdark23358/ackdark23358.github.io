@@ -58,7 +58,7 @@
 
 `build_study_catalog`는 그룹 수가 42가 아니면 `output/study-audit.txt`에 그룹 이름과 hwpx 목록을 쓰고 `SystemExit`로 중단한다. 42이면 제목순으로 `CatalogItem`을 만든다. `STUDY_META`에 있으면 슬러그, 한 줄 요약, 태그, 분류를 그대로 쓴다. 없으면 제목으로 슬러그를 만들고 요약은 `제목 학습 노트`, 태그는 `study`, 분류는 제목에 `Do it`이 있으면 `book` 아니면 `course`다. 분류 값은 `book`(독서), `course`(강의), `cert`(자격), `tool`(도구)이다. 과학동아 두 호는 `book`이고, 온라인 강의와 SSamz 안드로이드는 `course`다. id는 `study-슬러그`다. 출처의 `unit`은 `parse_unit`이다.
 
-`STUDY_NARRATIVES`는 슬러그별 고정 서술이다. `STUDY_CREDITS`는 저자, 출판사, 읽고 남기거나 수강한 사실을 한 문장으로 둔다. `build_study_narrative`는 그 문장이 본문 앞에 없으면 붙인 뒤, 원문에서 뽑은 단계 문단과 묶어 `overview`, `main`, `reflection`, `units`를 돌려준다. 원문이 짧으면 `weave_narrative`와 `soften_sentence`가 문장을 다듬고, 점이 없으면 안내 문장으로 채운다.
+`STUDY_NARRATIVES`는 슬러그별 고정 서술이다. `STUDY_CREDITS`는 독서면 이름 저자의 『제목』 - 출판사를 읽고 남긴 문장, 강의면 강사가와 수강한 사실을 한 문장으로 둔다. `build_study_narrative`는 그 문장이 본문 앞에 없으면 붙인 뒤, 원문에서 뽑은 단계 문단과 묶어 `overview`, `main`, `reflection`, `units`를 돌려준다. 원문이 짧으면 `weave_narrative`와 `soften_sentence`가 문장을 다듬고, 점이 없으면 안내 문장으로 채운다.
 
 ### 과제 카탈로그
 
