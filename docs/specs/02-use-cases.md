@@ -89,6 +89,6 @@ flowchart LR
 
 - 행위자: 작성자
 - 사전조건: `study_note_record_organization`에서 파이썬을 실행할 수 있고, `data/`에 노트와 과제 문서가 있다.
-- 기본 흐름: `python scripts/build_output.py`를 실행한다. 학습 41그룹과 과제 카탈로그가 만들어지고, 요약 마크다운과 `catalog.json`이 쓰인 뒤 `build_static_site.py`가 `data.js`, 원본 JSON, 히어로 목록을 갱신한다.
-- 대안 흐름: 학습 그룹 수가 41이 아니면 `output/study-audit.txt`를 남기고 중단한다. `catalog.json`이 없는데 정적 빌드만 실행하면 중단한다. 결과 파일이 크기 한도를 넘으면 중단한다.
+- 기본 흐름: `python scripts/build_output.py`를 실행한다. 학습 42그룹과 과제 카탈로그가 만들어지고, 요약 마크다운과 `catalog.json`이 쓰인 뒤 `build_static_site.py`가 `data.js`, 원본 JSON, 히어로 목록을 갱신한다.
+- 대안 흐름: 학습 그룹 수가 42가 아니면 `output/study-audit.txt`를 남기고 중단한다. `catalog.json`이 없는데 정적 빌드만 실행하면 중단한다. 결과 파일이 크기 한도를 넘으면 중단한다.
 - 사후조건: 대시보드가 새 카드와 원본을 읽을 수 있다.

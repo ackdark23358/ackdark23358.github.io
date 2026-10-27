@@ -315,9 +315,9 @@ HTML 조각은 `#subtitle`, `#info-compose`, `#note`, `#footer-count`, `#search`
 
 ### filteredItems, renderGrid
 
-`filteredItems`는 `searchQuery`의 앞뒤 공백을 지우고 소문자로 만든다. 비어 있으면 카탈로그 전체를 돌려준다. 있으면 제목, 요약, 종류, 태그를 한 문자열로 붙여 그 안에 검색어가 있는 항목만 남긴다. 태그가 없으면 빈 배열로 둔다.
+`filteredItems`는 `searchQuery`의 앞뒤 공백을 지우고 소문자로 만든다. 비어 있으면 카탈로그 전체를 돌려준다. 있으면 제목, 요약, 종류, 배지 문구, 태그를 한 문자열로 붙여 그 안에 검색어가 있는 항목만 남긴다. 태그가 없으면 빈 배열로 둔다. 배지 문구는 `book`이 독서, `course`가 강의, `cert`가 자격, `tool`이 도구다.
 
-`renderGrid`는 `#grid`를 비운다. 결과가 없으면 `#empty`의 `hidden`을 제거하고 돌아간다. 있으면 빈 문구를 숨기고, 항목마다 `button.card.card--종류`를 만든다. 라벨은 `study`면 `STUDY NOTE`, `assignment`면 `ASSIGNMENT`, 그 외는 `RECORD`다. 제목과 요약은 `escapeHtml`을 거친다. 요약이 없으면 `요약 없음`이다. 클릭하면 그 항목으로 `openModal`을 부른다.
+`renderGrid`는 `#grid`를 비운다. 결과가 없으면 `#empty`의 `hidden`을 제거하고 돌아간다. 있으면 빈 문구를 숨기고, 항목마다 `button.card.card--종류`를 만든다. 라벨은 `study`면 `STUDY NOTE`, `assignment`면 `ASSIGNMENT`, 그 외는 `RECORD`다. 학습 카드에는 그 옆에 배지를 둔다. 배지 문구는 독서, 강의, 자격, 도구 네 가지뿐이다. 과제 카드에는 배지를 붙이지 않는다. 제목과 요약은 `escapeHtml`을 거친다. 요약이 없으면 `요약 없음`이다. 클릭하면 그 항목으로 `openModal`을 부른다. 요약 모달의 윗줄에도 같은 라벨과 배지를 둔다.
 
 ### 원본 가리기와 평문
 
@@ -475,9 +475,9 @@ HTML 조각은 `#hero`, `#hero-stage`, `#hero-img-a`, `#hero-img-b`다. 두 이�
 
 `collect_study_groups`는 `data/` 바로 아래 파일만 본다. `.hwpx`는 건너뛰고 이름만 따로 모은다. `.txt`와 `.docx`만 과목 이름 아래로 모은다. `STUDY_MERGE_ALIASES`에 있으면 별칭을 같은 과목 키로 합친다. 각 묶음은 `sort_key_unit`으로 정렬한다. 그룹 딕셔너리와 건너뛴 hwpx 목록을 돌려준다.
 
-`build_study_catalog`는 그룹 수가 41이 아니면 `output/study-audit.txt`에 그룹 이름과 hwpx 목록을 쓰고 `SystemExit`로 중단한다. 41이면 제목순으로 `CatalogItem`을 만든다. `STUDY_META`에 있으면 슬러그, 한 줄 요약, 태그, 분류를 그대로 쓴다. 없으면 제목으로 슬러그를 만들고 요약은 `제목 학습 노트`, 태그는 `study`, 분류는 제목에 `Do it`이 있으면 `book` 아니면 `course`다. id는 `study-슬러그`다. 출처의 `unit`은 `parse_unit`이다.
+`build_study_catalog`는 그룹 수가 42가 아니면 `output/study-audit.txt`에 그룹 이름과 hwpx 목록을 쓰고 `SystemExit`로 중단한다. 42이면 제목순으로 `CatalogItem`을 만든다. `STUDY_META`에 있으면 슬러그, 한 줄 요약, 태그, 분류를 그대로 쓴다. 없으면 제목으로 슬러그를 만들고 요약은 `제목 학습 노트`, 태그는 `study`, 분류는 제목에 `Do it`이 있으면 `book` 아니면 `course`다. 분류 값은 `book`(독서), `course`(강의), `cert`(자격), `tool`(도구)이다. 과학동아 두 호는 `book`이고, 온라인 강의와 SSamz 안드로이드는 `course`다. id는 `study-슬러그`다. 출처의 `unit`은 `parse_unit`이다.
 
-`STUDY_NARRATIVES`는 슬러그별 고정 서술이다. `build_study_narrative`는 그 문장과 원문에서 뽑은 단계 문단을 묶어 `overview`, `main`, `reflection`, `units`를 돌려준다. 원문이 짧으면 `weave_narrative`와 `soften_sentence`가 문장을 다듬고, 점이 없으면 안내 문장으로 채운다.
+`STUDY_NARRATIVES`는 슬러그별 고정 서술이다. `STUDY_CREDITS`는 저자, 출판사, 읽고 남기거나 수강한 사실을 한 문장으로 둔다. `build_study_narrative`는 그 문장이 본문 앞에 없으면 붙인 뒤, 원문에서 뽑은 단계 문단과 묶어 `overview`, `main`, `reflection`, `units`를 돌려준다. 원문이 짧으면 `weave_narrative`와 `soften_sentence`가 문장을 다듬고, 점이 없으면 안내 문장으로 채운다.
 
 ### 과제 카탈로그
 
@@ -505,7 +505,7 @@ HTML 조각은 `#hero`, `#hero-stage`, `#hero-img-a`, `#hero-img-b`다. 두 이�
 
 ### main
 
-`output/study`, `output/assignment`, `output/_extracted`를 만든다. `build_study_catalog`가 41이 아니면 여기서 중단되므로 과제 카탈로그까지 가지 않는다. 통과하면 `build_assignment_catalog`를 부르고, 모든 항목에 `load_sources`를 한다.
+`output/study`, `output/assignment`, `output/_extracted`를 만든다. `build_study_catalog`가 42가 아니면 여기서 중단되므로 과제 카탈로그까지 가지 않는다. 통과하면 `build_assignment_catalog`를 부르고, 모든 항목에 `load_sources`를 한다.
 
 이번 슬러그에 없는 예전 `.md`는 두 출력 폴더에서 지운다. 각 항목의 `render_markdown` 결과를 `study` 또는 `assignment` 폴더의 `슬러그.md`로 쓴다. `catalog.json`에는 id, 종류, 분류, 제목, 슬러그, 요약, 태그, 출력 경로, 출처 경로와 단위를 넣는다. `index.md`는 학습과 과제 링크 목록이다.
 
@@ -567,13 +567,13 @@ HTML 조각은 `#hero`, `#hero-stage`, `#hero-img-a`, `#hero-img-b`다. 두 이�
 
 `source_chunk_filename`은 원본 키 해시 8자와 본문 해시 8자를 이어 `키-본문.json` 이름을 만든다. 본문이 바뀌면 파일 이름이 바뀐다.
 
-`source_build_id`는 정렬한 `키:파일이름` 전체를 해시해 12자를 돌려준다. `stamp_index_scripts`는 `dashboard/index.html`에서 `js/data.js`와 `js/app.js`의 기존 쿼리를 지우고 `?v=빌드아이디`를 붙인다. `hero.js` 주소는 바꾸지 않는다.
+`source_build_id`는 정렬한 `키:파일이름` 전체를 해시해 12자를 돌려준다. `stamp_index_scripts`는 그 값에 `app.js`와 `styles.css` 해시를 더해 12자 토큰을 만든다. `dashboard/index.html`에서 `js/data.js`, `js/app.js`, `css/styles.css`의 기존 쿼리를 지우고 `?v=토큰`을 붙인다. `hero.js` 주소는 바꾸지 않는다.
 
 `assert_under_github_limit`은 파일 크기가 100MB를 넘으면 `SystemExit`로 빌드를 멈춘다. 청크마다, 그리고 `data.js`를 쓴 뒤에 호출한다.
 
 ### collect_catalog, build_site
 
-`collect_catalog`는 `catalog.json`의 `items`에서 `id`, `type`, `title`, `slug`, `summary`, `tags`만 남긴다. 요약이 없으면 빈 문자열, 태그가 없으면 빈 배열이다. 분류와 출처 목록은 카드 데이터에 넣지 않는다.
+`collect_catalog`는 `catalog.json`의 `items`에서 `id`, `type`, `category`, `title`, `slug`, `summary`, `tags`를 남긴다. 요약이 없으면 빈 문자열, 태그가 없으면 빈 배열이다. `category`는 카드 배지에 쓴다. 출처 목록은 카드 데이터에 넣지 않는다.
 
 `build_site`는 `catalog.json`이 없으면 `python scripts/build_output.py`를 먼저 실행하라는 메시지로 중단한다.
 

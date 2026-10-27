@@ -50,13 +50,13 @@
 
 `source_chunk_filename`은 원본 키 해시 8자와 본문 해시 8자를 이어 `키-본문.json` 이름을 만든다. 본문이 바뀌면 파일 이름이 바뀐다.
 
-`source_build_id`는 정렬한 `키:파일이름` 전체를 해시해 12자를 돌려준다. `stamp_index_scripts`는 `dashboard/index.html`에서 `js/data.js`와 `js/app.js`의 기존 쿼리를 지우고 `?v=빌드아이디`를 붙인다. `hero.js` 주소는 바꾸지 않는다.
+`source_build_id`는 정렬한 `키:파일이름` 전체를 해시해 12자를 돌려준다. `stamp_index_scripts`는 그 값에 `app.js`와 `styles.css` 해시를 더해 12자 토큰을 만든다. `dashboard/index.html`에서 `js/data.js`, `js/app.js`, `css/styles.css`의 기존 쿼리를 지우고 `?v=토큰`을 붙인다. `hero.js` 주소는 바꾸지 않는다.
 
 `assert_under_github_limit`은 파일 크기가 100MB를 넘으면 `SystemExit`로 빌드를 멈춘다. 청크마다, 그리고 `data.js`를 쓴 뒤에 호출한다.
 
 ### collect_catalog, build_site
 
-`collect_catalog`는 `catalog.json`의 `items`에서 `id`, `type`, `title`, `slug`, `summary`, `tags`만 남긴다. 요약이 없으면 빈 문자열, 태그가 없으면 빈 배열이다. 분류와 출처 목록은 카드 데이터에 넣지 않는다.
+`collect_catalog`는 `catalog.json`의 `items`에서 `id`, `type`, `category`, `title`, `slug`, `summary`, `tags`를 남긴다. 요약이 없으면 빈 문자열, 태그가 없으면 빈 배열이다. `category`는 카드 배지에 쓴다. 출처 목록은 카드 데이터에 넣지 않는다.
 
 `build_site`는 `catalog.json`이 없으면 `python scripts/build_output.py`를 먼저 실행하라는 메시지로 중단한다.
 

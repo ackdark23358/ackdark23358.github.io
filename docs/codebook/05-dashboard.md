@@ -40,9 +40,9 @@ HTML 조각은 `#subtitle`, `#info-compose`, `#note`, `#footer-count`, `#search`
 
 ### filteredItems, renderGrid
 
-`filteredItems`는 `searchQuery`의 앞뒤 공백을 지우고 소문자로 만든다. 비어 있으면 카탈로그 전체를 돌려준다. 있으면 제목, 요약, 종류, 태그를 한 문자열로 붙여 그 안에 검색어가 있는 항목만 남긴다. 태그가 없으면 빈 배열로 둔다.
+`filteredItems`는 `searchQuery`의 앞뒤 공백을 지우고 소문자로 만든다. 비어 있으면 카탈로그 전체를 돌려준다. 있으면 제목, 요약, 종류, 배지 문구, 태그를 한 문자열로 붙여 그 안에 검색어가 있는 항목만 남긴다. 태그가 없으면 빈 배열로 둔다. 배지 문구는 `book`이 독서, `course`가 강의, `cert`가 자격, `tool`이 도구다.
 
-`renderGrid`는 `#grid`를 비운다. 결과가 없으면 `#empty`의 `hidden`을 제거하고 돌아간다. 있으면 빈 문구를 숨기고, 항목마다 `button.card.card--종류`를 만든다. 라벨은 `study`면 `STUDY NOTE`, `assignment`면 `ASSIGNMENT`, 그 외는 `RECORD`다. 제목과 요약은 `escapeHtml`을 거친다. 요약이 없으면 `요약 없음`이다. 클릭하면 그 항목으로 `openModal`을 부른다.
+`renderGrid`는 `#grid`를 비운다. 결과가 없으면 `#empty`의 `hidden`을 제거하고 돌아간다. 있으면 빈 문구를 숨기고, 항목마다 `button.card.card--종류`를 만든다. 라벨은 `study`면 `STUDY NOTE`, `assignment`면 `ASSIGNMENT`, 그 외는 `RECORD`다. 학습 카드에는 그 옆에 배지를 둔다. 배지 문구는 독서, 강의, 자격, 도구 네 가지뿐이다. 과제 카드에는 배지를 붙이지 않는다. 제목과 요약은 `escapeHtml`을 거친다. 요약이 없으면 `요약 없음`이다. 클릭하면 그 항목으로 `openModal`을 부른다. 요약 모달의 윗줄에도 같은 라벨과 배지를 둔다.
 
 ### 원본 가리기와 평문
 

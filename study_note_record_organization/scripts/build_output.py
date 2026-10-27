@@ -25,7 +25,7 @@ UNIT_RE = re.compile(
     re.I,
 )
 NOTE_SUFFIX_RE = re.compile(
-    r"\s*(독서\s*노트|독서노트|수강노트|영상노트|독서 노트)\s*$",
+    r"\s*(독서\s*노트|독서노트|수강노트|영상노트|독서 노트|감상\s*노트|감상노트)\s*$",
     re.I,
 )
 
@@ -305,6 +305,7 @@ STUDY_MERGE_ALIASES: dict[str, str] = {
     "커서AI 트랜드 &활용백과 부록": "커서AI 트랜드 &활용백과",
     "커서AI 트랜드 &활용백과 3~4장": "커서AI 트랜드 &활용백과",
     "된다! 블로그 10분 작성법 3~": "된다! 블로그 10분 작성법",
+    "한국 2027 트랜드  초개인화시대의 서막": "한국 2027 트렌드 : 초개인화 시대의 서막",
     "피지컬 컴퓨팅 데이터 수집 및 처리 - 노시훈": "피지컬 컴퓨팅 데이터 수집 및 처리",
     "페스트캠퍼스 일스트레이터 입문 팁": "페스트캠퍼스 일스트레이터 입문",
 }
@@ -330,16 +331,22 @@ STUDY_META: dict[str, tuple[str, str, list[str], str]] = {
     "그래도 나아간다는 믿음": ("faith-forward", "자기계발·믿음", ["self-help"], "book"),
     "꿈은 이루어진다": ("dreams-come-true", "자기계발·목표", ["self-help"], "book"),
     "대기업을 이긴 한국의 스타트업": ("korean-startups", "스타트업·비즈니스", ["startup", "business"], "book"),
-    "맛있는 디자인 에프터 이펙트": ("tasty-after-effects", "AE 실습", ["after-effects", "design"], "course"),
-    "맛있는 디자인 일러스트레이터": ("tasty-illustrator", "일러스트 실습", ["illustrator", "design"], "course"),
-    "맛있는 디자인 포토샵": ("tasty-photoshop", "포토샵 실습", ["photoshop", "design"], "course"),
-    "맛있는 디자인 프리미어 프로": ("tasty-premiere", "프리미어 실습", ["premiere", "video"], "course"),
+    "맛있는 디자인 에프터 이펙트": ("tasty-after-effects", "AE 실습", ["after-effects", "design"], "book"),
+    "맛있는 디자인 일러스트레이터": ("tasty-illustrator", "일러스트 실습", ["illustrator", "design"], "book"),
+    "맛있는 디자인 포토샵": ("tasty-photoshop", "포토샵 실습", ["photoshop", "design"], "book"),
+    "맛있는 디자인 프리미어 프로": ("tasty-premiere", "프리미어 실습", ["premiere", "video"], "book"),
     "소스 코드, 더 비기닝": ("source-code-beginning", "IT 역사·스타트업", ["history", "startup"], "book"),
     "스마트폰으로 AI영상 제작": ("smartphone-ai-video", "모바일 AI 영상", ["ai", "video"], "book"),
     "스토리가 스펙을 이긴다": ("story-beats-spec", "스토리·커리어", ["career", "story"], "book"),
     "요즘 바이브 코딩 커서 AI 30가지 프로그램만들기": ("vibe-coding-30-apps", "바이브 코딩 30 프로젝트", ["cursor", "ai"], "book"),
     "정치가 왜이래": ("politics-why", "정치·시사", ["politics"], "book"),
     "트렌드 코리아 2026": ("trend-korea-2026", "2026 트렌드", ["trend", "business"], "book"),
+    "한국 2027 트렌드 : 초개인화 시대의 서막": (
+        "korea-2027-hyper-personalization",
+        "2027 초개인화 시대",
+        ["trend", "ai"],
+        "book",
+    ),
     "패스트캠퍼스 안드로이드 코틀린": ("fastcampus-android-kotlin", "안드로이드·Kotlin", ["android", "kotlin"], "course"),
     "퍼플렉시티 완벽가이드": ("perplexity-guide", "Perplexity AI 활용", ["ai", "search"], "book"),
     "페스트캠퍼스 일스트레이터 입문": ("fastcampus-illustrator", "일러스트레이터 입문·팁", ["illustrator", "design"], "course"),
@@ -540,6 +547,12 @@ STUDY_NARRATIVES: dict[str, str] = {
         "앞으로 어떤 키워드가 뜰지 "
         "미리 훑어 보며 시야를 넓힌 독서였어요."
     ),
+    "korea-2027-hyper-personalization": (
+        "맞춤 추천을 넘어 선택·판단·감성까지 세분화하는 초개인화와, "
+        "일상 속 AI 비서·개인정보 투명성·인간 중심을 어떻게 볼지 정리했어요. "
+        "가짜 콘텐츠와 시니어·아이·지역 공동체, 인간의 존엄과 AI 통제까지 "
+        "기술을 사람 편에서 돌아본 독서였어요."
+    ),
     "fastcampus-android-kotlin": (
         "안드로이드 앱 개발을 Kotlin으로 입문한 강의예요. "
         "앱 구조·Kotlin 문법·기본 화면을 익히며 "
@@ -607,12 +620,12 @@ def normalize_study_title(filename: str) -> str:
     """노트 파일 이름에서 장·일차 번호와 독서노트·수강노트 꼬리를 떼고 과목 이름만 남긴다."""
     n = filename.replace(".txt", "").replace(".docx", "")
     n = re.sub(
-        r"\s+(\d+[~\-]?\d*\s*)?(장|일차|강|주차)\s*(독서\s*노트|독서노트|수강노트|영상노트|독서 노트)\s*$",
+        r"\s+(\d+[~\-]?\d*\s*)?(장|일차|강|주차)\s*(독서\s*노트|독서노트|수강노트|영상노트|독서 노트|감상\s*노트|감상노트)\s*$",
         "",
         n,
         flags=re.I,
     )
-    n = re.sub(r"\s+(독서노트|수강노트|영상노트|독서 노트)\s*$", "", n, flags=re.I)
+    n = re.sub(r"\s+(독서노트|수강노트|영상노트|독서 노트|감상노트|감상 노트)\s*$", "", n, flags=re.I)
     n = re.sub(r"\s+코딩면허.*$", "", n, flags=re.I)
     n = re.sub(r"\s+노트는\s*실습.*$", "", n, flags=re.I)
     n = re.sub(r"\s+실습\s*필기.*$", "", n, flags=re.I)
@@ -652,7 +665,7 @@ def collect_study_groups() -> dict[str, list[str]]:
     return merged, skipped_hwpx
 
 
-EXPECTED_STUDY_GROUPS = 41
+EXPECTED_STUDY_GROUPS = 42
 
 
 def build_study_catalog() -> list[CatalogItem]:
@@ -1301,6 +1314,107 @@ def _phase_unit_narratives(item: CatalogItem) -> list[tuple[str, str]]:
     return blocks
 
 
+# 슬러그별 서지. 원본 노트 첫줄과 같이, 저자·출판사·읽거나 수강한 사실을 카드 앞에 둔다.
+STUDY_CREDITS: dict[str, str] = {
+    "korea-2027-hyper-personalization": (
+        "이혜정이 북크크에서 낸 『한국 2027 트렌드 : 초개인화 시대의 서막』을 읽고 남긴 독서예요."
+    ),
+    "ai-agent-encyclopedia": (
+        "김덕진·김아람이 스마트북스에서 낸 『AI 에이전트 트렌드&활용백과』를 읽고 남긴 독서예요."
+    ),
+    "doit-git-github": (
+        "고경희·이고잉이 이지스퍼블리싱에서 낸 『Do it! 5일 만에 끝내는 깃&깃허브 입문』을 읽고 남긴 독서예요."
+    ),
+    "doit-android-kotlin": (
+        "강성윤이 이지스퍼블리싱에서 낸 『Do it! 깡샘의 안드로이드 앱 프로그래밍 with 코틀린』을 읽고 남긴 독서예요."
+    ),
+    "doit-jump-python": (
+        "박응용이 이지스퍼블리싱에서 낸 『Do it! 점프 투 파이썬』을 읽고 남긴 독서예요."
+    ),
+    "doit-first-algorithm": (
+        "마쓰우라 겐이치로·쓰카사 유키가 쓰고 노은정이 옮긴, 이지스퍼블리싱의 『Do it! 첫 알고리즘』을 읽고 남긴 독서예요."
+    ),
+    "doit-cursor-ai-intro": (
+        "고경희가 이지스퍼블리싱에서 낸 『Do it! 커서로 시작하는 AI 코딩 입문』을 읽고 남긴 독서예요."
+    ),
+    "doit-html-css-js": (
+        "고경희가 이지스퍼블리싱에서 낸 『Do it! HTML+CSS+자바스크립트 웹 표준의 정석』을 읽고 남긴 독서예요."
+    ),
+    "doit-nodejs": (
+        "고경희가 이지스퍼블리싱에서 낸 『Do it! Node.js 프로그래밍 입문』을 읽고 남긴 독서예요."
+    ),
+    "doit-modern-javascript": (
+        "고경희가 이지스퍼블리싱에서 낸 『Do it! 모던 자바스크립트 프로그래밍의 정석』을 읽고 남긴 독서예요."
+    ),
+    "ssamz-android": (
+        "강성윤의 쌤즈 인강과 이지스퍼블리싱 책 『Do it! 깡샘의 안드로이드 앱 프로그래밍 with 코틀린』을 함께 보고 남긴 수강·독서예요."
+    ),
+    "ui-design-programming": (
+        "도카시키 마모루가 쓰고 이윤혜가 옮긴, 정보문화사의 『안드로이드 애플리케이션 UI 디자인 & 프로그래밍』을 읽고 남긴 독서예요."
+    ),
+    "notion-first-steps": (
+        "원정민이 동양북스에서 낸 『가장 쉬운 독학 노션 첫걸음』을 읽고 남긴 독서예요."
+    ),
+    "science-donga-323": (
+        "과학동아 편집부가 동아사이언스에서 낸 『과학동아 323호 AI 공정한가』를 읽고 남긴 독서예요."
+    ),
+    "science-donga-40": (
+        "과학동아 편집부가 동아사이언스에서 낸 창간 40주년 특집 『AI 특이점, 그후 40년』을 읽고 남긴 독서예요."
+    ),
+    "faith-forward": (
+        "서창록이 북스톤에서 낸 『그래도 나아간다는 믿음』을 읽고 남긴 독서예요."
+    ),
+    "dreams-come-true": (
+        "홍준표가 실크로드에서 낸 『꿈은 이루어진다』를 읽고 남긴 독서예요."
+    ),
+    "korean-startups": (
+        "임성준이 호우야에서 낸 『대기업을 이긴 한국의 스타트업』을 읽고 남긴 독서예요."
+    ),
+    "blog-10min": (
+        "코예커플(김상준·강예진)이 이지스퍼블리싱에서 낸 『된다! 블로그 10분 작성법』을 읽고 남긴 독서예요."
+    ),
+    "tasty-after-effects": (
+        "이수정이 한빛미디어에서 낸 『맛있는 디자인 애프터 이펙트』를 실습하며 읽고 남긴 노트예요."
+    ),
+    "tasty-illustrator": (
+        "빨간고래(박정아)가 한빛미디어에서 낸 『맛있는 디자인 일러스트레이터』를 실습하며 읽고 남긴 노트예요."
+    ),
+    "tasty-photoshop": (
+        "윤이사라·김신애가 한빛미디어에서 낸 『맛있는 디자인 포토샵』을 실습하며 읽고 남긴 노트예요."
+    ),
+    "tasty-premiere": (
+        "심수진·윤성우·이수정이 한빛미디어에서 낸 『맛있는 디자인 프리미어 프로』를 실습하며 읽고 남긴 노트예요."
+    ),
+    "source-code-beginning": (
+        "빌 게이츠가 쓰고 안진환이 옮긴, 열린책들의 『소스 코드: 더 비기닝』을 읽고 남긴 독서예요."
+    ),
+    "smartphone-ai-video": (
+        "진한 보라색이 작가와에서 낸 『스마트폰으로 AI영상 제작』을 읽고 남긴 독서예요."
+    ),
+    "story-beats-spec": (
+        "김정태가 쓰고 웅진씽크빅(갤리온)에서 낸 『스토리가 스펙을 이긴다』를 읽고 남긴 독서예요."
+    ),
+    "vibe-coding-30-apps": (
+        "박현규가 골든래빗에서 낸 『요즘 바이브 코딩 커서 AI 30가지 프로그램 만들기』를 읽고 남긴 독서예요."
+    ),
+    "politics-why": (
+        "홍준표가 실크로드에서 낸 『정치가 왜이래』를 읽고 남긴 독서예요."
+    ),
+    "cursor-ai-encyclopedia": (
+        "서승완이 스마트북스에서 낸 『커서AI 트렌드&활용백과』를 읽고 남긴 독서예요."
+    ),
+    "coloso-vibe-coding": (
+        "서승완의 콜로소 강의 『바이브 코딩』을 수강하며 남긴 노트예요. 강의는 커서 설치와 FTP 호스팅으로 시작합니다."
+    ),
+    "prompt-telling": (
+        "로사장이 필름에서 낸 『프롬프트 텔링』을 읽고 남긴 독서예요."
+    ),
+    "physical-computing": (
+        "노시훈이 작가와에서 낸 『피지컬 컴퓨팅 데이터 수집 및 처리』를 읽고 남긴 독서예요."
+    ),
+}
+
+
 def build_study_narrative(item: CatalogItem) -> dict[str, Any]:
     """과목 전체를 서술형 구어체로 요약 (원문 나열 없음)."""
     unit_hint = ""
@@ -1316,6 +1430,9 @@ def build_study_narrative(item: CatalogItem) -> dict[str, Any]:
     )
 
     main = STUDY_NARRATIVES.get(item.slug)
+    credit = STUDY_CREDITS.get(item.slug)
+    if credit and main and not main.startswith(credit):
+        main = f"{credit} {main}"
     if not main:
         main = (
             f"이 과목에서는 {item.summary}을(를) 목표로 "

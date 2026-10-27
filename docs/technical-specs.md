@@ -156,8 +156,8 @@ flowchart LR
 
 - 행위자: 작성자
 - 사전조건: `study_note_record_organization`에서 파이썬을 실행할 수 있고, `data/`에 노트와 과제 문서가 있다.
-- 기본 흐름: `python scripts/build_output.py`를 실행한다. 학습 41그룹과 과제 카탈로그가 만들어지고, 요약 마크다운과 `catalog.json`이 쓰인 뒤 `build_static_site.py`가 `data.js`, 원본 JSON, 히어로 목록을 갱신한다.
-- 대안 흐름: 학습 그룹 수가 41이 아니면 `output/study-audit.txt`를 남기고 중단한다. `catalog.json`이 없는데 정적 빌드만 실행하면 중단한다. 결과 파일이 크기 한도를 넘으면 중단한다.
+- 기본 흐름: `python scripts/build_output.py`를 실행한다. 학습 42그룹과 과제 카탈로그가 만들어지고, 요약 마크다운과 `catalog.json`이 쓰인 뒤 `build_static_site.py`가 `data.js`, 원본 JSON, 히어로 목록을 갱신한다.
+- 대안 흐름: 학습 그룹 수가 42가 아니면 `output/study-audit.txt`를 남기고 중단한다. `catalog.json`이 없는데 정적 빌드만 실행하면 중단한다. 결과 파일이 크기 한도를 넘으면 중단한다.
 - 사후조건: 대시보드가 새 카드와 원본을 읽을 수 있다.
 
 # 자료 흐름도 (DFD)
@@ -238,7 +238,7 @@ DFD의 자료 흐름과 저장소에 실리는 자료의 이름, 의미, 구성�
 
 - id: `study-` 또는 `assignment-`로 시작하는 식별자
 - type: `study` 또는 `assignment`
-- category: 학습은 `book` 또는 `course`, 과제는 `university`
+- category: 학습은 `book`(독서), `course`(강의), `cert`(자격), `tool`(도구). 과제는 `university`. 카드 배지는 이 네 단어만 쓴다. 과학동아는 `book`이다.
 - title: 화면에 보이는 제목
 - slug: 파일 이름과 요약 HTML 키
 - summary: 한 줄 요약
@@ -379,7 +379,7 @@ flowchart TD
 순서:
 
 1. 학습, 과제, 추출 출력 폴더를 만든다.
-2. 노트 파일 이름에서 과목명을 뽑아 그룹으로 묶는다. 그룹 수가 41이 아니면 감사 파일을 쓰고 중단한다.
+2. 노트 파일 이름에서 과목명을 뽑아 그룹으로 묶는다. 그룹 수가 42가 아니면 감사 파일을 쓰고 중단한다.
 3. 과제 파일 이름과 과목 키워드를 맞춰 과제 카드를 만든다. 텍스트 문서가 없는 윈도우 프로그래밍1 카드는 출처를 비워 둔다.
 4. 각 카드의 원본을 읽어 본문을 채운다. 확장자에 따라 텍스트, 워드, PDF, HTML에서 뽑는다. 비밀 값을 가리고, 과제면 개인정보도 가린 뒤 추출 캐시에 저장한다.
 5. 이번 카드 목록에 없는 예전 요약 마크다운은 지운다.

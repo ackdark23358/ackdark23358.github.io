@@ -292,12 +292,26 @@ def source_build_id(source_map: dict[str, str]) -> str:
 
 
 def stamp_index_scripts(build_id: str) -> None:
-    """대시보드 index.html의 data.js, app.js 주소에 빌드 아이디 쿼리를 붙인다."""
+    """대시보드 index.html의 data.js, app.js, styles.css 주소에 빌드 아이디 쿼리를 붙인다.
+
+    원본 지도가 그대로여도 화면 스크립트와 스타일이 바뀌면 브라우저 캐시를 갱신한다.
+    """
     index_path = SITE / "index.html"
+    ui_parts = [build_id]
+    for rel in ("js/app.js", "css/styles.css"):
+        path = SITE / rel
+        if path.is_file():
+            ui_parts.append(hashlib.sha256(path.read_bytes()).hexdigest()[:8])
+    token = hashlib.sha256("|".join(ui_parts).encode("utf-8")).hexdigest()[:12]
     html = index_path.read_text(encoding="utf-8")
     html = re.sub(
         r'src="js/(data|app)\.js(?:\?[^"]*)?"',
-        lambda m: f'src="js/{m.group(1)}.js?v={build_id}"',
+        lambda m: f'src="js/{m.group(1)}.js?v={token}"',
+        html,
+    )
+    html = re.sub(
+        r'href="css/styles\.css(?:\?[^"]*)?"',
+        f'href="css/styles.css?v={token}"',
         html,
     )
     index_path.write_text(html, encoding="utf-8")
@@ -314,13 +328,14 @@ def assert_under_github_limit(path: Path, label: str) -> None:
 
 
 def collect_catalog(catalog_data: dict) -> list[dict]:
-    """catalog.json 항목에서 카드에 필요한 id, 종류, 제목, 슬러그, 요약, 태그만 고른다."""
+    """catalog.json 항목에서 카드에 필요한 id, 종류, 분류, 제목, 슬러그, 요약, 태그를 고른다."""
     items = []
     for it in catalog_data.get("items", []):
         items.append(
             {
                 "id": it["id"],
                 "type": it["type"],
+                "category": it.get("category", ""),
                 "title": it["title"],
                 "slug": it["slug"],
                 "summary": it.get("summary", ""),

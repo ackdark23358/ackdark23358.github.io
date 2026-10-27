@@ -5,6 +5,12 @@
   "use strict";
 
   var CARD_LABEL = { study: "STUDY NOTE", assignment: "ASSIGNMENT" };
+  var KIND_LABEL = {
+    book: "독서",
+    course: "강의",
+    cert: "자격",
+    tool: "도구",
+  };
   var catalog = [];
   var articles = {};
   var sourceMap = {};
@@ -37,6 +43,23 @@
     var d = document.createElement("div");
     d.textContent = s == null ? "" : String(s);
     return d.innerHTML;
+  }
+
+  /**
+   * 학습 카드의 분류 배지 HTML을 만든다. 강의·독서·잡지처럼 종류가 있을 때만 반환한다.
+   * @param {object} item 카탈로그 항목
+   * @returns {string}
+   */
+  function kindBadge(item) {
+    var label = KIND_LABEL[item.category];
+    if (!label) return "";
+    return (
+      '<span class="badge badge--' +
+      escapeHtml(item.category) +
+      '">' +
+      escapeHtml(label) +
+      "</span>"
+    );
   }
 
   /**
@@ -97,7 +120,7 @@
     var q = searchQuery.trim().toLowerCase();
     return catalog.filter(function (item) {
       if (!q) return true;
-      var hay = [item.title, item.summary, item.type]
+      var hay = [item.title, item.summary, item.type, KIND_LABEL[item.category] || ""]
         .concat(item.tags || [])
         .join(" ")
         .toLowerCase();
@@ -122,11 +145,15 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "card card--" + item.type;
-      btn.setAttribute("aria-label", item.title + " 요약 보기");
+      var kind = KIND_LABEL[item.category] || "";
+      btn.setAttribute("aria-label", item.title + (kind ? " " + kind : "") + " 요약 보기");
 
       btn.innerHTML =
-        '<p class="card-label">' +
+        '<p class="card-kicker">' +
+        '<span class="card-label">' +
         escapeHtml(CARD_LABEL[item.type] || "RECORD") +
+        "</span>" +
+        kindBadge(item) +
         "</p>" +
         '<h3 class="card__title">' +
         escapeHtml(item.title) +
@@ -378,8 +405,11 @@
     document.body.style.overflow = "hidden";
 
     modalMeta.innerHTML =
-      '<p class="card-label">' +
+      '<p class="card-kicker">' +
+      '<span class="card-label">' +
       escapeHtml(CARD_LABEL[item.type] || "RECORD") +
+      "</span>" +
+      kindBadge(item) +
       "</p>" +
       '<h2 id="modal-title" class="modal__title">' +
       escapeHtml(item.title) +

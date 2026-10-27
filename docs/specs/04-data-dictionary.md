@@ -8,7 +8,7 @@ DFD의 자료 흐름과 저장소에 실리는 자료의 이름, 의미, 구성�
 
 - id: `study-` 또는 `assignment-`로 시작하는 식별자
 - type: `study` 또는 `assignment`
-- category: 학습은 `book` 또는 `course`, 과제는 `university`
+- category: 학습은 `book`(독서), `course`(강의), `cert`(자격), `tool`(도구). 과제는 `university`. 카드 배지는 이 네 단어만 쓴다. 과학동아는 `book`이다.
 - title: 화면에 보이는 제목
 - slug: 파일 이름과 요약 HTML 키
 - summary: 한 줄 요약
