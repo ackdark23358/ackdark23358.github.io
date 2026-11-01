@@ -12,7 +12,7 @@
 - cover_letter/ — 자기소개
 - online_business_card/ — 스크롤 명함
 - study_note_record_organization/dashboard/ — 학습·과제 카드 화면
-- portfolio_achieve/ — 프로젝트 아카이브 (PROJ_01~PROJ_17)
+- portfolio_achieve/ — 프로젝트 아카이브 (PROJ_01~PROJ_19)
 - study_note_record_organization/scripts/ — 요약과 정적 데이터 빌드
 - study_note_record_organization/data/ — 노트, 과제, 이미지 원본
 
@@ -25,7 +25,7 @@
 - cover_letter/css, cover_letter/js — 자기소개 스타일과 스크롤 메뉴
 - online_business_card/css, online_business_card/js — 명함 애니메이션
 - study_note_record_organization/dashboard/js — 카드, 검색, 히어로. data.js와 sources는 생성물
-- portfolio_achieve/ — 프로젝트 아카이브(PROJ_01~PROJ_17 메타 카드), 스타일(archive.css) 및 스크립트(site.js)
+- portfolio_achieve/ — 프로젝트 아카이브(PROJ_01~PROJ_19 메타 카드), 스타일(archive.css) 및 스크립트(site.js)
 - study_note_record_organization/scripts — build_output.py, build_static_site.py, extract_sources.py
 - study_note_record_organization/output — 빌드가 쓰는 요약 마크다운과 catalog.json
 - study_note_record_organization/data/과제분류하기 — 과제 문서 원본. 코드 파일은 이 문서에서 빼 둔다
@@ -891,7 +891,7 @@ ticking = false
 
 #### escapeHtml
 
-`study_note_record_organization/dashboard/js/app.js:36`
+`study_note_record_organization/dashboard/js/app.js:42`
 
 ```
 function escapeHtml(s)
@@ -911,9 +911,36 @@ d.textContent = s == null ? "" : String(s)
 ```
 
 
+#### kindBadge
+
+`study_note_record_organization/dashboard/js/app.js:53`
+
+```
+function kindBadge(item)
+```
+
+학습 카드의 분류 배지 HTML을 만든다. 강의·독서·잡지처럼 종류가 있을 때만 반환한다.
+
+- 인자: item: object 카탈로그 항목
+- 반환: string
+
+유사코드
+
+```
+label ← KIND_LABEL[item.category]
+만약 !label) return ""
+반환 (
+'<span class="badge badge--' +
+escapeHtml(item.category) +
+'">' +
+escapeHtml(label) +
+"</span>"
+```
+
+
 #### getData
 
-`study_note_record_organization/dashboard/js/app.js:46`
+`study_note_record_organization/dashboard/js/app.js:69`
 
 ```
 function getData()
@@ -933,7 +960,7 @@ function getData()
 
 #### renderIntro
 
-`study_note_record_organization/dashboard/js/app.js:53`
+`study_note_record_organization/dashboard/js/app.js:76`
 
 ```
 function renderIntro()
@@ -979,7 +1006,7 @@ total ← catalog.length
 
 #### filteredItems
 
-`study_note_record_organization/dashboard/js/app.js:96`
+`study_note_record_organization/dashboard/js/app.js:119`
 
 ```
 function filteredItems()
@@ -996,7 +1023,7 @@ function filteredItems()
 q ← searchQuery.trim().toLowerCase()
 반환 catalog.filter(function (item)
   만약 !q) return true
-  hay ← [item.title, item.summary, item.type]
+  hay ← [item.title, item.summary, item.type, KIND_LABEL[item.category] |…
   .concat(item.tags || [])
   .join(" ")
   .toLowerCase()
@@ -1006,7 +1033,7 @@ q ← searchQuery.trim().toLowerCase()
 
 #### renderGrid
 
-`study_note_record_organization/dashboard/js/app.js:111`
+`study_note_record_organization/dashboard/js/app.js:134`
 
 ```
 function renderGrid()
@@ -1030,10 +1057,14 @@ items.forEach(function (item)
   btn ← document.createElement("button")
   btn.type = "button"
   btn.className = "card card--" + item.type
-  btn.setAttribute("aria-label", item.title + " 요약 보기")
+  kind ← KIND_LABEL[item.category] || ""
+  btn.setAttribute("aria-label", item.title + (kind ? " " + kind : "") + …
   btn.innerHTML =
-  '<p class="card-label">' +
+  '<p class="card-kicker">' +
+  '<span class="card-label">' +
   escapeHtml(CARD_LABEL[item.type] || "RECORD") +
+  "</span>" +
+  kindBadge(item) +
   "</p>" +
   '<h3 class="card__title">' +
   escapeHtml(item.title) +
@@ -1049,7 +1080,7 @@ items.forEach(function (item)
 
 #### isAssignmentSourceKey
 
-`study_note_record_organization/dashboard/js/app.js:150`
+`study_note_record_organization/dashboard/js/app.js:177`
 
 ```
 function isAssignmentSourceKey(key)
@@ -1069,7 +1100,7 @@ function isAssignmentSourceKey(key)
 
 #### maskAssignmentPrivacy
 
-`study_note_record_organization/dashboard/js/app.js:159`
+`study_note_record_organization/dashboard/js/app.js:186`
 
 ```
 function maskAssignmentPrivacy(text)
@@ -1094,7 +1125,7 @@ function maskAssignmentPrivacy(text)
 
 #### htmlToPlainText
 
-`study_note_record_organization/dashboard/js/app.js:173`
+`study_note_record_organization/dashboard/js/app.js:200`
 
 ```
 function htmlToPlainText(html)
@@ -1115,7 +1146,7 @@ doc ← new DOMParser().parseFromString(html, "text/html")
 
 #### getSourceExtraImage
 
-`study_note_record_organization/dashboard/js/app.js:183`
+`study_note_record_organization/dashboard/js/app.js:210`
 
 ```
 function getSourceExtraImage(key)
@@ -1146,7 +1177,7 @@ k ← key
 
 #### renderPlainSource
 
-`study_note_record_organization/dashboard/js/app.js:208`
+`study_note_record_organization/dashboard/js/app.js:235`
 
 ```
 function renderPlainSource(text, key)
@@ -1184,7 +1215,7 @@ html += "</div></article>"
 
 #### resolveSourceChunk
 
-`study_note_record_organization/dashboard/js/app.js:236`
+`study_note_record_organization/dashboard/js/app.js:263`
 
 ```
 function resolveSourceChunk(key)
@@ -1209,7 +1240,7 @@ function resolveSourceChunk(key)
 
 #### siteAccessAllowed
 
-`study_note_record_organization/dashboard/js/app.js:251`
+`study_note_record_organization/dashboard/js/app.js:278`
 
 ```
 function siteAccessAllowed()
@@ -1234,7 +1265,7 @@ known ← host === "ackdark23358.github.io" || host === "localhost" || ho…
 
 #### fetchSourceText
 
-`study_note_record_organization/dashboard/js/app.js:265`
+`study_note_record_organization/dashboard/js/app.js:292`
 
 ```
 function fetchSourceText(key)
@@ -1275,7 +1306,7 @@ url ← new URL("js/sources/" + chunk, window.location.href)
 
 #### sourceDisplayName
 
-`study_note_record_organization/dashboard/js/app.js:304`
+`study_note_record_organization/dashboard/js/app.js:331`
 
 ```
 function sourceDisplayName(label, key)
@@ -1297,7 +1328,7 @@ function sourceDisplayName(label, key)
 
 #### openSourceViewer
 
-`study_note_record_organization/dashboard/js/app.js:316`
+`study_note_record_organization/dashboard/js/app.js:343`
 
 ```
 function openSourceViewer(key, label)
@@ -1333,7 +1364,7 @@ fetchSourceText(key).then(function (text)
 
 #### closeSourceModal
 
-`study_note_record_organization/dashboard/js/app.js:347`
+`study_note_record_organization/dashboard/js/app.js:374`
 
 ```
 function closeSourceModal()
@@ -1357,7 +1388,7 @@ overlay.style.pointerEvents = ""
 
 #### bindSourceLinks
 
-`study_note_record_organization/dashboard/js/app.js:360`
+`study_note_record_organization/dashboard/js/app.js:387`
 
 ```
 function bindSourceLinks(container)
@@ -1383,7 +1414,7 @@ container.addEventListener("click", function (e)
 
 #### openModal
 
-`study_note_record_organization/dashboard/js/app.js:375`
+`study_note_record_organization/dashboard/js/app.js:402`
 
 ```
 function openModal(item)
@@ -1401,8 +1432,11 @@ overlay.classList.remove("hidden")
 overlay.setAttribute("aria-hidden", "false")
 document.body.style.overflow = "hidden"
 modalMeta.innerHTML =
-'<p class="card-label">' +
+'<p class="card-kicker">' +
+'<span class="card-label">' +
 escapeHtml(CARD_LABEL[item.type] || "RECORD") +
+"</span>" +
+kindBadge(item) +
 "</p>" +
 '<h2 id="modal-title" class="modal__title">' +
 escapeHtml(item.title) +
@@ -1421,7 +1455,7 @@ bindSourceLinks(modalBody)
 
 #### closeModal
 
-`study_note_record_organization/dashboard/js/app.js:404`
+`study_note_record_organization/dashboard/js/app.js:434`
 
 ```
 function closeModal()
@@ -1444,7 +1478,7 @@ overlay.setAttribute("aria-hidden", "true")
 
 #### init
 
-`study_note_record_organization/dashboard/js/app.js:416`
+`study_note_record_organization/dashboard/js/app.js:446`
 
 ```
 function init()
@@ -2600,7 +2634,7 @@ def load_sources(self) -> None
 
 #### normalize_study_title
 
-`study_note_record_organization/scripts/build_output.py:606`
+`study_note_record_organization/scripts/build_output.py:619`
 
 ```
 def normalize_study_title(filename: str) -> str
@@ -2616,7 +2650,7 @@ def normalize_study_title(filename: str) -> str
 ```
 n ← filename.replace('.txt', '').replace('.docx', '')
 n ← re.sub('\\s+(\\d+[~\\-]?\\d*\\s*)?(장|일차|강|주차)\\s*(독서\\s*노트|독서노트|수강노트|영상…
-n ← re.sub('\\s+(독서노트|수강노트|영상노트|독서 노트)\\s*$', '', n, flags=re.I)
+n ← re.sub('\\s+(독서노트|수강노트|영상노트|독서 노트|감상노트|감상 노트)\\s*$', '', n, flags=re.I)
 n ← re.sub('\\s+코딩면허.*$', '', n, flags=re.I)
 n ← re.sub('\\s+노트는\\s*실습.*$', '', n, flags=re.I)
 n ← re.sub('\\s+실습\\s*필기.*$', '', n, flags=re.I)
@@ -2628,7 +2662,7 @@ n ← re.sub('\\s+통합\\(단순합치기\\).*$', '', n)
 
 #### collect_study_groups
 
-`study_note_record_organization/scripts/build_output.py:624`
+`study_note_record_organization/scripts/build_output.py:637`
 
 ```
 def collect_study_groups() -> dict[str, list[str]]
@@ -2667,7 +2701,7 @@ merged ← {}
 
 #### build_study_catalog
 
-`study_note_record_organization/scripts/build_output.py:658`
+`study_note_record_organization/scripts/build_output.py:671`
 
 ```
 def build_study_catalog() -> list[CatalogItem]
@@ -2709,7 +2743,7 @@ items ← []
 
 #### find_assign_file
 
-`study_note_record_organization/scripts/build_output.py:709`
+`study_note_record_organization/scripts/build_output.py:722`
 
 ```
 def find_assign_file(files: list[str], keywords: list[str], used: set[str], exclude_contains: list[str] | None=None) -> str | None
@@ -2738,7 +2772,7 @@ excludes ← exclude_contains or []
 
 #### build_assignment_catalog
 
-`study_note_record_organization/scripts/build_output.py:723`
+`study_note_record_organization/scripts/build_output.py:736`
 
 ```
 def build_assignment_catalog() -> list[CatalogItem]
@@ -2780,7 +2814,7 @@ add('windows-programming', '윈도우프로그래밍2', ['윈도우프로그래�
 
 #### build_assignment_catalog.add
 
-`study_note_record_organization/scripts/build_output.py:732`
+`study_note_record_organization/scripts/build_output.py:745`
 
 ```
 def add(slug: str, title: str, keywords: list[str], tags: list[str], exclude_contains: list[str] | None=None, extra_sources: list[SourceRef] | None=None)
@@ -2807,7 +2841,7 @@ items.append(CatalogItem(id=f'assignment-{slug}', type='assignment', ca…
 
 #### extract_meta_assignment
 
-`study_note_record_organization/scripts/build_output.py:787`
+`study_note_record_organization/scripts/build_output.py:800`
 
 ```
 def extract_meta_assignment(text: str) -> dict[str, str]
@@ -2833,7 +2867,7 @@ patterns ← [('학번', '학\\s*번\\s*[:：]\\s*(\\d+)'), ('수강번호', '�
 
 #### _assignment_line_inner
 
-`study_note_record_organization/scripts/build_output.py:825`
+`study_note_record_organization/scripts/build_output.py:838`
 
 ```
 def _assignment_line_inner(line: str) -> str
@@ -2853,7 +2887,7 @@ def _assignment_line_inner(line: str) -> str
 
 #### _is_assignment_meta_line
 
-`study_note_record_organization/scripts/build_output.py:830`
+`study_note_record_organization/scripts/build_output.py:843`
 
 ```
 def _is_assignment_meta_line(line: str) -> bool
@@ -2885,7 +2919,7 @@ inner ← _assignment_line_inner(s)
 
 #### strip_assignment_cover_block
 
-`study_note_record_organization/scripts/build_output.py:847`
+`study_note_record_organization/scripts/build_output.py:860`
 
 ```
 def strip_assignment_cover_block(text: str) -> str
@@ -2943,7 +2977,7 @@ skip_topic_lines ← False
 
 #### strip_assignment_meta_text
 
-`study_note_record_organization/scripts/build_output.py:891`
+`study_note_record_organization/scripts/build_output.py:904`
 
 ```
 def strip_assignment_meta_text(text: str) -> str
@@ -2981,7 +3015,7 @@ kept ← []
 
 #### is_assignment_meta_bullet
 
-`study_note_record_organization/scripts/build_output.py:927`
+`study_note_record_organization/scripts/build_output.py:940`
 
 ```
 def is_assignment_meta_bullet(bullet: str) -> bool
@@ -3015,7 +3049,7 @@ inner ← _assignment_line_inner(s)
 
 #### summarize_assignment_bullets
 
-`study_note_record_organization/scripts/build_output.py:946`
+`study_note_record_organization/scripts/build_output.py:959`
 
 ```
 def summarize_assignment_bullets(text: str, max_items: int=10) -> list[str]
@@ -3044,7 +3078,7 @@ out ← []
 
 #### _clip_prose
 
-`study_note_record_organization/scripts/build_output.py:960`
+`study_note_record_organization/scripts/build_output.py:973`
 
 ```
 def _clip_prose(s: str, max_len: int=200) -> str
@@ -3071,7 +3105,7 @@ clipped ← s[:max_len - 1].rsplit(' ', 1)[0]
 
 #### _is_readable_assignment_prose
 
-`study_note_record_organization/scripts/build_output.py:972`
+`study_note_record_organization/scripts/build_output.py:985`
 
 ```
 def _is_readable_assignment_prose(line: str) -> bool
@@ -3096,7 +3130,7 @@ s ← line.strip()
 
 #### extract_assignment_points
 
-`study_note_record_organization/scripts/build_output.py:982`
+`study_note_record_organization/scripts/build_output.py:995`
 
 ```
 def extract_assignment_points(text: str, max_items: int=15) -> list[str]
@@ -3131,7 +3165,7 @@ seen ← set()
 
 #### _split_assignment_sections
 
-`study_note_record_organization/scripts/build_output.py:1002`
+`study_note_record_organization/scripts/build_output.py:1015`
 
 ```
 def _split_assignment_sections(text: str) -> dict[str, str]
@@ -3165,7 +3199,7 @@ active ← 'intro'
 
 #### _has_assignment_section_markers
 
-`study_note_record_organization/scripts/build_output.py:1021`
+`study_note_record_organization/scripts/build_output.py:1034`
 
 ```
 def _has_assignment_section_markers(text: str) -> bool
@@ -3185,7 +3219,7 @@ def _has_assignment_section_markers(text: str) -> bool
 
 #### _extract_assignment_topics
 
-`study_note_record_organization/scripts/build_output.py:1028`
+`study_note_record_organization/scripts/build_output.py:1041`
 
 ```
 def _extract_assignment_topics(text: str) -> list[str]
@@ -3242,7 +3276,7 @@ prefer ← False
 
 #### _assignment_summary_filler
 
-`study_note_record_organization/scripts/build_output.py:1070`
+`study_note_record_organization/scripts/build_output.py:1083`
 
 ```
 def _assignment_summary_filler(item: CatalogItem, index: int) -> str
@@ -3263,7 +3297,7 @@ fillers ← [f'{item.title} 총괄과제에서 요구한 주제랑 형식에 맞
 
 #### _sentence_from_section
 
-`study_note_record_organization/scripts/build_output.py:1088`
+`study_note_record_organization/scripts/build_output.py:1101`
 
 ```
 def _sentence_from_section(points: list[str], item: CatalogItem, section_name: str) -> str
@@ -3287,7 +3321,7 @@ core ← _clip_prose(points[0], 52).rstrip('.')
 
 #### _compose_summary_from_topics
 
-`study_note_record_organization/scripts/build_output.py:1097`
+`study_note_record_organization/scripts/build_output.py:1110`
 
 ```
 def _compose_summary_from_topics(item: CatalogItem, topics: list[str]) -> list[str]
@@ -3311,7 +3345,7 @@ picks ← topics[:3]
 
 #### _sentence_from_points
 
-`study_note_record_organization/scripts/build_output.py:1110`
+`study_note_record_organization/scripts/build_output.py:1123`
 
 ```
 def _sentence_from_points(points: list[str], opener: str, fallback: str='') -> str
@@ -3335,7 +3369,7 @@ core ← _clip_prose(points[0], 52).rstrip('.')
 
 #### build_assignment_content_summary
 
-`study_note_record_organization/scripts/build_output.py:1119`
+`study_note_record_organization/scripts/build_output.py:1132`
 
 ```
 def build_assignment_content_summary(item: CatalogItem, all_text: str) -> list[str]
@@ -3395,7 +3429,7 @@ openers ← ['앞부분에서는', '중간에서는', '마무리에서는']
 
 #### is_prose_line
 
-`study_note_record_organization/scripts/build_output.py:1197`
+`study_note_record_organization/scripts/build_output.py:1210`
 
 ```
 def is_prose_line(line: str) -> bool
@@ -3427,7 +3461,7 @@ ascii_ratio ← sum((1 for c in s if ord(c) < 128)) / len(s)
 
 #### extract_study_points
 
-`study_note_record_organization/scripts/build_output.py:1214`
+`study_note_record_organization/scripts/build_output.py:1227`
 
 ```
 def extract_study_points(text: str, max_items: int=8) -> list[str]
@@ -3461,7 +3495,7 @@ seen ← set()
 
 #### soften_sentence
 
-`study_note_record_organization/scripts/build_output.py:1233`
+`study_note_record_organization/scripts/build_output.py:1246`
 
 ```
 def soften_sentence(s: str) -> str
@@ -3485,7 +3519,7 @@ s ← re.sub('\\s*등의\\s*$', '', s)
 
 #### weave_narrative
 
-`study_note_record_organization/scripts/build_output.py:1242`
+`study_note_record_organization/scripts/build_output.py:1255`
 
 ```
 def weave_narrative(opener: str, points: list[str], fallback: str='') -> str
@@ -3515,7 +3549,7 @@ rest ← ' '.join(cleaned[3:6])
 
 #### _phase_unit_narratives
 
-`study_note_record_organization/scripts/build_output.py:1262`
+`study_note_record_organization/scripts/build_output.py:1275`
 
 ```
 def _phase_unit_narratives(item: CatalogItem) -> list[tuple[str, str]]
@@ -3558,7 +3592,7 @@ blocks ← []
 
 #### build_study_narrative
 
-`study_note_record_organization/scripts/build_output.py:1304`
+`study_note_record_organization/scripts/build_output.py:1418`
 
 ```
 def build_study_narrative(item: CatalogItem) -> dict[str, Any]
@@ -3579,6 +3613,9 @@ unit_hint ← ''
     unit_hint ← f' ({units[0]}부터 {units[-1]}까지)'
 overview ← f'「{item.title}」을(를) 공부하면서{unit_hint} 총 {len(item.sources)}개의 노트를 남겼어요.…
 main ← STUDY_NARRATIVES.get(item.slug)
+credit ← STUDY_CREDITS.get(item.slug)
+만약 credit and main and (not main.startswith(credit))
+  main ← f'{credit} {main}'
 만약 not main
   main ← f'이 과목에서는 {item.summary}을(를) 목표로 {len(item.sources)}번에 걸쳐 내용을 쌓아 갔어요. 노…
 reflection ← f'돌이켜 보면 {item.title}에서 {item.summary}와 관련된 내용을 차근차근 쌓아 갔어요. 원본 문장을 그대로…
@@ -3588,7 +3625,7 @@ reflection ← f'돌이켜 보면 {item.title}에서 {item.summary}와 관련된
 
 #### summarize_bullets
 
-`study_note_record_organization/scripts/build_output.py:1341`
+`study_note_record_organization/scripts/build_output.py:1458`
 
 ```
 def summarize_bullets(text: str, max_items: int=10) -> list[str]
@@ -3630,7 +3667,7 @@ out ← []
 
 #### make_overview
 
-`study_note_record_organization/scripts/build_output.py:1366`
+`study_note_record_organization/scripts/build_output.py:1483`
 
 ```
 def make_overview(item: CatalogItem, bullets: list[str]) -> str
@@ -3655,7 +3692,7 @@ def make_overview(item: CatalogItem, bullets: list[str]) -> str
 
 #### render_windows_programming1_markdown
 
-`study_note_record_organization/scripts/build_output.py:1386`
+`study_note_record_organization/scripts/build_output.py:1503`
 
 ```
 def render_windows_programming1_markdown(item: CatalogItem) -> str
@@ -3676,7 +3713,7 @@ lines ← ['---', f'id: {item.id}', f'type: {item.type}', f'category: {item.cate
 
 #### render_markdown
 
-`study_note_record_organization/scripts/build_output.py:1441`
+`study_note_record_organization/scripts/build_output.py:1558`
 
 ```
 def render_markdown(item: CatalogItem) -> str
@@ -3736,7 +3773,7 @@ lines.append(overview + '\n')
 
 #### main
 
-`study_note_record_organization/scripts/build_output.py:1525`
+`study_note_record_organization/scripts/build_output.py:1642`
 
 ```
 def main() -> None
@@ -4271,7 +4308,7 @@ payload ← '|'.join((f'{k}:{v}' for k, v in sorted(source_map.items())))
 def stamp_index_scripts(build_id: str) -> None
 ```
 
-대시보드 index.html의 data.js, app.js 주소에 빌드 아이디 쿼리를 붙인다.
+대시보드 index.html의 data.js, app.js, styles.css 주소에 빌드 아이디 쿼리를 붙인다. 원본 지도가 그대로여도 화면 스크립트와 스타일이 바뀌면 브라우저 캐시를 갱신한다.
 
 - 인자: build_id: str
 - 반환: None
@@ -4280,15 +4317,22 @@ def stamp_index_scripts(build_id: str) -> None
 
 ```
 index_path ← SITE / 'index.html'
+ui_parts ← [build_id]
+반복 rel ← ('js/app.js', 'css/styles.css')
+  path ← SITE / rel
+  만약 path.is_file()
+    ui_parts.append(hashlib.sha256(path.read_bytes()).hexdigest()[:8])
+token ← hashlib.sha256('|'.join(ui_parts).encode('utf-8')).hexdigest()[:12]
 html ← index_path.read_text(encoding='utf-8')
 html ← re.sub('src="js/(data|app)\\.js(?:\\?[^"]*)?"', lambda m: f'src="js/{m.…
+html ← re.sub('href="css/styles\\.css(?:\\?[^"]*)?"', f'href="css/styles.css?v…
 index_path.write_text(html, encoding='utf-8')
 ```
 
 
 #### assert_under_github_limit
 
-`study_note_record_organization/scripts/build_static_site.py:306`
+`study_note_record_organization/scripts/build_static_site.py:320`
 
 ```
 def assert_under_github_limit(path: Path, label: str) -> None
@@ -4311,13 +4355,13 @@ size ← path.stat().st_size
 
 #### collect_catalog
 
-`study_note_record_organization/scripts/build_static_site.py:316`
+`study_note_record_organization/scripts/build_static_site.py:330`
 
 ```
 def collect_catalog(catalog_data: dict) -> list[dict]
 ```
 
-catalog.json 항목에서 카드에 필요한 id, 종류, 제목, 슬러그, 요약, 태그만 고른다.
+catalog.json 항목에서 카드에 필요한 id, 종류, 분류, 제목, 슬러그, 요약, 태그를 고른다.
 
 - 인자: catalog_data: dict
 - 반환: list[dict]
@@ -4327,14 +4371,14 @@ catalog.json 항목에서 카드에 필요한 id, 종류, 제목, 슬러그, 요
 ```
 items ← []
 반복 it ← catalog_data.get('items', [])
-  items.append({'id': it['id'], 'type': it['type'], 'title': it['title'],…
+  items.append({'id': it['id'], 'type': it['type'], 'category': it.get('c…
 반환 items
 ```
 
 
 #### build_site
 
-`study_note_record_organization/scripts/build_static_site.py:333`
+`study_note_record_organization/scripts/build_static_site.py:348`
 
 ```
 def build_site() -> None
@@ -4394,7 +4438,7 @@ css_dir.mkdir(parents=True, exist_ok=True)
 
 #### main
 
-`study_note_record_organization/scripts/build_static_site.py:407`
+`study_note_record_organization/scripts/build_static_site.py:422`
 
 ```
 def main() -> None
@@ -4779,7 +4823,7 @@ print('[4/4] 빌드 완료! 성공적으로 포트폴리오 북이 생성되었�
 
 - study_note_record_organization/dashboard/js/data.js — 카드 목록, 요약 HTML, 원본 파일 지도를 window.SITE_DATA로 넣는다.
 - study_note_record_organization/dashboard/js/hero-images.js — data/image 경로를 window.HERO_IMAGES 배열로 넣는다.
-- study_note_record_organization/dashboard/js/sources/*.json — 원본 텍스트 168개. 키와 본문만 담는다.
+- study_note_record_organization/dashboard/js/sources/*.json — 원본 텍스트 169개. 키와 본문만 담는다.
 
 
 ## 학습 원본 파일 목록
@@ -5069,6 +5113,7 @@ data 폴더의 노트, 과제 문서, 이미지다. 함수가 없어 파일마�
 - study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/포토샵 파트3 필기 chapter1.txt — 학습 기록 원본
 - study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/포토샵 합성 chapter2 요약 정리하기.txt — 학습 기록 원본
 - study_note_record_organization/data/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/포토샵 합성 chapter2 요약.txt — 학습 기록 원본
+- study_note_record_organization/data/changenote/노트수정하기.txt — 학습 기록 원본
 - study_note_record_organization/data/Do it 5일만에 끝내는 깃&깃허브 입문 1장 독서노트.txt — 독서 노트
 - study_note_record_organization/data/Do it 5일만에 끝내는 깃&깃허브 입문 2장 독서노트.txt — 독서 노트
 - study_note_record_organization/data/Do it 5일만에 끝내는 깃&깃허브 입문 3장 독서노트.txt — 독서 노트
@@ -5213,3 +5258,4 @@ data 폴더의 노트, 과제 문서, 이미지다. 함수가 없어 파일마�
 - study_note_record_organization/data/프롬프트 텔링 독서노트.txt — 독서 노트
 - study_note_record_organization/data/피지컬 컴퓨팅 데이터 수집 및 처리 - 노시훈 독서노트.txt — 독서 노트
 - study_note_record_organization/data/피지컬 컴퓨팅 데이터 수집 및 처리 독서노트.txt — 독서 노트
+- study_note_record_organization/data/한국 2027 트랜드  초개인화시대의 서막 감상노트.txt — 학습 기록 원본

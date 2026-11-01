@@ -101,16 +101,17 @@
             자기소개서의 자료 카테고리 옆에 두는 정적 페이지입니다. 카드 하나에 프로젝트 소개, 사용 도구, 실행 환경,
             간단 설명, 핵심 기능을 담아 정리했습니다. PROJ_01부터 같은 형식으로 이어서 추가합니다. 기관에서 진행한
             과정은 PROJ_10부터 PROJ_15까지, Cursor 바이브 코딩 완성 프로젝트는 PROJ_16·PROJ_17로 같은 카드 형식에 넣었습니다.
+            에듀펜 자바 과정을 다시 구현한 사원관리 프로그램과 자바 채팅은 PROJ_18·PROJ_19입니다.
           </p>
           <dl class="hero__meta">
             <div class="hero__meta-row">
               <dt>범위</dt>
-              <dd>PROJ_01부터 PROJ_09, 기관 과정 PROJ_10부터 PROJ_15, 바이브 코딩 PROJ_16부터 PROJ_17</dd>
+              <dd>PROJ_01부터 PROJ_09, 기관 과정 PROJ_10부터 PROJ_15, 바이브 코딩 PROJ_16부터 PROJ_17, 에듀펜 재구현 PROJ_18·PROJ_19</dd>
             </div>
             <div class="hero__meta-row">
               <dt>현재</dt>
               <dd>
-                PROJ_01 파이썬 학습과 댓글 게시판 · 2025년 2월 17일, PROJ_02 원두 정기 구독 · 2025년 3월 29일, PROJ_03 오늘의 할 일 · 2025년 5월 22일, PROJ_04 전국 캠핑장 현황 · 2025년 5월 22일, PROJ_05 ChatGPT로 만든 프로그램 · 2025년 5월 22일, PROJ_06 코딩상자 · 2025년 6월 9일, PROJ_07 하루하루 스터디 · 2025년 7월 6일, PROJ_08 저자 식별 · 2025년 7월 14일, PROJ_09 커서로 따라 만든 프로그램 · 2025년 8월 5일, PROJ_10 콜로소 CursorAI · 2025년 7월 20일, PROJ_11 페스트캠퍼스 · 2024년 3월 24일, PROJ_12 인프런 · 2026년 2월 11일, PROJ_13 SSamz · 2022년 9월 15일, PROJ_14 유데미 · 2026년 5월 24일, PROJ_15 에듀펜 · 2017–2019, PROJ_16 신문 감상 기록 · 2026년 10월, PROJ_17 하루일과 · 2026년 5–6월
+                PROJ_01 파이썬 학습과 댓글 게시판 · 2025년 2월 17일, PROJ_02 원두 정기 구독 · 2025년 3월 29일, PROJ_03 오늘의 할 일 · 2025년 5월 22일, PROJ_04 전국 캠핑장 현황 · 2025년 5월 22일, PROJ_05 ChatGPT로 만든 프로그램 · 2025년 5월 22일, PROJ_06 코딩상자 · 2025년 6월 9일, PROJ_07 하루하루 스터디 · 2025년 7월 6일, PROJ_08 저자 식별 · 2025년 7월 14일, PROJ_09 커서로 따라 만든 프로그램 · 2025년 8월 5일, PROJ_10 콜로소 CursorAI · 2025년 7월 20일, PROJ_11 페스트캠퍼스 · 2024년 3월 24일, PROJ_12 인프런 · 2026년 2월 11일, PROJ_13 SSamz · 2022년 9월 15일, PROJ_14 유데미 · 2026년 5월 24일, PROJ_15 에듀펜 · 2017–2019, PROJ_16 신문 감상 기록 · 2026년 10월, PROJ_17 하루일과 · 2026년 5–6월, PROJ_18 사원관리 프로그램 · 2026년 11월 2일, PROJ_19 자바 채팅 · 2026년 11월 2일
               </dd>
             </div>
             <div class="hero__meta-row">
@@ -125,7 +126,7 @@
         <div class="section__inner">
           <h2 id="heading-list" class="section__title">프로젝트 목록</h2>
           <p class="section-lead">
-            PROJ_01부터 PROJ_09 화면은 2026년 10월 17일에, 기관 과정 PROJ_10부터 PROJ_15는 2026년 10월 18일에 각 폴더를 열어 확인한 것입니다. PROJ_16·PROJ_17은 2026년 10월 24일에 저장소와 portfolio-screenshots 캡처로 확인했습니다. 예전 항목은 호스팅이 오래되어 카드에 주소를 넣지 않은 경우가 있습니다.
+            PROJ_01부터 PROJ_09 화면은 2026년 10월 17일에, 기관 과정 PROJ_10부터 PROJ_15는 2026년 10월 18일에 각 폴더를 열어 확인한 것입니다. PROJ_16·PROJ_17은 2026년 10월 24일에 저장소와 portfolio-screenshots 캡처로 확인했습니다. PROJ_18·PROJ_19는 2026년 11월 2일에 로컬에서 실행해 확인했습니다. PROJ_18은 사원 조회·등록·수정·삭제이고, PROJ_19는 서버와 클라이언트 둘의 입장·대화·접속자 목록입니다. 예전 항목은 호스팅이 오래되어 카드에 주소를 넣지 않은 경우가 있습니다.
           </p>
           <div class="archive-grid">
             <article class="project-card">
@@ -941,6 +942,114 @@
                   <p class="field-body">
                     기록 캘린더 ✓, 날짜별 할일 CRUD·상태 뱃지, 다크 모드, DB 날짜 새로고침, 프로필 수정,
                     로그인 실패 제한(설정 시)
+                  </p>
+                </div>
+              </div>
+            </article>
+            <article class="project-card">
+              <figure class="project-card__media">
+                <img
+                  src="img/proj-18-list.png"
+                  alt="사원관리 프로그램. 목록에서 SMITH를 선택한 조회 화면"
+                />
+              </figure>
+              <div class="project-card__body">
+                <p class="project-card__index">PROJ_18 · 2026.11.02</p>
+                <h3 class="project-card__title">사원관리 프로그램</h3>
+                <div>
+                  <p class="field-label">프로젝트 소개</p>
+                  <p class="field-body">
+                    에듀펜 자바 과정에서 만들던 사원관리 프로그램을 다시 구현한 데스크톱 프로그램입니다.
+                    아카이브의 PROJ_15는 2017–2019 수강 기록만 남아 있고 소스와 캡처가 유실된 상태였습니다.
+                    화면은 Java Swing이고, 사원 한 명의 값은 DTO에 담으며, 저장과 조회는 DAO와 JDBC가 맡습니다.
+                  </p>
+                </div>
+                <div>
+                  <p class="field-label">간단 설명</p>
+                  <p class="field-body">
+                    왼쪽 입력란과 오른쪽 사원 목록으로 이루어집니다. 목록에서 사원을 누르면 입력란에 값이 채워지고,
+                    등록·수정·삭제로 사원 정보를 다룹니다. 이름, 직급, 부서명, 사원번호로 검색할 수 있습니다.
+                    데이터는 실행 폴더의 H2 파일에 남습니다. 처음 실행하면 교재용 사원 14명과 부서 4개가 들어 있습니다.
+                  </p>
+                </div>
+                <div>
+                  <p class="field-label">사용 도구</p>
+                  <ul class="pill-list">
+                    <li>Java</li>
+                    <li>Swing</li>
+                    <li>JDBC</li>
+                    <li>H2</li>
+                    <li>DAO</li>
+                    <li>DTO</li>
+                  </ul>
+                </div>
+                <div>
+                  <p class="field-label">실행 환경</p>
+                  <p class="field-body">
+                    Windows. Java 11 이상. 프로젝트 폴더에서 <span class="path">run.bat</span>을 실행합니다.
+                    데이터베이스 파일은 <span class="path">data/empdb</span>이고, 별도 Oracle이나 MySQL 설치는 없습니다.
+                    화면 캡처는 2026년 11월 2일에 저장했습니다. 카드는 조회 화면이고, 등록·수정·삭제 캡처는
+                    <span class="path">img/proj-18-create.png</span>부터 같은 폴더에 함께 두었습니다. 호스팅 주소는 없습니다.
+                  </p>
+                </div>
+                <div>
+                  <p class="field-label">핵심 기능</p>
+                  <p class="field-body">
+                    사원 목록 조회, 이름·직급·부서·사원번호 검색, 사원 등록, 수정, 삭제, 목록 정렬
+                  </p>
+                </div>
+              </div>
+            </article>
+            <article class="project-card">
+              <figure class="project-card__media">
+                <img
+                  src="img/proj-19-client-chat.png"
+                  alt="자바 채팅 클라이언트. 홍길동과 김철수의 대화, 오른쪽 대화상대 목록"
+                />
+              </figure>
+              <div class="project-card__body">
+                <p class="project-card__index">PROJ_19 · 2026.11.02</p>
+                <h3 class="project-card__title">자바 채팅</h3>
+                <div>
+                  <p class="field-label">프로젝트 소개</p>
+                  <p class="field-body">
+                    에듀펜 자바 네트워크 수업에서 만들었던 채팅을, 기억에 남은 구성대로 다시 구현한 프로그램입니다.
+                    서버와 클라이언트를 Swing으로 나누고, 소켓과 버퍼 스트림으로 여러 사람이 한 방에서 대화합니다.
+                  </p>
+                </div>
+                <div>
+                  <p class="field-label">간단 설명</p>
+                  <p class="field-body">
+                    서버는 7777번 포트에서 접속을 받습니다. 클라이언트는 가운데에 대화를 보여주고 오른쪽에 대화상대를
+                    보여 줍니다. 2026년 11월 2일 실행에서 홍길동과 김철수가 입장한 뒤 서로 메시지를 주고받았고,
+                    서버 로그와 접속자 목록에 같은 내용이 남았습니다.
+                  </p>
+                </div>
+                <div>
+                  <p class="field-label">사용 도구</p>
+                  <ul class="pill-list">
+                    <li>Java</li>
+                    <li>Socket</li>
+                    <li>ServerSocket</li>
+                    <li>Swing</li>
+                    <li>Eclipse</li>
+                  </ul>
+                </div>
+                <div>
+                  <p class="field-label">실행 환경</p>
+                  <p class="field-body">
+                    JDK의 <span class="path">java</span>로 로컬 실행. 이클립스에서
+                    <span class="path">ChatServer</span>, <span class="path">ChatClient</span>를 실행하거나
+                    <span class="path">run-server.bat</span>, <span class="path">run-client.bat</span>을 사용합니다.
+                    같은 PC는 127.0.0.1, 다른 PC는 서버 로그의 IPv4와 포트 7777. 공개 호스팅 주소는 없습니다.
+                    카드 캡처는 <span class="path">img/proj-19-client-chat.png</span>이고, 서버 시작·입장·접속자 화면은
+                    같은 폴더에 있습니다. 2026년 11월 2일 확인.
+                  </p>
+                </div>
+                <div>
+                  <p class="field-label">핵심 기능</p>
+                  <p class="field-body">
+                    서버 실행·종료, 다중 접속, 입장·퇴장 안내, 이름 표시 대화, 오른쪽 대화상대, 나가기
                   </p>
                 </div>
               </div>
