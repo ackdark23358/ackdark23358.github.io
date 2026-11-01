@@ -384,6 +384,12 @@ STUDY_META: dict[str, tuple[str, str, list[str], str]] = {
         ["ai", "agent"],
         "book",
     ),
+    "바로바로 바이브 코딩 with 커서 AI": (
+        "barobaro-vibe-coding",
+        "커서 Plan·에이전트로 웹·크롤링·배포",
+        ["cursor", "ai", "vibe-coding"],
+        "book",
+    ),
 }
 
 # 과목별 서술형 구어체 요약 (원문 메모를 그대로 나열하지 않음)
@@ -613,6 +619,12 @@ STUDY_NARRATIVES: dict[str, str] = {
         "에이전트 개념·도구·활용 방향을 훑으며 "
         "Cursor·AI 코딩과 연결해 본 학습이었어요."
     ),
+    "barobaro-vibe-coding": (
+        "커서의 IDE·에이전트·Plan 모드로 애플 사이트, 사과 게임, 브라우저 크롤링을 만들어 본 독서예요. "
+        "터미널과 문서 작성, HTML·Next.js 실습, 노션 클론과 배포, 크롤링·API까지 "
+        "바로 결과물을 만들며 익혔어요. "
+        "Plan을 여러 번 쓰면 문맥이 꼬일 수 있어, 한 번 계획한 뒤 에이전트로 이어 가는 쪽을 적었어요."
+    ),
 }
 
 
@@ -665,7 +677,7 @@ def collect_study_groups() -> dict[str, list[str]]:
     return merged, skipped_hwpx
 
 
-EXPECTED_STUDY_GROUPS = 42
+EXPECTED_STUDY_GROUPS = 43
 
 
 def build_study_catalog() -> list[CatalogItem]:
@@ -1411,6 +1423,9 @@ STUDY_CREDITS: dict[str, str] = {
     ),
     "physical-computing": (
         "노시훈 저자의 『피지컬 컴퓨팅 데이터 수집 및 처리』 - 작가와를 읽고 남긴 독서예요."
+    ),
+    "barobaro-vibe-coding": (
+        "박현규 저자의 『바로바로 바이브 코딩 with 커서 AI』 - 골든래빗을 읽고 남긴 독서예요."
     ),
 }
 

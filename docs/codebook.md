@@ -475,7 +475,7 @@ HTML 조각은 `#hero`, `#hero-stage`, `#hero-img-a`, `#hero-img-b`다. 두 이�
 
 `collect_study_groups`는 `data/` 바로 아래 파일만 본다. `.hwpx`는 건너뛰고 이름만 따로 모은다. `.txt`와 `.docx`만 과목 이름 아래로 모은다. `STUDY_MERGE_ALIASES`에 있으면 별칭을 같은 과목 키로 합친다. 각 묶음은 `sort_key_unit`으로 정렬한다. 그룹 딕셔너리와 건너뛴 hwpx 목록을 돌려준다.
 
-`build_study_catalog`는 그룹 수가 42가 아니면 `output/study-audit.txt`에 그룹 이름과 hwpx 목록을 쓰고 `SystemExit`로 중단한다. 42이면 제목순으로 `CatalogItem`을 만든다. `STUDY_META`에 있으면 슬러그, 한 줄 요약, 태그, 분류를 그대로 쓴다. 없으면 제목으로 슬러그를 만들고 요약은 `제목 학습 노트`, 태그는 `study`, 분류는 제목에 `Do it`이 있으면 `book` 아니면 `course`다. 분류 값은 `book`(독서), `course`(강의), `cert`(자격), `tool`(도구)이다. 과학동아 두 호는 `book`이고, 온라인 강의와 SSamz 안드로이드는 `course`다. id는 `study-슬러그`다. 출처의 `unit`은 `parse_unit`이다.
+`build_study_catalog`는 그룹 수가 43이 아니면 `output/study-audit.txt`에 그룹 이름과 hwpx 목록을 쓰고 `SystemExit`로 중단한다. 43이면 제목순으로 `CatalogItem`을 만든다. `STUDY_META`에 있으면 슬러그, 한 줄 요약, 태그, 분류를 그대로 쓴다. 없으면 제목으로 슬러그를 만들고 요약은 `제목 학습 노트`, 태그는 `study`, 분류는 제목에 `Do it`이 있으면 `book` 아니면 `course`다. 분류 값은 `book`(독서), `course`(강의), `cert`(자격), `tool`(도구)이다. 과학동아 두 호는 `book`이고, 온라인 강의와 SSamz 안드로이드는 `course`다. id는 `study-슬러그`다. 출처의 `unit`은 `parse_unit`이다.
 
 `STUDY_NARRATIVES`는 슬러그별 고정 서술이다. `STUDY_CREDITS`는 독서면 이름 저자의 『제목』 - 출판사를 읽고 남긴 문장, 강의면 강사가와 수강한 사실을 한 문장으로 둔다. `build_study_narrative`는 그 문장이 본문 앞에 없으면 붙인 뒤, 원문에서 뽑은 단계 문단과 묶어 `overview`, `main`, `reflection`, `units`를 돌려준다. 원문이 짧으면 `weave_narrative`와 `soften_sentence`가 문장을 다듬고, 점이 없으면 안내 문장으로 채운다.
 
@@ -505,7 +505,7 @@ HTML 조각은 `#hero`, `#hero-stage`, `#hero-img-a`, `#hero-img-b`다. 두 이�
 
 ### main
 
-`output/study`, `output/assignment`, `output/_extracted`를 만든다. `build_study_catalog`가 42가 아니면 여기서 중단되므로 과제 카탈로그까지 가지 않는다. 통과하면 `build_assignment_catalog`를 부르고, 모든 항목에 `load_sources`를 한다.
+`output/study`, `output/assignment`, `output/_extracted`를 만든다. `build_study_catalog`가 43이 아니면 여기서 중단되므로 과제 카탈로그까지 가지 않는다. 통과하면 `build_assignment_catalog`를 부르고, 모든 항목에 `load_sources`를 한다.
 
 이번 슬러그에 없는 예전 `.md`는 두 출력 폴더에서 지운다. 각 항목의 `render_markdown` 결과를 `study` 또는 `assignment` 폴더의 `슬러그.md`로 쓴다. `catalog.json`에는 id, 종류, 분류, 제목, 슬러그, 요약, 태그, 출력 경로, 출처 경로와 단위를 넣는다. `index.md`는 학습과 과제 링크 목록이다.
 
@@ -684,7 +684,7 @@ HTML, CSS, JS, Python 소스를 찾아 각 줄마다 행 번호를 매긴 뒤 �
 
 ## 이 파일이 맡는 일
 
-`portfolio_achieve/index.html`은 지원자가 실습하고 개발한 9개 실습 프로젝트(`PROJ_01` ~ `PROJ_09`), 6개 기관 과정(`PROJ_10` ~ `PROJ_15`), Cursor 바이브 코딩 완성 2건(`PROJ_16` 신문 감상 기록, `PROJ_17` 하루일과), 에듀펜 자바 재구현 2건(`PROJ_18` 사원관리 프로그램, `PROJ_19` 자바 채팅)을 카드로 모아 총 19개 프로젝트를 제공하는 아카이브 메인 페이지다.
+`portfolio_achieve/index.html`은 지원자가 실습하고 개발한 9개 실습 프로젝트(`PROJ_01` ~ `PROJ_09`), 6개 기관 과정(`PROJ_10` ~ `PROJ_15`), Cursor 바이브 코딩 완성 2건(`PROJ_16` 신문 감상 기록, `PROJ_17` 하루일과), 에듀펜 자바 재구현 2건(`PROJ_18` 사원관리 프로그램, `PROJ_19` 자바 채팅), 박현규 『바로바로 바이브 코딩 with 커서 AI』 독서 노트(`PROJ_20`)와 2026년 5월 실습 화면(`PROJ_21`)을 카드로 모아 총 21개 프로젝트를 제공하는 아카이브 메인 페이지다.
 
 각 프로젝트 카드는 소개, 사용 도구(Pill 태그), 실행 환경, 간단 설명, 핵심 기능을 균일한 시맨틱 카드(`<article class="project-card">`) 구조로 담고 있으며, 외부 이동 없이 단일 페이지 내에서 일목요연하게 열람할 수 있도록 구성되었다.
 
@@ -697,7 +697,7 @@ HTML, CSS, JS, Python 소스를 찾아 각 줄마다 행 번호를 매긴 뒤 �
 1. 테마 및 리소스 보호 메타 태그 (`robots`, `tdm-reservation`, `referrer`)
 2. 상단 헤더 및 자료 드롭다운 네비게이션
 3. 히어로 소개 구역 (`#archive`)
-4. 프로젝트 카드 그리드 목록 (`#archive-list`, `PROJ_01` ~ `PROJ_19`)
+4. 프로젝트 카드 그리드 목록 (`#archive-list`, `PROJ_01` ~ `PROJ_21`)
 5. 전개형 사이트맵 및 저작권·선언문 푸터
 6. 테마 및 인터랙션 스크립트 (`js/site.js`, `../js/protect-resources.js`)
 
