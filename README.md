@@ -120,7 +120,7 @@ IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적
     │       ├── data.js
     │       ├── sources/    # 원본 텍스트 청크 (지연 로딩)
     │       └── ...
-    ├── data/image/         # 대시보드가 읽는 히어로 갤러리 (771장)
+    ├── data/image/         # 대시보드가 읽는 히어로 갤러리 (742장)
     └── scripts/            # 로컬 빌드용 (선택)
 ```
 
@@ -238,7 +238,7 @@ GitHub Pages는 공개 웹사이트로 배포될 수 있으므로, 업로드 전
 - SSamz 안드로이드(PROJ_13) 카드 사진은 `portfolio_achieve/img/proj-13-projects.png`입니다. 백업 폴더에 있는 미니프로젝트 이름 여덟 개(카카오 로그인, 할 일, 배터리, mp3, 카메라, 뉴스, 구글 지도, Firebase)를 적었습니다. 이름에 미완이 있고 파일이 없는 mp3·할 일 개선은 넣지 않았습니다.
 - 프로젝트 아카이브 상단은 21개 이름을 `프로젝트 - 이름`으로 쉼표에 이어 한 문장으로 보여 줍니다. 그 문장이 화면에 있는 동안 오른쪽에 `아래로 스크롤 하세요.`가 세로로 움직이고, 문장이 화면 밖으로 나가면 사라집니다.
 - 학습록 히어로 갤러리 `study_note_record_organization/data/image`에 이미지를 587장 추가해 618장입니다. 추가분은 `data/data_study_note_record_organization/image`에 모은 뒤 갤러리 폴더로 반영했고, `dashboard/js/hero-images.js` 목록도 그 장수에 맞췄습니다.
-- 같은 폴더에 사진을 153장 더 넣어 히어로 갤러리는 771장입니다. 화면이 읽는 경로는 `study_note_record_organization/data/image`이고, 목록은 `dashboard/js/hero-images.js`입니다. 히어로를 클릭하면 진행 중인 페이드를 끊고 다음 사진으로 바로 바뀝니다. 자동 전환의 페이드는 그대로입니다.
+- 같은 폴더에 사진을 153장 더 넣어 히어로 갤러리는 771장이었다가, 빠진 파일을 빼고 지금 742장입니다. 화면이 읽는 경로는 `study_note_record_organization/data/image`이고, 목록은 `dashboard/js/hero-images.js`입니다. 히어로를 클릭하면 진행 중인 페이드를 끊고 다음 사진으로 바로 바뀝니다. 자동 전환의 페이드는 그대로입니다.
 - 프로젝트 아카이브 카드 머리글은 `PROJ_01`처럼 번호만 보여 줍니다. 작업 일자와 본문·푸터의 확인 날짜는 빼 두었습니다.
 - 학습 원본과 프로젝트 아카이브 원본은 저장소 루트 `data/data_study_note_record_organization/`, `data/data_portfolio_achieve/`로 두었습니다. 예전에 `study_note_record_organization/data/`와 `portfolio_achieve/data/`에 있던 파일입니다. 히어로 갤러리 사본은 `study_note_record_organization/data/image/`에 남습니다.
 - 히어로 사진 두 장의 파일 이름이 리눅스 파일명 한도를 넘겨 GitHub Pages 배포가 체크아웃에서 멈췄습니다. `27.팀원-첫-브렌치-커밋-푸쉬.png`, `20.소스제어-새-브렌치.png`로 줄였습니다.

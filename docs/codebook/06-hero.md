@@ -42,7 +42,7 @@ HTML 조각은 `#hero`, `#hero-stage`, `#hero-img-a`, `#hero-img-b`다. 두 이�
 
 `startTimer`는 기존 인터벌을 지운다. `prefers-reduced-motion: reduce`이거나 이미지가 한 장이면 새 인터벌을 만들지 않는다. 그 외에는 5500밀리초마다 `nextRandom`을 부른다.
 
-초기화의 마지막은 첫 `pickIndex`로 A에 그림을 넣고 `is-visible`을 붙이는 것이다. 스테이지 클릭은 `swapTo(pickIndex(), true)` 뒤 `startTimer`를 다시 불러 자동 전환 시간을 처음부터 센다. 클릭은 페이드 없이 바뀌고, 타이머는 페이드로 바뀐다. 동작 줄이기가 켜져 있으면 클릭으로만 넘긴다. 사진 목록은 `study_note_record_organization/data/image`의 771장이고, `data/data_study_note_record_organization/image`에 모은 파일을 그 폴더로 반영한 것이다.
+초기화의 마지막은 첫 `pickIndex`로 A에 그림을 넣고 `is-visible`을 붙이는 것이다. 스테이지 클릭은 `swapTo(pickIndex(), true)` 뒤 `startTimer`를 다시 불러 자동 전환 시간을 처음부터 센다. 클릭은 페이드 없이 바뀌고, 타이머는 페이드로 바뀐다. 동작 줄이기가 켜져 있으면 클릭으로만 넘긴다. 사진 목록은 `study_note_record_organization/data/image`의 742장이고, `data/data_study_note_record_organization/image`에 모은 파일을 그 폴더로 반영한 것이다.
 
 ## 이 파일이 부르는 다른 파일
 

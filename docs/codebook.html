@@ -208,7 +208,7 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 9pt; backgro
 <p><code>finish</code>는 새 이미지에 <code>is-visible</code>을 붙이고 이전 이미지에서 뺀다. <code>instant</code>가 참이면 두 이미지에 <code>is-instant</code>를 붙여 <code>transition: none</code>으로 만든 뒤 클래스를 바꾼다. 클릭 직전에도 같은 클래스를 붙여 진행 중인 페이드를 끊는다. 화면이 바뀐 다음 프레임에 <code>is-instant</code>를 뗀다. 자동 전환은 <code>instant</code> 없이 호출하므로 CSS 페이드가 남는다.</p>
 <p><code>nextRandom</code>은 <code>pickIndex</code> 결과로 <code>swapTo</code>를 부른다.</p>
 <p><code>startTimer</code>는 기존 인터벌을 지운다. <code>prefers-reduced-motion: reduce</code>이거나 이미지가 한 장이면 새 인터벌을 만들지 않는다. 그 외에는 5500밀리초마다 <code>nextRandom</code>을 부른다.</p>
-<p>초기화의 마지막은 첫 <code>pickIndex</code>로 A에 그림을 넣고 <code>is-visible</code>을 붙이는 것이다. 스테이지 클릭은 <code>swapTo(pickIndex(), true)</code> 뒤 <code>startTimer</code>를 다시 불러 자동 전환 시간을 처음부터 센다. 클릭은 페이드 없이 바뀌고, 타이머는 페이드로 바뀐다. 동작 줄이기가 켜져 있으면 클릭으로만 넘긴다. 사진 목록은 <code>study_note_record_organization/data/image</code>의 771장이고, <code>data/data_study_note_record_organization/image</code>에 모은 파일을 그 폴더로 반영한 것이다.</p>
+<p>초기화의 마지막은 첫 <code>pickIndex</code>로 A에 그림을 넣고 <code>is-visible</code>을 붙이는 것이다. 스테이지 클릭은 <code>swapTo(pickIndex(), true)</code> 뒤 <code>startTimer</code>를 다시 불러 자동 전환 시간을 처음부터 센다. 클릭은 페이드 없이 바뀌고, 타이머는 페이드로 바뀐다. 동작 줄이기가 켜져 있으면 클릭으로만 넘긴다. 사진 목록은 <code>study_note_record_organization/data/image</code>의 742장이고, <code>data/data_study_note_record_organization/image</code>에 모은 파일을 그 폴더로 반영한 것이다.</p>
 <h2>이 파일이 부르는 다른 파일</h2>
 <p><code>hero-images.js</code>의 <code>window.HERO_IMAGES</code> 또는 <code>data.js</code>의 <code>heroImages</code>를 읽는다. <code>app.js</code>의 함수는 부르지 않는다. <code>dashboard/index.html</code>이 두 스크립트를 모두 읽는다.</p>
 <h1>요약 빌드</h1>
@@ -275,7 +275,7 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 9pt; backgro
 <p><code>read_text_file</code>은 <code>utf-8</code>, <code>utf-8-sig</code>, <code>cp949</code> 순으로 읽는다. 모두 실패하면 깨진 글자를 대체해 utf-8로 읽는다.</p>
 <p><code>read_source_text</code>는 경로가 파일이 아니거나 읽기 <code>OSError</code>면 <code>None</code>이다. 읽은 뒤에는 <code>mask_secrets</code>를 적용하고, 과제 경로면 <code>mask_assignment_privacy</code>도 적용한다.</p>
 <h3>히어로, 청크, 한도</h3>
-<p><code>collect_hero_images</code>는 <code>data/image</code>의 파일을 이름순으로 보고, 이미지 확장자만 <code>../data/image/파일이름</code>으로 모은다. 폴더가 없으면 빈 리스트다. 지금 그 폴더는 771장이고, 추가분은 <code>data/data_study_note_record_organization/image</code>에서 반영한다.</p>
+<p><code>collect_hero_images</code>는 <code>data/image</code>의 파일을 이름순으로 보고, 이미지 확장자만 <code>../data/image/파일이름</code>으로 모은다. 폴더가 없으면 빈 리스트다. 지금 그 폴더는 742장이고, 추가분은 <code>data/data_study_note_record_organization/image</code>에서 반영한다.</p>
 <p><code>write_hero_images_js</code>는 그 목록을 <code>window.HERO_IMAGES = ...;</code>로 <code>hero-images.js</code>에 쓰고 개수를 돌려준다.</p>
 <p><code>source_chunk_filename</code>은 원본 키 해시 8자와 본문 해시 8자를 이어 <code>키-본문.json</code> 이름을 만든다. 본문이 바뀌면 파일 이름이 바뀐다.</p>
 <p><code>source_build_id</code>는 정렬한 <code>키:파일이름</code> 전체를 해시해 12자를 돌려준다. <code>stamp_index_scripts</code>는 그 값에 <code>app.js</code>와 <code>styles.css</code> 해시를 더해 12자 토큰을 만든다. <code>dashboard/index.html</code>에서 <code>js/data.js</code>, <code>js/app.js</code>, <code>css/styles.css</code>의 기존 쿼리를 지우고 <code>?v=토큰</code>을 붙인다. <code>hero.js</code> 주소는 바꾸지 않는다.</p>
