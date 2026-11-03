@@ -69926,7 +69926,7 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 8pt; line-he
 227  
 228      &lt;script src=&quot;js/hero-images.js&quot;&gt;&lt;/script&gt;
 229      &lt;script src=&quot;js/data.js?v=12bdf17da6fd&quot;&gt;&lt;/script&gt;
-230      &lt;script src=&quot;js/hero.js&quot;&gt;&lt;/script&gt;
+230      &lt;script src=&quot;js/hero.js?v=click-instant&quot;&gt;&lt;/script&gt;
 231      &lt;script src=&quot;js/app.js?v=12bdf17da6fd&quot;&gt;&lt;/script&gt;
 232      &lt;script src=&quot;../../js/main.js?v=theme-sync&quot;&gt;&lt;/script&gt;
 233      &lt;script src=&quot;../../js/protect-resources.js&quot;&gt;&lt;/script&gt;
@@ -70537,80 +70537,92 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 8pt; line-he
 104      /**
 105       * 숨겨 둔 이미지에 다음 장을 불러온 뒤, 로드가 끝나면 보이는 장을 교체한다.
 106       * 이미 전환 중이거나 같은 장이면 아무것도 하지 않는다.
-107       * @param {number} index 보여줄 이미지 인덱스
-108       */
-109      function swapTo(index) {
-110        if (busy || index === current) return;
-111        busy = true;
-112  
-113        var next = hiddenImg();
-114        var prev = visibleImg();
-115        applyImage(next, index);
-116        current = index;
-117  
-118        /**
-119         * 새 이미지에 표시 클래스를 옮기고 전환 중 상태를 해제한다.
-120         */
-121        function finish() {
-122          next.classList.add(&quot;is-visible&quot;);
-123          prev.classList.remove(&quot;is-visible&quot;);
-124          showA = next === imgA;
-125          busy = false;
-126        }
-127  
-128        if (next.complete &amp;&amp; next.naturalWidth &gt; 0) {
-129          finish();
-130        } else {
-131          next.onload = function () {
-132            next.onload = null;
-133            finish();
-134          };
-135          next.onerror = function () {
-136            next.onerror = null;
-137            busy = false;
-138          };
-139        }
-140      }
-141  
-142      /**
-143       * 현재와 다른 장을 골라 교체한다.
-144       */
-145      function nextRandom() {
-146        swapTo(pickIndex());
-147      }
-148  
-149      /**
-150       * 자동 전환 타이머를 다시 시작한다.
-151       * 동작 줄이기가 켜져 있거나 이미지가 한 장이면 타이머를 두지 않는다.
-152       */
-153      function startTimer() {
-154        if (timer) clearInterval(timer);
-155        var reduced =
-156          window.matchMedia &amp;&amp;
-157          window.matchMedia(&quot;(prefers-reduced-motion: reduce)&quot;).matches;
-158        if (!reduced &amp;&amp; images.length &gt; 1) {
-159          timer = setInterval(nextRandom, AUTO_MS);
-160        }
-161      }
-162  
-163      current = pickIndex();
-164      applyImage(imgA, current);
-165      imgA.classList.add(&quot;is-visible&quot;);
-166  
-167      stage.addEventListener(&quot;click&quot;, function () {
-168        nextRandom();
-169        startTimer();
-170      });
-171  
-172      startTimer();
-173    }
+107       * instant가 참이면 클릭 전환이라 불투명도 애니메이션을 건너뛴다.
+108       * @param {number} index 보여줄 이미지 인덱스
+109       * @param {boolean} [instant] 클릭으로 바로 바꿀 때 true
+110       */
+111      function swapTo(index, instant) {
+112        if (busy || index === current) return;
+113        busy = true;
+114  
+115        var next = hiddenImg();
+116        var prev = visibleImg();
+117        applyImage(next, index);
+118        current = index;
+119  
+120        /**
+121         * 새 이미지에 표시 클래스를 옮기고 전환 중 상태를 해제한다.
+122         * 클릭 전환은 transition을 끈 뒤 클래스를 바꿔 즉시 교체한다.
+123         */
+124        function finish() {
+125          if (instant) {
+126            next.style.transition = &quot;none&quot;;
+127            prev.style.transition = &quot;none&quot;;
+128          }
+129          next.classList.add(&quot;is-visible&quot;);
+130          prev.classList.remove(&quot;is-visible&quot;);
+131          if (instant) {
+132            void next.offsetWidth;
+133            next.style.transition = &quot;&quot;;
+134            prev.style.transition = &quot;&quot;;
+135          }
+136          showA = next === imgA;
+137          busy = false;
+138        }
+139  
+140        if (next.complete &amp;&amp; next.naturalWidth &gt; 0) {
+141          finish();
+142        } else {
+143          next.onload = function () {
+144            next.onload = null;
+145            finish();
+146          };
+147          next.onerror = function () {
+148            next.onerror = null;
+149            busy = false;
+150          };
+151        }
+152      }
+153  
+154      /**
+155       * 현재와 다른 장을 골라 교체한다.
+156       */
+157      function nextRandom() {
+158        swapTo(pickIndex());
+159      }
+160  
+161      /**
+162       * 자동 전환 타이머를 다시 시작한다.
+163       * 동작 줄이기가 켜져 있거나 이미지가 한 장이면 타이머를 두지 않는다.
+164       */
+165      function startTimer() {
+166        if (timer) clearInterval(timer);
+167        var reduced =
+168          window.matchMedia &amp;&amp;
+169          window.matchMedia(&quot;(prefers-reduced-motion: reduce)&quot;).matches;
+170        if (!reduced &amp;&amp; images.length &gt; 1) {
+171          timer = setInterval(nextRandom, AUTO_MS);
+172        }
+173      }
 174  
-175    if (document.readyState === &quot;loading&quot;) {
-176      document.addEventListener(&quot;DOMContentLoaded&quot;, initHero);
-177    } else {
-178      initHero();
-179    }
-180  })();</pre>
+175      current = pickIndex();
+176      applyImage(imgA, current);
+177      imgA.classList.add(&quot;is-visible&quot;);
+178  
+179      stage.addEventListener(&quot;click&quot;, function () {
+180        swapTo(pickIndex(), true);
+181        startTimer();
+182      });
+183  
+184      startTimer();
+185    }
+186  
+187    if (document.readyState === &quot;loading&quot;) {
+188      document.addEventListener(&quot;DOMContentLoaded&quot;, initHero);
+189    } else {
+190      initHero();
+191    }
+192  })();</pre>
 <h2>study_note_record_organization/scripts/build_output.py</h2>
 <pre>   1  # -*- coding: utf-8 -*-
    2  &quot;&quot;&quot;학습 노트와 과제 원본에서 텍스트를 뽑고, 카탈로그와 요약 마크다운을 만든다.&quot;&quot;&quot;

@@ -34,15 +34,15 @@ HTML 조각은 `#hero`, `#hero-stage`, `#hero-img-a`, `#hero-img-b`다. 두 이�
 
 `applyImage`는 그 인덱스의 경로를 `heroSrc`로 바꿔 `src`에 넣고, `alt`는 `학습·과제 기록 갤러리 이미지`로 고정한다.
 
-`swapTo(index)`는 `busy`이거나 `index`가 `current`와 같으면 아무 것도 하지 않는다. 아니면 `busy`를 참으로 두고, 숨은 이미지에 `applyImage`를 한 뒤 `current`를 먼저 바꾼다. 그 이미지가 이미 로드되어 있으면 바로 `finish`한다. 아니면 `onload`에서 `finish`하고, `onerror`에서는 `busy`만 거짓으로 되돌린다. 실패하면 보이던 장은 유지되고 `current`만 새 인덱스로 남아, 다음 무작위가 그 인덱스를 피할 수 있다.
+`swapTo(index, instant)`는 `busy`이거나 `index`가 `current`와 같으면 아무 것도 하지 않는다. 아니면 `busy`를 참으로 두고, 숨은 이미지에 `applyImage`를 한 뒤 `current`를 먼저 바꾼다. 그 이미지가 이미 로드되어 있으면 바로 `finish`한다. 아니면 `onload`에서 `finish`하고, `onerror`에서는 `busy`만 거짓으로 되돌린다. 실패하면 보이던 장은 유지되고 `current`만 새 인덱스로 남아, 다음 무작위가 그 인덱스를 피할 수 있다.
 
-`finish`는 새 이미지에 `is-visible`을 붙이고 이전 이미지에서 뺀다. `showA`를 새 이미지가 A인지로 맞추고 `busy`를 거짓으로 둔다.
+`finish`는 새 이미지에 `is-visible`을 붙이고 이전 이미지에서 뺀다. `instant`가 참이면 두 이미지의 `transition`을 잠시 끄고 클래스를 바꿔, 클릭 전환에는 페이드를 쓰지 않는다. 그다음 `showA`를 새 이미지가 A인지로 맞추고 `busy`를 거짓으로 둔다. 자동 전환은 `instant` 없이 호출하므로 CSS 페이드가 남는다.
 
 `nextRandom`은 `pickIndex` 결과로 `swapTo`를 부른다.
 
 `startTimer`는 기존 인터벌을 지운다. `prefers-reduced-motion: reduce`이거나 이미지가 한 장이면 새 인터벌을 만들지 않는다. 그 외에는 5500밀리초마다 `nextRandom`을 부른다.
 
-초기화의 마지막은 첫 `pickIndex`로 A에 그림을 넣고 `is-visible`을 붙이는 것이다. 스테이지 클릭은 `nextRandom` 뒤 `startTimer`를 다시 불러 자동 전환 시간을 처음부터 센다. 동작 줄이기가 켜져 있으면 클릭으로만 넘긴다.
+초기화의 마지막은 첫 `pickIndex`로 A에 그림을 넣고 `is-visible`을 붙이는 것이다. 스테이지 클릭은 `swapTo(pickIndex(), true)` 뒤 `startTimer`를 다시 불러 자동 전환 시간을 처음부터 센다. 클릭은 페이드 없이 바뀌고, 타이머는 페이드로 바뀐다. 동작 줄이기가 켜져 있으면 클릭으로만 넘긴다. 사진 목록은 `study_note_record_organization/data/image`의 771장이고, `data/data_study_note_record_organization/image`에 모은 파일을 그 폴더로 반영한 것이다.
 
 ## 이 파일이 부르는 다른 파일
 

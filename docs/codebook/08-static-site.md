@@ -44,7 +44,7 @@
 
 ### 히어로, 청크, 한도
 
-`collect_hero_images`는 `data/image`의 파일을 이름순으로 보고, 이미지 확장자만 `../data/image/파일이름`으로 모은다. 폴더가 없으면 빈 리스트다.
+`collect_hero_images`는 `data/image`의 파일을 이름순으로 보고, 이미지 확장자만 `../data/image/파일이름`으로 모은다. 폴더가 없으면 빈 리스트다. 지금 그 폴더는 771장이고, 추가분은 `data/data_study_note_record_organization/image`에서 반영한다.
 
 `write_hero_images_js`는 그 목록을 `window.HERO_IMAGES = ...;`로 `hero-images.js`에 쓰고 개수를 돌려준다.
 

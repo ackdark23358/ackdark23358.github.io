@@ -104,9 +104,11 @@
     /**
      * 숨겨 둔 이미지에 다음 장을 불러온 뒤, 로드가 끝나면 보이는 장을 교체한다.
      * 이미 전환 중이거나 같은 장이면 아무것도 하지 않는다.
+     * instant가 참이면 클릭 전환이라 불투명도 애니메이션을 건너뛴다.
      * @param {number} index 보여줄 이미지 인덱스
+     * @param {boolean} [instant] 클릭으로 바로 바꿀 때 true
      */
-    function swapTo(index) {
+    function swapTo(index, instant) {
       if (busy || index === current) return;
       busy = true;
 
@@ -117,10 +119,20 @@
 
       /**
        * 새 이미지에 표시 클래스를 옮기고 전환 중 상태를 해제한다.
+       * 클릭 전환은 transition을 끈 뒤 클래스를 바꿔 즉시 교체한다.
        */
       function finish() {
+        if (instant) {
+          next.style.transition = "none";
+          prev.style.transition = "none";
+        }
         next.classList.add("is-visible");
         prev.classList.remove("is-visible");
+        if (instant) {
+          void next.offsetWidth;
+          next.style.transition = "";
+          prev.style.transition = "";
+        }
         showA = next === imgA;
         busy = false;
       }
@@ -165,7 +177,7 @@
     imgA.classList.add("is-visible");
 
     stage.addEventListener("click", function () {
-      nextRandom();
+      swapTo(pickIndex(), true);
       startTimer();
     });
 
