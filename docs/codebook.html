@@ -335,7 +335,7 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 9pt; backgro
 <p><code>portfolio_achieve/index.html</code>은 지원자가 실습하고 개발한 9개 실습 프로젝트(<code>PROJ_01</code> ~ <code>PROJ_09</code>), 6개 기관 과정(<code>PROJ_10</code> ~ <code>PROJ_15</code>), Cursor 바이브 코딩 완성 2건(<code>PROJ_16</code> 신문 감상 기록, <code>PROJ_17</code> 하루일과), 에듀펜 자바 재구현 2건(<code>PROJ_18</code> 사원관리 프로그램, <code>PROJ_19</code> 자바 채팅), 박현규 『바로 배워 바로 쓰는 바로바로 바이브 코딩 with 커서 AI』 독서 노트와 실습 화면(<code>PROJ_20</code>), 『요즘 바이브 코딩 커서 AI 30가지 프로그램 만들기』 독서 노트(<code>PROJ_21</code>)를 카드로 모아 총 21개 프로젝트를 제공하는 아카이브 메인 페이지다.</p>
 <p>각 프로젝트 카드는 소개, 사용 도구(Pill 태그), 실행 환경, 간단 설명, 핵심 기능을 균일한 시맨틱 카드(<code>&lt;article class=&quot;project-card&quot;&gt;</code>) 구조로 담고 있으며, 외부 이동 없이 단일 페이지 내에서 일목요연하게 열람할 수 있도록 구성되었다.</p>
 <p>동작을 지원하는 스타일과 스크립트는 다음과 같다:</p>
-<ul><li><code>portfolio_achieve/css/archive.css</code>: 다크/라이트 테마 변수, 프로젝트 카드 그리드, 정적 메타 카드 레이아웃 및 캡처 이미지 반응형 스타일</li><li><code>portfolio_achieve/js/site.js</code>: 테마 전환 토글(<code>portfolio-theme-v2</code> 동기화), 모바일 네비게이션 드롭다운 제어, 스크롤 이동 이벤트</li></ul>
+<ul><li><code>portfolio_achieve/css/archive.css</code>: 다크/라이트 테마 변수, 프로젝트 카드 그리드, 정적 메타 카드 레이아웃 및 캡처 이미지 반응형 스타일</li><li><code>portfolio_achieve/js/site.js</code>: 테마 전환 토글(<code>portfolio-theme-v2</code> 동기화), 모바일 네비게이션 드롭다운 제어, 스크롤 이동 이벤트, 히어로 문구가 보일 때의 세로 스크롤 안내</li></ul>
 <h2>읽는 순서</h2>
 <ol><li>테마 및 리소스 보호 메타 태그 (<code>robots</code>, <code>tdm-reservation</code>, <code>referrer</code>)</li><li>상단 헤더 및 자료 드롭다운 네비게이션</li><li>히어로 소개 구역 (<code>#archive</code>)</li><li>프로젝트 카드 그리드 목록 (<code>#archive-list</code>, <code>PROJ_01</code> ~ <code>PROJ_21</code>)</li><li>전개형 사이트맵 및 저작권·선언문 푸터</li><li>테마 및 인터랙션 스크립트 (<code>js/site.js</code>, <code>../js/protect-resources.js</code>)</li></ol>
 <h2>구간 설명</h2>
@@ -344,6 +344,8 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 9pt; backgro
 <h3>프로젝트 카드 구조 (<code>.project-card</code>)</h3>
 <p>각 카드는 독립적인 시맨틱 <code>&lt;article&gt;</code> 태그로 구성되며 다음과 같은 정보 블록을 표준화하여 배치한다:</p>
 <ul><li><code>.project-card__eyebrow</code>: 프로젝트 번호와 작업 일자 (예: <code>PROJ_01 · 2025.02.17</code>)</li><li><code>.project-card__title</code>: 프로젝트 명칭</li><li><code>.field-label</code> 및 <code>.field-body</code>: 프로젝트 소개, 간단 설명, 실행 환경, 핵심 기능</li><li><code>.pill-list</code>: 사용한 언어, 프레임워크, AI 도구 태그 목록 (Python, Express, Cursor 등)</li></ul>
+<h3>히어로 문구와 세로 스크롤 안내</h3>
+<p><code>.hero__lead</code>는 21개 프로젝트를 <code>프로젝트 - 이름</code> 형식으로 쉼표에 이은 한 문장이다. <code>initScrollHint</code>는 이 문장이 화면(상단 헤더 64px 아래)과 겹치는 동안 <code>.scroll-hint</code>에 <code>is-on</code>을 붙인다. 문구는 <code>아래로 스크롤 하세요.</code>이고, 화면 오른쪽에 세로쓰기(<code>writing-mode: vertical-rl</code>)로 위아래 움직인다. 문장이 화면 밖으로 나가면 안내를 숨긴다. <code>prefers-reduced-motion</code>이면 움직임 없이 보이기만 한다.</p>
 <h3>PROJ_13 카드 사진</h3>
 <p><code>portfolio_achieve/img/proj-13-projects.png</code>는 SSamz 안드로이드 카드의 사진이다. 백업 폴더에 있는 미니프로젝트 이름 여덟 개를 적는다. 카카오 로그인, 할 일, 배터리, mp3, 카메라, 뉴스, 구글 지도, Firebase. 이름에 미완이 있고 파일이 없는 mp3·할 일 개선은 적지 않는다.</p>
 <h3>테마 토글 및 드롭다운 (<code>js/site.js</code>)</h3>

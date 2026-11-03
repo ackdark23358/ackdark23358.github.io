@@ -690,7 +690,7 @@ HTML, CSS, JS, Python 소스를 찾아 각 줄마다 행 번호를 매긴 뒤 �
 
 동작을 지원하는 스타일과 스크립트는 다음과 같다:
 - `portfolio_achieve/css/archive.css`: 다크/라이트 테마 변수, 프로젝트 카드 그리드, 정적 메타 카드 레이아웃 및 캡처 이미지 반응형 스타일
-- `portfolio_achieve/js/site.js`: 테마 전환 토글(`portfolio-theme-v2` 동기화), 모바일 네비게이션 드롭다운 제어, 스크롤 이동 이벤트
+- `portfolio_achieve/js/site.js`: 테마 전환 토글(`portfolio-theme-v2` 동기화), 모바일 네비게이션 드롭다운 제어, 스크롤 이동 이벤트, 히어로 문구가 보일 때의 세로 스크롤 안내
 
 ## 읽는 순서
 
@@ -714,6 +714,10 @@ HTML, CSS, JS, Python 소스를 찾아 각 줄마다 행 번호를 매긴 뒤 �
 - `.project-card__title`: 프로젝트 명칭
 - `.field-label` 및 `.field-body`: 프로젝트 소개, 간단 설명, 실행 환경, 핵심 기능
 - `.pill-list`: 사용한 언어, 프레임워크, AI 도구 태그 목록 (Python, Express, Cursor 등)
+
+### 히어로 문구와 세로 스크롤 안내
+
+`.hero__lead`는 21개 프로젝트를 `프로젝트 - 이름` 형식으로 쉼표에 이은 한 문장이다. `initScrollHint`는 이 문장이 화면(상단 헤더 64px 아래)과 겹치는 동안 `.scroll-hint`에 `is-on`을 붙인다. 문구는 `아래로 스크롤 하세요.`이고, 화면 오른쪽에 세로쓰기(`writing-mode: vertical-rl`)로 위아래 움직인다. 문장이 화면 밖으로 나가면 안내를 숨긴다. `prefers-reduced-motion`이면 움직임 없이 보이기만 한다.
 
 ### PROJ_13 카드 사진
 

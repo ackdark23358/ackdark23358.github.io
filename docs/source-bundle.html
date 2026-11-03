@@ -66946,503 +66946,544 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 8pt; line-he
 402    color: var(--color-text);
 403  }
 404  
-405  .hero__meta,
-406  .meta-list {
-407    margin: 2rem 0 0;
-408    max-width: 46rem;
-409    padding-top: 0.25rem;
-410    border-top: 1px solid var(--color-border);
-411  }
-412  
-413  .hero__meta-row,
-414  .meta-list div {
-415    display: grid;
-416    grid-template-columns: minmax(6.5rem, 9rem) minmax(0, 1fr);
-417    gap: 0.5rem 1.5rem;
-418    padding: 0.7rem 0;
-419    border-bottom: 1px solid var(--color-border);
-420  }
-421  
-422  .hero__meta dt,
-423  .meta-list dt {
-424    margin: 0;
-425    font-size: 0.875rem;
-426    color: var(--color-text-muted);
-427    font-weight: 500;
-428  }
-429  
-430  .hero__meta dd,
-431  .meta-list dd {
-432    margin: 0;
-433    font-size: 0.9375rem;
-434  }
-435  
-436  .hero__links,
-437  .local-nav {
-438    display: flex;
-439    flex-wrap: wrap;
-440    gap: 0.45rem 1.15rem;
-441    margin: 1.5rem 0 0;
-442    padding: 0;
-443    list-style: none;
+405  .scroll-hint {
+406    position: fixed;
+407    top: 50%;
+408    right: 1.25rem;
+409    z-index: 40;
+410    margin: 0;
+411    writing-mode: vertical-rl;
+412    text-orientation: mixed;
+413    letter-spacing: 0.22em;
+414    color: var(--color-text-muted);
+415    font-size: var(--text-caption);
+416    line-height: 1;
+417    pointer-events: none;
+418    opacity: 0;
+419    visibility: hidden;
+420    transform: translateY(-50%);
+421  }
+422  
+423  .scroll-hint.is-on {
+424    opacity: 1;
+425    visibility: visible;
+426    animation: scroll-hint-bob 1.6s ease-in-out infinite;
+427  }
+428  
+429  @keyframes scroll-hint-bob {
+430    0%,
+431    100% {
+432      transform: translateY(-50%);
+433    }
+434  
+435    50% {
+436      transform: translateY(calc(-50% + 10px));
+437    }
+438  }
+439  
+440  @media (prefers-reduced-motion: reduce) {
+441    .scroll-hint.is-on {
+442      animation: none;
+443    }
 444  }
 445  
-446  .hero__links a,
-447  .local-nav a {
-448    color: var(--color-text-muted);
-449    font-size: 0.9375rem;
-450    text-decoration: none;
-451  }
-452  
-453  .hero__links a:hover,
-454  .local-nav a:hover {
-455    color: var(--color-text);
-456    text-decoration: underline;
-457    text-underline-offset: 0.2em;
-458  }
-459  
-460  .section {
-461    padding: var(--space-section) var(--space-gutter);
-462    border-bottom: 1px solid var(--color-border);
-463  }
-464  
-465  .section:focus {
-466    outline: none;
-467  }
-468  
-469  .section__title {
-470    margin: 0 0 1.5rem;
-471    font-size: var(--text-section);
-472    line-height: 1.2;
-473    font-weight: 600;
-474    letter-spacing: -0.02em;
+446  .hero__meta,
+447  .meta-list {
+448    margin: 2rem 0 0;
+449    max-width: 46rem;
+450    padding-top: 0.25rem;
+451    border-top: 1px solid var(--color-border);
+452  }
+453  
+454  .hero__meta-row,
+455  .meta-list div {
+456    display: grid;
+457    grid-template-columns: minmax(6.5rem, 9rem) minmax(0, 1fr);
+458    gap: 0.5rem 1.5rem;
+459    padding: 0.7rem 0;
+460    border-bottom: 1px solid var(--color-border);
+461  }
+462  
+463  .hero__meta dt,
+464  .meta-list dt {
+465    margin: 0;
+466    font-size: 0.875rem;
+467    color: var(--color-text-muted);
+468    font-weight: 500;
+469  }
+470  
+471  .hero__meta dd,
+472  .meta-list dd {
+473    margin: 0;
+474    font-size: 0.9375rem;
 475  }
 476  
-477  .section-lead,
-478  .prose {
-479    max-width: var(--prose-max);
-480  }
-481  
-482  .section-lead {
-483    margin: 0 0 1.75rem;
-484    color: var(--color-text-muted);
+477  .hero__links,
+478  .local-nav {
+479    display: flex;
+480    flex-wrap: wrap;
+481    gap: 0.45rem 1.15rem;
+482    margin: 1.5rem 0 0;
+483    padding: 0;
+484    list-style: none;
 485  }
 486  
-487  .prose p,
-488  .note-list li,
-489  .feature-table {
-490    margin: 0 0 1.25rem;
-491  }
-492  
-493  .prose + .refs-list,
-494  .refs-list + .prose,
-495  .skill-cards + .refs-list,
-496  .refs-list + .refs-list {
-497    margin-top: 1.75rem;
-498  }
-499  
-500  .prose p:last-child,
-501  .note-list li:last-child {
-502    margin-bottom: 0;
-503  }
-504  
-505  .prose strong {
-506    font-weight: 600;
-507  }
-508  
-509  .prose ol,
-510  .prose ul {
-511    margin: 0 0 1.25rem;
-512    padding-left: 1.25rem;
-513  }
-514  
-515  .prose li + li {
-516    margin-top: 0.35rem;
-517  }
-518  
-519  .archive-grid {
-520    display: grid;
-521    grid-template-columns: minmax(0, 1fr);
-522    gap: 2rem;
-523  }
-524  
-525  .project-card {
-526    display: flex;
-527    flex-direction: column;
-528    min-height: 100%;
-529    background: var(--color-surface);
-530    border: 1px solid var(--color-border);
-531    border-radius: 2px;
-532    color: var(--color-text);
-533    overflow: hidden;
-534    cursor: default;
-535  }
-536  
-537  .project-card__media {
-538    margin: 0;
-539    background: #fff;
-540    border-bottom: 1px solid var(--color-border);
-541  }
-542  
-543  .project-card__media img,
-544  .shot img {
-545    display: block;
-546    width: 100%;
-547    height: auto;
-548    background: #fff;
-549  }
-550  
-551  .project-card__body {
-552    display: flex;
-553    flex-direction: column;
-554    gap: 0.85rem;
-555    padding: 1.35rem;
-556  }
-557  
-558  .project-card__index {
-559    margin: 0;
-560  }
-561  
-562  .project-card__title {
-563    margin: 0.35rem 0 0;
-564    font-size: 1.35rem;
-565    line-height: 1.25;
-566    letter-spacing: -0.02em;
-567  }
-568  
-569  .field-label {
-570    margin: 0 0 0.3rem;
-571    letter-spacing: 0.08em;
-572  }
-573  
-574  .field-body {
-575    margin: 0;
-576    font-size: 0.9375rem;
-577    line-height: var(--lh-body);
-578  }
-579  
-580  .pill-list {
-581    display: flex;
-582    flex-wrap: wrap;
-583    gap: 0.4rem;
-584    margin: 0;
-585    padding: 0;
-586    list-style: none;
-587  }
-588  
-589  .pill-list li {
-590    padding: 0.12rem 0.55rem;
-591    border: 1px solid var(--color-border);
-592    border-radius: 999px;
-593    color: var(--color-text-muted);
-594    font-size: 0.75rem;
-595    line-height: 1.5;
-596    letter-spacing: 0;
+487  .hero__links a,
+488  .local-nav a {
+489    color: var(--color-text-muted);
+490    font-size: 0.9375rem;
+491    text-decoration: none;
+492  }
+493  
+494  .hero__links a:hover,
+495  .local-nav a:hover {
+496    color: var(--color-text);
+497    text-decoration: underline;
+498    text-underline-offset: 0.2em;
+499  }
+500  
+501  .section {
+502    padding: var(--space-section) var(--space-gutter);
+503    border-bottom: 1px solid var(--color-border);
+504  }
+505  
+506  .section:focus {
+507    outline: none;
+508  }
+509  
+510  .section__title {
+511    margin: 0 0 1.5rem;
+512    font-size: var(--text-section);
+513    line-height: 1.2;
+514    font-weight: 600;
+515    letter-spacing: -0.02em;
+516  }
+517  
+518  .section-lead,
+519  .prose {
+520    max-width: var(--prose-max);
+521  }
+522  
+523  .section-lead {
+524    margin: 0 0 1.75rem;
+525    color: var(--color-text-muted);
+526  }
+527  
+528  .prose p,
+529  .note-list li,
+530  .feature-table {
+531    margin: 0 0 1.25rem;
+532  }
+533  
+534  .prose + .refs-list,
+535  .refs-list + .prose,
+536  .skill-cards + .refs-list,
+537  .refs-list + .refs-list {
+538    margin-top: 1.75rem;
+539  }
+540  
+541  .prose p:last-child,
+542  .note-list li:last-child {
+543    margin-bottom: 0;
+544  }
+545  
+546  .prose strong {
+547    font-weight: 600;
+548  }
+549  
+550  .prose ol,
+551  .prose ul {
+552    margin: 0 0 1.25rem;
+553    padding-left: 1.25rem;
+554  }
+555  
+556  .prose li + li {
+557    margin-top: 0.35rem;
+558  }
+559  
+560  .archive-grid {
+561    display: grid;
+562    grid-template-columns: minmax(0, 1fr);
+563    gap: 2rem;
+564  }
+565  
+566  .project-card {
+567    display: flex;
+568    flex-direction: column;
+569    min-height: 100%;
+570    background: var(--color-surface);
+571    border: 1px solid var(--color-border);
+572    border-radius: 2px;
+573    color: var(--color-text);
+574    overflow: hidden;
+575    cursor: default;
+576  }
+577  
+578  .project-card__media {
+579    margin: 0;
+580    background: #fff;
+581    border-bottom: 1px solid var(--color-border);
+582  }
+583  
+584  .project-card__media img,
+585  .shot img {
+586    display: block;
+587    width: 100%;
+588    height: auto;
+589    background: #fff;
+590  }
+591  
+592  .project-card__body {
+593    display: flex;
+594    flex-direction: column;
+595    gap: 0.85rem;
+596    padding: 1.35rem;
 597  }
 598  
-599  .project-card__more {
-600    margin-top: auto;
-601    padding-top: 0.35rem;
-602    color: var(--color-text-muted);
-603    font-size: var(--text-caption);
-604  }
-605  
-606  .project-card:hover .project-card__more {
-607    color: var(--color-text);
+599  .project-card__index {
+600    margin: 0;
+601  }
+602  
+603  .project-card__title {
+604    margin: 0.35rem 0 0;
+605    font-size: 1.35rem;
+606    line-height: 1.25;
+607    letter-spacing: -0.02em;
 608  }
 609  
-610  .shot-grid {
-611    display: grid;
-612    gap: 1.25rem;
+610  .field-label {
+611    margin: 0 0 0.3rem;
+612    letter-spacing: 0.08em;
 613  }
 614  
-615  @media (min-width: 860px) {
-616    .shot-grid {
-617      grid-template-columns: 1fr 1fr;
-618      align-items: start;
-619    }
-620  }
-621  
-622  .shot {
-623    margin: 0;
-624  }
-625  
-626  .shot img {
-627    border: 1px solid var(--color-border);
-628    border-radius: 2px;
-629  }
-630  
-631  .media-caption {
-632    margin: 0.55rem 0 0;
-633    font-size: var(--text-caption);
-634    line-height: var(--lh-caption);
-635    color: var(--color-text-muted);
-636  }
-637  
-638  .study-chapter,
-639  .study-chapter + .refs-list {
-640    margin-top: 2.25rem;
-641  }
-642  
-643  .study-chapter__title {
-644    margin: 0 0 1rem;
-645    font-size: 1.05rem;
-646    font-weight: 600;
-647    letter-spacing: -0.02em;
-648  }
-649  
-650  .skill-cards {
-651    list-style: none;
-652    margin: 0;
-653    padding: 0;
-654    display: grid;
-655    grid-template-columns: repeat(2, minmax(0, 1fr));
-656    gap: 1rem 1.25rem;
-657  }
-658  
-659  @media (max-width: 640px) {
-660    .skill-cards,
-661    .hero__meta-row,
-662    .meta-list div {
-663      grid-template-columns: 1fr;
-664    }
+615  .field-body {
+616    margin: 0;
+617    font-size: 0.9375rem;
+618    line-height: var(--lh-body);
+619  }
+620  
+621  .pill-list {
+622    display: flex;
+623    flex-wrap: wrap;
+624    gap: 0.4rem;
+625    margin: 0;
+626    padding: 0;
+627    list-style: none;
+628  }
+629  
+630  .pill-list li {
+631    padding: 0.12rem 0.55rem;
+632    border: 1px solid var(--color-border);
+633    border-radius: 999px;
+634    color: var(--color-text-muted);
+635    font-size: 0.75rem;
+636    line-height: 1.5;
+637    letter-spacing: 0;
+638  }
+639  
+640  .project-card__more {
+641    margin-top: auto;
+642    padding-top: 0.35rem;
+643    color: var(--color-text-muted);
+644    font-size: var(--text-caption);
+645  }
+646  
+647  .project-card:hover .project-card__more {
+648    color: var(--color-text);
+649  }
+650  
+651  .shot-grid {
+652    display: grid;
+653    gap: 1.25rem;
+654  }
+655  
+656  @media (min-width: 860px) {
+657    .shot-grid {
+658      grid-template-columns: 1fr 1fr;
+659      align-items: start;
+660    }
+661  }
+662  
+663  .shot {
+664    margin: 0;
 665  }
 666  
-667  .skill-card {
-668    margin: 0;
-669    padding: 1.25rem 1.35rem;
-670    background: var(--color-surface);
-671    border: 1px solid var(--color-border);
-672    border-radius: 2px;
-673    transition: border-color var(--motion-fast) var(--ease-out-soft), transform var(--motion-fast) var(--ease-out-soft);
-674  }
-675  
-676  .skill-card:hover {
-677    border-color: var(--color-border-hover);
-678    transform: translateY(-6px);
-679  }
-680  
-681  @media (prefers-reduced-motion: reduce) {
-682    .skill-card:hover {
-683      transform: none;
-684    }
-685  }
-686  
-687  .skill-card__label {
-688    margin: 0 0 0.5rem;
-689    font-size: 0.8125rem;
-690    font-weight: 600;
-691    letter-spacing: 0.04em;
-692    text-transform: uppercase;
-693    color: var(--color-text-muted);
-694  }
-695  
-696  .skill-card__body {
-697    margin: 0;
-698    font-size: 0.9375rem;
-699    line-height: var(--lh-body);
-700  }
-701  
-702  .feature-table {
-703    width: 100%;
-704    border-collapse: collapse;
-705    font-size: 0.9375rem;
+667  .shot img {
+668    border: 1px solid var(--color-border);
+669    border-radius: 2px;
+670  }
+671  
+672  .media-caption {
+673    margin: 0.55rem 0 0;
+674    font-size: var(--text-caption);
+675    line-height: var(--lh-caption);
+676    color: var(--color-text-muted);
+677  }
+678  
+679  .study-chapter,
+680  .study-chapter + .refs-list {
+681    margin-top: 2.25rem;
+682  }
+683  
+684  .study-chapter__title {
+685    margin: 0 0 1rem;
+686    font-size: 1.05rem;
+687    font-weight: 600;
+688    letter-spacing: -0.02em;
+689  }
+690  
+691  .skill-cards {
+692    list-style: none;
+693    margin: 0;
+694    padding: 0;
+695    display: grid;
+696    grid-template-columns: repeat(2, minmax(0, 1fr));
+697    gap: 1rem 1.25rem;
+698  }
+699  
+700  @media (max-width: 640px) {
+701    .skill-cards,
+702    .hero__meta-row,
+703    .meta-list div {
+704      grid-template-columns: 1fr;
+705    }
 706  }
 707  
-708  .feature-table th,
-709  .feature-table td {
-710    padding: 0.75rem 0.7rem;
-711    border-bottom: 1px solid var(--color-border);
-712    text-align: left;
-713    vertical-align: top;
-714  }
-715  
-716  .feature-table th {
-717    color: var(--color-text-muted);
-718    font-size: 0.8125rem;
-719    font-weight: 600;
-720    letter-spacing: 0.04em;
-721  }
-722  
-723  .feature-table code,
-724  .path {
-725    font-family: var(--font-mono);
-726    font-size: 0.8125rem;
-727    word-break: break-all;
-728  }
-729  
-730  .note-list {
-731    margin: 0;
-732    padding-left: 1.15rem;
-733  }
-734  
-735  .note-list li {
-736    padding-left: 0.2rem;
-737  }
-738  
-739  .note-list li::marker {
-740    color: var(--color-text-muted);
+708  .skill-card {
+709    margin: 0;
+710    padding: 1.25rem 1.35rem;
+711    background: var(--color-surface);
+712    border: 1px solid var(--color-border);
+713    border-radius: 2px;
+714    transition: border-color var(--motion-fast) var(--ease-out-soft), transform var(--motion-fast) var(--ease-out-soft);
+715  }
+716  
+717  .skill-card:hover {
+718    border-color: var(--color-border-hover);
+719    transform: translateY(-6px);
+720  }
+721  
+722  @media (prefers-reduced-motion: reduce) {
+723    .skill-card:hover {
+724      transform: none;
+725    }
+726  }
+727  
+728  .skill-card__label {
+729    margin: 0 0 0.5rem;
+730    font-size: 0.8125rem;
+731    font-weight: 600;
+732    letter-spacing: 0.04em;
+733    text-transform: uppercase;
+734    color: var(--color-text-muted);
+735  }
+736  
+737  .skill-card__body {
+738    margin: 0;
+739    font-size: 0.9375rem;
+740    line-height: var(--lh-body);
 741  }
 742  
-743  .refs-list {
-744    list-style: none;
-745    margin: 0;
-746    padding: 0;
+743  .feature-table {
+744    width: 100%;
+745    border-collapse: collapse;
+746    font-size: 0.9375rem;
 747  }
 748  
-749  .refs-list li {
-750    margin: 0 0 0.85rem;
-751    padding-bottom: 0.85rem;
+749  .feature-table th,
+750  .feature-table td {
+751    padding: 0.75rem 0.7rem;
 752    border-bottom: 1px solid var(--color-border);
-753  }
-754  
-755  .refs-list li:last-child {
-756    margin-bottom: 0;
-757    padding-bottom: 0;
-758    border-bottom: none;
-759  }
-760  
-761  .refs-list a {
-762    text-decoration: none;
-763  }
-764  
-765  .refs-list a:hover {
-766    text-decoration: underline;
-767    text-underline-offset: 0.2em;
-768  }
-769  
-770  a.is-struck,
-771  a.is-struck:hover {
-772    text-decoration: line-through;
-773  }
-774  
-775  .refs-list__term {
-776    display: inline-block;
-777    min-width: 7rem;
-778    color: var(--color-text-muted);
-779    font-weight: 500;
-780  }
-781  
-782  .site-footer {
-783    padding: 2.5rem var(--space-gutter) 3rem;
-784  }
-785  
-786  .site-sitemap {
-787    margin: 0 0 1.75rem;
+753    text-align: left;
+754    vertical-align: top;
+755  }
+756  
+757  .feature-table th {
+758    color: var(--color-text-muted);
+759    font-size: 0.8125rem;
+760    font-weight: 600;
+761    letter-spacing: 0.04em;
+762  }
+763  
+764  .feature-table code,
+765  .path {
+766    font-family: var(--font-mono);
+767    font-size: 0.8125rem;
+768    word-break: break-all;
+769  }
+770  
+771  .note-list {
+772    margin: 0;
+773    padding-left: 1.15rem;
+774  }
+775  
+776  .note-list li {
+777    padding-left: 0.2rem;
+778  }
+779  
+780  .note-list li::marker {
+781    color: var(--color-text-muted);
+782  }
+783  
+784  .refs-list {
+785    list-style: none;
+786    margin: 0;
+787    padding: 0;
 788  }
 789  
-790  .site-sitemap__label {
-791    margin: 0 0 1rem;
-792    font-size: var(--text-caption);
-793    letter-spacing: 0.08em;
-794    text-align: center;
-795    color: var(--color-text-muted);
-796  }
-797  
-798  .site-sitemap__groups {
-799    display: grid;
-800    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
-801    gap: 1.25rem 1.5rem;
-802    margin: 0;
-803    padding: 0;
-804    list-style: none;
-805  }
-806  
-807  .site-sitemap__page {
-808    display: inline-block;
-809    margin-bottom: 0.45rem;
-810    color: var(--color-text);
-811    font-size: 0.9375rem;
-812    font-weight: 650;
-813    text-decoration: none;
+790  .refs-list li {
+791    margin: 0 0 0.85rem;
+792    padding-bottom: 0.85rem;
+793    border-bottom: 1px solid var(--color-border);
+794  }
+795  
+796  .refs-list li:last-child {
+797    margin-bottom: 0;
+798    padding-bottom: 0;
+799    border-bottom: none;
+800  }
+801  
+802  .refs-list a {
+803    text-decoration: none;
+804  }
+805  
+806  .refs-list a:hover {
+807    text-decoration: underline;
+808    text-underline-offset: 0.2em;
+809  }
+810  
+811  a.is-struck,
+812  a.is-struck:hover {
+813    text-decoration: line-through;
 814  }
 815  
-816  .site-sitemap__list {
-817    display: flex;
-818    flex-direction: column;
-819    align-items: flex-start;
-820    gap: 0.3rem;
-821    margin: 0;
-822    padding: 0;
-823    list-style: none;
-824  }
-825  
-826  .site-sitemap a {
-827    color: var(--color-text);
-828    text-decoration: none;
+816  .refs-list__term {
+817    display: inline-block;
+818    min-width: 7rem;
+819    color: var(--color-text-muted);
+820    font-weight: 500;
+821  }
+822  
+823  .site-footer {
+824    padding: 2.5rem var(--space-gutter) 3rem;
+825  }
+826  
+827  .site-sitemap {
+828    margin: 0 0 1.75rem;
 829  }
 830  
-831  .site-sitemap__list a {
-832    font-size: var(--text-caption);
-833  }
-834  
-835  .site-sitemap a:hover,
-836  .site-sitemap a[aria-current=&quot;page&quot;] {
-837    text-decoration: underline;
-838  }
-839  
-840  .site-sitemap a[aria-current=&quot;page&quot;] {
-841    color: var(--color-text-muted);
-842  }
-843  
-844  .site-footer__note,
-845  .site-footer__disclosure,
-846  .site-footer__copyright {
-847    margin: 0;
-848    text-align: center;
-849    color: var(--color-text-muted);
-850  }
-851  
-852  .site-footer__note {
-853    font-size: var(--text-caption);
-854    line-height: var(--lh-body);
+831  .site-sitemap__label {
+832    margin: 0 0 1rem;
+833    font-size: var(--text-caption);
+834    letter-spacing: 0.08em;
+835    text-align: center;
+836    color: var(--color-text-muted);
+837  }
+838  
+839  .site-sitemap__groups {
+840    display: grid;
+841    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+842    gap: 1.25rem 1.5rem;
+843    margin: 0;
+844    padding: 0;
+845    list-style: none;
+846  }
+847  
+848  .site-sitemap__page {
+849    display: inline-block;
+850    margin-bottom: 0.45rem;
+851    color: var(--color-text);
+852    font-size: 0.9375rem;
+853    font-weight: 650;
+854    text-decoration: none;
 855  }
 856  
-857  .site-footer__disclosure,
-858  .site-footer__copyright {
-859    margin-top: 0.75rem;
-860    font-size: var(--text-caption);
-861    line-height: var(--lh-body);
-862  }
-863  
-864  .site-footer__disclosure {
-865    max-width: 36rem;
-866    margin-right: auto;
-867    margin-left: auto;
-868  }
-869  
-870  @media (max-width: 720px) {
-871    .feature-table,
-872    .feature-table tbody,
-873    .feature-table tr,
-874    .feature-table th,
-875    .feature-table td {
-876      display: block;
-877      width: 100%;
-878    }
-879  
-880    .feature-table thead {
-881      display: none;
-882    }
-883  
-884    .feature-table tr {
-885      padding: 0.35rem 0 0.85rem;
-886      border-bottom: 1px solid var(--color-border);
-887    }
-888  
-889    .feature-table td {
-890      border-bottom: 0;
-891      padding: 0.15rem 0;
-892    }
-893  
-894    .feature-table td::before {
-895      content: attr(data-label);
-896      display: block;
-897      color: var(--color-text-muted);
-898      font-size: 0.75rem;
-899      letter-spacing: 0.04em;
-900    }
-901  }</pre>
+857  .site-sitemap__list {
+858    display: flex;
+859    flex-direction: column;
+860    align-items: flex-start;
+861    gap: 0.3rem;
+862    margin: 0;
+863    padding: 0;
+864    list-style: none;
+865  }
+866  
+867  .site-sitemap a {
+868    color: var(--color-text);
+869    text-decoration: none;
+870  }
+871  
+872  .site-sitemap__list a {
+873    font-size: var(--text-caption);
+874  }
+875  
+876  .site-sitemap a:hover,
+877  .site-sitemap a[aria-current=&quot;page&quot;] {
+878    text-decoration: underline;
+879  }
+880  
+881  .site-sitemap a[aria-current=&quot;page&quot;] {
+882    color: var(--color-text-muted);
+883  }
+884  
+885  .site-footer__note,
+886  .site-footer__disclosure,
+887  .site-footer__copyright {
+888    margin: 0;
+889    text-align: center;
+890    color: var(--color-text-muted);
+891  }
+892  
+893  .site-footer__note {
+894    font-size: var(--text-caption);
+895    line-height: var(--lh-body);
+896  }
+897  
+898  .site-footer__disclosure,
+899  .site-footer__copyright {
+900    margin-top: 0.75rem;
+901    font-size: var(--text-caption);
+902    line-height: var(--lh-body);
+903  }
+904  
+905  .site-footer__disclosure {
+906    max-width: 36rem;
+907    margin-right: auto;
+908    margin-left: auto;
+909  }
+910  
+911  @media (max-width: 720px) {
+912    .feature-table,
+913    .feature-table tbody,
+914    .feature-table tr,
+915    .feature-table th,
+916    .feature-table td {
+917      display: block;
+918      width: 100%;
+919    }
+920  
+921    .feature-table thead {
+922      display: none;
+923    }
+924  
+925    .feature-table tr {
+926      padding: 0.35rem 0 0.85rem;
+927      border-bottom: 1px solid var(--color-border);
+928    }
+929  
+930    .feature-table td {
+931      border-bottom: 0;
+932      padding: 0.15rem 0;
+933    }
+934  
+935    .feature-table td::before {
+936      content: attr(data-label);
+937      display: block;
+938      color: var(--color-text-muted);
+939      font-size: 0.75rem;
+940      letter-spacing: 0.04em;
+941    }
+942  }</pre>
 <h2>portfolio_achieve/index.html</h2>
 <pre>   1  &lt;!DOCTYPE html&gt;
    2  &lt;html lang=&quot;ko&quot; data-default-theme=&quot;dark&quot;&gt;
@@ -67457,7 +67498,7 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 8pt; line-he
   11        name=&quot;description&quot;
   12        content=&quot;코탐록 자료 카테고리의 프로젝트 아카이브. 프로젝트 소개, 사용 도구, 실행 환경, 간단 설명, 핵심 기능을 카드로 정리합니다.&quot;
   13      /&gt;
-  14      &lt;link rel=&quot;stylesheet&quot; href=&quot;css/archive.css?v=19&quot; /&gt;
+  14      &lt;link rel=&quot;stylesheet&quot; href=&quot;css/archive.css?v=24&quot; /&gt;
   15      &lt;script&gt;
   16        (function () {
   17          try {
@@ -67544,1139 +67585,1116 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 8pt; line-he
   98            &lt;p class=&quot;hero__eyebrow&quot;&gt;자료 · 프로젝트 아카이브&lt;/p&gt;
   99            &lt;h1 class=&quot;hero__title&quot;&gt;만든 프로젝트를 카드로 쌓아 둔 아키이브&lt;/h1&gt;
  100            &lt;p class=&quot;hero__lead&quot;&gt;
- 101              자기소개서의 자료 카테고리 옆에 두는 정적 페이지입니다. 카드 하나에 프로젝트 소개, 사용 도구, 실행 환경,
- 102              간단 설명, 핵심 기능을 담아 정리했습니다. PROJ_01부터 같은 형식으로 이어서 추가합니다. 기관에서 진행한
- 103              과정은 PROJ_10부터 PROJ_15까지, Cursor 바이브 코딩 완성 프로젝트는 PROJ_16·PROJ_17로 같은 카드 형식에 넣었습니다.
- 104              에듀펜 자바 과정을 다시 구현한 사원관리 프로그램과 자바 채팅은 PROJ_18·PROJ_19입니다.
- 105              박현규 『바로 배워 바로 쓰는 바로바로 바이브 코딩 with 커서 AI』 노트와 실습 화면은 PROJ_20이고, 『요즘 바이브 코딩 커서 AI 30가지 프로그램 만들기』 노트는 PROJ_21입니다.
- 106            &lt;/p&gt;
- 107            &lt;dl class=&quot;hero__meta&quot;&gt;
- 108              &lt;div class=&quot;hero__meta-row&quot;&gt;
- 109                &lt;dt&gt;범위&lt;/dt&gt;
- 110                &lt;dd&gt;PROJ_01부터 PROJ_09, 기관 과정 PROJ_10부터 PROJ_15, 바이브 코딩 PROJ_16부터 PROJ_17, 에듀펜 재구현 PROJ_18·PROJ_19, 바로바로 바이브 코딩 PROJ_20, 요즘 바이브 코딩 PROJ_21&lt;/dd&gt;
- 111              &lt;/div&gt;
- 112              &lt;div class=&quot;hero__meta-row&quot;&gt;
- 113                &lt;dt&gt;현재&lt;/dt&gt;
- 114                &lt;dd&gt;
- 115                  PROJ_01 파이썬 학습과 댓글 게시판 · 2025년 2월 17일, PROJ_02 원두 정기 구독 · 2025년 3월 29일, PROJ_03 오늘의 할 일 · 2025년 5월 22일, PROJ_04 전국 캠핑장 현황 · 2025년 5월 22일, PROJ_05 ChatGPT로 만든 프로그램 · 2025년 5월 22일, PROJ_06 코딩상자 · 2025년 6월 9일, PROJ_07 하루하루 스터디 · 2025년 7월 6일, PROJ_08 저자 식별 · 2025년 7월 14일, PROJ_09 커서로 따라 만든 프로그램 · 2025년 8월 5일, PROJ_10 콜로소 CursorAI · 2025년 7월 20일, PROJ_11 페스트캠퍼스 · 2024년 3월 24일, PROJ_12 인프런 · 2026년 2월 11일, PROJ_13 SSamz · 2022년 9월 15일, PROJ_14 유데미 · 2026년 5월 24일, PROJ_15 에듀펜 · 2017–2019, PROJ_16 신문 감상 기록 · 2026년 10월, PROJ_17 하루일과 · 2026년 5–6월, PROJ_18 사원관리 프로그램 · 2026년 11월 2일, PROJ_19 자바 채팅 · 2026년 11월 2일, PROJ_20 바로바로 바이브 코딩 · 2026년 5–11월, PROJ_21 요즘 바이브 코딩 · 독서 노트
- 116                &lt;/dd&gt;
- 117              &lt;/div&gt;
- 118              &lt;div class=&quot;hero__meta-row&quot;&gt;
- 119                &lt;dt&gt;정리 방식&lt;/dt&gt;
- 120                &lt;dd&gt;이 페이지에 프로젝트 카드를 직접 추가하여 기록을 모읍니다.&lt;/dd&gt;
- 121              &lt;/div&gt;
- 122            &lt;/dl&gt;
- 123          &lt;/div&gt;
- 124        &lt;/header&gt;
+ 101              프로젝트 - 파이썬 학습과 댓글 게시판, 프로젝트 - 원두 정기 구독, 프로젝트 - 오늘의 할 일, 프로젝트 - 전국 캠핑장 현황, 프로젝트 - ChatGPT로 만든 프로그램, 프로젝트 - 코딩상자, 프로젝트 - 하루하루 스터디, 프로젝트 - 저자 식별, 프로젝트 - 커서로 따라 만든 프로그램, 프로젝트 - 콜로소 CursorAI, 프로젝트 - 페스트캠퍼스 디자인·안드로이드, 프로젝트 - 인프런 과정, 프로젝트 - SSamz 안드로이드, 프로젝트 - 유데미, 프로젝트 - 에듀펜, 프로젝트 - 신문 감상 기록, 프로젝트 - 하루일과, 프로젝트 - 사원관리 프로그램, 프로젝트 - 자바 채팅, 프로젝트 - 바로바로 바이브 코딩, 프로젝트 - 요즘 바이브 코딩
+ 102            &lt;/p&gt;
+ 103            &lt;p class=&quot;scroll-hint&quot; data-scroll-hint aria-hidden=&quot;true&quot;&gt;아래로 스크롤 하세요.&lt;/p&gt;
+ 104          &lt;/div&gt;
+ 105        &lt;/header&gt;
+ 106  
+ 107        &lt;section class=&quot;section&quot; id=&quot;archive-list&quot; aria-label=&quot;프로젝트 목록&quot;&gt;
+ 108          &lt;div class=&quot;section__inner&quot;&gt;
+ 109            &lt;div class=&quot;archive-grid&quot;&gt;
+ 110              &lt;article class=&quot;project-card&quot;&gt;
+ 111                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 112                  &lt;img src=&quot;img/proj-01-list.png&quot; alt=&quot;댓글 하나와 수정, 삭제, 등록 폼이 보이는 게시판 화면&quot; /&gt;
+ 113                &lt;/figure&gt;
+ 114                &lt;div class=&quot;project-card__body&quot;&gt;
+ 115                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_01 · 2025.02.17&lt;/p&gt;
+ 116                  &lt;h3 class=&quot;project-card__title&quot;&gt;파이썬 학습과 댓글 게시판&lt;/h3&gt;
+ 117  
+ 118                  &lt;div&gt;
+ 119                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 120                    &lt;p class=&quot;field-body&quot;&gt;
+ 121                      『Do it! 파이썬』 필기와 『Do it! 점프 투 파이썬』 실습을 뤼튼·OpenAI로 정리하고, 조코딩 게시판
+ 122                      예제를 참고한 댓글 게시판을 배포 전 시험 환경에서 실행한 기록입니다.
+ 123                    &lt;/p&gt;
+ 124                  &lt;/div&gt;
  125  
- 126        &lt;section class=&quot;section&quot; id=&quot;archive-list&quot; aria-labelledby=&quot;heading-list&quot;&gt;
- 127          &lt;div class=&quot;section__inner&quot;&gt;
- 128            &lt;h2 id=&quot;heading-list&quot; class=&quot;section__title&quot;&gt;프로젝트 목록&lt;/h2&gt;
- 129            &lt;p class=&quot;section-lead&quot;&gt;
- 130              PROJ_01부터 PROJ_09 화면은 2026년 10월 17일에, 기관 과정 PROJ_10부터 PROJ_15는 2026년 10월 18일에 각 폴더를 열어 확인한 것입니다. PROJ_16·PROJ_17은 2026년 10월 24일에 저장소와 portfolio-screenshots 캡처로 확인했습니다. PROJ_18·PROJ_19는 2026년 11월 2일에 로컬에서 실행해 확인했습니다. PROJ_18은 사원 조회·등록·수정·삭제이고, PROJ_19는 서버와 클라이언트 둘의 입장·대화·접속자 목록입니다. PROJ_20은 바로 배워 바로 쓰는 바로바로 바이브 코딩의 독서 노트와 2026년 5월 실습 화면이고, PROJ_21은 요즘 바이브 코딩 30가지 독서 노트입니다. 둘 다 2026년 11월 2일 확인했습니다. 예전 항목은 호스팅이 오래되어 카드에 주소를 넣지 않은 경우가 있습니다.
- 131            &lt;/p&gt;
- 132            &lt;div class=&quot;archive-grid&quot;&gt;
- 133              &lt;article class=&quot;project-card&quot;&gt;
- 134                &lt;figure class=&quot;project-card__media&quot;&gt;
- 135                  &lt;img src=&quot;img/proj-01-list.png&quot; alt=&quot;댓글 하나와 수정, 삭제, 등록 폼이 보이는 게시판 화면&quot; /&gt;
- 136                &lt;/figure&gt;
- 137                &lt;div class=&quot;project-card__body&quot;&gt;
- 138                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_01 · 2025.02.17&lt;/p&gt;
- 139                  &lt;h3 class=&quot;project-card__title&quot;&gt;파이썬 학습과 댓글 게시판&lt;/h3&gt;
- 140  
- 141                  &lt;div&gt;
- 142                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 143                    &lt;p class=&quot;field-body&quot;&gt;
- 144                      『Do it! 파이썬』 필기와 『Do it! 점프 투 파이썬』 실습을 뤼튼·OpenAI로 정리하고, 조코딩 게시판
- 145                      예제를 참고한 댓글 게시판을 배포 전 시험 환경에서 실행한 기록입니다.
- 146                    &lt;/p&gt;
+ 126                  &lt;div&gt;
+ 127                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 128                    &lt;p class=&quot;field-body&quot;&gt;
+ 129                      문법, 파일 입출력, 클래스, 정규 표현식 실습을 문서로 남기고, 폼으로 받은 댓글을 SQLite에 저장해
+ 130                      목록·수정·삭제까지 확인했습니다.
+ 131                    &lt;/p&gt;
+ 132                  &lt;/div&gt;
+ 133  
+ 134                  &lt;div&gt;
+ 135                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 136                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 137                      &lt;li&gt;Python&lt;/li&gt;
+ 138                      &lt;li&gt;CMD&lt;/li&gt;
+ 139                      &lt;li&gt;뤼튼&lt;/li&gt;
+ 140                      &lt;li&gt;Node.js&lt;/li&gt;
+ 141                      &lt;li&gt;Express&lt;/li&gt;
+ 142                      &lt;li&gt;EJS&lt;/li&gt;
+ 143                      &lt;li&gt;Sequelize&lt;/li&gt;
+ 144                      &lt;li&gt;SQLite&lt;/li&gt;
+ 145                      &lt;li&gt;Cloudtype&lt;/li&gt;
+ 146                    &lt;/ul&gt;
  147                  &lt;/div&gt;
  148  
  149                  &lt;div&gt;
- 150                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 150                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
  151                    &lt;p class=&quot;field-body&quot;&gt;
- 152                      문법, 파일 입출력, 클래스, 정규 표현식 실습을 문서로 남기고, 폼으로 받은 댓글을 SQLite에 저장해
- 153                      목록·수정·삭제까지 확인했습니다.
+ 152                      배포 전 시험. 로컬 &lt;span class=&quot;path&quot;&gt;node index.js&lt;/span&gt; · 포트 3000. 실제 호스팅은 프로젝트 완료
+ 153                      후 시간이 오래 지나 넣지 않았고, README에만 Cloudtype 주소가 남아 있습니다.
  154                    &lt;/p&gt;
  155                  &lt;/div&gt;
  156  
  157                  &lt;div&gt;
- 158                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 159                    &lt;ul class=&quot;pill-list&quot;&gt;
- 160                      &lt;li&gt;Python&lt;/li&gt;
- 161                      &lt;li&gt;CMD&lt;/li&gt;
- 162                      &lt;li&gt;뤼튼&lt;/li&gt;
- 163                      &lt;li&gt;Node.js&lt;/li&gt;
- 164                      &lt;li&gt;Express&lt;/li&gt;
- 165                      &lt;li&gt;EJS&lt;/li&gt;
- 166                      &lt;li&gt;Sequelize&lt;/li&gt;
- 167                      &lt;li&gt;SQLite&lt;/li&gt;
- 168                      &lt;li&gt;Cloudtype&lt;/li&gt;
- 169                    &lt;/ul&gt;
- 170                  &lt;/div&gt;
- 171  
- 172                  &lt;div&gt;
- 173                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 174                    &lt;p class=&quot;field-body&quot;&gt;
- 175                      배포 전 시험. 로컬 &lt;span class=&quot;path&quot;&gt;node index.js&lt;/span&gt; · 포트 3000. 실제 호스팅은 프로젝트 완료
- 176                      후 시간이 오래 지나 넣지 않았고, README에만 Cloudtype 주소가 남아 있습니다.
- 177                    &lt;/p&gt;
- 178                  &lt;/div&gt;
- 179  
- 180                  &lt;div&gt;
- 181                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 182                    &lt;p class=&quot;field-body&quot;&gt;파이썬 실습 정리, 댓글 목록·등록·수정·삭제&lt;/p&gt;
- 183                  &lt;/div&gt;
- 184                &lt;/div&gt;
- 185              &lt;/article&gt;
- 186              &lt;article class=&quot;project-card&quot;&gt;
- 187                &lt;figure class=&quot;project-card__media&quot;&gt;
- 188                  &lt;img src=&quot;img/proj-02-hero.png&quot; alt=&quot;원두정기구독 첫 화면. 커피 원두 사진 위에 이메일 구독 폼&quot; /&gt;
- 189                &lt;/figure&gt;
- 190                &lt;div class=&quot;project-card__body&quot;&gt;
- 191                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_02 · 2025.03.29&lt;/p&gt;
- 192                  &lt;h3 class=&quot;project-card__title&quot;&gt;원두 정기 구독&lt;/h3&gt;
- 193  
- 194                  &lt;div&gt;
- 195                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 196                    &lt;p class=&quot;field-body&quot;&gt;
- 197                      『Do it! HTML+CSS+자바스크립트 웹 표준의 정석』의 넷플릭스형 랜딩을 따라 만든 스위커 원두 구독
- 198                      페이지입니다. 확인 질문과 CSS·자바스크립트 필기를 함께 남겼습니다.
- 199                    &lt;/p&gt;
- 200                  &lt;/div&gt;
- 201  
- 202                  &lt;div&gt;
- 203                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
- 204                    &lt;p class=&quot;field-body&quot;&gt;
- 205                      이메일 구독, 로스트 선택, 원두 카드, FAQ를 HTML과 CSS로 구성했습니다. 질문 목록은 라디오와 CSS로
- 206                      열고 닫습니다.
- 207                    &lt;/p&gt;
- 208                  &lt;/div&gt;
- 209  
- 210                  &lt;div&gt;
- 211                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 212                    &lt;ul class=&quot;pill-list&quot;&gt;
- 213                      &lt;li&gt;HTML&lt;/li&gt;
- 214                      &lt;li&gt;CSS&lt;/li&gt;
- 215                      &lt;li&gt;Font Awesome&lt;/li&gt;
- 216                      &lt;li&gt;자바스크립트&lt;/li&gt;
- 217                      &lt;li&gt;VS Code&lt;/li&gt;
- 218                      &lt;li&gt;뤼튼&lt;/li&gt;
- 219                    &lt;/ul&gt;
- 220                  &lt;/div&gt;
- 221  
- 222                  &lt;div&gt;
- 223                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 224                    &lt;p class=&quot;field-body&quot;&gt;
- 225                      정적 페이지. &lt;span class=&quot;path&quot;&gt;Project/index.html&lt;/span&gt;을 브라우저에서 연 화면. 실제 호스팅은
- 226                      완료 후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
- 227                    &lt;/p&gt;
- 228                  &lt;/div&gt;
- 229  
- 230                  &lt;div&gt;
- 231                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 232                    &lt;p class=&quot;field-body&quot;&gt;구독 폼, 로스트 선택, 원두 카드, FAQ 아코디언, 반응형 배치&lt;/p&gt;
- 233                  &lt;/div&gt;
- 234                &lt;/div&gt;
- 235              &lt;/article&gt;
- 236              &lt;article class=&quot;project-card&quot;&gt;
- 237                &lt;figure class=&quot;project-card__media&quot;&gt;
- 238                  &lt;img src=&quot;img/proj-03-list.png&quot; alt=&quot;오늘의 할 일 화면. 취소선이 그어진 항목과 일반 항목, 완료와 삭제 버튼&quot; /&gt;
- 239                &lt;/figure&gt;
- 240                &lt;div class=&quot;project-card__body&quot;&gt;
- 241                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_03 · 2025.05.22&lt;/p&gt;
- 242                  &lt;h3 class=&quot;project-card__title&quot;&gt;오늘의 할 일&lt;/h3&gt;
- 243  
- 244                  &lt;div&gt;
- 245                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 246                    &lt;p class=&quot;field-body&quot;&gt;
- 247                      『Do it! 모던 자바스크립트』의 웹 스토리지 실습으로 만든 할 일 목록입니다. 유튜브 강의 요약은 뤼튼으로
- 248                      정리했습니다.
- 249                    &lt;/p&gt;
- 250                  &lt;/div&gt;
- 251  
- 252                  &lt;div&gt;
- 253                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
- 254                    &lt;p class=&quot;field-body&quot;&gt;
- 255                      입력한 할 일을 localStorage에 저장하고, 완료 표시와 삭제를 버튼으로 처리합니다. 글을 새로고침해도
- 256                      목록 문장은 다시 나타납니다.
- 257                    &lt;/p&gt;
- 258                  &lt;/div&gt;
- 259  
- 260                  &lt;div&gt;
- 261                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 262                    &lt;ul class=&quot;pill-list&quot;&gt;
- 263                      &lt;li&gt;HTML&lt;/li&gt;
- 264                      &lt;li&gt;CSS&lt;/li&gt;
- 265                      &lt;li&gt;JavaScript&lt;/li&gt;
- 266                      &lt;li&gt;localStorage&lt;/li&gt;
- 267                      &lt;li&gt;Canvas&lt;/li&gt;
- 268                      &lt;li&gt;뤼튼&lt;/li&gt;
- 269                    &lt;/ul&gt;
- 270                  &lt;/div&gt;
- 271  
- 272                  &lt;div&gt;
- 273                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 274                    &lt;p class=&quot;field-body&quot;&gt;
- 275                      정적 페이지. &lt;span class=&quot;path&quot;&gt;todo-result.html&lt;/span&gt;을 브라우저에서 연 화면. 실제 호스팅은 완료
- 276                      후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
- 277                    &lt;/p&gt;
- 278                  &lt;/div&gt;
- 279  
- 280                  &lt;div&gt;
- 281                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 282                    &lt;p class=&quot;field-body&quot;&gt;할 일 추가, 완료 취소선, 삭제, localStorage 저장&lt;/p&gt;
- 283                  &lt;/div&gt;
- 284                &lt;/div&gt;
- 285              &lt;/article&gt;
- 286              &lt;article class=&quot;project-card&quot;&gt;
- 287                &lt;figure class=&quot;project-card__media&quot;&gt;
- 288                  &lt;img src=&quot;img/proj-04-map.png&quot; alt=&quot;전국 캠핑장 현황 제목만 보이고 지도 영역은 비어 있는 화면&quot; /&gt;
- 289                &lt;/figure&gt;
- 290                &lt;div class=&quot;project-card__body&quot;&gt;
- 291                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_04 · 2025.05.22&lt;/p&gt;
- 292                  &lt;h3 class=&quot;project-card__title&quot;&gt;전국 캠핑장 현황&lt;/h3&gt;
- 293  
- 294                  &lt;div&gt;
- 295                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 296                    &lt;p class=&quot;field-body&quot;&gt;
- 297                      『Do it! 모던 자바스크립트』의 공공데이터와 카카오맵 실습으로 만든 캠핑장 위치 페이지입니다. 유튜브
- 298                      강의 요약은 뤼튼으로 정리했습니다.
- 299                    &lt;/p&gt;
- 300                  &lt;/div&gt;
- 301  
- 302                  &lt;div&gt;
- 303                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
- 304                    &lt;p class=&quot;field-body&quot;&gt;
- 305                      고캠핑 목록의 좌표로 마커를 만들고, 마우스를 올리면 시설명 창을 띄우며, 마커는 클러스터로 묶습니다.
- 306                      소스의 지도 키와 공공데이터 키는 자리표시라 실행이 되지 않아, 실제 실행 환경은 포함하지 않았습니다.
- 307                    &lt;/p&gt;
- 308                  &lt;/div&gt;
- 309  
- 310                  &lt;div&gt;
- 311                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 312                    &lt;ul class=&quot;pill-list&quot;&gt;
- 313                      &lt;li&gt;HTML&lt;/li&gt;
- 314                      &lt;li&gt;JavaScript&lt;/li&gt;
- 315                      &lt;li&gt;Kakao Map&lt;/li&gt;
- 316                      &lt;li&gt;공공데이터&lt;/li&gt;
- 317                      &lt;li&gt;fetch&lt;/li&gt;
- 318                      &lt;li&gt;Canvas&lt;/li&gt;
- 319                      &lt;li&gt;뤼튼&lt;/li&gt;
- 320                    &lt;/ul&gt;
- 321                  &lt;/div&gt;
- 322  
- 323                  &lt;div&gt;
- 324                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 325                    &lt;p class=&quot;field-body&quot;&gt;
- 326                      지도 키와 공공데이터 키가 자리표시라 실행이 되지 않아, 실제 실행 환경은 포함하지 않았습니다. 실제
- 327                      호스팅은 완료 후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
- 328                    &lt;/p&gt;
- 329                  &lt;/div&gt;
- 330  
- 331                  &lt;div&gt;
- 332                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 333                    &lt;p class=&quot;field-body&quot;&gt;캠핑장 좌표 마커, 시설명 말풍선, 마커 클러스터&lt;/p&gt;
- 334                  &lt;/div&gt;
- 335                &lt;/div&gt;
- 336              &lt;/article&gt;
- 337              &lt;article class=&quot;project-card&quot;&gt;
- 338                &lt;figure class=&quot;project-card__media&quot;&gt;
- 339                  &lt;img src=&quot;img/proj-05-bricks.png&quot; alt=&quot;파란 벽돌 여러 행과 공, 아래 패들이 있는 화면&quot; /&gt;
- 340                &lt;/figure&gt;
- 341                &lt;div class=&quot;project-card__body&quot;&gt;
- 342                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_05 · 2025.05.22&lt;/p&gt;
- 343                  &lt;h3 class=&quot;project-card__title&quot;&gt;ChatGPT로 만든 프로그램&lt;/h3&gt;
- 344  
- 345                  &lt;div&gt;
- 346                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 347                    &lt;p class=&quot;field-body&quot;&gt;
- 348                      ChatGPT와 뤼튼으로 작은 프로그램을 만들어 본 폴더입니다. 벽돌 캔버스, 로또 공, 단어 연습, 두더지
- 349                      잡기, 알람, 파일 도구가 한곳에 있습니다.
- 350                    &lt;/p&gt;
+ 158                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 159                    &lt;p class=&quot;field-body&quot;&gt;파이썬 실습 정리, 댓글 목록·등록·수정·삭제&lt;/p&gt;
+ 160                  &lt;/div&gt;
+ 161                &lt;/div&gt;
+ 162              &lt;/article&gt;
+ 163              &lt;article class=&quot;project-card&quot;&gt;
+ 164                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 165                  &lt;img src=&quot;img/proj-02-hero.png&quot; alt=&quot;원두정기구독 첫 화면. 커피 원두 사진 위에 이메일 구독 폼&quot; /&gt;
+ 166                &lt;/figure&gt;
+ 167                &lt;div class=&quot;project-card__body&quot;&gt;
+ 168                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_02 · 2025.03.29&lt;/p&gt;
+ 169                  &lt;h3 class=&quot;project-card__title&quot;&gt;원두 정기 구독&lt;/h3&gt;
+ 170  
+ 171                  &lt;div&gt;
+ 172                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 173                    &lt;p class=&quot;field-body&quot;&gt;
+ 174                      『Do it! HTML+CSS+자바스크립트 웹 표준의 정석』의 넷플릭스형 랜딩을 따라 만든 스위커 원두 구독
+ 175                      페이지입니다. 확인 질문과 CSS·자바스크립트 필기를 함께 남겼습니다.
+ 176                    &lt;/p&gt;
+ 177                  &lt;/div&gt;
+ 178  
+ 179                  &lt;div&gt;
+ 180                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 181                    &lt;p class=&quot;field-body&quot;&gt;
+ 182                      이메일 구독, 로스트 선택, 원두 카드, FAQ를 HTML과 CSS로 구성했습니다. 질문 목록은 라디오와 CSS로
+ 183                      열고 닫습니다.
+ 184                    &lt;/p&gt;
+ 185                  &lt;/div&gt;
+ 186  
+ 187                  &lt;div&gt;
+ 188                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 189                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 190                      &lt;li&gt;HTML&lt;/li&gt;
+ 191                      &lt;li&gt;CSS&lt;/li&gt;
+ 192                      &lt;li&gt;Font Awesome&lt;/li&gt;
+ 193                      &lt;li&gt;자바스크립트&lt;/li&gt;
+ 194                      &lt;li&gt;VS Code&lt;/li&gt;
+ 195                      &lt;li&gt;뤼튼&lt;/li&gt;
+ 196                    &lt;/ul&gt;
+ 197                  &lt;/div&gt;
+ 198  
+ 199                  &lt;div&gt;
+ 200                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+ 201                    &lt;p class=&quot;field-body&quot;&gt;
+ 202                      정적 페이지. &lt;span class=&quot;path&quot;&gt;Project/index.html&lt;/span&gt;을 브라우저에서 연 화면. 실제 호스팅은
+ 203                      완료 후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
+ 204                    &lt;/p&gt;
+ 205                  &lt;/div&gt;
+ 206  
+ 207                  &lt;div&gt;
+ 208                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 209                    &lt;p class=&quot;field-body&quot;&gt;구독 폼, 로스트 선택, 원두 카드, FAQ 아코디언, 반응형 배치&lt;/p&gt;
+ 210                  &lt;/div&gt;
+ 211                &lt;/div&gt;
+ 212              &lt;/article&gt;
+ 213              &lt;article class=&quot;project-card&quot;&gt;
+ 214                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 215                  &lt;img src=&quot;img/proj-03-list.png&quot; alt=&quot;오늘의 할 일 화면. 취소선이 그어진 항목과 일반 항목, 완료와 삭제 버튼&quot; /&gt;
+ 216                &lt;/figure&gt;
+ 217                &lt;div class=&quot;project-card__body&quot;&gt;
+ 218                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_03 · 2025.05.22&lt;/p&gt;
+ 219                  &lt;h3 class=&quot;project-card__title&quot;&gt;오늘의 할 일&lt;/h3&gt;
+ 220  
+ 221                  &lt;div&gt;
+ 222                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 223                    &lt;p class=&quot;field-body&quot;&gt;
+ 224                      『Do it! 모던 자바스크립트』의 웹 스토리지 실습으로 만든 할 일 목록입니다. 유튜브 강의 요약은 뤼튼으로
+ 225                      정리했습니다.
+ 226                    &lt;/p&gt;
+ 227                  &lt;/div&gt;
+ 228  
+ 229                  &lt;div&gt;
+ 230                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 231                    &lt;p class=&quot;field-body&quot;&gt;
+ 232                      입력한 할 일을 localStorage에 저장하고, 완료 표시와 삭제를 버튼으로 처리합니다. 글을 새로고침해도
+ 233                      목록 문장은 다시 나타납니다.
+ 234                    &lt;/p&gt;
+ 235                  &lt;/div&gt;
+ 236  
+ 237                  &lt;div&gt;
+ 238                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 239                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 240                      &lt;li&gt;HTML&lt;/li&gt;
+ 241                      &lt;li&gt;CSS&lt;/li&gt;
+ 242                      &lt;li&gt;JavaScript&lt;/li&gt;
+ 243                      &lt;li&gt;localStorage&lt;/li&gt;
+ 244                      &lt;li&gt;Canvas&lt;/li&gt;
+ 245                      &lt;li&gt;뤼튼&lt;/li&gt;
+ 246                    &lt;/ul&gt;
+ 247                  &lt;/div&gt;
+ 248  
+ 249                  &lt;div&gt;
+ 250                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+ 251                    &lt;p class=&quot;field-body&quot;&gt;
+ 252                      정적 페이지. &lt;span class=&quot;path&quot;&gt;todo-result.html&lt;/span&gt;을 브라우저에서 연 화면. 실제 호스팅은 완료
+ 253                      후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
+ 254                    &lt;/p&gt;
+ 255                  &lt;/div&gt;
+ 256  
+ 257                  &lt;div&gt;
+ 258                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 259                    &lt;p class=&quot;field-body&quot;&gt;할 일 추가, 완료 취소선, 삭제, localStorage 저장&lt;/p&gt;
+ 260                  &lt;/div&gt;
+ 261                &lt;/div&gt;
+ 262              &lt;/article&gt;
+ 263              &lt;article class=&quot;project-card&quot;&gt;
+ 264                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 265                  &lt;img src=&quot;img/proj-04-map.png&quot; alt=&quot;전국 캠핑장 현황 제목만 보이고 지도 영역은 비어 있는 화면&quot; /&gt;
+ 266                &lt;/figure&gt;
+ 267                &lt;div class=&quot;project-card__body&quot;&gt;
+ 268                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_04 · 2025.05.22&lt;/p&gt;
+ 269                  &lt;h3 class=&quot;project-card__title&quot;&gt;전국 캠핑장 현황&lt;/h3&gt;
+ 270  
+ 271                  &lt;div&gt;
+ 272                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 273                    &lt;p class=&quot;field-body&quot;&gt;
+ 274                      『Do it! 모던 자바스크립트』의 공공데이터와 카카오맵 실습으로 만든 캠핑장 위치 페이지입니다. 유튜브
+ 275                      강의 요약은 뤼튼으로 정리했습니다.
+ 276                    &lt;/p&gt;
+ 277                  &lt;/div&gt;
+ 278  
+ 279                  &lt;div&gt;
+ 280                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 281                    &lt;p class=&quot;field-body&quot;&gt;
+ 282                      고캠핑 목록의 좌표로 마커를 만들고, 마우스를 올리면 시설명 창을 띄우며, 마커는 클러스터로 묶습니다.
+ 283                      소스의 지도 키와 공공데이터 키는 자리표시라 실행이 되지 않아, 실제 실행 환경은 포함하지 않았습니다.
+ 284                    &lt;/p&gt;
+ 285                  &lt;/div&gt;
+ 286  
+ 287                  &lt;div&gt;
+ 288                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 289                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 290                      &lt;li&gt;HTML&lt;/li&gt;
+ 291                      &lt;li&gt;JavaScript&lt;/li&gt;
+ 292                      &lt;li&gt;Kakao Map&lt;/li&gt;
+ 293                      &lt;li&gt;공공데이터&lt;/li&gt;
+ 294                      &lt;li&gt;fetch&lt;/li&gt;
+ 295                      &lt;li&gt;Canvas&lt;/li&gt;
+ 296                      &lt;li&gt;뤼튼&lt;/li&gt;
+ 297                    &lt;/ul&gt;
+ 298                  &lt;/div&gt;
+ 299  
+ 300                  &lt;div&gt;
+ 301                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+ 302                    &lt;p class=&quot;field-body&quot;&gt;
+ 303                      지도 키와 공공데이터 키가 자리표시라 실행이 되지 않아, 실제 실행 환경은 포함하지 않았습니다. 실제
+ 304                      호스팅은 완료 후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
+ 305                    &lt;/p&gt;
+ 306                  &lt;/div&gt;
+ 307  
+ 308                  &lt;div&gt;
+ 309                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 310                    &lt;p class=&quot;field-body&quot;&gt;캠핑장 좌표 마커, 시설명 말풍선, 마커 클러스터&lt;/p&gt;
+ 311                  &lt;/div&gt;
+ 312                &lt;/div&gt;
+ 313              &lt;/article&gt;
+ 314              &lt;article class=&quot;project-card&quot;&gt;
+ 315                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 316                  &lt;img src=&quot;img/proj-05-bricks.png&quot; alt=&quot;파란 벽돌 여러 행과 공, 아래 패들이 있는 화면&quot; /&gt;
+ 317                &lt;/figure&gt;
+ 318                &lt;div class=&quot;project-card__body&quot;&gt;
+ 319                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_05 · 2025.05.22&lt;/p&gt;
+ 320                  &lt;h3 class=&quot;project-card__title&quot;&gt;ChatGPT로 만든 프로그램&lt;/h3&gt;
+ 321  
+ 322                  &lt;div&gt;
+ 323                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 324                    &lt;p class=&quot;field-body&quot;&gt;
+ 325                      ChatGPT와 뤼튼으로 작은 프로그램을 만들어 본 폴더입니다. 벽돌 캔버스, 로또 공, 단어 연습, 두더지
+ 326                      잡기, 알람, 파일 도구가 한곳에 있습니다.
+ 327                    &lt;/p&gt;
+ 328                  &lt;/div&gt;
+ 329  
+ 330                  &lt;div&gt;
+ 331                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 332                    &lt;p class=&quot;field-body&quot;&gt;
+ 333                      2026년 10월 17일 실행에서 벽돌은 8열 12행으로 캔버스 안에 남고, 로또는 시작 뒤 번호 6개가 나왔습니다.
+ 334                      단어, 알람, 불쾌지수, 두더지, 5지선다, 워드클라우드 창도 찍었습니다.
+ 335                    &lt;/p&gt;
+ 336                  &lt;/div&gt;
+ 337  
+ 338                  &lt;div&gt;
+ 339                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 340                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 341                      &lt;li&gt;Python&lt;/li&gt;
+ 342                      &lt;li&gt;Tkinter&lt;/li&gt;
+ 343                      &lt;li&gt;Flask&lt;/li&gt;
+ 344                      &lt;li&gt;HTML&lt;/li&gt;
+ 345                      &lt;li&gt;Canvas&lt;/li&gt;
+ 346                      &lt;li&gt;WebGL&lt;/li&gt;
+ 347                      &lt;li&gt;JavaFX&lt;/li&gt;
+ 348                      &lt;li&gt;ChatGPT&lt;/li&gt;
+ 349                      &lt;li&gt;뤼튼&lt;/li&gt;
+ 350                    &lt;/ul&gt;
  351                  &lt;/div&gt;
  352  
  353                  &lt;div&gt;
- 354                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 354                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
  355                    &lt;p class=&quot;field-body&quot;&gt;
- 356                      2026년 10월 17일 실행에서 벽돌은 8열 12행으로 캔버스 안에 남고, 로또는 시작 뒤 번호 6개가 나왔습니다.
- 357                      단어, 알람, 불쾌지수, 두더지, 5지선다, 워드클라우드 창도 찍었습니다.
+ 356                      HTML과 파이썬 창은 2026년 10월 17일에 실행했습니다. JavaFX와 pptx 변환은 필요한 파일이 없어 실행하지
+ 357                      못했습니다. 실제 호스팅은 완료 후 시간이 오래 지나 넣지 않았습니다.
  358                    &lt;/p&gt;
  359                  &lt;/div&gt;
  360  
  361                  &lt;div&gt;
- 362                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 363                    &lt;ul class=&quot;pill-list&quot;&gt;
- 364                      &lt;li&gt;Python&lt;/li&gt;
- 365                      &lt;li&gt;Tkinter&lt;/li&gt;
- 366                      &lt;li&gt;Flask&lt;/li&gt;
- 367                      &lt;li&gt;HTML&lt;/li&gt;
- 368                      &lt;li&gt;Canvas&lt;/li&gt;
- 369                      &lt;li&gt;WebGL&lt;/li&gt;
- 370                      &lt;li&gt;JavaFX&lt;/li&gt;
- 371                      &lt;li&gt;ChatGPT&lt;/li&gt;
- 372                      &lt;li&gt;뤼튼&lt;/li&gt;
- 373                    &lt;/ul&gt;
- 374                  &lt;/div&gt;
- 375  
- 376                  &lt;div&gt;
- 377                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 378                    &lt;p class=&quot;field-body&quot;&gt;
- 379                      HTML과 파이썬 창은 2026년 10월 17일에 실행했습니다. JavaFX와 pptx 변환은 필요한 파일이 없어 실행하지
- 380                      못했습니다. 실제 호스팅은 완료 후 시간이 오래 지나 넣지 않았습니다.
+ 362                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 363                    &lt;p class=&quot;field-body&quot;&gt;벽돌·공 캔버스, 로또 번호, 단어 맞히기, 두더지 잡기, 파일 합치기와 백업&lt;/p&gt;
+ 364                  &lt;/div&gt;
+ 365                &lt;/div&gt;
+ 366              &lt;/article&gt;
+ 367              &lt;article class=&quot;project-card&quot;&gt;
+ 368                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 369                  &lt;img src=&quot;img/proj-06-home.png&quot; alt=&quot;코딩상자 내비게이션과 파란 소개 영역, About Me 문단이 있는 화면&quot; /&gt;
+ 370                &lt;/figure&gt;
+ 371                &lt;div class=&quot;project-card__body&quot;&gt;
+ 372                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_06 · 2025.06.09&lt;/p&gt;
+ 373                  &lt;h3 class=&quot;project-card__title&quot;&gt;코딩상자&lt;/h3&gt;
+ 374  
+ 375                  &lt;div&gt;
+ 376                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 377                    &lt;p class=&quot;field-body&quot;&gt;
+ 378                      『지금 바로 만드는 5분 코딩』 그링노마드 종원 실습으로, Start Bootstrap Scrolling Nav 템플릿을 코딩상자
+ 379                      소개 페이지로 고친 기록입니다. 독서 노트는 생산자 관점, 개발자 도구, Netlify와 검색 등록, 구름IDE의
+ 380                      Expo 웹뷰, 다음 학습 주제까지 장 순서대로 적어 두었습니다.
  381                    &lt;/p&gt;
  382                  &lt;/div&gt;
  383  
  384                  &lt;div&gt;
- 385                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 386                    &lt;p class=&quot;field-body&quot;&gt;벽돌·공 캔버스, 로또 번호, 단어 맞히기, 두더지 잡기, 파일 합치기와 백업&lt;/p&gt;
- 387                  &lt;/div&gt;
- 388                &lt;/div&gt;
- 389              &lt;/article&gt;
- 390              &lt;article class=&quot;project-card&quot;&gt;
- 391                &lt;figure class=&quot;project-card__media&quot;&gt;
- 392                  &lt;img src=&quot;img/proj-06-home.png&quot; alt=&quot;코딩상자 내비게이션과 파란 소개 영역, About Me 문단이 있는 화면&quot; /&gt;
- 393                &lt;/figure&gt;
- 394                &lt;div class=&quot;project-card__body&quot;&gt;
- 395                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_06 · 2025.06.09&lt;/p&gt;
- 396                  &lt;h3 class=&quot;project-card__title&quot;&gt;코딩상자&lt;/h3&gt;
- 397  
- 398                  &lt;div&gt;
- 399                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 400                    &lt;p class=&quot;field-body&quot;&gt;
- 401                      『지금 바로 만드는 5분 코딩』 그링노마드 종원 실습으로, Start Bootstrap Scrolling Nav 템플릿을 코딩상자
- 402                      소개 페이지로 고친 기록입니다. 독서 노트는 생산자 관점, 개발자 도구, Netlify와 검색 등록, 구름IDE의
- 403                      Expo 웹뷰, 다음 학습 주제까지 장 순서대로 적어 두었습니다.
- 404                    &lt;/p&gt;
- 405                  &lt;/div&gt;
- 406  
- 407                  &lt;div&gt;
- 408                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
- 409                    &lt;p class=&quot;field-body&quot;&gt;
- 410                      위 메뉴는 About Me로 스크롤하고, 서비스와 연락 구역은 주석으로 빠져 있습니다. 사이트맵의 마지막
- 411                      수정은 2025년 6월 9일입니다.
- 412                    &lt;/p&gt;
- 413                  &lt;/div&gt;
- 414  
- 415                  &lt;div&gt;
- 416                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 417                    &lt;ul class=&quot;pill-list&quot;&gt;
- 418                      &lt;li&gt;HTML&lt;/li&gt;
- 419                      &lt;li&gt;CSS&lt;/li&gt;
- 420                      &lt;li&gt;Bootstrap&lt;/li&gt;
- 421                      &lt;li&gt;JavaScript&lt;/li&gt;
- 422                      &lt;li&gt;Netlify&lt;/li&gt;
- 423                      &lt;li&gt;SEO&lt;/li&gt;
- 424                    &lt;/ul&gt;
- 425                  &lt;/div&gt;
- 426  
- 427                  &lt;div&gt;
- 428                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 429                    &lt;p class=&quot;field-body&quot;&gt;
- 430                      정적 페이지. &lt;span class=&quot;path&quot;&gt;index.html&lt;/span&gt;을 브라우저에서 연 화면. 파일 속 Netlify 주소는
- 431                      2026년 10월 17일에 열리지 않았고, 실제 호스팅은 이 페이지에 다시 넣지 않았습니다.
- 432                    &lt;/p&gt;
- 433                  &lt;/div&gt;
- 434  
- 435                  &lt;div&gt;
- 436                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 437                    &lt;p class=&quot;field-body&quot;&gt;스크롤 메뉴, 소개 문단, 메타 태그, robots.txt와 sitemap&lt;/p&gt;
- 438                  &lt;/div&gt;
- 439                &lt;/div&gt;
- 440              &lt;/article&gt;
- 441              &lt;article class=&quot;project-card&quot;&gt;
- 442                &lt;figure class=&quot;project-card__media&quot;&gt;
- 443                  &lt;img src=&quot;img/proj-07-home.png&quot; alt=&quot;오후의 블로그 헤더와 하루하루 스터디 제목, 노트 사진, Title 1 목록&quot; /&gt;
- 444                &lt;/figure&gt;
- 445                &lt;div class=&quot;project-card__body&quot;&gt;
- 446                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_07 · 2025.07.06&lt;/p&gt;
- 447                  &lt;h3 class=&quot;project-card__title&quot;&gt;하루하루 스터디&lt;/h3&gt;
- 448  
- 449                  &lt;div&gt;
- 450                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 451                    &lt;p class=&quot;field-body&quot;&gt;
- 452                      『Do it! Node.js 프로그래밍 입문』으로 만든 블로그입니다. 앞부분에서는 연락처 앱을 만들고, 영상 강의
- 453                      요약은 뤼튼으로 정리했습니다.
- 454                    &lt;/p&gt;
- 455                  &lt;/div&gt;
- 456  
- 457                  &lt;div&gt;
- 458                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
- 459                    &lt;p class=&quot;field-body&quot;&gt;
- 460                      일반 화면은 글 목록과 본문, 관리자 화면은 로그인 뒤 글 등록·수정·삭제입니다. 2026년 10월 17일에는
- 461                      MongoDB에 연결되지 않아 목록은 정적 예시입니다.
- 462                    &lt;/p&gt;
- 463                  &lt;/div&gt;
- 464  
- 465                  &lt;div&gt;
- 466                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 467                    &lt;ul class=&quot;pill-list&quot;&gt;
- 468                      &lt;li&gt;Node.js&lt;/li&gt;
- 469                      &lt;li&gt;Express&lt;/li&gt;
- 470                      &lt;li&gt;MongoDB&lt;/li&gt;
- 471                      &lt;li&gt;Mongoose&lt;/li&gt;
- 472                      &lt;li&gt;EJS&lt;/li&gt;
- 473                      &lt;li&gt;JWT&lt;/li&gt;
- 474                      &lt;li&gt;bcrypt&lt;/li&gt;
- 475                      &lt;li&gt;뤼튼&lt;/li&gt;
- 476                    &lt;/ul&gt;
- 477                  &lt;/div&gt;
- 478  
- 479                  &lt;div&gt;
- 480                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 481                    &lt;p class=&quot;field-body&quot;&gt;
- 482                      &lt;span class=&quot;path&quot;&gt;myBlog/app.js&lt;/span&gt;. 포트는 환경 변수가 없으면 3000입니다. 실제 호스팅은 완료 후
- 483                      시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
- 484                    &lt;/p&gt;
- 485                  &lt;/div&gt;
- 486  
- 487                  &lt;div&gt;
- 488                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 489                    &lt;p class=&quot;field-body&quot;&gt;글 목록·본문, 관리자 로그인, 글 등록·수정·삭제, 연락처 CRUD&lt;/p&gt;
- 490                  &lt;/div&gt;
- 491                &lt;/div&gt;
- 492              &lt;/article&gt;
- 493              &lt;article class=&quot;project-card&quot;&gt;
- 494                &lt;figure class=&quot;project-card__media&quot;&gt;
- 495                  &lt;img src=&quot;img/proj-08-run.png&quot; alt=&quot;독테스트 14개 통과와 미지 문서 네 편의 비교. 네 번째는 charles_dickens.txt&quot; /&gt;
- 496                &lt;/figure&gt;
- 497                &lt;div class=&quot;project-card__body&quot;&gt;
- 498                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_08 · 2025.07.14&lt;/p&gt;
- 499                  &lt;h3 class=&quot;project-card__title&quot;&gt;저자 식별&lt;/h3&gt;
- 500  
- 501                  &lt;div&gt;
- 502                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 503                    &lt;p class=&quot;field-body&quot;&gt;
- 504                      GitHub Copilot으로 문장 특징을 비교하는 저자 식별과, 같은 사진을 걸러 모으는 스크립트를 만들었습니다.
- 505                      장별 필기 요약은 뤼튼으로 정리했습니다.
- 506                    &lt;/p&gt;
- 507                  &lt;/div&gt;
- 508  
- 509                  &lt;div&gt;
- 510                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
- 511                    &lt;p class=&quot;field-body&quot;&gt;
- 512                      2026년 10월 17일 실행에서 독테스트 14개가 통과했습니다. 미지 문서 넷 중 허클베리 핀은 디킨스 파일과
- 513                      더 가깝게 나왔습니다.
- 514                    &lt;/p&gt;
- 515                  &lt;/div&gt;
- 516  
- 517                  &lt;div&gt;
- 518                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 519                    &lt;ul class=&quot;pill-list&quot;&gt;
- 520                      &lt;li&gt;Python&lt;/li&gt;
- 521                      &lt;li&gt;doctest&lt;/li&gt;
- 522                      &lt;li&gt;VS Code&lt;/li&gt;
- 523                      &lt;li&gt;GitHub Copilot&lt;/li&gt;
- 524                      &lt;li&gt;뤼튼&lt;/li&gt;
- 525                    &lt;/ul&gt;
- 526                  &lt;/div&gt;
- 527  
- 528                  &lt;div&gt;
- 529                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 530                    &lt;p class=&quot;field-body&quot;&gt;
- 531                      &lt;span class=&quot;path&quot;&gt;7_practice.py&lt;/span&gt;를 파이썬으로 실행. 사진 원본 폴더는 없습니다. 실제 호스팅은
- 532                      완료 후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
- 533                    &lt;/p&gt;
- 534                  &lt;/div&gt;
- 535  
- 536                  &lt;div&gt;
- 537                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 538                    &lt;p class=&quot;field-body&quot;&gt;시그니처 비교, 독테스트, 내용이 같은 사진 건너뛰기&lt;/p&gt;
- 539                  &lt;/div&gt;
- 540                &lt;/div&gt;
- 541              &lt;/article&gt;
- 542              &lt;article class=&quot;project-card&quot;&gt;
- 543                &lt;figure class=&quot;project-card__media&quot;&gt;
- 544                  &lt;img src=&quot;img/proj-09-todo.png&quot; alt=&quot;2025년 7월 21일 캡처. 오늘의 할 일 달력과 Cursor 편집기&quot; /&gt;
- 545                &lt;/figure&gt;
- 546                &lt;div class=&quot;project-card__body&quot;&gt;
- 547                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_09 · 2025.08.05&lt;/p&gt;
- 548                  &lt;h3 class=&quot;project-card__title&quot;&gt;커서로 따라 만든 프로그램&lt;/h3&gt;
- 549  
- 550                  &lt;div&gt;
- 551                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 552                    &lt;p class=&quot;field-body&quot;&gt;
- 553                      커서 AI 트렌드 책과 콜로소 강의로 할 일, 챗봇, 게시판, 차트, 파일 분류를 만들었습니다. 필기는
- 554                      같은 폴더 이름에 _add_doc를 붙여 PROJ_09_add_doc 안에 둘로 나뉘어 있습니다.
- 555                    &lt;/p&gt;
- 556                  &lt;/div&gt;
- 557  
- 558                  &lt;div&gt;
- 559                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
- 560                    &lt;p class=&quot;field-body&quot;&gt;
- 561                      책 쪽 add_doc은 에이전트 독서노트이고, 콜로소 쪽 add_doc은 프롤로그부터 8장입니다. 독서노트 요약은
- 562                      뤼튼으로, 실습 정리는 OpenAI로 정리했습니다.
- 563                    &lt;/p&gt;
- 564                  &lt;/div&gt;
- 565  
- 566                  &lt;div&gt;
- 567                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 568                    &lt;ul class=&quot;pill-list&quot;&gt;
- 569                      &lt;li&gt;Cursor&lt;/li&gt;
- 570                      &lt;li&gt;PHP&lt;/li&gt;
- 571                      &lt;li&gt;Python&lt;/li&gt;
- 572                      &lt;li&gt;HTML&lt;/li&gt;
- 573                      &lt;li&gt;JavaScript&lt;/li&gt;
- 574                      &lt;li&gt;뤼튼&lt;/li&gt;
- 575                    &lt;/ul&gt;
- 576                  &lt;/div&gt;
- 577  
- 578                  &lt;div&gt;
- 579                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 580                    &lt;p class=&quot;field-body&quot;&gt;
- 581                      PHP 페이지와 파이썬 스크립트. 화면은 폴더 안 캡처입니다. 전자명함 경로는 닷홈에서 404였습니다.
- 582                    &lt;/p&gt;
- 583                  &lt;/div&gt;
- 584  
- 585                  &lt;div&gt;
- 586                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 587                    &lt;p class=&quot;field-body&quot;&gt;할 일 달력, 챗봇 화면, 게시판, 차트, 파일 분류&lt;/p&gt;
+ 385                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 386                    &lt;p class=&quot;field-body&quot;&gt;
+ 387                      위 메뉴는 About Me로 스크롤하고, 서비스와 연락 구역은 주석으로 빠져 있습니다. 사이트맵의 마지막
+ 388                      수정은 2025년 6월 9일입니다.
+ 389                    &lt;/p&gt;
+ 390                  &lt;/div&gt;
+ 391  
+ 392                  &lt;div&gt;
+ 393                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 394                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 395                      &lt;li&gt;HTML&lt;/li&gt;
+ 396                      &lt;li&gt;CSS&lt;/li&gt;
+ 397                      &lt;li&gt;Bootstrap&lt;/li&gt;
+ 398                      &lt;li&gt;JavaScript&lt;/li&gt;
+ 399                      &lt;li&gt;Netlify&lt;/li&gt;
+ 400                      &lt;li&gt;SEO&lt;/li&gt;
+ 401                    &lt;/ul&gt;
+ 402                  &lt;/div&gt;
+ 403  
+ 404                  &lt;div&gt;
+ 405                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+ 406                    &lt;p class=&quot;field-body&quot;&gt;
+ 407                      정적 페이지. &lt;span class=&quot;path&quot;&gt;index.html&lt;/span&gt;을 브라우저에서 연 화면. 파일 속 Netlify 주소는
+ 408                      2026년 10월 17일에 열리지 않았고, 실제 호스팅은 이 페이지에 다시 넣지 않았습니다.
+ 409                    &lt;/p&gt;
+ 410                  &lt;/div&gt;
+ 411  
+ 412                  &lt;div&gt;
+ 413                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 414                    &lt;p class=&quot;field-body&quot;&gt;스크롤 메뉴, 소개 문단, 메타 태그, robots.txt와 sitemap&lt;/p&gt;
+ 415                  &lt;/div&gt;
+ 416                &lt;/div&gt;
+ 417              &lt;/article&gt;
+ 418              &lt;article class=&quot;project-card&quot;&gt;
+ 419                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 420                  &lt;img src=&quot;img/proj-07-home.png&quot; alt=&quot;오후의 블로그 헤더와 하루하루 스터디 제목, 노트 사진, Title 1 목록&quot; /&gt;
+ 421                &lt;/figure&gt;
+ 422                &lt;div class=&quot;project-card__body&quot;&gt;
+ 423                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_07 · 2025.07.06&lt;/p&gt;
+ 424                  &lt;h3 class=&quot;project-card__title&quot;&gt;하루하루 스터디&lt;/h3&gt;
+ 425  
+ 426                  &lt;div&gt;
+ 427                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 428                    &lt;p class=&quot;field-body&quot;&gt;
+ 429                      『Do it! Node.js 프로그래밍 입문』으로 만든 블로그입니다. 앞부분에서는 연락처 앱을 만들고, 영상 강의
+ 430                      요약은 뤼튼으로 정리했습니다.
+ 431                    &lt;/p&gt;
+ 432                  &lt;/div&gt;
+ 433  
+ 434                  &lt;div&gt;
+ 435                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 436                    &lt;p class=&quot;field-body&quot;&gt;
+ 437                      일반 화면은 글 목록과 본문, 관리자 화면은 로그인 뒤 글 등록·수정·삭제입니다. 2026년 10월 17일에는
+ 438                      MongoDB에 연결되지 않아 목록은 정적 예시입니다.
+ 439                    &lt;/p&gt;
+ 440                  &lt;/div&gt;
+ 441  
+ 442                  &lt;div&gt;
+ 443                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 444                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 445                      &lt;li&gt;Node.js&lt;/li&gt;
+ 446                      &lt;li&gt;Express&lt;/li&gt;
+ 447                      &lt;li&gt;MongoDB&lt;/li&gt;
+ 448                      &lt;li&gt;Mongoose&lt;/li&gt;
+ 449                      &lt;li&gt;EJS&lt;/li&gt;
+ 450                      &lt;li&gt;JWT&lt;/li&gt;
+ 451                      &lt;li&gt;bcrypt&lt;/li&gt;
+ 452                      &lt;li&gt;뤼튼&lt;/li&gt;
+ 453                    &lt;/ul&gt;
+ 454                  &lt;/div&gt;
+ 455  
+ 456                  &lt;div&gt;
+ 457                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+ 458                    &lt;p class=&quot;field-body&quot;&gt;
+ 459                      &lt;span class=&quot;path&quot;&gt;myBlog/app.js&lt;/span&gt;. 포트는 환경 변수가 없으면 3000입니다. 실제 호스팅은 완료 후
+ 460                      시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
+ 461                    &lt;/p&gt;
+ 462                  &lt;/div&gt;
+ 463  
+ 464                  &lt;div&gt;
+ 465                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 466                    &lt;p class=&quot;field-body&quot;&gt;글 목록·본문, 관리자 로그인, 글 등록·수정·삭제, 연락처 CRUD&lt;/p&gt;
+ 467                  &lt;/div&gt;
+ 468                &lt;/div&gt;
+ 469              &lt;/article&gt;
+ 470              &lt;article class=&quot;project-card&quot;&gt;
+ 471                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 472                  &lt;img src=&quot;img/proj-08-run.png&quot; alt=&quot;독테스트 14개 통과와 미지 문서 네 편의 비교. 네 번째는 charles_dickens.txt&quot; /&gt;
+ 473                &lt;/figure&gt;
+ 474                &lt;div class=&quot;project-card__body&quot;&gt;
+ 475                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_08 · 2025.07.14&lt;/p&gt;
+ 476                  &lt;h3 class=&quot;project-card__title&quot;&gt;저자 식별&lt;/h3&gt;
+ 477  
+ 478                  &lt;div&gt;
+ 479                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 480                    &lt;p class=&quot;field-body&quot;&gt;
+ 481                      GitHub Copilot으로 문장 특징을 비교하는 저자 식별과, 같은 사진을 걸러 모으는 스크립트를 만들었습니다.
+ 482                      장별 필기 요약은 뤼튼으로 정리했습니다.
+ 483                    &lt;/p&gt;
+ 484                  &lt;/div&gt;
+ 485  
+ 486                  &lt;div&gt;
+ 487                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 488                    &lt;p class=&quot;field-body&quot;&gt;
+ 489                      2026년 10월 17일 실행에서 독테스트 14개가 통과했습니다. 미지 문서 넷 중 허클베리 핀은 디킨스 파일과
+ 490                      더 가깝게 나왔습니다.
+ 491                    &lt;/p&gt;
+ 492                  &lt;/div&gt;
+ 493  
+ 494                  &lt;div&gt;
+ 495                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 496                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 497                      &lt;li&gt;Python&lt;/li&gt;
+ 498                      &lt;li&gt;doctest&lt;/li&gt;
+ 499                      &lt;li&gt;VS Code&lt;/li&gt;
+ 500                      &lt;li&gt;GitHub Copilot&lt;/li&gt;
+ 501                      &lt;li&gt;뤼튼&lt;/li&gt;
+ 502                    &lt;/ul&gt;
+ 503                  &lt;/div&gt;
+ 504  
+ 505                  &lt;div&gt;
+ 506                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+ 507                    &lt;p class=&quot;field-body&quot;&gt;
+ 508                      &lt;span class=&quot;path&quot;&gt;7_practice.py&lt;/span&gt;를 파이썬으로 실행. 사진 원본 폴더는 없습니다. 실제 호스팅은
+ 509                      완료 후 시간이 오래 지나 넣지 않았고, 폴더에 호스팅 주소도 없습니다.
+ 510                    &lt;/p&gt;
+ 511                  &lt;/div&gt;
+ 512  
+ 513                  &lt;div&gt;
+ 514                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 515                    &lt;p class=&quot;field-body&quot;&gt;시그니처 비교, 독테스트, 내용이 같은 사진 건너뛰기&lt;/p&gt;
+ 516                  &lt;/div&gt;
+ 517                &lt;/div&gt;
+ 518              &lt;/article&gt;
+ 519              &lt;article class=&quot;project-card&quot;&gt;
+ 520                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 521                  &lt;img src=&quot;img/proj-09-todo.png&quot; alt=&quot;2025년 7월 21일 캡처. 오늘의 할 일 달력과 Cursor 편집기&quot; /&gt;
+ 522                &lt;/figure&gt;
+ 523                &lt;div class=&quot;project-card__body&quot;&gt;
+ 524                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_09 · 2025.08.05&lt;/p&gt;
+ 525                  &lt;h3 class=&quot;project-card__title&quot;&gt;커서로 따라 만든 프로그램&lt;/h3&gt;
+ 526  
+ 527                  &lt;div&gt;
+ 528                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 529                    &lt;p class=&quot;field-body&quot;&gt;
+ 530                      커서 AI 트렌드 책과 콜로소 강의로 할 일, 챗봇, 게시판, 차트, 파일 분류를 만들었습니다. 필기는
+ 531                      같은 폴더 이름에 _add_doc를 붙여 PROJ_09_add_doc 안에 둘로 나뉘어 있습니다.
+ 532                    &lt;/p&gt;
+ 533                  &lt;/div&gt;
+ 534  
+ 535                  &lt;div&gt;
+ 536                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 537                    &lt;p class=&quot;field-body&quot;&gt;
+ 538                      책 쪽 add_doc은 에이전트 독서노트이고, 콜로소 쪽 add_doc은 프롤로그부터 8장입니다. 독서노트 요약은
+ 539                      뤼튼으로, 실습 정리는 OpenAI로 정리했습니다.
+ 540                    &lt;/p&gt;
+ 541                  &lt;/div&gt;
+ 542  
+ 543                  &lt;div&gt;
+ 544                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 545                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 546                      &lt;li&gt;Cursor&lt;/li&gt;
+ 547                      &lt;li&gt;PHP&lt;/li&gt;
+ 548                      &lt;li&gt;Python&lt;/li&gt;
+ 549                      &lt;li&gt;HTML&lt;/li&gt;
+ 550                      &lt;li&gt;JavaScript&lt;/li&gt;
+ 551                      &lt;li&gt;뤼튼&lt;/li&gt;
+ 552                    &lt;/ul&gt;
+ 553                  &lt;/div&gt;
+ 554  
+ 555                  &lt;div&gt;
+ 556                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+ 557                    &lt;p class=&quot;field-body&quot;&gt;
+ 558                      PHP 페이지와 파이썬 스크립트. 화면은 폴더 안 캡처입니다. 전자명함 경로는 닷홈에서 404였습니다.
+ 559                    &lt;/p&gt;
+ 560                  &lt;/div&gt;
+ 561  
+ 562                  &lt;div&gt;
+ 563                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 564                    &lt;p class=&quot;field-body&quot;&gt;할 일 달력, 챗봇 화면, 게시판, 차트, 파일 분류&lt;/p&gt;
+ 565                  &lt;/div&gt;
+ 566                &lt;/div&gt;
+ 567              &lt;/article&gt;
+ 568              &lt;article class=&quot;project-card&quot;&gt;
+ 569                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 570                  &lt;img src=&quot;img/proj-10-blog.png&quot; alt=&quot;나의 개발 블로그. 노트북 그림과 카테고리, 더 읽기 버튼&quot; /&gt;
+ 571                &lt;/figure&gt;
+ 572                &lt;div class=&quot;project-card__body&quot;&gt;
+ 573                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_10 · 2025.07.20&lt;/p&gt;
+ 574                  &lt;h3 class=&quot;project-card__title&quot;&gt;콜로소 CursorAI&lt;/h3&gt;
+ 575                  &lt;div&gt;
+ 576                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 577                    &lt;p class=&quot;field-body&quot;&gt;
+ 578                      콜로소 CursorAI 강의로 회사 홈페이지, 다국어 포트폴리오, 로또, 사과 게임을 만들었습니다. 필기는
+ 579                      1강부터 15강입니다.
+ 580                    &lt;/p&gt;
+ 581                  &lt;/div&gt;
+ 582                  &lt;div&gt;
+ 583                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 584                    &lt;p class=&quot;field-body&quot;&gt;
+ 585                      캡처는 2025년 7월 16일부터 20일입니다. 2강 화면은 websim으로 만든 개발 블로그입니다. 예시 계정과
+ 586                      메일 주소는 적지 않았습니다.
+ 587                    &lt;/p&gt;
  588                  &lt;/div&gt;
- 589                &lt;/div&gt;
- 590              &lt;/article&gt;
- 591              &lt;article class=&quot;project-card&quot;&gt;
- 592                &lt;figure class=&quot;project-card__media&quot;&gt;
- 593                  &lt;img src=&quot;img/proj-10-blog.png&quot; alt=&quot;나의 개발 블로그. 노트북 그림과 카테고리, 더 읽기 버튼&quot; /&gt;
- 594                &lt;/figure&gt;
- 595                &lt;div class=&quot;project-card__body&quot;&gt;
- 596                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_10 · 2025.07.20&lt;/p&gt;
- 597                  &lt;h3 class=&quot;project-card__title&quot;&gt;콜로소 CursorAI&lt;/h3&gt;
- 598                  &lt;div&gt;
- 599                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 600                    &lt;p class=&quot;field-body&quot;&gt;
- 601                      콜로소 CursorAI 강의로 회사 홈페이지, 다국어 포트폴리오, 로또, 사과 게임을 만들었습니다. 필기는
- 602                      1강부터 15강입니다.
- 603                    &lt;/p&gt;
- 604                  &lt;/div&gt;
- 605                  &lt;div&gt;
- 606                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
- 607                    &lt;p class=&quot;field-body&quot;&gt;
- 608                      캡처는 2025년 7월 16일부터 20일입니다. 2강 화면은 websim으로 만든 개발 블로그입니다. 예시 계정과
- 609                      메일 주소는 적지 않았습니다.
- 610                    &lt;/p&gt;
- 611                  &lt;/div&gt;
- 612                  &lt;div&gt;
- 613                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 614                    &lt;ul class=&quot;pill-list&quot;&gt;
- 615                      &lt;li&gt;Cursor&lt;/li&gt;
- 616                      &lt;li&gt;PHP&lt;/li&gt;
- 617                      &lt;li&gt;Tailwind CSS&lt;/li&gt;
- 618                      &lt;li&gt;JavaScript&lt;/li&gt;
- 619                      &lt;li&gt;Python&lt;/li&gt;
- 620                    &lt;/ul&gt;
- 621                  &lt;/div&gt;
- 622                  &lt;div&gt;
- 623                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 624                    &lt;p class=&quot;field-body&quot;&gt;
- 625                      PHP와 HTML. 2026년 10월 18일에는 저장된 캡처만 확인했습니다. 1강 노트의 닷홈 주소는 있고, 전자명함
- 626                      경로는 404 캡처가 남아 있습니다.
- 627                    &lt;/p&gt;
- 628                  &lt;/div&gt;
- 629                  &lt;div&gt;
- 630                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 631                    &lt;p class=&quot;field-body&quot;&gt;회사 홈페이지, 작품 관리, 로또 번호, 사과 게임과 리더보드&lt;/p&gt;
+ 589                  &lt;div&gt;
+ 590                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 591                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 592                      &lt;li&gt;Cursor&lt;/li&gt;
+ 593                      &lt;li&gt;PHP&lt;/li&gt;
+ 594                      &lt;li&gt;Tailwind CSS&lt;/li&gt;
+ 595                      &lt;li&gt;JavaScript&lt;/li&gt;
+ 596                      &lt;li&gt;Python&lt;/li&gt;
+ 597                    &lt;/ul&gt;
+ 598                  &lt;/div&gt;
+ 599                  &lt;div&gt;
+ 600                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+ 601                    &lt;p class=&quot;field-body&quot;&gt;
+ 602                      PHP와 HTML. 2026년 10월 18일에는 저장된 캡처만 확인했습니다. 1강 노트의 닷홈 주소는 있고, 전자명함
+ 603                      경로는 404 캡처가 남아 있습니다.
+ 604                    &lt;/p&gt;
+ 605                  &lt;/div&gt;
+ 606                  &lt;div&gt;
+ 607                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 608                    &lt;p class=&quot;field-body&quot;&gt;회사 홈페이지, 작품 관리, 로또 번호, 사과 게임과 리더보드&lt;/p&gt;
+ 609                  &lt;/div&gt;
+ 610                &lt;/div&gt;
+ 611              &lt;/article&gt;
+ 612              &lt;article class=&quot;project-card&quot;&gt;
+ 613                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 614                  &lt;img src=&quot;img/proj-11-card.png&quot; alt=&quot;2024 새해 카드. 복 자가 있는 노란 원과 청룡&quot; /&gt;
+ 615                &lt;/figure&gt;
+ 616                &lt;div class=&quot;project-card__body&quot;&gt;
+ 617                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_11 · 2024.03.24&lt;/p&gt;
+ 618                  &lt;h3 class=&quot;project-card__title&quot;&gt;페스트캠퍼스 디자인·안드로이드&lt;/h3&gt;
+ 619                  &lt;div&gt;
+ 620                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 621                    &lt;p class=&quot;field-body&quot;&gt;
+ 622                      디자인툴 초격차(포토샵·일러스트레이터)와 안드로이드 코틀린 올인원 수강 필기입니다. 로컬
+ 623                      폴더 이름은 「페스트캠퍼스」, 「kotrlin」처럼 적혀 있습니다.
+ 624                    &lt;/p&gt;
+ 625                  &lt;/div&gt;
+ 626                  &lt;div&gt;
+ 627                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 628                    &lt;p class=&quot;field-body&quot;&gt;
+ 629                      2024년 신년 카드 결과물이 있고, 안드로이드는 UI부터 Firebase 참고 파일까지입니다. 호반부 프로젝트
+ 630                      구간은 폴더 이름대로 빠져 있습니다.
+ 631                    &lt;/p&gt;
  632                  &lt;/div&gt;
- 633                &lt;/div&gt;
- 634              &lt;/article&gt;
- 635              &lt;article class=&quot;project-card&quot;&gt;
- 636                &lt;figure class=&quot;project-card__media&quot;&gt;
- 637                  &lt;img src=&quot;img/proj-11-card.png&quot; alt=&quot;2024 새해 카드. 복 자가 있는 노란 원과 청룡&quot; /&gt;
- 638                &lt;/figure&gt;
- 639                &lt;div class=&quot;project-card__body&quot;&gt;
- 640                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_11 · 2024.03.24&lt;/p&gt;
- 641                  &lt;h3 class=&quot;project-card__title&quot;&gt;페스트캠퍼스 디자인·안드로이드&lt;/h3&gt;
+ 633                  &lt;div&gt;
+ 634                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 635                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 636                      &lt;li&gt;Photoshop&lt;/li&gt;
+ 637                      &lt;li&gt;Illustrator&lt;/li&gt;
+ 638                      &lt;li&gt;Kotlin&lt;/li&gt;
+ 639                      &lt;li&gt;Android&lt;/li&gt;
+ 640                    &lt;/ul&gt;
+ 641                  &lt;/div&gt;
  642                  &lt;div&gt;
- 643                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 643                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
  644                    &lt;p class=&quot;field-body&quot;&gt;
- 645                      디자인툴 초격차(포토샵·일러스트레이터)와 안드로이드 코틀린 올인원 수강 필기입니다. 로컬
- 646                      폴더 이름은 「페스트캠퍼스」, 「kotrlin」처럼 적혀 있습니다.
- 647                    &lt;/p&gt;
- 648                  &lt;/div&gt;
- 649                  &lt;div&gt;
- 650                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
- 651                    &lt;p class=&quot;field-body&quot;&gt;
- 652                      2024년 신년 카드 결과물이 있고, 안드로이드는 UI부터 Firebase 참고 파일까지입니다. 호반부 프로젝트
- 653                      구간은 폴더 이름대로 빠져 있습니다.
- 654                    &lt;/p&gt;
- 655                  &lt;/div&gt;
- 656                  &lt;div&gt;
- 657                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 658                    &lt;ul class=&quot;pill-list&quot;&gt;
- 659                      &lt;li&gt;Photoshop&lt;/li&gt;
- 660                      &lt;li&gt;Illustrator&lt;/li&gt;
- 661                      &lt;li&gt;Kotlin&lt;/li&gt;
- 662                      &lt;li&gt;Android&lt;/li&gt;
- 663                    &lt;/ul&gt;
- 664                  &lt;/div&gt;
- 665                  &lt;div&gt;
- 666                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 667                    &lt;p class=&quot;field-body&quot;&gt;
- 668                      강의 자료와 필기, 신년 카드 JPG. 안드로이드 스튜디오를 다시 열지는 않았고, 호스팅 주소도 없습니다.
- 669                    &lt;/p&gt;
- 670                  &lt;/div&gt;
- 671                  &lt;div&gt;
- 672                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 673                    &lt;p class=&quot;field-body&quot;&gt;포토샵·일러스트레이터 실습, 코틀린 UI·네트워크·탭·Firebase 참고&lt;/p&gt;
+ 645                      강의 자료와 필기, 신년 카드 JPG. 안드로이드 스튜디오를 다시 열지는 않았고, 호스팅 주소도 없습니다.
+ 646                    &lt;/p&gt;
+ 647                  &lt;/div&gt;
+ 648                  &lt;div&gt;
+ 649                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 650                    &lt;p class=&quot;field-body&quot;&gt;포토샵·일러스트레이터 실습, 코틀린 UI·네트워크·탭·Firebase 참고&lt;/p&gt;
+ 651                  &lt;/div&gt;
+ 652                &lt;/div&gt;
+ 653              &lt;/article&gt;
+ 654              &lt;article class=&quot;project-card&quot;&gt;
+ 655                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 656                  &lt;img src=&quot;img/proj-12-courses.png&quot; alt=&quot;인프런 네 과정 이름. 애니메이트, Dart, 중고신입 전략, 2026 AI 트렌드&quot; /&gt;
+ 657                &lt;/figure&gt;
+ 658                &lt;div class=&quot;project-card__body&quot;&gt;
+ 659                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_12 · 2026.02.11&lt;/p&gt;
+ 660                  &lt;h3 class=&quot;project-card__title&quot;&gt;인프런 과정&lt;/h3&gt;
+ 661                  &lt;div&gt;
+ 662                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 663                    &lt;p class=&quot;field-body&quot;&gt;
+ 664                      그린네모 애니메이트, 코딩펙토리 Dart, 중고신입 전략, 2026 AI 트렌드가 한 폴더에 있습니다. 부모
+ 665                      폴더 철자는 그리네모, 에니메이트, 일겅봐야입니다.
+ 666                    &lt;/p&gt;
+ 667                  &lt;/div&gt;
+ 668                  &lt;div&gt;
+ 669                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 670                    &lt;p class=&quot;field-body&quot;&gt;
+ 671                      Dart 필기는 타입, 클래스, 함수형, 비동기 네 장입니다. AI 트렌드 노트는 2026년 2월 11일에 p15 1.6부터
+ 672                      p24 1.12까지 봤다고 적습니다.
+ 673                    &lt;/p&gt;
  674                  &lt;/div&gt;
- 675                &lt;/div&gt;
- 676              &lt;/article&gt;
- 677              &lt;article class=&quot;project-card&quot;&gt;
- 678                &lt;figure class=&quot;project-card__media&quot;&gt;
- 679                  &lt;img src=&quot;img/proj-12-courses.png&quot; alt=&quot;인프런 네 과정 이름. 애니메이트, Dart, 중고신입 전략, 2026 AI 트렌드&quot; /&gt;
- 680                &lt;/figure&gt;
- 681                &lt;div class=&quot;project-card__body&quot;&gt;
- 682                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_12 · 2026.02.11&lt;/p&gt;
- 683                  &lt;h3 class=&quot;project-card__title&quot;&gt;인프런 과정&lt;/h3&gt;
+ 675                  &lt;div&gt;
+ 676                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 677                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 678                      &lt;li&gt;Animate&lt;/li&gt;
+ 679                      &lt;li&gt;Dart&lt;/li&gt;
+ 680                      &lt;li&gt;Flutter&lt;/li&gt;
+ 681                      &lt;li&gt;Perplexity&lt;/li&gt;
+ 682                    &lt;/ul&gt;
+ 683                  &lt;/div&gt;
  684                  &lt;div&gt;
- 685                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 686                    &lt;p class=&quot;field-body&quot;&gt;
- 687                      그린네모 애니메이트, 코딩펙토리 Dart, 중고신입 전략, 2026 AI 트렌드가 한 폴더에 있습니다. 부모
- 688                      폴더 철자는 그리네모, 에니메이트, 일겅봐야입니다.
- 689                    &lt;/p&gt;
- 690                  &lt;/div&gt;
- 691                  &lt;div&gt;
- 692                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
- 693                    &lt;p class=&quot;field-body&quot;&gt;
- 694                      Dart 필기는 타입, 클래스, 함수형, 비동기 네 장입니다. AI 트렌드 노트는 2026년 2월 11일에 p15 1.6부터
- 695                      p24 1.12까지 봤다고 적습니다.
- 696                    &lt;/p&gt;
- 697                  &lt;/div&gt;
- 698                  &lt;div&gt;
- 699                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 700                    &lt;ul class=&quot;pill-list&quot;&gt;
- 701                      &lt;li&gt;Animate&lt;/li&gt;
- 702                      &lt;li&gt;Dart&lt;/li&gt;
- 703                      &lt;li&gt;Flutter&lt;/li&gt;
- 704                      &lt;li&gt;Perplexity&lt;/li&gt;
- 705                    &lt;/ul&gt;
- 706                  &lt;/div&gt;
- 707                  &lt;div&gt;
- 708                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 709                    &lt;p class=&quot;field-body&quot;&gt;노트, pdf, 예제 파일입니다. 전자책과 영상 본문은 카드에 넣지 않았고, 호스팅 주소도 없습니다.&lt;/p&gt;
- 710                  &lt;/div&gt;
- 711                  &lt;div&gt;
- 712                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 713                    &lt;p class=&quot;field-body&quot;&gt;애니메이트 예제, Dart 언어 필기, 6일 치 취업 노트, AI 트렌드 읽기 기록&lt;/p&gt;
+ 685                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+ 686                    &lt;p class=&quot;field-body&quot;&gt;노트, pdf, 예제 파일입니다. 전자책과 영상 본문은 카드에 넣지 않았고, 호스팅 주소도 없습니다.&lt;/p&gt;
+ 687                  &lt;/div&gt;
+ 688                  &lt;div&gt;
+ 689                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 690                    &lt;p class=&quot;field-body&quot;&gt;애니메이트 예제, Dart 언어 필기, 6일 치 취업 노트, AI 트렌드 읽기 기록&lt;/p&gt;
+ 691                  &lt;/div&gt;
+ 692                &lt;/div&gt;
+ 693              &lt;/article&gt;
+ 694              &lt;article class=&quot;project-card&quot;&gt;
+ 695                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 696                  &lt;img src=&quot;img/proj-13-projects.png&quot; alt=&quot;SSamz 미니프로젝트 여덟 이름. 카카오 로그인, 할 일, 배터리, mp3, 카메라, 뉴스, 구글 지도, Firebase&quot; /&gt;
+ 697                &lt;/figure&gt;
+ 698                &lt;div class=&quot;project-card__body&quot;&gt;
+ 699                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_13 · 2022.09.15&lt;/p&gt;
+ 700                  &lt;h3 class=&quot;project-card__title&quot;&gt;SSamz 안드로이드&lt;/h3&gt;
+ 701                  &lt;div&gt;
+ 702                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 703                    &lt;p class=&quot;field-body&quot;&gt;
+ 704                      폴더 이름은 프로젝트 진행까지 완료입니다. 필기는 06장 이전부터 21장 파이어베이스까지이고, 앱
+ 705                      소스는 백업 압축에 있습니다.
+ 706                    &lt;/p&gt;
+ 707                  &lt;/div&gt;
+ 708                  &lt;div&gt;
+ 709                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 710                    &lt;p class=&quot;field-body&quot;&gt;
+ 711                      백업 폴더 이름은 카카오 로그인, 할 일, 배터리, mp3, 카메라, 뉴스, 구글 지도, Firebase입니다. 장
+ 712                      폴더는 비어 있고, mp3·할 일 개선 폴더는 이름에 미완이 있으며 파일도 없습니다.
+ 713                    &lt;/p&gt;
  714                  &lt;/div&gt;
- 715                &lt;/div&gt;
- 716              &lt;/article&gt;
- 717              &lt;article class=&quot;project-card&quot;&gt;
- 718                &lt;figure class=&quot;project-card__media&quot;&gt;
- 719                  &lt;img src=&quot;img/proj-13-projects.png&quot; alt=&quot;SSamz 미니프로젝트 여덟 이름. 카카오 로그인, 할 일, 배터리, mp3, 카메라, 뉴스, 구글 지도, Firebase&quot; /&gt;
- 720                &lt;/figure&gt;
- 721                &lt;div class=&quot;project-card__body&quot;&gt;
- 722                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_13 · 2022.09.15&lt;/p&gt;
- 723                  &lt;h3 class=&quot;project-card__title&quot;&gt;SSamz 안드로이드&lt;/h3&gt;
- 724                  &lt;div&gt;
- 725                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 726                    &lt;p class=&quot;field-body&quot;&gt;
- 727                      폴더 이름은 프로젝트 진행까지 완료입니다. 필기는 06장 이전부터 21장 파이어베이스까지이고, 앱
- 728                      소스는 백업 압축에 있습니다.
- 729                    &lt;/p&gt;
- 730                  &lt;/div&gt;
- 731                  &lt;div&gt;
- 732                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
- 733                    &lt;p class=&quot;field-body&quot;&gt;
- 734                      백업 폴더 이름은 카카오 로그인, 할 일, 배터리, mp3, 카메라, 뉴스, 구글 지도, Firebase입니다. 장
- 735                      폴더는 비어 있고, mp3·할 일 개선 폴더는 이름에 미완이 있으며 파일도 없습니다.
- 736                    &lt;/p&gt;
- 737                  &lt;/div&gt;
- 738                  &lt;div&gt;
- 739                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 740                    &lt;ul class=&quot;pill-list&quot;&gt;
- 741                      &lt;li&gt;Kotlin&lt;/li&gt;
- 742                      &lt;li&gt;Android Jetpack&lt;/li&gt;
- 743                      &lt;li&gt;Firebase&lt;/li&gt;
- 744                      &lt;li&gt;Retrofit&lt;/li&gt;
- 745                      &lt;li&gt;Glide&lt;/li&gt;
- 746                    &lt;/ul&gt;
- 747                  &lt;/div&gt;
- 748                  &lt;div&gt;
- 749                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 750                    &lt;p class=&quot;field-body&quot;&gt;
- 751                      안드로이드 스튜디오 프로젝트 압축과 한글 필기. 2026년 10월 18일에는 다시 빌드하지 않았습니다.
- 752                      토큰과 서버 키는 적지 않았습니다.
- 753                    &lt;/p&gt;
- 754                  &lt;/div&gt;
- 755                  &lt;div&gt;
- 756                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 757                    &lt;p class=&quot;field-body&quot;&gt;레이아웃과 알림, 할 일·카메라·지도 앱, Firebase 메시징&lt;/p&gt;
+ 715                  &lt;div&gt;
+ 716                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 717                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 718                      &lt;li&gt;Kotlin&lt;/li&gt;
+ 719                      &lt;li&gt;Android Jetpack&lt;/li&gt;
+ 720                      &lt;li&gt;Firebase&lt;/li&gt;
+ 721                      &lt;li&gt;Retrofit&lt;/li&gt;
+ 722                      &lt;li&gt;Glide&lt;/li&gt;
+ 723                    &lt;/ul&gt;
+ 724                  &lt;/div&gt;
+ 725                  &lt;div&gt;
+ 726                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+ 727                    &lt;p class=&quot;field-body&quot;&gt;
+ 728                      안드로이드 스튜디오 프로젝트 압축과 한글 필기. 2026년 10월 18일에는 다시 빌드하지 않았습니다.
+ 729                      토큰과 서버 키는 적지 않았습니다.
+ 730                    &lt;/p&gt;
+ 731                  &lt;/div&gt;
+ 732                  &lt;div&gt;
+ 733                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 734                    &lt;p class=&quot;field-body&quot;&gt;레이아웃과 알림, 할 일·카메라·지도 앱, Firebase 메시징&lt;/p&gt;
+ 735                  &lt;/div&gt;
+ 736                &lt;/div&gt;
+ 737              &lt;/article&gt;
+ 738              &lt;article class=&quot;project-card&quot;&gt;
+ 739                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 740                  &lt;img src=&quot;img/proj-14-resume.png&quot; alt=&quot;이력서 화면. 김신욱, 경력 세 곳, 학력, 아직 비어 있는 세 번째 구역&quot; /&gt;
+ 741                &lt;/figure&gt;
+ 742                &lt;div class=&quot;project-card__body&quot;&gt;
+ 743                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_14 · 2026.05.24&lt;/p&gt;
+ 744                  &lt;h3 class=&quot;project-card__title&quot;&gt;유데미&lt;/h3&gt;
+ 745                  &lt;div&gt;
+ 746                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 747                    &lt;p class=&quot;field-body&quot;&gt;
+ 748                      과정 앞부분을 50% 미만으로 들은 기록입니다. 코틀린 연산자·람다 필기와, HTML·CSS·자바스크립트
+ 749                      이력서 수업이 있습니다.
+ 750                    &lt;/p&gt;
+ 751                  &lt;/div&gt;
+ 752                  &lt;div&gt;
+ 753                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 754                    &lt;p class=&quot;field-body&quot;&gt;
+ 755                      2026년 10월 18일에 이력서 HTML을 열었습니다. 재직 끝 날짜는 연 날로 바뀌고, 세 번째 구역은
+ 756                      섹션제목 그대로입니다. 짧은 필기 파일 이름은 유메니로도 적혀 있습니다.
+ 757                    &lt;/p&gt;
  758                  &lt;/div&gt;
- 759                &lt;/div&gt;
- 760              &lt;/article&gt;
- 761              &lt;article class=&quot;project-card&quot;&gt;
- 762                &lt;figure class=&quot;project-card__media&quot;&gt;
- 763                  &lt;img src=&quot;img/proj-14-resume.png&quot; alt=&quot;이력서 화면. 김신욱, 경력 세 곳, 학력, 아직 비어 있는 세 번째 구역&quot; /&gt;
- 764                &lt;/figure&gt;
- 765                &lt;div class=&quot;project-card__body&quot;&gt;
- 766                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_14 · 2026.05.24&lt;/p&gt;
- 767                  &lt;h3 class=&quot;project-card__title&quot;&gt;유데미&lt;/h3&gt;
+ 759                  &lt;div&gt;
+ 760                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 761                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 762                      &lt;li&gt;Kotlin&lt;/li&gt;
+ 763                      &lt;li&gt;HTML&lt;/li&gt;
+ 764                      &lt;li&gt;CSS&lt;/li&gt;
+ 765                      &lt;li&gt;jQuery&lt;/li&gt;
+ 766                    &lt;/ul&gt;
+ 767                  &lt;/div&gt;
  768                  &lt;div&gt;
- 769                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 770                    &lt;p class=&quot;field-body&quot;&gt;
- 771                      과정 앞부분을 50% 미만으로 들은 기록입니다. 코틀린 연산자·람다 필기와, HTML·CSS·자바스크립트
- 772                      이력서 수업이 있습니다.
- 773                    &lt;/p&gt;
- 774                  &lt;/div&gt;
- 775                  &lt;div&gt;
- 776                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
- 777                    &lt;p class=&quot;field-body&quot;&gt;
- 778                      2026년 10월 18일에 이력서 HTML을 열었습니다. 재직 끝 날짜는 연 날로 바뀌고, 세 번째 구역은
- 779                      섹션제목 그대로입니다. 짧은 필기 파일 이름은 유메니로도 적혀 있습니다.
- 780                    &lt;/p&gt;
- 781                  &lt;/div&gt;
- 782                  &lt;div&gt;
- 783                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 784                    &lt;ul class=&quot;pill-list&quot;&gt;
- 785                      &lt;li&gt;Kotlin&lt;/li&gt;
- 786                      &lt;li&gt;HTML&lt;/li&gt;
- 787                      &lt;li&gt;CSS&lt;/li&gt;
- 788                      &lt;li&gt;jQuery&lt;/li&gt;
- 789                    &lt;/ul&gt;
- 790                  &lt;/div&gt;
- 791                  &lt;div&gt;
- 792                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 793                    &lt;p class=&quot;field-body&quot;&gt;브라우저에서 CLASSROOM/index.html을 직접 열었습니다. 호스팅 주소는 없습니다.&lt;/p&gt;
- 794                  &lt;/div&gt;
- 795                  &lt;div&gt;
- 796                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 797                    &lt;p class=&quot;field-body&quot;&gt;재직 기간 계산, 이력서 칸, 코틀린 람다 필기&lt;/p&gt;
- 798                  &lt;/div&gt;
- 799                &lt;/div&gt;
- 800              &lt;/article&gt;
- 801              &lt;article class=&quot;project-card&quot;&gt;
- 802                &lt;figure class=&quot;project-card__media&quot;&gt;
- 803                  &lt;img src=&quot;img/proj-15-lost.png&quot; alt=&quot;에듀펜 2017년부터 2019년. 자바, 모바일 이클립스, 안드로이드 스튜디오. 파일 없음&quot; /&gt;
- 804                &lt;/figure&gt;
- 805                &lt;div class=&quot;project-card__body&quot;&gt;
- 806                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_15 · 2017–2019&lt;/p&gt;
- 807                  &lt;h3 class=&quot;project-card__title&quot;&gt;에듀펜&lt;/h3&gt;
+ 769                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+ 770                    &lt;p class=&quot;field-body&quot;&gt;브라우저에서 CLASSROOM/index.html을 직접 열었습니다. 호스팅 주소는 없습니다.&lt;/p&gt;
+ 771                  &lt;/div&gt;
+ 772                  &lt;div&gt;
+ 773                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 774                    &lt;p class=&quot;field-body&quot;&gt;재직 기간 계산, 이력서 칸, 코틀린 람다 필기&lt;/p&gt;
+ 775                  &lt;/div&gt;
+ 776                &lt;/div&gt;
+ 777              &lt;/article&gt;
+ 778              &lt;article class=&quot;project-card&quot;&gt;
+ 779                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 780                  &lt;img src=&quot;img/proj-15-lost.png&quot; alt=&quot;에듀펜 2017년부터 2019년. 자바, 모바일 이클립스, 안드로이드 스튜디오. 파일 없음&quot; /&gt;
+ 781                &lt;/figure&gt;
+ 782                &lt;div class=&quot;project-card__body&quot;&gt;
+ 783                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_15 · 2017–2019&lt;/p&gt;
+ 784                  &lt;h3 class=&quot;project-card__title&quot;&gt;에듀펜&lt;/h3&gt;
+ 785                  &lt;div&gt;
+ 786                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 787                    &lt;p class=&quot;field-body&quot;&gt;
+ 788                      2017년부터 2019년까지 에듀펜에서 자바를 듣고, 모바일은 이클립스에서 안드로이드 스튜디오로 이어
+ 789                      갔다는 폴더 이름만 남아 있습니다.
+ 790                    &lt;/p&gt;
+ 791                  &lt;/div&gt;
+ 792                  &lt;div&gt;
+ 793                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 794                    &lt;p class=&quot;field-body&quot;&gt;폴더 이름 끝에 데이터 유실이라고 적혀 있고, 2026년 10월 18일에 열었을 때 파일이 없었습니다.&lt;/p&gt;
+ 795                  &lt;/div&gt;
+ 796                  &lt;div&gt;
+ 797                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 798                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 799                      &lt;li&gt;Java&lt;/li&gt;
+ 800                      &lt;li&gt;Eclipse&lt;/li&gt;
+ 801                      &lt;li&gt;Android Studio&lt;/li&gt;
+ 802                    &lt;/ul&gt;
+ 803                  &lt;/div&gt;
+ 804                  &lt;div&gt;
+ 805                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+ 806                    &lt;p class=&quot;field-body&quot;&gt;실행할 소스와 캡처, 호스팅 주소가 없습니다.&lt;/p&gt;
+ 807                  &lt;/div&gt;
  808                  &lt;div&gt;
- 809                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 810                    &lt;p class=&quot;field-body&quot;&gt;
- 811                      2017년부터 2019년까지 에듀펜에서 자바를 듣고, 모바일은 이클립스에서 안드로이드 스튜디오로 이어
- 812                      갔다는 폴더 이름만 남아 있습니다.
- 813                    &lt;/p&gt;
- 814                  &lt;/div&gt;
- 815                  &lt;div&gt;
- 816                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
- 817                    &lt;p class=&quot;field-body&quot;&gt;폴더 이름 끝에 데이터 유실이라고 적혀 있고, 2026년 10월 18일에 열었을 때 파일이 없었습니다.&lt;/p&gt;
- 818                  &lt;/div&gt;
- 819                  &lt;div&gt;
- 820                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 821                    &lt;ul class=&quot;pill-list&quot;&gt;
- 822                      &lt;li&gt;Java&lt;/li&gt;
- 823                      &lt;li&gt;Eclipse&lt;/li&gt;
- 824                      &lt;li&gt;Android Studio&lt;/li&gt;
- 825                    &lt;/ul&gt;
- 826                  &lt;/div&gt;
- 827                  &lt;div&gt;
- 828                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 829                    &lt;p class=&quot;field-body&quot;&gt;실행할 소스와 캡처, 호스팅 주소가 없습니다.&lt;/p&gt;
- 830                  &lt;/div&gt;
- 831                  &lt;div&gt;
- 832                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 833                    &lt;p class=&quot;field-body&quot;&gt;폴더 이름에 적힌 자바와 모바일 과정. 자료 파일은 없습니다.&lt;/p&gt;
- 834                  &lt;/div&gt;
- 835                &lt;/div&gt;
- 836              &lt;/article&gt;
- 837              &lt;article class=&quot;project-card&quot;&gt;
- 838                &lt;figure class=&quot;project-card__media&quot;&gt;
- 839                  &lt;img
- 840                    src=&quot;img/proj-16-news-book.png&quot;
- 841                    alt=&quot;신문 감상 기록 노트 뷰어 표지. 노트로 읽기 안내와 표지 디자인&quot;
- 842                  /&gt;
- 843                &lt;/figure&gt;
- 844                &lt;div class=&quot;project-card__body&quot;&gt;
- 845                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_16 · 2026.10&lt;/p&gt;
- 846                  &lt;h3 class=&quot;project-card__title&quot;&gt;신문 감상 기록&lt;/h3&gt;
- 847                  &lt;div&gt;
- 848                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 849                    &lt;p class=&quot;field-body&quot;&gt;
- 850                      Cursor AI 바이브 코딩으로 만든 매일경제 감상 아카이브입니다. 저장소 이름은
- 851                      &lt;span class=&quot;path&quot;&gt;news_reading_note_proj&lt;/span&gt;이고, 감상 본문은 직접 작성한 글만
- 852                      담습니다. UI·빌드·문서는 Cursor와 함께 정리했습니다.
- 853                    &lt;/p&gt;
- 854                  &lt;/div&gt;
- 855                  &lt;div&gt;
- 856                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
- 857                    &lt;p class=&quot;field-body&quot;&gt;
- 858                      처음 화면에서 기간·주제·최근 글을 보고, 차례·주제·날짜별 글로 이어집니다.
- 859                      &lt;span class=&quot;path&quot;&gt;book.php&lt;/span&gt;는 양장본 노트처럼 넘기며 읽습니다. 백업 txt를
- 860                      &lt;span class=&quot;path&quot;&gt;scripts/build.php&lt;/span&gt;로 seed·dist에 반영하고, 닷홈에는 dist만
- 861                      FTP합니다. technical-specs·codebook 등 PDF는 documentation/에서 빌드합니다.
- 862                    &lt;/p&gt;
- 863                  &lt;/div&gt;
- 864                  &lt;div&gt;
- 865                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 866                    &lt;ul class=&quot;pill-list&quot;&gt;
- 867                      &lt;li&gt;Cursor&lt;/li&gt;
- 868                      &lt;li&gt;PHP&lt;/li&gt;
- 869                      &lt;li&gt;MySQL&lt;/li&gt;
- 870                      &lt;li&gt;HTML&lt;/li&gt;
- 871                      &lt;li&gt;CSS&lt;/li&gt;
- 872                      &lt;li&gt;JavaScript&lt;/li&gt;
- 873                      &lt;li&gt;Python&lt;/li&gt;
- 874                    &lt;/ul&gt;
- 875                  &lt;/div&gt;
- 876                  &lt;div&gt;
- 877                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 878                    &lt;p class=&quot;field-body&quot;&gt;
- 879                      PHP 8.1 이상. DB 없이 &lt;span class=&quot;path&quot;&gt;php -S localhost:8000 -t site&lt;/span&gt;로 fallback
- 880                      미리보기, MySQL·seed.sql로 운영과 동일하게 확인. 카드 캡처는
- 881                      &lt;span class=&quot;path&quot;&gt;portfolio-screenshots/&lt;/span&gt;(2026년 10월 24일). GitHub
- 882                      ackdark23358/news_reading_note_proj. config.php는 저장소에 포함하지 않습니다.
- 883                    &lt;/p&gt;
- 884                  &lt;/div&gt;
- 885                  &lt;div&gt;
- 886                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 887                    &lt;p class=&quot;field-body&quot;&gt;
- 888                      날짜·주제 아카이브, 노트 뷰어(양면·단면·책갈피), /admin/ 글 CRUD, build·닷홈 배포,
- 889                      기술문서 PDF 5종
- 890                    &lt;/p&gt;
- 891                  &lt;/div&gt;
- 892                &lt;/div&gt;
- 893              &lt;/article&gt;
- 894              &lt;article class=&quot;project-card&quot;&gt;
- 895                &lt;figure class=&quot;project-card__media&quot;&gt;
- 896                  &lt;img
- 897                    src=&quot;img/proj-17-milestone-kanban.png&quot;
- 898                    alt=&quot;하루일과 캘린더와 할일 칸반 모달. 시작전·진행중·완료 열&quot;
- 899                  /&gt;
- 900                &lt;/figure&gt;
- 901                &lt;div class=&quot;project-card__body&quot;&gt;
- 902                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_17 · 2026.05–06&lt;/p&gt;
- 903                  &lt;h3 class=&quot;project-card__title&quot;&gt;하루일과&lt;/h3&gt;
- 904                  &lt;div&gt;
- 905                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 906                    &lt;p class=&quot;field-body&quot;&gt;
- 907                      Cursor AI로 제작·개선한 날짜별 할일 웹 앱입니다. 저장소 폴더 이름은
- 908                      &lt;span class=&quot;path&quot;&gt;milestone_schdule&lt;/span&gt;이고, design.md의 Aurora UI(오로라 그라데이션,
- 909                      라이트·다크)를 따릅니다.
- 910                    &lt;/p&gt;
- 911                  &lt;/div&gt;
- 912                  &lt;div&gt;
- 913                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
- 914                    &lt;p class=&quot;field-body&quot;&gt;
- 915                      관리자 로그인 후 캘린더에서 과거·오늘 날짜를 눌러 journal(할일 JSON)을 추가·수정·삭제합니다.
- 916                      MySQL &lt;span class=&quot;path&quot;&gt;journals&lt;/span&gt;와 PHP API, localStorage로 ✓ 표시·테마를 보조합니다.
- 917                      960px 이상 3열 칸반, 미만 1열 스택. doc-publication/에서 명세·코드북 PDF를 만듭니다.
- 918                    &lt;/p&gt;
- 919                  &lt;/div&gt;
- 920                  &lt;div&gt;
- 921                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 922                    &lt;ul class=&quot;pill-list&quot;&gt;
- 923                      &lt;li&gt;Cursor&lt;/li&gt;
- 924                      &lt;li&gt;PHP&lt;/li&gt;
- 925                      &lt;li&gt;MySQL&lt;/li&gt;
- 926                      &lt;li&gt;HTML&lt;/li&gt;
- 927                      &lt;li&gt;CSS&lt;/li&gt;
- 928                      &lt;li&gt;JavaScript&lt;/li&gt;
- 929                      &lt;li&gt;Python&lt;/li&gt;
- 930                    &lt;/ul&gt;
- 931                  &lt;/div&gt;
- 932                  &lt;div&gt;
- 933                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 934                    &lt;p class=&quot;field-body&quot;&gt;
- 935                      &lt;span class=&quot;path&quot;&gt;php -S localhost:8080&lt;/span&gt; 또는 npx serve. 닷홈 FTP에 index.html,
- 936                      css/, js/, api/(config.php는 서버에서만). 카드 캡처는
- 937                      &lt;span class=&quot;path&quot;&gt;portfolio-screenshots/desktop/&lt;/span&gt;(2026년 10월 24일). api/config.php와
- 938                      DB 비밀번호는 카드에 적지 않았습니다.
- 939                    &lt;/p&gt;
- 940                  &lt;/div&gt;
- 941                  &lt;div&gt;
- 942                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 943                    &lt;p class=&quot;field-body&quot;&gt;
- 944                      기록 캘린더 ✓, 날짜별 할일 CRUD·상태 뱃지, 다크 모드, DB 날짜 새로고침, 프로필 수정,
- 945                      로그인 실패 제한(설정 시)
- 946                    &lt;/p&gt;
- 947                  &lt;/div&gt;
- 948                &lt;/div&gt;
- 949              &lt;/article&gt;
- 950              &lt;article class=&quot;project-card&quot;&gt;
- 951                &lt;figure class=&quot;project-card__media&quot;&gt;
- 952                  &lt;img
- 953                    src=&quot;img/proj-18-list.png&quot;
- 954                    alt=&quot;사원관리 프로그램. 목록에서 SMITH를 선택한 조회 화면&quot;
- 955                  /&gt;
- 956                &lt;/figure&gt;
- 957                &lt;div class=&quot;project-card__body&quot;&gt;
- 958                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_18 · 2026.11.02&lt;/p&gt;
- 959                  &lt;h3 class=&quot;project-card__title&quot;&gt;사원관리 프로그램&lt;/h3&gt;
- 960                  &lt;div&gt;
- 961                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
- 962                    &lt;p class=&quot;field-body&quot;&gt;
- 963                      에듀펜 자바 과정에서 만들던 사원관리 프로그램을 다시 구현한 데스크톱 프로그램입니다.
- 964                      아카이브의 PROJ_15는 2017–2019 수강 기록만 남아 있고 소스와 캡처가 유실된 상태였습니다.
- 965                      화면은 Java Swing이고, 사원 한 명의 값은 DTO에 담으며, 저장과 조회는 DAO와 JDBC가 맡습니다.
- 966                    &lt;/p&gt;
- 967                  &lt;/div&gt;
- 968                  &lt;div&gt;
- 969                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
- 970                    &lt;p class=&quot;field-body&quot;&gt;
- 971                      왼쪽 입력란과 오른쪽 사원 목록으로 이루어집니다. 목록에서 사원을 누르면 입력란에 값이 채워지고,
- 972                      등록·수정·삭제로 사원 정보를 다룹니다. 이름, 직급, 부서명, 사원번호로 검색할 수 있습니다.
- 973                      데이터는 실행 폴더의 H2 파일에 남습니다. 처음 실행하면 교재용 사원 14명과 부서 4개가 들어 있습니다.
- 974                    &lt;/p&gt;
- 975                  &lt;/div&gt;
- 976                  &lt;div&gt;
- 977                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
- 978                    &lt;ul class=&quot;pill-list&quot;&gt;
- 979                      &lt;li&gt;Java&lt;/li&gt;
- 980                      &lt;li&gt;Swing&lt;/li&gt;
- 981                      &lt;li&gt;JDBC&lt;/li&gt;
- 982                      &lt;li&gt;H2&lt;/li&gt;
- 983                      &lt;li&gt;DAO&lt;/li&gt;
- 984                      &lt;li&gt;DTO&lt;/li&gt;
- 985                    &lt;/ul&gt;
- 986                  &lt;/div&gt;
- 987                  &lt;div&gt;
- 988                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
- 989                    &lt;p class=&quot;field-body&quot;&gt;
- 990                      Windows. Java 11 이상. 프로젝트 폴더에서 &lt;span class=&quot;path&quot;&gt;run.bat&lt;/span&gt;을 실행합니다.
- 991                      데이터베이스 파일은 &lt;span class=&quot;path&quot;&gt;data/empdb&lt;/span&gt;이고, 별도 Oracle이나 MySQL 설치는 없습니다.
- 992                      화면 캡처는 2026년 11월 2일에 저장했습니다. 카드는 조회 화면이고, 등록·수정·삭제 캡처는
- 993                      &lt;span class=&quot;path&quot;&gt;img/proj-18-create.png&lt;/span&gt;부터 같은 폴더에 함께 두었습니다. 호스팅 주소는 없습니다.
- 994                    &lt;/p&gt;
- 995                  &lt;/div&gt;
- 996                  &lt;div&gt;
- 997                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
- 998                    &lt;p class=&quot;field-body&quot;&gt;
- 999                      사원 목록 조회, 이름·직급·부서·사원번호 검색, 사원 등록, 수정, 삭제, 목록 정렬
-1000                    &lt;/p&gt;
-1001                  &lt;/div&gt;
-1002                &lt;/div&gt;
-1003              &lt;/article&gt;
-1004              &lt;article class=&quot;project-card&quot;&gt;
-1005                &lt;figure class=&quot;project-card__media&quot;&gt;
-1006                  &lt;img
-1007                    src=&quot;img/proj-19-client-chat.png&quot;
-1008                    alt=&quot;자바 채팅 클라이언트. 홍길동과 김철수의 대화, 오른쪽 대화상대 목록&quot;
-1009                  /&gt;
-1010                &lt;/figure&gt;
-1011                &lt;div class=&quot;project-card__body&quot;&gt;
-1012                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_19 · 2026.11.02&lt;/p&gt;
-1013                  &lt;h3 class=&quot;project-card__title&quot;&gt;자바 채팅&lt;/h3&gt;
-1014                  &lt;div&gt;
-1015                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
-1016                    &lt;p class=&quot;field-body&quot;&gt;
-1017                      에듀펜 자바 네트워크 수업에서 만들었던 채팅을, 기억에 남은 구성대로 다시 구현한 프로그램입니다.
-1018                      서버와 클라이언트를 Swing으로 나누고, 소켓과 버퍼 스트림으로 여러 사람이 한 방에서 대화합니다.
-1019                    &lt;/p&gt;
-1020                  &lt;/div&gt;
-1021                  &lt;div&gt;
-1022                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
-1023                    &lt;p class=&quot;field-body&quot;&gt;
-1024                      서버는 7777번 포트에서 접속을 받습니다. 클라이언트는 가운데에 대화를 보여주고 오른쪽에 대화상대를
-1025                      보여 줍니다. 2026년 11월 2일 실행에서 홍길동과 김철수가 입장한 뒤 서로 메시지를 주고받았고,
-1026                      서버 로그와 접속자 목록에 같은 내용이 남았습니다.
-1027                    &lt;/p&gt;
-1028                  &lt;/div&gt;
-1029                  &lt;div&gt;
-1030                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
-1031                    &lt;ul class=&quot;pill-list&quot;&gt;
-1032                      &lt;li&gt;Java&lt;/li&gt;
-1033                      &lt;li&gt;Socket&lt;/li&gt;
-1034                      &lt;li&gt;ServerSocket&lt;/li&gt;
-1035                      &lt;li&gt;Swing&lt;/li&gt;
-1036                      &lt;li&gt;Eclipse&lt;/li&gt;
-1037                    &lt;/ul&gt;
-1038                  &lt;/div&gt;
-1039                  &lt;div&gt;
-1040                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
-1041                    &lt;p class=&quot;field-body&quot;&gt;
-1042                      JDK의 &lt;span class=&quot;path&quot;&gt;java&lt;/span&gt;로 로컬 실행. 이클립스에서
-1043                      &lt;span class=&quot;path&quot;&gt;ChatServer&lt;/span&gt;, &lt;span class=&quot;path&quot;&gt;ChatClient&lt;/span&gt;를 실행하거나
-1044                      &lt;span class=&quot;path&quot;&gt;run-server.bat&lt;/span&gt;, &lt;span class=&quot;path&quot;&gt;run-client.bat&lt;/span&gt;을 사용합니다.
-1045                      같은 PC는 127.0.0.1, 다른 PC는 서버 로그의 IPv4와 포트 7777. 공개 호스팅 주소는 없습니다.
-1046                      카드 캡처는 &lt;span class=&quot;path&quot;&gt;img/proj-19-client-chat.png&lt;/span&gt;이고, 서버 시작·입장·접속자 화면은
-1047                      같은 폴더에 있습니다. 2026년 11월 2일 확인.
-1048                    &lt;/p&gt;
-1049                  &lt;/div&gt;
-1050                  &lt;div&gt;
-1051                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
-1052                    &lt;p class=&quot;field-body&quot;&gt;
-1053                      서버 실행·종료, 다중 접속, 입장·퇴장 안내, 이름 표시 대화, 오른쪽 대화상대, 나가기
-1054                    &lt;/p&gt;
-1055                  &lt;/div&gt;
-1056                &lt;/div&gt;
-1057              &lt;/article&gt;
-1058              &lt;article class=&quot;project-card&quot;&gt;
-1059                &lt;figure class=&quot;project-card__media&quot;&gt;
-1060                  &lt;img
-1061                    src=&quot;img/proj-20-apple-hero.png&quot;
-1062                    alt=&quot;바로바로 바이브 코딩 실습. 어버이날 문구와 캐릭터 얼굴이 있는 애플 사이트 클론 첫 화면&quot;
-1063                  /&gt;
-1064                &lt;/figure&gt;
-1065                &lt;div class=&quot;project-card__body&quot;&gt;
-1066                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_20 · 2026.05–11&lt;/p&gt;
-1067                  &lt;h3 class=&quot;project-card__title&quot;&gt;바로바로 바이브 코딩&lt;/h3&gt;
-1068                  &lt;div&gt;
-1069                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
-1070                    &lt;p class=&quot;field-body&quot;&gt;
-1071                      박현규 저자의 『바로 배워 바로 쓰는 바로바로 바이브 코딩 with 커서 AI』 - 골든래빗을 읽고 남긴 노트입니다.
-1072                      2026년 11월 2일 폴더의 실습 화면과 같은 카드에 두었고, 같은 노트는 학습록에도 있습니다.
-1073                    &lt;/p&gt;
+ 809                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 810                    &lt;p class=&quot;field-body&quot;&gt;폴더 이름에 적힌 자바와 모바일 과정. 자료 파일은 없습니다.&lt;/p&gt;
+ 811                  &lt;/div&gt;
+ 812                &lt;/div&gt;
+ 813              &lt;/article&gt;
+ 814              &lt;article class=&quot;project-card&quot;&gt;
+ 815                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 816                  &lt;img
+ 817                    src=&quot;img/proj-16-news-book.png&quot;
+ 818                    alt=&quot;신문 감상 기록 노트 뷰어 표지. 노트로 읽기 안내와 표지 디자인&quot;
+ 819                  /&gt;
+ 820                &lt;/figure&gt;
+ 821                &lt;div class=&quot;project-card__body&quot;&gt;
+ 822                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_16 · 2026.10&lt;/p&gt;
+ 823                  &lt;h3 class=&quot;project-card__title&quot;&gt;신문 감상 기록&lt;/h3&gt;
+ 824                  &lt;div&gt;
+ 825                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 826                    &lt;p class=&quot;field-body&quot;&gt;
+ 827                      Cursor AI 바이브 코딩으로 만든 매일경제 감상 아카이브입니다. 저장소 이름은
+ 828                      &lt;span class=&quot;path&quot;&gt;news_reading_note_proj&lt;/span&gt;이고, 감상 본문은 직접 작성한 글만
+ 829                      담습니다. UI·빌드·문서는 Cursor와 함께 정리했습니다.
+ 830                    &lt;/p&gt;
+ 831                  &lt;/div&gt;
+ 832                  &lt;div&gt;
+ 833                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 834                    &lt;p class=&quot;field-body&quot;&gt;
+ 835                      처음 화면에서 기간·주제·최근 글을 보고, 차례·주제·날짜별 글로 이어집니다.
+ 836                      &lt;span class=&quot;path&quot;&gt;book.php&lt;/span&gt;는 양장본 노트처럼 넘기며 읽습니다. 백업 txt를
+ 837                      &lt;span class=&quot;path&quot;&gt;scripts/build.php&lt;/span&gt;로 seed·dist에 반영하고, 닷홈에는 dist만
+ 838                      FTP합니다. technical-specs·codebook 등 PDF는 documentation/에서 빌드합니다.
+ 839                    &lt;/p&gt;
+ 840                  &lt;/div&gt;
+ 841                  &lt;div&gt;
+ 842                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 843                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 844                      &lt;li&gt;Cursor&lt;/li&gt;
+ 845                      &lt;li&gt;PHP&lt;/li&gt;
+ 846                      &lt;li&gt;MySQL&lt;/li&gt;
+ 847                      &lt;li&gt;HTML&lt;/li&gt;
+ 848                      &lt;li&gt;CSS&lt;/li&gt;
+ 849                      &lt;li&gt;JavaScript&lt;/li&gt;
+ 850                      &lt;li&gt;Python&lt;/li&gt;
+ 851                    &lt;/ul&gt;
+ 852                  &lt;/div&gt;
+ 853                  &lt;div&gt;
+ 854                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+ 855                    &lt;p class=&quot;field-body&quot;&gt;
+ 856                      PHP 8.1 이상. DB 없이 &lt;span class=&quot;path&quot;&gt;php -S localhost:8000 -t site&lt;/span&gt;로 fallback
+ 857                      미리보기, MySQL·seed.sql로 운영과 동일하게 확인. 카드 캡처는
+ 858                      &lt;span class=&quot;path&quot;&gt;portfolio-screenshots/&lt;/span&gt;(2026년 10월 24일). GitHub
+ 859                      ackdark23358/news_reading_note_proj. config.php는 저장소에 포함하지 않습니다.
+ 860                    &lt;/p&gt;
+ 861                  &lt;/div&gt;
+ 862                  &lt;div&gt;
+ 863                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 864                    &lt;p class=&quot;field-body&quot;&gt;
+ 865                      날짜·주제 아카이브, 노트 뷰어(양면·단면·책갈피), /admin/ 글 CRUD, build·닷홈 배포,
+ 866                      기술문서 PDF 5종
+ 867                    &lt;/p&gt;
+ 868                  &lt;/div&gt;
+ 869                &lt;/div&gt;
+ 870              &lt;/article&gt;
+ 871              &lt;article class=&quot;project-card&quot;&gt;
+ 872                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 873                  &lt;img
+ 874                    src=&quot;img/proj-17-milestone-kanban.png&quot;
+ 875                    alt=&quot;하루일과 캘린더와 할일 칸반 모달. 시작전·진행중·완료 열&quot;
+ 876                  /&gt;
+ 877                &lt;/figure&gt;
+ 878                &lt;div class=&quot;project-card__body&quot;&gt;
+ 879                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_17 · 2026.05–06&lt;/p&gt;
+ 880                  &lt;h3 class=&quot;project-card__title&quot;&gt;하루일과&lt;/h3&gt;
+ 881                  &lt;div&gt;
+ 882                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 883                    &lt;p class=&quot;field-body&quot;&gt;
+ 884                      Cursor AI로 제작·개선한 날짜별 할일 웹 앱입니다. 저장소 폴더 이름은
+ 885                      &lt;span class=&quot;path&quot;&gt;milestone_schdule&lt;/span&gt;이고, design.md의 Aurora UI(오로라 그라데이션,
+ 886                      라이트·다크)를 따릅니다.
+ 887                    &lt;/p&gt;
+ 888                  &lt;/div&gt;
+ 889                  &lt;div&gt;
+ 890                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 891                    &lt;p class=&quot;field-body&quot;&gt;
+ 892                      관리자 로그인 후 캘린더에서 과거·오늘 날짜를 눌러 journal(할일 JSON)을 추가·수정·삭제합니다.
+ 893                      MySQL &lt;span class=&quot;path&quot;&gt;journals&lt;/span&gt;와 PHP API, localStorage로 ✓ 표시·테마를 보조합니다.
+ 894                      960px 이상 3열 칸반, 미만 1열 스택. doc-publication/에서 명세·코드북 PDF를 만듭니다.
+ 895                    &lt;/p&gt;
+ 896                  &lt;/div&gt;
+ 897                  &lt;div&gt;
+ 898                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 899                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 900                      &lt;li&gt;Cursor&lt;/li&gt;
+ 901                      &lt;li&gt;PHP&lt;/li&gt;
+ 902                      &lt;li&gt;MySQL&lt;/li&gt;
+ 903                      &lt;li&gt;HTML&lt;/li&gt;
+ 904                      &lt;li&gt;CSS&lt;/li&gt;
+ 905                      &lt;li&gt;JavaScript&lt;/li&gt;
+ 906                      &lt;li&gt;Python&lt;/li&gt;
+ 907                    &lt;/ul&gt;
+ 908                  &lt;/div&gt;
+ 909                  &lt;div&gt;
+ 910                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+ 911                    &lt;p class=&quot;field-body&quot;&gt;
+ 912                      &lt;span class=&quot;path&quot;&gt;php -S localhost:8080&lt;/span&gt; 또는 npx serve. 닷홈 FTP에 index.html,
+ 913                      css/, js/, api/(config.php는 서버에서만). 카드 캡처는
+ 914                      &lt;span class=&quot;path&quot;&gt;portfolio-screenshots/desktop/&lt;/span&gt;(2026년 10월 24일). api/config.php와
+ 915                      DB 비밀번호는 카드에 적지 않았습니다.
+ 916                    &lt;/p&gt;
+ 917                  &lt;/div&gt;
+ 918                  &lt;div&gt;
+ 919                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 920                    &lt;p class=&quot;field-body&quot;&gt;
+ 921                      기록 캘린더 ✓, 날짜별 할일 CRUD·상태 뱃지, 다크 모드, DB 날짜 새로고침, 프로필 수정,
+ 922                      로그인 실패 제한(설정 시)
+ 923                    &lt;/p&gt;
+ 924                  &lt;/div&gt;
+ 925                &lt;/div&gt;
+ 926              &lt;/article&gt;
+ 927              &lt;article class=&quot;project-card&quot;&gt;
+ 928                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 929                  &lt;img
+ 930                    src=&quot;img/proj-18-list.png&quot;
+ 931                    alt=&quot;사원관리 프로그램. 목록에서 SMITH를 선택한 조회 화면&quot;
+ 932                  /&gt;
+ 933                &lt;/figure&gt;
+ 934                &lt;div class=&quot;project-card__body&quot;&gt;
+ 935                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_18 · 2026.11.02&lt;/p&gt;
+ 936                  &lt;h3 class=&quot;project-card__title&quot;&gt;사원관리 프로그램&lt;/h3&gt;
+ 937                  &lt;div&gt;
+ 938                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 939                    &lt;p class=&quot;field-body&quot;&gt;
+ 940                      에듀펜 자바 과정에서 만들던 사원관리 프로그램을 다시 구현한 데스크톱 프로그램입니다.
+ 941                      아카이브의 PROJ_15는 2017–2019 수강 기록만 남아 있고 소스와 캡처가 유실된 상태였습니다.
+ 942                      화면은 Java Swing이고, 사원 한 명의 값은 DTO에 담으며, 저장과 조회는 DAO와 JDBC가 맡습니다.
+ 943                    &lt;/p&gt;
+ 944                  &lt;/div&gt;
+ 945                  &lt;div&gt;
+ 946                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+ 947                    &lt;p class=&quot;field-body&quot;&gt;
+ 948                      왼쪽 입력란과 오른쪽 사원 목록으로 이루어집니다. 목록에서 사원을 누르면 입력란에 값이 채워지고,
+ 949                      등록·수정·삭제로 사원 정보를 다룹니다. 이름, 직급, 부서명, 사원번호로 검색할 수 있습니다.
+ 950                      데이터는 실행 폴더의 H2 파일에 남습니다. 처음 실행하면 교재용 사원 14명과 부서 4개가 들어 있습니다.
+ 951                    &lt;/p&gt;
+ 952                  &lt;/div&gt;
+ 953                  &lt;div&gt;
+ 954                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+ 955                    &lt;ul class=&quot;pill-list&quot;&gt;
+ 956                      &lt;li&gt;Java&lt;/li&gt;
+ 957                      &lt;li&gt;Swing&lt;/li&gt;
+ 958                      &lt;li&gt;JDBC&lt;/li&gt;
+ 959                      &lt;li&gt;H2&lt;/li&gt;
+ 960                      &lt;li&gt;DAO&lt;/li&gt;
+ 961                      &lt;li&gt;DTO&lt;/li&gt;
+ 962                    &lt;/ul&gt;
+ 963                  &lt;/div&gt;
+ 964                  &lt;div&gt;
+ 965                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+ 966                    &lt;p class=&quot;field-body&quot;&gt;
+ 967                      Windows. Java 11 이상. 프로젝트 폴더에서 &lt;span class=&quot;path&quot;&gt;run.bat&lt;/span&gt;을 실행합니다.
+ 968                      데이터베이스 파일은 &lt;span class=&quot;path&quot;&gt;data/empdb&lt;/span&gt;이고, 별도 Oracle이나 MySQL 설치는 없습니다.
+ 969                      화면 캡처는 2026년 11월 2일에 저장했습니다. 카드는 조회 화면이고, 등록·수정·삭제 캡처는
+ 970                      &lt;span class=&quot;path&quot;&gt;img/proj-18-create.png&lt;/span&gt;부터 같은 폴더에 함께 두었습니다. 호스팅 주소는 없습니다.
+ 971                    &lt;/p&gt;
+ 972                  &lt;/div&gt;
+ 973                  &lt;div&gt;
+ 974                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+ 975                    &lt;p class=&quot;field-body&quot;&gt;
+ 976                      사원 목록 조회, 이름·직급·부서·사원번호 검색, 사원 등록, 수정, 삭제, 목록 정렬
+ 977                    &lt;/p&gt;
+ 978                  &lt;/div&gt;
+ 979                &lt;/div&gt;
+ 980              &lt;/article&gt;
+ 981              &lt;article class=&quot;project-card&quot;&gt;
+ 982                &lt;figure class=&quot;project-card__media&quot;&gt;
+ 983                  &lt;img
+ 984                    src=&quot;img/proj-19-client-chat.png&quot;
+ 985                    alt=&quot;자바 채팅 클라이언트. 홍길동과 김철수의 대화, 오른쪽 대화상대 목록&quot;
+ 986                  /&gt;
+ 987                &lt;/figure&gt;
+ 988                &lt;div class=&quot;project-card__body&quot;&gt;
+ 989                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_19 · 2026.11.02&lt;/p&gt;
+ 990                  &lt;h3 class=&quot;project-card__title&quot;&gt;자바 채팅&lt;/h3&gt;
+ 991                  &lt;div&gt;
+ 992                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+ 993                    &lt;p class=&quot;field-body&quot;&gt;
+ 994                      에듀펜 자바 네트워크 수업에서 만들었던 채팅을, 기억에 남은 구성대로 다시 구현한 프로그램입니다.
+ 995                      서버와 클라이언트를 Swing으로 나누고, 소켓과 버퍼 스트림으로 여러 사람이 한 방에서 대화합니다.
+ 996                    &lt;/p&gt;
+ 997                  &lt;/div&gt;
+ 998                  &lt;div&gt;
+ 999                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+1000                    &lt;p class=&quot;field-body&quot;&gt;
+1001                      서버는 7777번 포트에서 접속을 받습니다. 클라이언트는 가운데에 대화를 보여주고 오른쪽에 대화상대를
+1002                      보여 줍니다. 2026년 11월 2일 실행에서 홍길동과 김철수가 입장한 뒤 서로 메시지를 주고받았고,
+1003                      서버 로그와 접속자 목록에 같은 내용이 남았습니다.
+1004                    &lt;/p&gt;
+1005                  &lt;/div&gt;
+1006                  &lt;div&gt;
+1007                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+1008                    &lt;ul class=&quot;pill-list&quot;&gt;
+1009                      &lt;li&gt;Java&lt;/li&gt;
+1010                      &lt;li&gt;Socket&lt;/li&gt;
+1011                      &lt;li&gt;ServerSocket&lt;/li&gt;
+1012                      &lt;li&gt;Swing&lt;/li&gt;
+1013                      &lt;li&gt;Eclipse&lt;/li&gt;
+1014                    &lt;/ul&gt;
+1015                  &lt;/div&gt;
+1016                  &lt;div&gt;
+1017                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+1018                    &lt;p class=&quot;field-body&quot;&gt;
+1019                      JDK의 &lt;span class=&quot;path&quot;&gt;java&lt;/span&gt;로 로컬 실행. 이클립스에서
+1020                      &lt;span class=&quot;path&quot;&gt;ChatServer&lt;/span&gt;, &lt;span class=&quot;path&quot;&gt;ChatClient&lt;/span&gt;를 실행하거나
+1021                      &lt;span class=&quot;path&quot;&gt;run-server.bat&lt;/span&gt;, &lt;span class=&quot;path&quot;&gt;run-client.bat&lt;/span&gt;을 사용합니다.
+1022                      같은 PC는 127.0.0.1, 다른 PC는 서버 로그의 IPv4와 포트 7777. 공개 호스팅 주소는 없습니다.
+1023                      카드 캡처는 &lt;span class=&quot;path&quot;&gt;img/proj-19-client-chat.png&lt;/span&gt;이고, 서버 시작·입장·접속자 화면은
+1024                      같은 폴더에 있습니다. 2026년 11월 2일 확인.
+1025                    &lt;/p&gt;
+1026                  &lt;/div&gt;
+1027                  &lt;div&gt;
+1028                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+1029                    &lt;p class=&quot;field-body&quot;&gt;
+1030                      서버 실행·종료, 다중 접속, 입장·퇴장 안내, 이름 표시 대화, 오른쪽 대화상대, 나가기
+1031                    &lt;/p&gt;
+1032                  &lt;/div&gt;
+1033                &lt;/div&gt;
+1034              &lt;/article&gt;
+1035              &lt;article class=&quot;project-card&quot;&gt;
+1036                &lt;figure class=&quot;project-card__media&quot;&gt;
+1037                  &lt;img
+1038                    src=&quot;img/proj-20-apple-hero.png&quot;
+1039                    alt=&quot;바로바로 바이브 코딩 실습. 어버이날 문구와 캐릭터 얼굴이 있는 애플 사이트 클론 첫 화면&quot;
+1040                  /&gt;
+1041                &lt;/figure&gt;
+1042                &lt;div class=&quot;project-card__body&quot;&gt;
+1043                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_20 · 2026.05–11&lt;/p&gt;
+1044                  &lt;h3 class=&quot;project-card__title&quot;&gt;바로바로 바이브 코딩&lt;/h3&gt;
+1045                  &lt;div&gt;
+1046                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+1047                    &lt;p class=&quot;field-body&quot;&gt;
+1048                      박현규 저자의 『바로 배워 바로 쓰는 바로바로 바이브 코딩 with 커서 AI』 - 골든래빗을 읽고 남긴 노트입니다.
+1049                      2026년 11월 2일 폴더의 실습 화면과 같은 카드에 두었고, 같은 노트는 학습록에도 있습니다.
+1050                    &lt;/p&gt;
+1051                  &lt;/div&gt;
+1052                  &lt;div&gt;
+1053                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+1054                    &lt;p class=&quot;field-body&quot;&gt;
+1055                      IDE와 Ask·Agent·Plan, 터미널, Marp·pandoc·draw.io·mermaid 문서, HTML 마크다운 에디터,
+1056                      Next.js 실습, v0와 디자인 라이브러리, GitHub Pages·Vercel 배포, 크롤링, 일기장, 공공 API까지
+1057                      책 순서대로 적었습니다. Plan을 여러 번 요청하면 이미 되던 기능이 꼬여, 계획은 한 번 세우고
+1058                      이후에는 에이전트로 이어 갔습니다.
+1059                    &lt;/p&gt;
+1060                  &lt;/div&gt;
+1061                  &lt;div&gt;
+1062                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+1063                    &lt;ul class=&quot;pill-list&quot;&gt;
+1064                      &lt;li&gt;Cursor&lt;/li&gt;
+1065                      &lt;li&gt;Plan&lt;/li&gt;
+1066                      &lt;li&gt;Agent&lt;/li&gt;
+1067                      &lt;li&gt;HTML&lt;/li&gt;
+1068                      &lt;li&gt;CSS&lt;/li&gt;
+1069                      &lt;li&gt;JavaScript&lt;/li&gt;
+1070                      &lt;li&gt;Next.js&lt;/li&gt;
+1071                      &lt;li&gt;Vercel&lt;/li&gt;
+1072                      &lt;li&gt;Supabase&lt;/li&gt;
+1073                    &lt;/ul&gt;
 1074                  &lt;/div&gt;
 1075                  &lt;div&gt;
-1076                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+1076                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
 1077                    &lt;p class=&quot;field-body&quot;&gt;
-1078                      IDE와 Ask·Agent·Plan, 터미널, Marp·pandoc·draw.io·mermaid 문서, HTML 마크다운 에디터,
-1079                      Next.js 실습, v0와 디자인 라이브러리, GitHub Pages·Vercel 배포, 크롤링, 일기장, 공공 API까지
-1080                      책 순서대로 적었습니다. Plan을 여러 번 요청하면 이미 되던 기능이 꼬여, 계획은 한 번 세우고
-1081                      이후에는 에이전트로 이어 갔습니다.
-1082                    &lt;/p&gt;
-1083                  &lt;/div&gt;
-1084                  &lt;div&gt;
-1085                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
-1086                    &lt;ul class=&quot;pill-list&quot;&gt;
-1087                      &lt;li&gt;Cursor&lt;/li&gt;
-1088                      &lt;li&gt;Plan&lt;/li&gt;
-1089                      &lt;li&gt;Agent&lt;/li&gt;
-1090                      &lt;li&gt;HTML&lt;/li&gt;
-1091                      &lt;li&gt;CSS&lt;/li&gt;
-1092                      &lt;li&gt;JavaScript&lt;/li&gt;
-1093                      &lt;li&gt;Next.js&lt;/li&gt;
-1094                      &lt;li&gt;Vercel&lt;/li&gt;
-1095                      &lt;li&gt;Supabase&lt;/li&gt;
-1096                    &lt;/ul&gt;
-1097                  &lt;/div&gt;
-1098                  &lt;div&gt;
-1099                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
-1100                    &lt;p class=&quot;field-body&quot;&gt;
-1101                      노트 전체에 대응하는 공개 주소는 없습니다. 카드는 2026년 5월 5일 애플 사이트 클론의 첫 화면이고,
-1102                      전체 페이지는 &lt;span class=&quot;path&quot;&gt;img/proj-20-apple-site.png&lt;/span&gt;입니다.
-1103                      사과 박스와 크롤링 캡처는 &lt;span class=&quot;path&quot;&gt;img/proj-21-apple-game.png&lt;/span&gt;,
-1104                      &lt;span class=&quot;path&quot;&gt;img/proj-21-crawl.png&lt;/span&gt;입니다.
-1105                      원문은 &lt;span class=&quot;path&quot;&gt;바로바로 바이브 코딩 with 커서 AI 독서노트.docx&lt;/span&gt;이고,
-1106                      완성 영상은 같은 자료 폴더의 mp4에만 두었습니다. 노션 클론 주소와 계정 화면은 카드에 넣지 않았습니다.
-1107                      2026년 11월 2일 확인.
-1108                    &lt;/p&gt;
-1109                  &lt;/div&gt;
-1110                  &lt;div&gt;
-1111                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
-1112                    &lt;p class=&quot;field-body&quot;&gt;
-1113                      애플 사이트 클론, 사과 박스, 브라우저 크롤링, 노션 클론, 마크다운 에디터, 클리커·Expo, 인스타그램 클론, 뽀모도로, 메모앱, 일정 앱, 주식·금·상품 크롤링, 공공 API 대시보드
-1114                    &lt;/p&gt;
-1115                  &lt;/div&gt;
-1116                &lt;/div&gt;
-1117              &lt;/article&gt;
-1118              &lt;article class=&quot;project-card&quot;&gt;
-1119                &lt;figure class=&quot;project-card__media&quot;&gt;
-1120                  &lt;img
-1121                    src=&quot;img/proj-21-note.png&quot;
-1122                    alt=&quot;요즘 바이브 코딩 커서 AI 30가지 프로그램 만들기 독서 노트. 박현규, 골든래빗&quot;
-1123                  /&gt;
-1124                &lt;/figure&gt;
-1125                &lt;div class=&quot;project-card__body&quot;&gt;
-1126                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_21 · 독서 노트&lt;/p&gt;
-1127                  &lt;h3 class=&quot;project-card__title&quot;&gt;요즘 바이브 코딩&lt;/h3&gt;
-1128                  &lt;div&gt;
-1129                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
-1130                    &lt;p class=&quot;field-body&quot;&gt;
-1131                      박현규 저자의 『요즘 바이브 코딩 커서 AI 30가지 프로그램 만들기』 - 골든래빗을 읽고 남긴 노트입니다.
-1132                      같은 노트는 학습록에도 있고, 이 카드는 그 독서 기록을 프로젝트 아카이브에 둔 것입니다.
-1133                    &lt;/p&gt;
-1134                  &lt;/div&gt;
-1135                  &lt;div&gt;
-1136                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
-1137                    &lt;p class=&quot;field-body&quot;&gt;
-1138                      파이썬, Node.js, Git, Cursor를 준비한 뒤 원 페이지, 사과 게임, 자기소개, GitHub Pages,
-1139                      인스타그램 클론, 메모앱, v0와 Vercel, 로그인과 Prisma·Supabase까지 따라 갔습니다.
-1140                      노트에는 화면 파일이 없어 카드에는 책 제목과 실습 목록을 적었습니다.
-1141                    &lt;/p&gt;
-1142                  &lt;/div&gt;
-1143                  &lt;div&gt;
-1144                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
-1145                    &lt;ul class=&quot;pill-list&quot;&gt;
-1146                      &lt;li&gt;Cursor&lt;/li&gt;
-1147                      &lt;li&gt;Python&lt;/li&gt;
-1148                      &lt;li&gt;Node.js&lt;/li&gt;
-1149                      &lt;li&gt;React&lt;/li&gt;
-1150                      &lt;li&gt;v0&lt;/li&gt;
-1151                      &lt;li&gt;Vercel&lt;/li&gt;
-1152                      &lt;li&gt;Supabase&lt;/li&gt;
-1153                      &lt;li&gt;Prisma&lt;/li&gt;
-1154                    &lt;/ul&gt;
-1155                  &lt;/div&gt;
-1156                  &lt;div&gt;
-1157                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
-1158                    &lt;p class=&quot;field-body&quot;&gt;
-1159                      30가지에 대응하는 공개 주소는 없습니다. 원문은
-1160                      &lt;span class=&quot;path&quot;&gt;요즘 바이브 코딩 커서 AI 30가지 프로그램만들기 독서노트.docx&lt;/span&gt;입니다.
-1161                      키, 비밀번호, 메일 앱 비밀번호는 카드에 적지 않았습니다. 2026년 11월 2일 확인.
-1162                    &lt;/p&gt;
-1163                  &lt;/div&gt;
-1164                  &lt;div&gt;
-1165                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
-1166                    &lt;p class=&quot;field-body&quot;&gt;
-1167                      원 페이지, 사과 게임, 자기소개, GitHub Pages, 인스타그램 클론, 메모앱, QR·PDF, 공공 API, 금·주식 크롤링, 가계부, 레딧형 게시판, 맛집 안내·룰렛
-1168                    &lt;/p&gt;
-1169                  &lt;/div&gt;
-1170                &lt;/div&gt;
-1171              &lt;/article&gt;
-1172              &lt;!--
-1173                다음 프로젝트 카드는 이 주석 아래에 같은 구조로 추가합니다.
-1174                &lt;article class=&quot;project-card&quot;&gt; ... &lt;/article&gt;
-1175              --&gt;
-1176            &lt;/div&gt;
-1177          &lt;/div&gt;
-1178        &lt;/section&gt;
-1179      &lt;/main&gt;
-1180  
-1181      &lt;footer class=&quot;site-footer&quot;&gt;
-1182        &lt;div class=&quot;site-footer__inner&quot;&gt;
-1183          &lt;nav class=&quot;site-sitemap&quot; aria-label=&quot;사이트맵&quot;&gt;
-1184            &lt;p class=&quot;site-sitemap__label&quot;&gt;사이트맵&lt;/p&gt;
-1185            &lt;ul class=&quot;site-sitemap__groups&quot;&gt;
-1186              &lt;li&gt;
-1187                &lt;a class=&quot;site-sitemap__page&quot; href=&quot;../index.html&quot;&gt;자기소개서&lt;/a&gt;
-1188                &lt;ul class=&quot;site-sitemap__list&quot;&gt;
-1189                  &lt;li&gt;&lt;a href=&quot;../index.html#section-motivation&quot;&gt;지원 동기&lt;/a&gt;&lt;/li&gt;
-1190                  &lt;li&gt;&lt;a href=&quot;../index.html#section-growth&quot;&gt;성장·학습&lt;/a&gt;&lt;/li&gt;
-1191                  &lt;li&gt;&lt;a href=&quot;../index.html#section-skills&quot;&gt;역량&lt;/a&gt;&lt;/li&gt;
-1192                  &lt;li&gt;&lt;a href=&quot;../index.html#section-links&quot;&gt;자료&lt;/a&gt;&lt;/li&gt;
-1193                  &lt;li&gt;&lt;a href=&quot;../index.html#section-strengths&quot;&gt;강점&lt;/a&gt;&lt;/li&gt;
-1194                  &lt;li&gt;&lt;a href=&quot;../index.html#section-closing&quot;&gt;마치며&lt;/a&gt;&lt;/li&gt;
-1195                  &lt;li&gt;&lt;a href=&quot;../index.html#section-refs&quot;&gt;참고&lt;/a&gt;&lt;/li&gt;
+1078                      노트 전체에 대응하는 공개 주소는 없습니다. 카드는 2026년 5월 5일 애플 사이트 클론의 첫 화면이고,
+1079                      전체 페이지는 &lt;span class=&quot;path&quot;&gt;img/proj-20-apple-site.png&lt;/span&gt;입니다.
+1080                      사과 박스와 크롤링 캡처는 &lt;span class=&quot;path&quot;&gt;img/proj-21-apple-game.png&lt;/span&gt;,
+1081                      &lt;span class=&quot;path&quot;&gt;img/proj-21-crawl.png&lt;/span&gt;입니다.
+1082                      원문은 &lt;span class=&quot;path&quot;&gt;바로바로 바이브 코딩 with 커서 AI 독서노트.docx&lt;/span&gt;이고,
+1083                      완성 영상은 같은 자료 폴더의 mp4에만 두었습니다. 노션 클론 주소와 계정 화면은 카드에 넣지 않았습니다.
+1084                      2026년 11월 2일 확인.
+1085                    &lt;/p&gt;
+1086                  &lt;/div&gt;
+1087                  &lt;div&gt;
+1088                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+1089                    &lt;p class=&quot;field-body&quot;&gt;
+1090                      애플 사이트 클론, 사과 박스, 브라우저 크롤링, 노션 클론, 마크다운 에디터, 클리커·Expo, 인스타그램 클론, 뽀모도로, 메모앱, 일정 앱, 주식·금·상품 크롤링, 공공 API 대시보드
+1091                    &lt;/p&gt;
+1092                  &lt;/div&gt;
+1093                &lt;/div&gt;
+1094              &lt;/article&gt;
+1095              &lt;article class=&quot;project-card&quot;&gt;
+1096                &lt;figure class=&quot;project-card__media&quot;&gt;
+1097                  &lt;img
+1098                    src=&quot;img/proj-21-note.png&quot;
+1099                    alt=&quot;요즘 바이브 코딩 커서 AI 30가지 프로그램 만들기 독서 노트. 박현규, 골든래빗&quot;
+1100                  /&gt;
+1101                &lt;/figure&gt;
+1102                &lt;div class=&quot;project-card__body&quot;&gt;
+1103                  &lt;p class=&quot;project-card__index&quot;&gt;PROJ_21 · 독서 노트&lt;/p&gt;
+1104                  &lt;h3 class=&quot;project-card__title&quot;&gt;요즘 바이브 코딩&lt;/h3&gt;
+1105                  &lt;div&gt;
+1106                    &lt;p class=&quot;field-label&quot;&gt;프로젝트 소개&lt;/p&gt;
+1107                    &lt;p class=&quot;field-body&quot;&gt;
+1108                      박현규 저자의 『요즘 바이브 코딩 커서 AI 30가지 프로그램 만들기』 - 골든래빗을 읽고 남긴 노트입니다.
+1109                      같은 노트는 학습록에도 있고, 이 카드는 그 독서 기록을 프로젝트 아카이브에 둔 것입니다.
+1110                    &lt;/p&gt;
+1111                  &lt;/div&gt;
+1112                  &lt;div&gt;
+1113                    &lt;p class=&quot;field-label&quot;&gt;간단 설명&lt;/p&gt;
+1114                    &lt;p class=&quot;field-body&quot;&gt;
+1115                      파이썬, Node.js, Git, Cursor를 준비한 뒤 원 페이지, 사과 게임, 자기소개, GitHub Pages,
+1116                      인스타그램 클론, 메모앱, v0와 Vercel, 로그인과 Prisma·Supabase까지 따라 갔습니다.
+1117                      노트에는 화면 파일이 없어 카드에는 책 제목과 실습 목록을 적었습니다.
+1118                    &lt;/p&gt;
+1119                  &lt;/div&gt;
+1120                  &lt;div&gt;
+1121                    &lt;p class=&quot;field-label&quot;&gt;사용 도구&lt;/p&gt;
+1122                    &lt;ul class=&quot;pill-list&quot;&gt;
+1123                      &lt;li&gt;Cursor&lt;/li&gt;
+1124                      &lt;li&gt;Python&lt;/li&gt;
+1125                      &lt;li&gt;Node.js&lt;/li&gt;
+1126                      &lt;li&gt;React&lt;/li&gt;
+1127                      &lt;li&gt;v0&lt;/li&gt;
+1128                      &lt;li&gt;Vercel&lt;/li&gt;
+1129                      &lt;li&gt;Supabase&lt;/li&gt;
+1130                      &lt;li&gt;Prisma&lt;/li&gt;
+1131                    &lt;/ul&gt;
+1132                  &lt;/div&gt;
+1133                  &lt;div&gt;
+1134                    &lt;p class=&quot;field-label&quot;&gt;실행 환경&lt;/p&gt;
+1135                    &lt;p class=&quot;field-body&quot;&gt;
+1136                      30가지에 대응하는 공개 주소는 없습니다. 원문은
+1137                      &lt;span class=&quot;path&quot;&gt;요즘 바이브 코딩 커서 AI 30가지 프로그램만들기 독서노트.docx&lt;/span&gt;입니다.
+1138                      키, 비밀번호, 메일 앱 비밀번호는 카드에 적지 않았습니다. 2026년 11월 2일 확인.
+1139                    &lt;/p&gt;
+1140                  &lt;/div&gt;
+1141                  &lt;div&gt;
+1142                    &lt;p class=&quot;field-label&quot;&gt;핵심 기능&lt;/p&gt;
+1143                    &lt;p class=&quot;field-body&quot;&gt;
+1144                      원 페이지, 사과 게임, 자기소개, GitHub Pages, 인스타그램 클론, 메모앱, QR·PDF, 공공 API, 금·주식 크롤링, 가계부, 레딧형 게시판, 맛집 안내·룰렛
+1145                    &lt;/p&gt;
+1146                  &lt;/div&gt;
+1147                &lt;/div&gt;
+1148              &lt;/article&gt;
+1149              &lt;!--
+1150                다음 프로젝트 카드는 이 주석 아래에 같은 구조로 추가합니다.
+1151                &lt;article class=&quot;project-card&quot;&gt; ... &lt;/article&gt;
+1152              --&gt;
+1153            &lt;/div&gt;
+1154          &lt;/div&gt;
+1155        &lt;/section&gt;
+1156      &lt;/main&gt;
+1157  
+1158      &lt;footer class=&quot;site-footer&quot;&gt;
+1159        &lt;div class=&quot;site-footer__inner&quot;&gt;
+1160          &lt;nav class=&quot;site-sitemap&quot; aria-label=&quot;사이트맵&quot;&gt;
+1161            &lt;p class=&quot;site-sitemap__label&quot;&gt;사이트맵&lt;/p&gt;
+1162            &lt;ul class=&quot;site-sitemap__groups&quot;&gt;
+1163              &lt;li&gt;
+1164                &lt;a class=&quot;site-sitemap__page&quot; href=&quot;../index.html&quot;&gt;자기소개서&lt;/a&gt;
+1165                &lt;ul class=&quot;site-sitemap__list&quot;&gt;
+1166                  &lt;li&gt;&lt;a href=&quot;../index.html#section-motivation&quot;&gt;지원 동기&lt;/a&gt;&lt;/li&gt;
+1167                  &lt;li&gt;&lt;a href=&quot;../index.html#section-growth&quot;&gt;성장·학습&lt;/a&gt;&lt;/li&gt;
+1168                  &lt;li&gt;&lt;a href=&quot;../index.html#section-skills&quot;&gt;역량&lt;/a&gt;&lt;/li&gt;
+1169                  &lt;li&gt;&lt;a href=&quot;../index.html#section-links&quot;&gt;자료&lt;/a&gt;&lt;/li&gt;
+1170                  &lt;li&gt;&lt;a href=&quot;../index.html#section-strengths&quot;&gt;강점&lt;/a&gt;&lt;/li&gt;
+1171                  &lt;li&gt;&lt;a href=&quot;../index.html#section-closing&quot;&gt;마치며&lt;/a&gt;&lt;/li&gt;
+1172                  &lt;li&gt;&lt;a href=&quot;../index.html#section-refs&quot;&gt;참고&lt;/a&gt;&lt;/li&gt;
+1173                &lt;/ul&gt;
+1174              &lt;/li&gt;
+1175              &lt;li&gt;
+1176                &lt;a class=&quot;site-sitemap__page&quot; href=&quot;../cover_letter/profile.html&quot;&gt;자기소개 / 프로필&lt;/a&gt;
+1177                &lt;ul class=&quot;site-sitemap__list&quot;&gt;
+1178                  &lt;li&gt;&lt;a href=&quot;../cover_letter/profile.html#about&quot;&gt;소개&lt;/a&gt;&lt;/li&gt;
+1179                  &lt;li&gt;&lt;a href=&quot;../cover_letter/profile.html#profile&quot;&gt;프로필&lt;/a&gt;&lt;/li&gt;
+1180                  &lt;li&gt;&lt;a href=&quot;../cover_letter/profile.html#interests&quot;&gt;관심 분야&lt;/a&gt;&lt;/li&gt;
+1181                  &lt;li&gt;&lt;a href=&quot;../cover_letter/profile.html#learning&quot;&gt;학습 · 경험&lt;/a&gt;&lt;/li&gt;
+1182                &lt;/ul&gt;
+1183              &lt;/li&gt;
+1184              &lt;li&gt;
+1185                &lt;a class=&quot;site-sitemap__page&quot; href=&quot;../online_business_card/business-card.html&quot;&gt;온라인 명함&lt;/a&gt;
+1186                &lt;ul class=&quot;site-sitemap__list&quot;&gt;
+1187                  &lt;li&gt;&lt;a href=&quot;../cv/resume.html&quot;&gt;이력서&lt;/a&gt;&lt;/li&gt;
+1188                  &lt;li&gt;&lt;a href=&quot;../study_note_record_organization/dashboard/index.html&quot;&gt;학습록&lt;/a&gt;&lt;/li&gt;
+1189                &lt;/ul&gt;
+1190              &lt;/li&gt;
+1191              &lt;li&gt;
+1192                &lt;a class=&quot;site-sitemap__page&quot; href=&quot;index.html&quot; aria-current=&quot;page&quot;&gt;프로젝트 아카이브&lt;/a&gt;
+1193                &lt;ul class=&quot;site-sitemap__list&quot;&gt;
+1194                  &lt;li&gt;&lt;a href=&quot;#archive&quot;&gt;소개&lt;/a&gt;&lt;/li&gt;
+1195                  &lt;li&gt;&lt;a href=&quot;#archive-list&quot;&gt;목록&lt;/a&gt;&lt;/li&gt;
 1196                &lt;/ul&gt;
 1197              &lt;/li&gt;
-1198              &lt;li&gt;
-1199                &lt;a class=&quot;site-sitemap__page&quot; href=&quot;../cover_letter/profile.html&quot;&gt;자기소개 / 프로필&lt;/a&gt;
-1200                &lt;ul class=&quot;site-sitemap__list&quot;&gt;
-1201                  &lt;li&gt;&lt;a href=&quot;../cover_letter/profile.html#about&quot;&gt;소개&lt;/a&gt;&lt;/li&gt;
-1202                  &lt;li&gt;&lt;a href=&quot;../cover_letter/profile.html#profile&quot;&gt;프로필&lt;/a&gt;&lt;/li&gt;
-1203                  &lt;li&gt;&lt;a href=&quot;../cover_letter/profile.html#interests&quot;&gt;관심 분야&lt;/a&gt;&lt;/li&gt;
-1204                  &lt;li&gt;&lt;a href=&quot;../cover_letter/profile.html#learning&quot;&gt;학습 · 경험&lt;/a&gt;&lt;/li&gt;
-1205                &lt;/ul&gt;
-1206              &lt;/li&gt;
-1207              &lt;li&gt;
-1208                &lt;a class=&quot;site-sitemap__page&quot; href=&quot;../online_business_card/business-card.html&quot;&gt;온라인 명함&lt;/a&gt;
-1209                &lt;ul class=&quot;site-sitemap__list&quot;&gt;
-1210                  &lt;li&gt;&lt;a href=&quot;../cv/resume.html&quot;&gt;이력서&lt;/a&gt;&lt;/li&gt;
-1211                  &lt;li&gt;&lt;a href=&quot;../study_note_record_organization/dashboard/index.html&quot;&gt;학습록&lt;/a&gt;&lt;/li&gt;
-1212                &lt;/ul&gt;
-1213              &lt;/li&gt;
-1214              &lt;li&gt;
-1215                &lt;a class=&quot;site-sitemap__page&quot; href=&quot;index.html&quot; aria-current=&quot;page&quot;&gt;프로젝트 아카이브&lt;/a&gt;
-1216                &lt;ul class=&quot;site-sitemap__list&quot;&gt;
-1217                  &lt;li&gt;&lt;a href=&quot;#archive&quot;&gt;소개&lt;/a&gt;&lt;/li&gt;
-1218                  &lt;li&gt;&lt;a href=&quot;#archive-list&quot;&gt;목록&lt;/a&gt;&lt;/li&gt;
-1219                &lt;/ul&gt;
-1220              &lt;/li&gt;
-1221            &lt;/ul&gt;
-1222          &lt;/nav&gt;
-1223          &lt;p class=&quot;site-footer__note&quot;&gt;2026년 10월 17일 구성 · 코탐록 자료 카테고리의 프로젝트 아카이브&lt;/p&gt;
-1224          &lt;p class=&quot;site-footer__disclosure&quot;&gt;
-1225            자료를 제외한 문장이나 문구는 나의 생각을 프롬프트에 요청하여 생성한 문장이나 문구입니다.
-1226          &lt;/p&gt;
-1227          &lt;p class=&quot;site-footer__copyright&quot;&gt;© 2026 김신욱(깃허브 ackdark23358). All rights reserved.&lt;/p&gt;
-1228        &lt;/div&gt;
-1229      &lt;/footer&gt;
-1230      &lt;script src=&quot;js/site.js&quot;&gt;&lt;/script&gt;
-1231        &lt;script src=&quot;../js/protect-resources.js&quot;&gt;&lt;/script&gt;
-1232    &lt;/body&gt;
-1233  &lt;/html&gt;</pre>
+1198            &lt;/ul&gt;
+1199          &lt;/nav&gt;
+1200          &lt;p class=&quot;site-footer__note&quot;&gt;2026년 10월 17일 구성 · 코탐록 자료 카테고리의 프로젝트 아카이브&lt;/p&gt;
+1201          &lt;p class=&quot;site-footer__disclosure&quot;&gt;
+1202            자료를 제외한 문장이나 문구는 나의 생각을 프롬프트에 요청하여 생성한 문장이나 문구입니다.
+1203          &lt;/p&gt;
+1204          &lt;p class=&quot;site-footer__copyright&quot;&gt;© 2026 김신욱(깃허브 ackdark23358). All rights reserved.&lt;/p&gt;
+1205        &lt;/div&gt;
+1206      &lt;/footer&gt;
+1207      &lt;script src=&quot;js/site.js?v=scroll-hint-2&quot;&gt;&lt;/script&gt;
+1208        &lt;script src=&quot;../js/protect-resources.js&quot;&gt;&lt;/script&gt;
+1209    &lt;/body&gt;
+1210  &lt;/html&gt;</pre>
 <h2>portfolio_achieve/js/site.js</h2>
 <pre>  1  (function () {
   2    &quot;use strict&quot;;
@@ -68814,10 +68832,37 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 8pt; line-he
 134      });
 135    }
 136  
-137    initThemeToggle();
-138    initNav();
-139    initSectionTargets();
-140  })();</pre>
+137    function initScrollHint() {
+138      var lead = document.querySelector(&quot;.hero__lead&quot;);
+139      var hint = document.querySelector(&quot;[data-scroll-hint]&quot;);
+140      if (!lead || !hint) return;
+141  
+142      function setHint(on) {
+143        hint.classList.toggle(&quot;is-on&quot;, on);
+144        hint.setAttribute(&quot;aria-hidden&quot;, on ? &quot;false&quot; : &quot;true&quot;);
+145      }
+146  
+147      if (typeof IntersectionObserver !== &quot;function&quot;) {
+148        setHint(true);
+149        return;
+150      }
+151  
+152      var observer = new IntersectionObserver(
+153        function (entries) {
+154          entries.forEach(function (entry) {
+155            setHint(entry.isIntersecting);
+156          });
+157        },
+158        { rootMargin: &quot;-64px 0px 0px 0px&quot;, threshold: 0 }
+159      );
+160      observer.observe(lead);
+161    }
+162  
+163    initThemeToggle();
+164    initNav();
+165    initSectionTargets();
+166    initScrollHint();
+167  })();</pre>
 <h2>study_note_record_organization/dashboard/css/styles.css</h2>
 <pre>  1  /* 학습 기록 대시보드의 카드, 검색, 모달, 히어로 갤러리 색과 배치를 정한다. */
   2  /* 레이아웃 참고: https://ackdark23358.github.io/ (코탐록) */

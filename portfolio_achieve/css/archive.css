@@ -402,6 +402,47 @@ a {
   color: var(--color-text);
 }
 
+.scroll-hint {
+  position: fixed;
+  top: 50%;
+  right: 1.25rem;
+  z-index: 40;
+  margin: 0;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.22em;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  line-height: 1;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-50%);
+}
+
+.scroll-hint.is-on {
+  opacity: 1;
+  visibility: visible;
+  animation: scroll-hint-bob 1.6s ease-in-out infinite;
+}
+
+@keyframes scroll-hint-bob {
+  0%,
+  100% {
+    transform: translateY(-50%);
+  }
+
+  50% {
+    transform: translateY(calc(-50% + 10px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint.is-on {
+    animation: none;
+  }
+}
+
 .hero__meta,
 .meta-list {
   margin: 2rem 0 0;
