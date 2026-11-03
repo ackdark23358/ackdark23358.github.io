@@ -123,18 +123,21 @@
        */
       function finish() {
         if (instant) {
-          next.style.transition = "none";
-          prev.style.transition = "none";
+          next.classList.add("is-instant");
+          prev.classList.add("is-instant");
         }
         next.classList.add("is-visible");
         prev.classList.remove("is-visible");
-        if (instant) {
-          void next.offsetWidth;
-          next.style.transition = "";
-          prev.style.transition = "";
-        }
         showA = next === imgA;
         busy = false;
+        if (instant) {
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              next.classList.remove("is-instant");
+              prev.classList.remove("is-instant");
+            });
+          });
+        }
       }
 
       if (next.complete && next.naturalWidth > 0) {
@@ -177,6 +180,14 @@
     imgA.classList.add("is-visible");
 
     stage.addEventListener("click", function () {
+      imgA.classList.add("is-instant");
+      imgB.classList.add("is-instant");
+      imgA.getAnimations().forEach(function (animation) {
+        animation.cancel();
+      });
+      imgB.getAnimations().forEach(function (animation) {
+        animation.cancel();
+      });
       swapTo(pickIndex(), true);
       startTimer();
     });

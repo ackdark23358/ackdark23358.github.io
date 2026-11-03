@@ -36,7 +36,7 @@ HTML 조각은 `#hero`, `#hero-stage`, `#hero-img-a`, `#hero-img-b`다. 두 이�
 
 `swapTo(index, instant)`는 `busy`이거나 `index`가 `current`와 같으면 아무 것도 하지 않는다. 아니면 `busy`를 참으로 두고, 숨은 이미지에 `applyImage`를 한 뒤 `current`를 먼저 바꾼다. 그 이미지가 이미 로드되어 있으면 바로 `finish`한다. 아니면 `onload`에서 `finish`하고, `onerror`에서는 `busy`만 거짓으로 되돌린다. 실패하면 보이던 장은 유지되고 `current`만 새 인덱스로 남아, 다음 무작위가 그 인덱스를 피할 수 있다.
 
-`finish`는 새 이미지에 `is-visible`을 붙이고 이전 이미지에서 뺀다. `instant`가 참이면 두 이미지의 `transition`을 잠시 끄고 클래스를 바꿔, 클릭 전환에는 페이드를 쓰지 않는다. 그다음 `showA`를 새 이미지가 A인지로 맞추고 `busy`를 거짓으로 둔다. 자동 전환은 `instant` 없이 호출하므로 CSS 페이드가 남는다.
+`finish`는 새 이미지에 `is-visible`을 붙이고 이전 이미지에서 뺀다. `instant`가 참이면 두 이미지에 `is-instant`를 붙여 `transition: none`으로 만든 뒤 클래스를 바꾼다. 클릭 직전에도 같은 클래스를 붙여 진행 중인 페이드를 끊는다. 화면이 바뀐 다음 프레임에 `is-instant`를 뗀다. 자동 전환은 `instant` 없이 호출하므로 CSS 페이드가 남는다.
 
 `nextRandom`은 `pickIndex` 결과로 `swapTo`를 부른다.
 

@@ -69052,651 +69052,655 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 8pt; line-he
 185    opacity: 1;
 186  }
 187  
-188  .hero__hint {
-189    position: absolute;
-190    left: 50%;
-191    bottom: 1rem;
-192    transform: translateX(-50%);
-193    z-index: 2;
-194    padding: 0.4rem 1rem;
-195    font-size: 0.85rem;
-196    font-weight: 600;
-197    letter-spacing: 0.04em;
-198    color: #ffffff;
-199    background: rgba(0, 30, 60, 0.55);
-200    border: 1px solid rgba(255, 255, 255, 0.35);
-201    border-radius: 999px;
-202    backdrop-filter: blur(4px);
-203    animation: hero-hint-pulse 2.4s ease-in-out infinite;
-204    pointer-events: none;
-205  }
-206  
-207  @keyframes hero-hint-pulse {
-208    0%,
-209    100% {
-210      opacity: 0.55;
-211      transform: translateX(-50%) translateY(0);
-212    }
-213    50% {
-214      opacity: 1;
-215      transform: translateX(-50%) translateY(-4px);
+188  .hero__img.is-instant {
+189    transition: none;
+190  }
+191  
+192  .hero__hint {
+193    position: absolute;
+194    left: 50%;
+195    bottom: 1rem;
+196    transform: translateX(-50%);
+197    z-index: 2;
+198    padding: 0.4rem 1rem;
+199    font-size: 0.85rem;
+200    font-weight: 600;
+201    letter-spacing: 0.04em;
+202    color: #ffffff;
+203    background: rgba(0, 30, 60, 0.55);
+204    border: 1px solid rgba(255, 255, 255, 0.35);
+205    border-radius: 999px;
+206    backdrop-filter: blur(4px);
+207    animation: hero-hint-pulse 2.4s ease-in-out infinite;
+208    pointer-events: none;
+209  }
+210  
+211  @keyframes hero-hint-pulse {
+212    0%,
+213    100% {
+214      opacity: 0.55;
+215      transform: translateX(-50%) translateY(0);
 216    }
-217  }
-218  
-219  @media (prefers-reduced-motion: reduce) {
-220    .hero__img {
-221      transition: opacity 0.35s ease;
-222    }
-223  
-224    .hero__hint {
-225      animation: none;
-226      opacity: 0.9;
-227    }
-228  }
-229  
-230  /* —— Page sections —— */
-231  .page {
-232    padding-top: clamp(1rem, 2.5vw, 1.5rem);
-233    padding-bottom: 3rem;
-234  }
-235  
-236  .section {
-237    margin-bottom: 2.5rem;
+217    50% {
+218      opacity: 1;
+219      transform: translateX(-50%) translateY(-4px);
+220    }
+221  }
+222  
+223  @media (prefers-reduced-motion: reduce) {
+224    .hero__img {
+225      transition: opacity 0.35s ease;
+226    }
+227  
+228    .hero__hint {
+229      animation: none;
+230      opacity: 0.9;
+231    }
+232  }
+233  
+234  /* —— Page sections —— */
+235  .page {
+236    padding-top: clamp(1rem, 2.5vw, 1.5rem);
+237    padding-bottom: 3rem;
 238  }
 239  
-240  .section__title {
-241    margin: 0 0 1rem;
-242    font-size: clamp(1.25rem, 3vw, 1.5rem);
-243    font-weight: 700;
-244    color: var(--navy);
-245    line-height: 1.35;
-246  }
-247  
-248  .section__lead,
-249  .section__desc,
-250  .section__note {
-251    margin: 0;
-252    color: var(--text);
-253    max-width: 52em;
-254  }
-255  
-256  .section__desc {
-257    margin-bottom: 1.25rem;
-258    color: var(--text-muted);
-259    font-size: 0.95rem;
-260  }
-261  
-262  .section__note {
-263    margin-bottom: 2.5rem;
-264    color: var(--text-muted);
-265    font-size: 0.95rem;
-266  }
-267  
-268  /* 2-column info (코탐록 역량 요약 블록) */
-269  .info-grid {
-270    display: grid;
-271    grid-template-columns: 1fr 1fr;
-272    gap: 2rem 3rem;
-273    margin-bottom: 1.75rem;
-274  }
-275  
-276  .info-col__title {
-277    margin: 0 0 0.5rem;
-278    font-size: 1rem;
-279    font-weight: 700;
-280    color: var(--navy);
-281  }
-282  
-283  .info-col__text {
-284    margin: 0;
-285    font-size: 0.95rem;
-286    color: var(--text);
-287  }
-288  
-289  .info-col__text strong {
-290    color: var(--navy);
+240  .section {
+241    margin-bottom: 2.5rem;
+242  }
+243  
+244  .section__title {
+245    margin: 0 0 1rem;
+246    font-size: clamp(1.25rem, 3vw, 1.5rem);
+247    font-weight: 700;
+248    color: var(--navy);
+249    line-height: 1.35;
+250  }
+251  
+252  .section__lead,
+253  .section__desc,
+254  .section__note {
+255    margin: 0;
+256    color: var(--text);
+257    max-width: 52em;
+258  }
+259  
+260  .section__desc {
+261    margin-bottom: 1.25rem;
+262    color: var(--text-muted);
+263    font-size: 0.95rem;
+264  }
+265  
+266  .section__note {
+267    margin-bottom: 2.5rem;
+268    color: var(--text-muted);
+269    font-size: 0.95rem;
+270  }
+271  
+272  /* 2-column info (코탐록 역량 요약 블록) */
+273  .info-grid {
+274    display: grid;
+275    grid-template-columns: 1fr 1fr;
+276    gap: 2rem 3rem;
+277    margin-bottom: 1.75rem;
+278  }
+279  
+280  .info-col__title {
+281    margin: 0 0 0.5rem;
+282    font-size: 1rem;
+283    font-weight: 700;
+284    color: var(--navy);
+285  }
+286  
+287  .info-col__text {
+288    margin: 0;
+289    font-size: 0.95rem;
+290    color: var(--text);
 291  }
 292  
-293  /* Toolbar &amp; search */
-294  .toolbar {
-295    display: flex;
-296    flex-wrap: wrap;
-297    align-items: center;
-298    gap: 0.75rem 1rem;
-299    margin-bottom: 1.5rem;
-300  }
-301  
-302  .search-field__input {
-303    width: 100%;
-304    max-width: 24rem;
-305    padding: 0.55rem 0.75rem;
-306    font: inherit;
-307    font-size: 0.95rem;
-308    border: 1px solid var(--border);
-309    border-radius: 3px;
-310    background: var(--bg);
-311  }
-312  
-313  .search-field__input:focus {
-314    outline: 2px solid var(--navy);
-315    outline-offset: 1px;
-316  }
-317  
-318  /* Card grid — 코탐록 자료 카테고리 카드 스타일 */
-319  .card-grid {
-320    display: grid;
-321    grid-template-columns: repeat(3, 1fr);
-322    gap: 1.5rem 2rem;
-323    align-items: start;
-324  }
-325  
-326  .card {
-327    display: block;
-328    width: 100%;
-329    margin: 0;
-330    padding: 1.2rem 1.35rem 1.35rem;
-331    border: 1px solid var(--border);
-332    border-radius: 6px;
-333    background: var(--bg);
-334    text-align: left;
-335    font-family: inherit;
-336    color: inherit;
-337    cursor: pointer;
-338    box-shadow: none;
-339    transition:
-340      border-color 0.28s ease,
-341      background-color 0.28s ease,
-342      box-shadow 0.28s ease,
-343      transform 0.28s ease;
-344  }
-345  
-346  .card:hover {
-347    border-color: var(--navy-soft);
-348    background: var(--bg-subtle);
-349    box-shadow: var(--shadow);
-350    transform: translateY(-2px);
-351  }
-352  
-353  .card:active {
-354    transform: translateY(0);
-355    box-shadow: none;
-356    transition-duration: 0.12s;
-357  }
-358  
-359  .card:focus-visible {
-360    outline: 2px solid var(--navy);
-361    outline-offset: 2px;
-362    border-color: var(--navy);
-363  }
-364  
-365  .card--study {
-366    border-left-width: 3px;
-367    border-left-color: var(--study);
-368  }
-369  
-370  .card--study:hover,
-371  .card--study:focus-visible {
-372    border-left-color: var(--study);
-373  }
-374  
-375  .card--assignment {
-376    border-left-width: 3px;
-377    border-left-color: var(--assignment);
-378  }
-379  
-380  .card--assignment:hover,
-381  .card--assignment:focus-visible {
-382    border-left-color: var(--assignment);
-383  }
-384  
-385  .card-kicker {
-386    display: flex;
-387    align-items: center;
-388    justify-content: space-between;
-389    gap: 0.5rem;
-390    margin: 0 0 0.35rem;
-391  }
-392  
-393  .card-kicker .card-label {
-394    margin: 0;
+293  .info-col__text strong {
+294    color: var(--navy);
+295  }
+296  
+297  /* Toolbar &amp; search */
+298  .toolbar {
+299    display: flex;
+300    flex-wrap: wrap;
+301    align-items: center;
+302    gap: 0.75rem 1rem;
+303    margin-bottom: 1.5rem;
+304  }
+305  
+306  .search-field__input {
+307    width: 100%;
+308    max-width: 24rem;
+309    padding: 0.55rem 0.75rem;
+310    font: inherit;
+311    font-size: 0.95rem;
+312    border: 1px solid var(--border);
+313    border-radius: 3px;
+314    background: var(--bg);
+315  }
+316  
+317  .search-field__input:focus {
+318    outline: 2px solid var(--navy);
+319    outline-offset: 1px;
+320  }
+321  
+322  /* Card grid — 코탐록 자료 카테고리 카드 스타일 */
+323  .card-grid {
+324    display: grid;
+325    grid-template-columns: repeat(3, 1fr);
+326    gap: 1.5rem 2rem;
+327    align-items: start;
+328  }
+329  
+330  .card {
+331    display: block;
+332    width: 100%;
+333    margin: 0;
+334    padding: 1.2rem 1.35rem 1.35rem;
+335    border: 1px solid var(--border);
+336    border-radius: 6px;
+337    background: var(--bg);
+338    text-align: left;
+339    font-family: inherit;
+340    color: inherit;
+341    cursor: pointer;
+342    box-shadow: none;
+343    transition:
+344      border-color 0.28s ease,
+345      background-color 0.28s ease,
+346      box-shadow 0.28s ease,
+347      transform 0.28s ease;
+348  }
+349  
+350  .card:hover {
+351    border-color: var(--navy-soft);
+352    background: var(--bg-subtle);
+353    box-shadow: var(--shadow);
+354    transform: translateY(-2px);
+355  }
+356  
+357  .card:active {
+358    transform: translateY(0);
+359    box-shadow: none;
+360    transition-duration: 0.12s;
+361  }
+362  
+363  .card:focus-visible {
+364    outline: 2px solid var(--navy);
+365    outline-offset: 2px;
+366    border-color: var(--navy);
+367  }
+368  
+369  .card--study {
+370    border-left-width: 3px;
+371    border-left-color: var(--study);
+372  }
+373  
+374  .card--study:hover,
+375  .card--study:focus-visible {
+376    border-left-color: var(--study);
+377  }
+378  
+379  .card--assignment {
+380    border-left-width: 3px;
+381    border-left-color: var(--assignment);
+382  }
+383  
+384  .card--assignment:hover,
+385  .card--assignment:focus-visible {
+386    border-left-color: var(--assignment);
+387  }
+388  
+389  .card-kicker {
+390    display: flex;
+391    align-items: center;
+392    justify-content: space-between;
+393    gap: 0.5rem;
+394    margin: 0 0 0.35rem;
 395  }
 396  
-397  .badge {
-398    flex: 0 0 auto;
-399    display: inline-flex;
-400    align-items: center;
-401    padding: 0.05rem 0.45rem;
-402    border: 1px solid transparent;
-403    border-radius: 999px;
-404    font-size: 0.68rem;
-405    font-weight: 700;
-406    letter-spacing: 0.01em;
-407    line-height: 1.45;
-408    text-transform: none;
-409  }
-410  
-411  .badge--course {
-412    color: var(--badge-course-fg);
-413    background: var(--badge-course-bg);
-414    border-color: var(--badge-course-bd);
-415  }
-416  
-417  .badge--book {
-418    color: var(--badge-book-fg);
-419    background: var(--badge-book-bg);
-420    border-color: var(--badge-book-bd);
-421  }
-422  
-423  .badge--cert {
-424    color: var(--badge-cert-fg);
-425    background: var(--badge-cert-bg);
-426    border-color: var(--badge-cert-bd);
-427  }
-428  
-429  .badge--tool {
-430    color: var(--badge-tool-fg);
-431    background: var(--badge-tool-bg);
-432    border-color: var(--badge-tool-bd);
-433  }
-434  
-435  .card-label {
-436    margin: 0 0 0.35rem;
-437    font-size: 0.72rem;
-438    font-weight: 600;
-439    letter-spacing: 0.06em;
-440    text-transform: uppercase;
-441    color: var(--text-light);
-442  }
-443  
-444  .card--study .card-label {
-445    color: var(--study);
+397  .card-kicker .card-label {
+398    margin: 0;
+399  }
+400  
+401  .badge {
+402    flex: 0 0 auto;
+403    display: inline-flex;
+404    align-items: center;
+405    padding: 0.05rem 0.45rem;
+406    border: 1px solid transparent;
+407    border-radius: 999px;
+408    font-size: 0.68rem;
+409    font-weight: 700;
+410    letter-spacing: 0.01em;
+411    line-height: 1.45;
+412    text-transform: none;
+413  }
+414  
+415  .badge--course {
+416    color: var(--badge-course-fg);
+417    background: var(--badge-course-bg);
+418    border-color: var(--badge-course-bd);
+419  }
+420  
+421  .badge--book {
+422    color: var(--badge-book-fg);
+423    background: var(--badge-book-bg);
+424    border-color: var(--badge-book-bd);
+425  }
+426  
+427  .badge--cert {
+428    color: var(--badge-cert-fg);
+429    background: var(--badge-cert-bg);
+430    border-color: var(--badge-cert-bd);
+431  }
+432  
+433  .badge--tool {
+434    color: var(--badge-tool-fg);
+435    background: var(--badge-tool-bg);
+436    border-color: var(--badge-tool-bd);
+437  }
+438  
+439  .card-label {
+440    margin: 0 0 0.35rem;
+441    font-size: 0.72rem;
+442    font-weight: 600;
+443    letter-spacing: 0.06em;
+444    text-transform: uppercase;
+445    color: var(--text-light);
 446  }
 447  
-448  .card--assignment .card-label {
-449    color: var(--assignment);
+448  .card--study .card-label {
+449    color: var(--study);
 450  }
 451  
-452  .card__title {
-453    margin: 0 0 0.5rem;
-454    font-size: 1.05rem;
-455    font-weight: 700;
-456    color: var(--navy);
-457    line-height: 1.4;
-458  }
-459  
-460  .card__summary {
-461    margin: 0;
-462    font-size: 0.9rem;
-463    color: var(--text-muted);
-464    line-height: 1.6;
-465    display: -webkit-box;
-466    -webkit-line-clamp: 4;
-467    -webkit-box-orient: vertical;
-468    overflow: hidden;
-469    transition: color 0.28s ease;
-470  }
-471  
-472  .card:hover .card__title {
-473    color: var(--navy-soft);
+452  .card--assignment .card-label {
+453    color: var(--assignment);
+454  }
+455  
+456  .card__title {
+457    margin: 0 0 0.5rem;
+458    font-size: 1.05rem;
+459    font-weight: 700;
+460    color: var(--navy);
+461    line-height: 1.4;
+462  }
+463  
+464  .card__summary {
+465    margin: 0;
+466    font-size: 0.9rem;
+467    color: var(--text-muted);
+468    line-height: 1.6;
+469    display: -webkit-box;
+470    -webkit-line-clamp: 4;
+471    -webkit-box-orient: vertical;
+472    overflow: hidden;
+473    transition: color 0.28s ease;
 474  }
 475  
-476  @media (prefers-reduced-motion: reduce) {
-477    .card {
-478      transition: border-color 0.2s ease, background-color 0.2s ease;
-479    }
-480  
-481    .card:hover,
-482    .card:active {
-483      transform: none;
-484    }
-485  }
-486  
-487  .empty,
-488  .noscript {
-489    text-align: center;
-490    color: var(--text-muted);
-491    padding: 2rem 0;
-492  }
-493  
-494  .loading {
-495    color: var(--text-muted);
-496    padding: 1.5rem 0;
-497  }
-498  
-499  .error {
-500    color: #b91c1c;
+476  .card:hover .card__title {
+477    color: var(--navy-soft);
+478  }
+479  
+480  @media (prefers-reduced-motion: reduce) {
+481    .card {
+482      transition: border-color 0.2s ease, background-color 0.2s ease;
+483    }
+484  
+485    .card:hover,
+486    .card:active {
+487      transform: none;
+488    }
+489  }
+490  
+491  .empty,
+492  .noscript {
+493    text-align: center;
+494    color: var(--text-muted);
+495    padding: 2rem 0;
+496  }
+497  
+498  .loading {
+499    color: var(--text-muted);
+500    padding: 1.5rem 0;
 501  }
 502  
-503  .error code {
-504    font-size: 0.88em;
-505    background: var(--bg-subtle);
-506    padding: 0.1rem 0.3rem;
-507  }
-508  
-509  .site-footer {
-510    margin-top: 2rem;
-511    padding: 1.5rem 0 2.5rem;
-512    border-top: 1px solid var(--border);
-513  }
-514  
-515  .site-footer__inner {
-516    text-align: center;
+503  .error {
+504    color: #b91c1c;
+505  }
+506  
+507  .error code {
+508    font-size: 0.88em;
+509    background: var(--bg-subtle);
+510    padding: 0.1rem 0.3rem;
+511  }
+512  
+513  .site-footer {
+514    margin-top: 2rem;
+515    padding: 1.5rem 0 2.5rem;
+516    border-top: 1px solid var(--border);
 517  }
 518  
-519  .site-sitemap {
-520    margin: 0 0 1.5rem;
-521    text-align: left;
-522  }
-523  
-524  .site-sitemap__label {
-525    margin: 0 0 1rem;
-526    font-size: 0.85rem;
-527    letter-spacing: 0.08em;
-528    text-align: center;
-529    color: var(--footer-note);
-530  }
-531  
-532  .site-sitemap__groups {
-533    display: grid;
-534    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
-535    gap: 1.25rem 1.5rem;
-536    margin: 0;
-537    padding: 0;
-538    list-style: none;
-539  }
-540  
-541  .site-sitemap__page {
-542    display: inline-block;
-543    margin-bottom: 0.45rem;
-544    font-size: 0.95rem;
-545    font-weight: 650;
-546  }
-547  
-548  .site-sitemap__list {
-549    display: flex;
-550    flex-direction: column;
-551    align-items: flex-start;
-552    gap: 0.3rem;
-553    margin: 0;
-554    padding: 0;
-555    list-style: none;
-556  }
-557  
-558  .site-sitemap__list a {
-559    font-size: 0.85rem;
-560    text-decoration: none;
-561  }
-562  
-563  .site-sitemap a:hover,
-564  .site-sitemap a[aria-current=&quot;page&quot;] {
-565    text-decoration: underline;
-566  }
-567  
+519  .site-footer__inner {
+520    text-align: center;
+521  }
+522  
+523  .site-sitemap {
+524    margin: 0 0 1.5rem;
+525    text-align: left;
+526  }
+527  
+528  .site-sitemap__label {
+529    margin: 0 0 1rem;
+530    font-size: 0.85rem;
+531    letter-spacing: 0.08em;
+532    text-align: center;
+533    color: var(--footer-note);
+534  }
+535  
+536  .site-sitemap__groups {
+537    display: grid;
+538    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+539    gap: 1.25rem 1.5rem;
+540    margin: 0;
+541    padding: 0;
+542    list-style: none;
+543  }
+544  
+545  .site-sitemap__page {
+546    display: inline-block;
+547    margin-bottom: 0.45rem;
+548    font-size: 0.95rem;
+549    font-weight: 650;
+550  }
+551  
+552  .site-sitemap__list {
+553    display: flex;
+554    flex-direction: column;
+555    align-items: flex-start;
+556    gap: 0.3rem;
+557    margin: 0;
+558    padding: 0;
+559    list-style: none;
+560  }
+561  
+562  .site-sitemap__list a {
+563    font-size: 0.85rem;
+564    text-decoration: none;
+565  }
+566  
+567  .site-sitemap a:hover,
 568  .site-sitemap a[aria-current=&quot;page&quot;] {
-569    color: var(--footer-note);
+569    text-decoration: underline;
 570  }
 571  
-572  .site-footer__meta {
-573    margin: 0 0 1.25rem;
-574    font-size: 0.85rem;
-575    line-height: 1.6;
-576    color: var(--text-muted);
-577  }
-578  
-579  .site-footer__note {
-580    margin: 0 auto;
-581    max-width: 22rem;
-582    font-size: 1rem;
-583    font-weight: 300;
-584    line-height: 1.65;
-585    text-align: center;
-586    color: var(--footer-note);
-587  }
-588  
-589  .site-footer__disclosure {
-590    margin: 0.85rem auto 0;
-591    max-width: 36rem;
-592    font-size: 0.85rem;
-593    font-weight: 300;
-594    line-height: 1.65;
-595    text-align: center;
-596    color: var(--footer-note);
-597  }
-598  
-599  .site-footer__copyright {
-600    margin: 0.85rem 0 0;
-601    font-size: 0.85rem;
-602    line-height: 1.6;
-603    text-align: center;
-604    color: var(--footer-note);
-605  }
-606  
-607  .site-footer code {
-608    font-size: 0.82em;
+572  .site-sitemap a[aria-current=&quot;page&quot;] {
+573    color: var(--footer-note);
+574  }
+575  
+576  .site-footer__meta {
+577    margin: 0 0 1.25rem;
+578    font-size: 0.85rem;
+579    line-height: 1.6;
+580    color: var(--text-muted);
+581  }
+582  
+583  .site-footer__note {
+584    margin: 0 auto;
+585    max-width: 22rem;
+586    font-size: 1rem;
+587    font-weight: 300;
+588    line-height: 1.65;
+589    text-align: center;
+590    color: var(--footer-note);
+591  }
+592  
+593  .site-footer__disclosure {
+594    margin: 0.85rem auto 0;
+595    max-width: 36rem;
+596    font-size: 0.85rem;
+597    font-weight: 300;
+598    line-height: 1.65;
+599    text-align: center;
+600    color: var(--footer-note);
+601  }
+602  
+603  .site-footer__copyright {
+604    margin: 0.85rem 0 0;
+605    font-size: 0.85rem;
+606    line-height: 1.6;
+607    text-align: center;
+608    color: var(--footer-note);
 609  }
 610  
-611  .site-footer a {
-612    color: var(--study);
+611  .site-footer code {
+612    font-size: 0.82em;
 613  }
 614  
-615  /* —— Modal —— */
-616  .modal-overlay {
-617    position: fixed;
-618    inset: 0;
-619    z-index: 1000;
-620    background: var(--overlay);
-621    display: flex;
-622    align-items: center;
-623    justify-content: center;
-624    padding: 1rem;
-625  }
-626  
-627  .modal {
-628    width: 100%;
-629    max-width: 40rem;
-630    max-height: 90vh;
-631    background: var(--bg);
-632    border: 1px solid var(--border);
-633    box-shadow: var(--shadow);
-634    display: flex;
-635    flex-direction: column;
-636  }
-637  
-638  .modal--wide {
-639    max-width: 44rem;
+615  .site-footer a {
+616    color: var(--study);
+617  }
+618  
+619  /* —— Modal —— */
+620  .modal-overlay {
+621    position: fixed;
+622    inset: 0;
+623    z-index: 1000;
+624    background: var(--overlay);
+625    display: flex;
+626    align-items: center;
+627    justify-content: center;
+628    padding: 1rem;
+629  }
+630  
+631  .modal {
+632    width: 100%;
+633    max-width: 40rem;
+634    max-height: 90vh;
+635    background: var(--bg);
+636    border: 1px solid var(--border);
+637    box-shadow: var(--shadow);
+638    display: flex;
+639    flex-direction: column;
 640  }
 641  
-642  #source-overlay {
-643    z-index: 1100;
+642  .modal--wide {
+643    max-width: 44rem;
 644  }
 645  
-646  .modal__header {
-647    display: flex;
-648    justify-content: space-between;
-649    align-items: flex-start;
-650    gap: 1rem;
-651    padding: 1.15rem 1.35rem;
-652    border-bottom: 1px solid var(--border);
-653    background: var(--bg-subtle);
-654  }
-655  
-656  .modal__meta {
-657    min-width: 0;
-658    flex: 1;
-659  }
-660  
-661  .modal__title {
-662    margin: 0;
-663    font-size: 1.15rem;
-664    font-weight: 700;
-665    color: var(--navy);
-666  }
-667  
-668  .modal__summary {
-669    margin: 0.35rem 0 0;
-670    font-size: 0.9rem;
-671    color: var(--text-muted);
-672  }
-673  
-674  .modal__close {
-675    flex-shrink: 0;
-676    width: 2.25rem;
-677    height: 2.25rem;
-678    border: 1px solid var(--border);
-679    background: var(--bg);
-680    color: var(--navy);
-681    font-size: 1.35rem;
-682    line-height: 1;
-683    cursor: pointer;
-684    border-radius: 3px;
-685  }
-686  
-687  .modal__body {
-688    padding: 1.25rem 1.35rem 1.5rem;
-689    overflow-y: auto;
-690    flex: 1;
-691  }
-692  
-693  .md-content h1 {
-694    font-size: 1.2rem;
-695    margin: 0 0 1rem;
-696    color: var(--navy);
-697    border-bottom: 1px solid var(--border);
-698    padding-bottom: 0.4rem;
-699  }
-700  
-701  .md-content h2 {
-702    font-size: 1.05rem;
-703    margin: 1.4rem 0 0.6rem;
-704    color: var(--navy-soft);
-705    font-weight: 700;
-706  }
-707  
-708  .md-content h3 {
-709    font-size: 1rem;
-710    margin: 1rem 0 0.4rem;
-711    font-weight: 600;
-712  }
-713  
-714  .md-content p,
-715  .md-content li {
-716    font-size: 0.95rem;
-717  }
-718  
-719  .md-content ul {
-720    padding-left: 1.25rem;
+646  #source-overlay {
+647    z-index: 1100;
+648  }
+649  
+650  .modal__header {
+651    display: flex;
+652    justify-content: space-between;
+653    align-items: flex-start;
+654    gap: 1rem;
+655    padding: 1.15rem 1.35rem;
+656    border-bottom: 1px solid var(--border);
+657    background: var(--bg-subtle);
+658  }
+659  
+660  .modal__meta {
+661    min-width: 0;
+662    flex: 1;
+663  }
+664  
+665  .modal__title {
+666    margin: 0;
+667    font-size: 1.15rem;
+668    font-weight: 700;
+669    color: var(--navy);
+670  }
+671  
+672  .modal__summary {
+673    margin: 0.35rem 0 0;
+674    font-size: 0.9rem;
+675    color: var(--text-muted);
+676  }
+677  
+678  .modal__close {
+679    flex-shrink: 0;
+680    width: 2.25rem;
+681    height: 2.25rem;
+682    border: 1px solid var(--border);
+683    background: var(--bg);
+684    color: var(--navy);
+685    font-size: 1.35rem;
+686    line-height: 1;
+687    cursor: pointer;
+688    border-radius: 3px;
+689  }
+690  
+691  .modal__body {
+692    padding: 1.25rem 1.35rem 1.5rem;
+693    overflow-y: auto;
+694    flex: 1;
+695  }
+696  
+697  .md-content h1 {
+698    font-size: 1.2rem;
+699    margin: 0 0 1rem;
+700    color: var(--navy);
+701    border-bottom: 1px solid var(--border);
+702    padding-bottom: 0.4rem;
+703  }
+704  
+705  .md-content h2 {
+706    font-size: 1.05rem;
+707    margin: 1.4rem 0 0.6rem;
+708    color: var(--navy-soft);
+709    font-weight: 700;
+710  }
+711  
+712  .md-content h3 {
+713    font-size: 1rem;
+714    margin: 1rem 0 0.4rem;
+715    font-weight: 600;
+716  }
+717  
+718  .md-content p,
+719  .md-content li {
+720    font-size: 0.95rem;
 721  }
 722  
-723  .md-content code {
-724    background: var(--bg-subtle);
-725    padding: 0.1rem 0.35rem;
-726    font-size: 0.88em;
-727    border: 1px solid var(--border);
-728  }
-729  
-730  .md-content pre {
-731    background: var(--bg-subtle);
-732    border: 1px solid var(--border);
-733    padding: 1rem;
-734    overflow-x: auto;
-735    font-size: 0.85rem;
-736  }
-737  
-738  .md-content img {
-739    display: block;
-740    width: 100%;
-741    max-width: 22rem;
-742    height: auto;
-743    margin: 0.75rem auto;
-744    border: 1px solid var(--border);
-745    border-radius: 4px;
-746    background: var(--bg-subtle);
-747  }
-748  
-749  .md-content em {
-750    display: block;
-751    margin-top: 0.35rem;
-752    font-size: 0.88rem;
-753    color: var(--text-muted);
-754    font-style: normal;
-755  }
-756  
-757  .md-content a,
-758  .md-content a.source-link {
-759    color: var(--study);
-760  }
-761  
-762  .source-plain {
-763    display: flex;
-764    flex-direction: column;
-765    gap: 1.5rem;
-766  }
-767  
-768  .source-plain__text {
-769    white-space: pre-wrap;
-770    word-break: break-word;
-771    font-size: 0.95rem;
-772    line-height: var(--line);
-773  }
-774  
-775  .source-plain__figure {
-776    margin: 0;
-777    padding: 0;
-778  }
-779  
-780  .source-plain__figure img {
-781    display: block;
-782    width: 100%;
-783    max-width: 100%;
-784    height: auto;
-785    border: 1px solid var(--border);
-786    border-radius: 4px;
-787    background: #000000;
-788  }
-789  
-790  .source-plain__figure figcaption {
-791    margin-top: 0.5rem;
-792    font-size: 0.85rem;
-793    color: var(--text-muted);
-794    text-align: center;
-795  }
-796  
-797  /* —— Responsive —— */
-798  @media (max-width: 900px) {
-799    .card-grid {
-800      grid-template-columns: repeat(2, 1fr);
-801      gap: 1.25rem 1.5rem;
-802    }
-803  }
-804  
-805  @media (max-width: 768px) {
-806    .info-grid {
-807      grid-template-columns: 1fr;
-808      gap: 1.5rem;
-809    }
-810  }
-811  
-812  @media (max-width: 520px) {
-813    .card-grid {
-814      grid-template-columns: 1fr;
-815    }
-816  
-817    .modal-overlay {
-818      padding: 0;
-819      align-items: stretch;
-820    }
-821  
-822    .modal {
-823      max-height: 100dvh;
-824      border-radius: 0;
-825    }
-826  }
-827  
-828  @media (prefers-reduced-motion: reduce) {
-829    html {
-830      scroll-behavior: auto;
-831    }
-832  }</pre>
+723  .md-content ul {
+724    padding-left: 1.25rem;
+725  }
+726  
+727  .md-content code {
+728    background: var(--bg-subtle);
+729    padding: 0.1rem 0.35rem;
+730    font-size: 0.88em;
+731    border: 1px solid var(--border);
+732  }
+733  
+734  .md-content pre {
+735    background: var(--bg-subtle);
+736    border: 1px solid var(--border);
+737    padding: 1rem;
+738    overflow-x: auto;
+739    font-size: 0.85rem;
+740  }
+741  
+742  .md-content img {
+743    display: block;
+744    width: 100%;
+745    max-width: 22rem;
+746    height: auto;
+747    margin: 0.75rem auto;
+748    border: 1px solid var(--border);
+749    border-radius: 4px;
+750    background: var(--bg-subtle);
+751  }
+752  
+753  .md-content em {
+754    display: block;
+755    margin-top: 0.35rem;
+756    font-size: 0.88rem;
+757    color: var(--text-muted);
+758    font-style: normal;
+759  }
+760  
+761  .md-content a,
+762  .md-content a.source-link {
+763    color: var(--study);
+764  }
+765  
+766  .source-plain {
+767    display: flex;
+768    flex-direction: column;
+769    gap: 1.5rem;
+770  }
+771  
+772  .source-plain__text {
+773    white-space: pre-wrap;
+774    word-break: break-word;
+775    font-size: 0.95rem;
+776    line-height: var(--line);
+777  }
+778  
+779  .source-plain__figure {
+780    margin: 0;
+781    padding: 0;
+782  }
+783  
+784  .source-plain__figure img {
+785    display: block;
+786    width: 100%;
+787    max-width: 100%;
+788    height: auto;
+789    border: 1px solid var(--border);
+790    border-radius: 4px;
+791    background: #000000;
+792  }
+793  
+794  .source-plain__figure figcaption {
+795    margin-top: 0.5rem;
+796    font-size: 0.85rem;
+797    color: var(--text-muted);
+798    text-align: center;
+799  }
+800  
+801  /* —— Responsive —— */
+802  @media (max-width: 900px) {
+803    .card-grid {
+804      grid-template-columns: repeat(2, 1fr);
+805      gap: 1.25rem 1.5rem;
+806    }
+807  }
+808  
+809  @media (max-width: 768px) {
+810    .info-grid {
+811      grid-template-columns: 1fr;
+812      gap: 1.5rem;
+813    }
+814  }
+815  
+816  @media (max-width: 520px) {
+817    .card-grid {
+818      grid-template-columns: 1fr;
+819    }
+820  
+821    .modal-overlay {
+822      padding: 0;
+823      align-items: stretch;
+824    }
+825  
+826    .modal {
+827      max-height: 100dvh;
+828      border-radius: 0;
+829    }
+830  }
+831  
+832  @media (prefers-reduced-motion: reduce) {
+833    html {
+834      scroll-behavior: auto;
+835    }
+836  }</pre>
 <h2>study_note_record_organization/dashboard/index.html</h2>
 <pre>  1  &lt;!-- 학습 기록 대시보드. 카드 목록, 검색, 요약 모달, 원본 보기를 담는다. --&gt;
   2  &lt;!DOCTYPE html&gt;
@@ -69721,7 +69725,7 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 8pt; line-he
  21          }
  22        })();
  23      &lt;/script&gt;
- 24      &lt;link rel=&quot;stylesheet&quot; href=&quot;css/styles.css?v=12bdf17da6fd&quot; /&gt;
+ 24      &lt;link rel=&quot;stylesheet&quot; href=&quot;css/styles.css?v=click-instant-2&quot; /&gt;
  25      &lt;link rel=&quot;stylesheet&quot; href=&quot;../../css/site-header.css?v=nav-mobile-scroll&quot; /&gt;
  26    &lt;/head&gt;
  27    &lt;body&gt;
@@ -69927,7 +69931,7 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 8pt; line-he
 227  
 228      &lt;script src=&quot;js/hero-images.js&quot;&gt;&lt;/script&gt;
 229      &lt;script src=&quot;js/data.js?v=12bdf17da6fd&quot;&gt;&lt;/script&gt;
-230      &lt;script src=&quot;js/hero.js?v=click-instant&quot;&gt;&lt;/script&gt;
+230      &lt;script src=&quot;js/hero.js?v=click-instant-3&quot;&gt;&lt;/script&gt;
 231      &lt;script src=&quot;js/app.js?v=12bdf17da6fd&quot;&gt;&lt;/script&gt;
 232      &lt;script src=&quot;../../js/main.js?v=theme-sync&quot;&gt;&lt;/script&gt;
 233      &lt;script src=&quot;../../js/protect-resources.js&quot;&gt;&lt;/script&gt;
@@ -70557,73 +70561,84 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 8pt; line-he
 123         */
 124        function finish() {
 125          if (instant) {
-126            next.style.transition = &quot;none&quot;;
-127            prev.style.transition = &quot;none&quot;;
+126            next.classList.add(&quot;is-instant&quot;);
+127            prev.classList.add(&quot;is-instant&quot;);
 128          }
 129          next.classList.add(&quot;is-visible&quot;);
 130          prev.classList.remove(&quot;is-visible&quot;);
-131          if (instant) {
-132            void next.offsetWidth;
-133            next.style.transition = &quot;&quot;;
-134            prev.style.transition = &quot;&quot;;
-135          }
-136          showA = next === imgA;
-137          busy = false;
-138        }
-139  
-140        if (next.complete &amp;&amp; next.naturalWidth &gt; 0) {
-141          finish();
-142        } else {
-143          next.onload = function () {
-144            next.onload = null;
-145            finish();
-146          };
-147          next.onerror = function () {
-148            next.onerror = null;
-149            busy = false;
-150          };
-151        }
-152      }
-153  
-154      /**
-155       * 현재와 다른 장을 골라 교체한다.
-156       */
-157      function nextRandom() {
-158        swapTo(pickIndex());
-159      }
-160  
-161      /**
-162       * 자동 전환 타이머를 다시 시작한다.
-163       * 동작 줄이기가 켜져 있거나 이미지가 한 장이면 타이머를 두지 않는다.
-164       */
-165      function startTimer() {
-166        if (timer) clearInterval(timer);
-167        var reduced =
-168          window.matchMedia &amp;&amp;
-169          window.matchMedia(&quot;(prefers-reduced-motion: reduce)&quot;).matches;
-170        if (!reduced &amp;&amp; images.length &gt; 1) {
-171          timer = setInterval(nextRandom, AUTO_MS);
-172        }
-173      }
-174  
-175      current = pickIndex();
-176      applyImage(imgA, current);
-177      imgA.classList.add(&quot;is-visible&quot;);
-178  
-179      stage.addEventListener(&quot;click&quot;, function () {
-180        swapTo(pickIndex(), true);
-181        startTimer();
-182      });
-183  
-184      startTimer();
-185    }
-186  
-187    if (document.readyState === &quot;loading&quot;) {
-188      document.addEventListener(&quot;DOMContentLoaded&quot;, initHero);
-189    } else {
-190      initHero();
-191    }
-192  })();</pre>
+131          showA = next === imgA;
+132          busy = false;
+133          if (instant) {
+134            requestAnimationFrame(function () {
+135              requestAnimationFrame(function () {
+136                next.classList.remove(&quot;is-instant&quot;);
+137                prev.classList.remove(&quot;is-instant&quot;);
+138              });
+139            });
+140          }
+141        }
+142  
+143        if (next.complete &amp;&amp; next.naturalWidth &gt; 0) {
+144          finish();
+145        } else {
+146          next.onload = function () {
+147            next.onload = null;
+148            finish();
+149          };
+150          next.onerror = function () {
+151            next.onerror = null;
+152            busy = false;
+153          };
+154        }
+155      }
+156  
+157      /**
+158       * 현재와 다른 장을 골라 교체한다.
+159       */
+160      function nextRandom() {
+161        swapTo(pickIndex());
+162      }
+163  
+164      /**
+165       * 자동 전환 타이머를 다시 시작한다.
+166       * 동작 줄이기가 켜져 있거나 이미지가 한 장이면 타이머를 두지 않는다.
+167       */
+168      function startTimer() {
+169        if (timer) clearInterval(timer);
+170        var reduced =
+171          window.matchMedia &amp;&amp;
+172          window.matchMedia(&quot;(prefers-reduced-motion: reduce)&quot;).matches;
+173        if (!reduced &amp;&amp; images.length &gt; 1) {
+174          timer = setInterval(nextRandom, AUTO_MS);
+175        }
+176      }
+177  
+178      current = pickIndex();
+179      applyImage(imgA, current);
+180      imgA.classList.add(&quot;is-visible&quot;);
+181  
+182      stage.addEventListener(&quot;click&quot;, function () {
+183        imgA.classList.add(&quot;is-instant&quot;);
+184        imgB.classList.add(&quot;is-instant&quot;);
+185        imgA.getAnimations().forEach(function (animation) {
+186          animation.cancel();
+187        });
+188        imgB.getAnimations().forEach(function (animation) {
+189          animation.cancel();
+190        });
+191        swapTo(pickIndex(), true);
+192        startTimer();
+193      });
+194  
+195      startTimer();
+196    }
+197  
+198    if (document.readyState === &quot;loading&quot;) {
+199      document.addEventListener(&quot;DOMContentLoaded&quot;, initHero);
+200    } else {
+201      initHero();
+202    }
+203  })();</pre>
 <h2>study_note_record_organization/scripts/build_output.py</h2>
 <pre>   1  # -*- coding: utf-8 -*-
    2  &quot;&quot;&quot;학습 노트와 과제 원본에서 텍스트를 뽑고, 카탈로그와 요약 마크다운을 만든다.&quot;&quot;&quot;

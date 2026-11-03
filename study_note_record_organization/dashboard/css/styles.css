@@ -185,6 +185,10 @@ body:has(.site-header) .page {
   opacity: 1;
 }
 
+.hero__img.is-instant {
+  transition: none;
+}
+
 .hero__hint {
   position: absolute;
   left: 50%;
