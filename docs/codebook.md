@@ -715,6 +715,10 @@ HTML, CSS, JS, Python 소스를 찾아 각 줄마다 행 번호를 매긴 뒤 �
 - `.field-label` 및 `.field-body`: 프로젝트 소개, 간단 설명, 실행 환경, 핵심 기능
 - `.pill-list`: 사용한 언어, 프레임워크, AI 도구 태그 목록 (Python, Express, Cursor 등)
 
+### PROJ_13 카드 사진
+
+`portfolio_achieve/img/proj-13-projects.png`는 SSamz 안드로이드 카드의 사진이다. 백업 폴더에 있는 미니프로젝트 이름 여덟 개를 적는다. 카카오 로그인, 할 일, 배터리, mp3, 카메라, 뉴스, 구글 지도, Firebase. 이름에 미완이 있고 파일이 없는 mp3·할 일 개선은 적지 않는다.
+
 ### 테마 토글 및 드롭다운 (`js/site.js`)
 
 - `initThemeToggle`: 버튼 클릭 시 다크 모드와 라이트 모드를 상호 전환하고 `localStorage`에 기록한다.
