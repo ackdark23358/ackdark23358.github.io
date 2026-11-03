@@ -5218,8 +5218,8 @@ data 폴더의 노트, 과제 문서, 이미지다. 함수가 없어 파일마�
 - data/data_study_note_record_organization/image/20. git home에서 f4 스테이징하고 push한거 가져오기 전에 fetch로 확인하기.png — 학습·과제 화면 캡처 또는 도표
 - data/data_study_note_record_organization/image/20. git log --online으로 head 참조 확인하기.png — 학습·과제 화면 캡처 또는 도표
 - data/data_study_note_record_organization/image/20. githome 에서 올린 f4.txt파일을 못가쟈온걸 ls-al로 확인.png — 학습·과제 화면 캡처 또는 도표
-- data/data_study_note_record_organization/image/20. 저장소에서 소스제어레포지토리 보기를 체크하여 레포지토리를 제어할 수 있게한다음 main 브렌치를 클릭하고 새로운 분기(new branch)로 분기 만들기 새로운 브렌치가 생성되고 자동으로 전환됨.png — 학습·과제 화면 캡처 또는 도표
 - data/data_study_note_record_organization/image/20.git add hello2txt 파일 add하고 status확인.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/20.소스제어-새-브렌치.png — 학습·과제 화면 캡처 또는 도표
 - data/data_study_note_record_organization/image/21. git log --oneline --branches 로 브렌치 상태 확인하기.png — 학습·과제 화면 캡처 또는 도표
 - data/data_study_note_record_organization/image/21.git commit delete하기.png — 학습·과제 화면 캡처 또는 도표
 - data/data_study_note_record_organization/image/21.git office에서 git log --oneline으로 한눈에 확인하기.png — 학습·과제 화면 캡처 또는 도표
@@ -5254,7 +5254,7 @@ data 폴더의 노트, 과제 문서, 이미지다. 함수가 없어 파일마�
 - data/data_study_note_record_organization/image/27. o2 라는 브렌치를 하나만들기.png — 학습·과제 화면 캡처 또는 도표
 - data/data_study_note_record_organization/image/27.new-branch를 선택해서 병합하면 main 브렌치에 없던 work4.txt파일이 생기고 병합된걸 확인할 수 있다..png — 학습·과제 화면 캡처 또는 도표
 - data/data_study_note_record_organization/image/27.커밋하기.png — 학습·과제 화면 캡처 또는 도표
-- data/data_study_note_record_organization/image/27.팀원으로서 프로젝트를 진행하게된다면 프로젝트에 진입을 하고 프로젝트에서 처음 브렌치를 생성하고 커밋 푸쉬 풀을 해야한다. 만약 저장소에 없는 브렌치를 추가하려면 git push -u origin 브렌치명으로 푸쉬해야한다..png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/27.팀원-첫-브렌치-커밋-푸쉬.png — 학습·과제 화면 캡처 또는 도표
 - data/data_study_note_record_organization/image/28. maint텍스트 파일을 만들고 main2를 입력하고 main work2 라는 커밋 하기.png — 학습·과제 화면 캡처 또는 도표
 - data/data_study_note_record_organization/image/28.log로 커밋확인.png — 학습·과제 화면 캡처 또는 도표
 - data/data_study_note_record_organization/image/29. o2 branch로 switch 하기.png — 학습·과제 화면 캡처 또는 도표

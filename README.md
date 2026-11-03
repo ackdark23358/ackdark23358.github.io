@@ -241,6 +241,7 @@ GitHub Pages는 공개 웹사이트로 배포될 수 있으므로, 업로드 전
 - 같은 폴더에 사진을 153장 더 넣어 히어로 갤러리는 771장입니다. 화면이 읽는 경로는 `study_note_record_organization/data/image`이고, 목록은 `dashboard/js/hero-images.js`입니다. 히어로를 클릭하면 페이드 없이 다음 사진으로 바뀌고, 자동 전환의 페이드는 그대로입니다.
 - 프로젝트 아카이브 카드 머리글은 `PROJ_01`처럼 번호만 보여 줍니다. 작업 일자와 본문·푸터의 확인 날짜는 빼 두었습니다.
 - 학습 원본과 프로젝트 아카이브 원본은 저장소 루트 `data/data_study_note_record_organization/`, `data/data_portfolio_achieve/`로 두었습니다. 예전에 `study_note_record_organization/data/`와 `portfolio_achieve/data/`에 있던 파일입니다. 히어로 갤러리 사본은 `study_note_record_organization/data/image/`에 남습니다.
+- 히어로 사진 두 장의 파일 이름이 리눅스 파일명 한도를 넘겨 GitHub Pages 배포가 체크아웃에서 멈췄습니다. `27.팀원-첫-브렌치-커밋-푸쉬.png`, `20.소스제어-새-브렌치.png`로 줄였습니다.
 - 학습록은 **59건(학습 41·과제 18)**을 유지합니다. 바이브 코딩 완성품은 PROJ_16·17로만 기록합니다.
 - 『한국 2027 트렌드 : 초개인화 시대의 서막』(이혜정, 북크크) 감상 노트를 학습록에 추가해 **60건(학습 42·과제 18)**이 되었습니다.
 - 박현규 『바로바로 바이브 코딩 with 커서 AI』(골든래빗) 독서 노트를 학습록에 추가해 **61건(학습 43·과제 18)**이 되었습니다.
