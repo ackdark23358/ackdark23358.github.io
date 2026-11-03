@@ -1615,9 +1615,14 @@ current = pickIndex()
 applyImage(imgA, current)
 imgA.classList.add("is-visible")
 stage.addEventListener("click", function ()
+  imgA.classList.add("is-instant")
+  imgB.classList.add("is-instant")
+  imgA.getAnimations().forEach(function (animation)
+    animation.cancel()
+  imgB.getAnimations().forEach(function (animation)
+    animation.cancel()
   swapTo(pickIndex(), true)
-  startTimer()
-startTimer()
+…
 ```
 
 
@@ -1716,7 +1721,7 @@ imgEl.alt = "학습·과제 기록 갤러리 이미지"
 function swapTo(index, instant)
 ```
 
-숨겨 둔 이미지에 다음 장을 불러온 뒤, 로드가 끝나면 보이는 장을 교체한다. 이미 전환 중이거나 같은 장이면 아무것도 하지 않는다. instant가 참이면 클릭 전환이라 불투명도 애니메이션을 건너뛴다.
+숨겨 둔 이미지에 다음 장을 불러온 뒤, 로드가 끝나면 보이는 장을 교체한다. 이미 전환 중이거나 같은 장이면 아무것도 하지 않는다. instant가 참이면 클릭 전환이라 is-instant로 불투명도 애니메이션을 건너뛴다.
 
 - 인자: index: number 보여줄 이미지 인덱스, [instant]: boolean 클릭으로 바로 바꿀 때 true
 - 반환: 없음
@@ -1745,13 +1750,13 @@ finish 을 정의한다
 
 #### finish
 
-`study_note_record_organization/dashboard/js/hero.js:124`
+`study_note_record_organization/dashboard/js/hero.js:125`
 
 ```
 function finish()
 ```
 
-새 이미지에 표시 클래스를 옮기고 전환 중 상태를 해제한다. 클릭 전환은 transition을 끈 뒤 클래스를 바꿔 즉시 교체한다.
+새 이미지에 표시 클래스를 옮기고 전환 중 상태를 해제한다. 클릭 전환은 is-instant로 transition을 끈 뒤 클래스를 바꿔 즉시 교체한다. 클릭 리스너는 그 전에 진행 중인 페이드 애니메이션을 취소한다.
 
 - 인자: 없음
 - 반환: 없음
@@ -1760,22 +1765,23 @@ function finish()
 
 ```
 만약 instant
-  next.style.transition = "none"
-  prev.style.transition = "none"
+  next.classList.add("is-instant")
+  prev.classList.add("is-instant")
 next.classList.add("is-visible")
 prev.classList.remove("is-visible")
-만약 instant
-  void next.offsetWidth
-  next.style.transition = ""
-  prev.style.transition = ""
 showA = next === imgA
 busy = false
+만약 instant
+  requestAnimationFrame(function ()
+    requestAnimationFrame(function ()
+      next.classList.remove("is-instant")
+      prev.classList.remove("is-instant")
 ```
 
 
 #### nextRandom
 
-`study_note_record_organization/dashboard/js/hero.js:157`
+`study_note_record_organization/dashboard/js/hero.js:161`
 
 ```
 function nextRandom()
@@ -1795,7 +1801,7 @@ swapTo(pickIndex())
 
 #### startTimer
 
-`study_note_record_organization/dashboard/js/hero.js:165`
+`study_note_record_organization/dashboard/js/hero.js:169`
 
 ```
 function startTimer()

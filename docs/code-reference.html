@@ -882,9 +882,14 @@ current = pickIndex()
 applyImage(imgA, current)
 imgA.classList.add(&quot;is-visible&quot;)
 stage.addEventListener(&quot;click&quot;, function ()
+  imgA.classList.add(&quot;is-instant&quot;)
+  imgB.classList.add(&quot;is-instant&quot;)
+  imgA.getAnimations().forEach(function (animation)
+    animation.cancel()
+  imgB.getAnimations().forEach(function (animation)
+    animation.cancel()
   swapTo(pickIndex(), true)
-  startTimer()
-startTimer()</pre>
+…</pre>
 <h4>visibleImg</h4>
 <p><code>study_note_record_organization/dashboard/js/hero.js:68</code></p>
 <pre>function visibleImg()</pre>
@@ -923,7 +928,7 @@ imgEl.alt = &quot;학습·과제 기록 갤러리 이미지&quot;</pre>
 <h4>swapTo</h4>
 <p><code>study_note_record_organization/dashboard/js/hero.js:111</code></p>
 <pre>function swapTo(index, instant)</pre>
-<p>숨겨 둔 이미지에 다음 장을 불러온 뒤, 로드가 끝나면 보이는 장을 교체한다. 이미 전환 중이거나 같은 장이면 아무것도 하지 않는다. instant가 참이면 클릭 전환이라 불투명도 애니메이션을 건너뛴다.</p>
+<p>숨겨 둔 이미지에 다음 장을 불러온 뒤, 로드가 끝나면 보이는 장을 교체한다. 이미 전환 중이거나 같은 장이면 아무것도 하지 않는다. instant가 참이면 클릭 전환이라 is-instant로 불투명도 애니메이션을 건너뛴다.</p>
 <ul><li>인자: index: number 보여줄 이미지 인덱스, [instant]: boolean 클릭으로 바로 바꿀 때 true</li><li>반환: 없음</li></ul>
 <p>유사코드</p>
 <pre>만약 busy || index === current) return
@@ -943,31 +948,32 @@ finish 을 정의한다
     next.onerror = null
     busy = false</pre>
 <h4>finish</h4>
-<p><code>study_note_record_organization/dashboard/js/hero.js:124</code></p>
+<p><code>study_note_record_organization/dashboard/js/hero.js:125</code></p>
 <pre>function finish()</pre>
-<p>새 이미지에 표시 클래스를 옮기고 전환 중 상태를 해제한다. 클릭 전환은 transition을 끈 뒤 클래스를 바꿔 즉시 교체한다.</p>
+<p>새 이미지에 표시 클래스를 옮기고 전환 중 상태를 해제한다. 클릭 전환은 is-instant로 transition을 끈 뒤 클래스를 바꿔 즉시 교체한다. 클릭 리스너는 그 전에 진행 중인 페이드 애니메이션을 취소한다.</p>
 <ul><li>인자: 없음</li><li>반환: 없음</li></ul>
 <p>유사코드</p>
 <pre>만약 instant
-  next.style.transition = &quot;none&quot;
-  prev.style.transition = &quot;none&quot;
+  next.classList.add(&quot;is-instant&quot;)
+  prev.classList.add(&quot;is-instant&quot;)
 next.classList.add(&quot;is-visible&quot;)
 prev.classList.remove(&quot;is-visible&quot;)
-만약 instant
-  void next.offsetWidth
-  next.style.transition = &quot;&quot;
-  prev.style.transition = &quot;&quot;
 showA = next === imgA
-busy = false</pre>
+busy = false
+만약 instant
+  requestAnimationFrame(function ()
+    requestAnimationFrame(function ()
+      next.classList.remove(&quot;is-instant&quot;)
+      prev.classList.remove(&quot;is-instant&quot;)</pre>
 <h4>nextRandom</h4>
-<p><code>study_note_record_organization/dashboard/js/hero.js:157</code></p>
+<p><code>study_note_record_organization/dashboard/js/hero.js:161</code></p>
 <pre>function nextRandom()</pre>
 <p>현재와 다른 장을 골라 교체한다.</p>
 <ul><li>인자: 없음</li><li>반환: 없음</li></ul>
 <p>유사코드</p>
 <pre>swapTo(pickIndex())</pre>
 <h4>startTimer</h4>
-<p><code>study_note_record_organization/dashboard/js/hero.js:165</code></p>
+<p><code>study_note_record_organization/dashboard/js/hero.js:169</code></p>
 <pre>function startTimer()</pre>
 <p>자동 전환 타이머를 다시 시작한다. 동작 줄이기가 켜져 있거나 이미지가 한 장이면 타이머를 두지 않는다.</p>
 <ul><li>인자: 없음</li><li>반환: 없음</li></ul>

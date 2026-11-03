@@ -70542,7 +70542,7 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 8pt; line-he
 104      /**
 105       * 숨겨 둔 이미지에 다음 장을 불러온 뒤, 로드가 끝나면 보이는 장을 교체한다.
 106       * 이미 전환 중이거나 같은 장이면 아무것도 하지 않는다.
-107       * instant가 참이면 클릭 전환이라 불투명도 애니메이션을 건너뛴다.
+107       * instant가 참이면 클릭 전환이라 is-instant로 불투명도 애니메이션을 건너뛴다.
 108       * @param {number} index 보여줄 이미지 인덱스
 109       * @param {boolean} [instant] 클릭으로 바로 바꿀 때 true
 110       */
@@ -70557,88 +70557,89 @@ pre { font-family: Consolas, "Malgun Gothic", monospace; font-size: 8pt; line-he
 119  
 120        /**
 121         * 새 이미지에 표시 클래스를 옮기고 전환 중 상태를 해제한다.
-122         * 클릭 전환은 transition을 끈 뒤 클래스를 바꿔 즉시 교체한다.
-123         */
-124        function finish() {
-125          if (instant) {
-126            next.classList.add(&quot;is-instant&quot;);
-127            prev.classList.add(&quot;is-instant&quot;);
-128          }
-129          next.classList.add(&quot;is-visible&quot;);
-130          prev.classList.remove(&quot;is-visible&quot;);
-131          showA = next === imgA;
-132          busy = false;
-133          if (instant) {
-134            requestAnimationFrame(function () {
-135              requestAnimationFrame(function () {
-136                next.classList.remove(&quot;is-instant&quot;);
-137                prev.classList.remove(&quot;is-instant&quot;);
-138              });
-139            });
-140          }
-141        }
-142  
-143        if (next.complete &amp;&amp; next.naturalWidth &gt; 0) {
-144          finish();
-145        } else {
-146          next.onload = function () {
-147            next.onload = null;
-148            finish();
-149          };
-150          next.onerror = function () {
-151            next.onerror = null;
-152            busy = false;
-153          };
-154        }
-155      }
-156  
-157      /**
-158       * 현재와 다른 장을 골라 교체한다.
-159       */
-160      function nextRandom() {
-161        swapTo(pickIndex());
-162      }
-163  
-164      /**
-165       * 자동 전환 타이머를 다시 시작한다.
-166       * 동작 줄이기가 켜져 있거나 이미지가 한 장이면 타이머를 두지 않는다.
-167       */
-168      function startTimer() {
-169        if (timer) clearInterval(timer);
-170        var reduced =
-171          window.matchMedia &amp;&amp;
-172          window.matchMedia(&quot;(prefers-reduced-motion: reduce)&quot;).matches;
-173        if (!reduced &amp;&amp; images.length &gt; 1) {
-174          timer = setInterval(nextRandom, AUTO_MS);
-175        }
-176      }
-177  
-178      current = pickIndex();
-179      applyImage(imgA, current);
-180      imgA.classList.add(&quot;is-visible&quot;);
-181  
-182      stage.addEventListener(&quot;click&quot;, function () {
-183        imgA.classList.add(&quot;is-instant&quot;);
-184        imgB.classList.add(&quot;is-instant&quot;);
-185        imgA.getAnimations().forEach(function (animation) {
-186          animation.cancel();
-187        });
-188        imgB.getAnimations().forEach(function (animation) {
-189          animation.cancel();
-190        });
-191        swapTo(pickIndex(), true);
-192        startTimer();
-193      });
-194  
-195      startTimer();
-196    }
-197  
-198    if (document.readyState === &quot;loading&quot;) {
-199      document.addEventListener(&quot;DOMContentLoaded&quot;, initHero);
-200    } else {
-201      initHero();
-202    }
-203  })();</pre>
+122         * 클릭 전환은 is-instant로 transition을 끈 뒤 클래스를 바꿔 즉시 교체한다.
+123         * 클릭 리스너는 그 전에 진행 중인 페이드 애니메이션을 취소한다.
+124         */
+125        function finish() {
+126          if (instant) {
+127            next.classList.add(&quot;is-instant&quot;);
+128            prev.classList.add(&quot;is-instant&quot;);
+129          }
+130          next.classList.add(&quot;is-visible&quot;);
+131          prev.classList.remove(&quot;is-visible&quot;);
+132          showA = next === imgA;
+133          busy = false;
+134          if (instant) {
+135            requestAnimationFrame(function () {
+136              requestAnimationFrame(function () {
+137                next.classList.remove(&quot;is-instant&quot;);
+138                prev.classList.remove(&quot;is-instant&quot;);
+139              });
+140            });
+141          }
+142        }
+143  
+144        if (next.complete &amp;&amp; next.naturalWidth &gt; 0) {
+145          finish();
+146        } else {
+147          next.onload = function () {
+148            next.onload = null;
+149            finish();
+150          };
+151          next.onerror = function () {
+152            next.onerror = null;
+153            busy = false;
+154          };
+155        }
+156      }
+157  
+158      /**
+159       * 현재와 다른 장을 골라 교체한다.
+160       */
+161      function nextRandom() {
+162        swapTo(pickIndex());
+163      }
+164  
+165      /**
+166       * 자동 전환 타이머를 다시 시작한다.
+167       * 동작 줄이기가 켜져 있거나 이미지가 한 장이면 타이머를 두지 않는다.
+168       */
+169      function startTimer() {
+170        if (timer) clearInterval(timer);
+171        var reduced =
+172          window.matchMedia &amp;&amp;
+173          window.matchMedia(&quot;(prefers-reduced-motion: reduce)&quot;).matches;
+174        if (!reduced &amp;&amp; images.length &gt; 1) {
+175          timer = setInterval(nextRandom, AUTO_MS);
+176        }
+177      }
+178  
+179      current = pickIndex();
+180      applyImage(imgA, current);
+181      imgA.classList.add(&quot;is-visible&quot;);
+182  
+183      stage.addEventListener(&quot;click&quot;, function () {
+184        imgA.classList.add(&quot;is-instant&quot;);
+185        imgB.classList.add(&quot;is-instant&quot;);
+186        imgA.getAnimations().forEach(function (animation) {
+187          animation.cancel();
+188        });
+189        imgB.getAnimations().forEach(function (animation) {
+190          animation.cancel();
+191        });
+192        swapTo(pickIndex(), true);
+193        startTimer();
+194      });
+195  
+196      startTimer();
+197    }
+198  
+199    if (document.readyState === &quot;loading&quot;) {
+200      document.addEventListener(&quot;DOMContentLoaded&quot;, initHero);
+201    } else {
+202      initHero();
+203    }
+204  })();</pre>
 <h2>study_note_record_organization/scripts/build_output.py</h2>
 <pre>   1  # -*- coding: utf-8 -*-
    2  &quot;&quot;&quot;학습 노트와 과제 원본에서 텍스트를 뽑고, 카탈로그와 요약 마크다운을 만든다.&quot;&quot;&quot;
