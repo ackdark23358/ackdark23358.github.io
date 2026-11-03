@@ -2,7 +2,7 @@
 
 ## 이 파일이 맡는 일
 
-`study_note_record_organization/scripts/build_output.py`는 `data/`의 노트와 과제 문서를 읽어 `output/`에 요약 마크다운, `catalog.json`, `index.md`, 추출 텍스트를 쓴다. 끝난 뒤 `build_static_site.py`를 한 번 실행한다. `extract_sources.py`는 이 `main`만 부른다.
+`study_note_record_organization/scripts/build_output.py`는 `data/data_study_note_record_organization/`의 노트와 과제 문서를 읽어 `output/`에 요약 마크다운, `catalog.json`, `index.md`, 추출 텍스트를 쓴다. 끝난 뒤 `build_static_site.py`를 한 번 실행한다. `extract_sources.py`는 이 `main`만 부른다.
 
 과제 프로그램의 VB 원문을 이 코드북에서 풀지는 않는다. 이 스크립트가 그 파일을 텍스트로 읽어 캐시에 넣는 경로만 적는다. 학번과 이름은 마스크 문자로만 설명한다.
 

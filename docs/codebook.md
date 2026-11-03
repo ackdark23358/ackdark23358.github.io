@@ -421,7 +421,7 @@ HTML 조각은 `#hero`, `#hero-stage`, `#hero-img-a`, `#hero-img-b`다. 두 이�
 
 ## 이 파일이 맡는 일
 
-`study_note_record_organization/scripts/build_output.py`는 `data/`의 노트와 과제 문서를 읽어 `output/`에 요약 마크다운, `catalog.json`, `index.md`, 추출 텍스트를 쓴다. 끝난 뒤 `build_static_site.py`를 한 번 실행한다. `extract_sources.py`는 이 `main`만 부른다.
+`study_note_record_organization/scripts/build_output.py`는 `data/data_study_note_record_organization/`의 노트와 과제 문서를 읽어 `output/`에 요약 마크다운, `catalog.json`, `index.md`, 추출 텍스트를 쓴다. 끝난 뒤 `build_static_site.py`를 한 번 실행한다. `extract_sources.py`는 이 `main`만 부른다.
 
 과제 프로그램의 VB 원문을 이 코드북에서 풀지는 않는다. 이 스크립트가 그 파일을 텍스트로 읽어 캐시에 넣는 경로만 적는다. 학번과 이름은 마스크 문자로만 설명한다.
 
@@ -553,7 +553,7 @@ HTML 조각은 `#hero`, `#hero-stage`, `#hero-img-a`, `#hero-img-b`다. 두 이�
 
 ### 원본 읽기
 
-`resolve_source_path`는 `_extracted/`로 시작하면 `output/` 아래로, `data/`로 시작하면 저장소 루트 아래로 경로를 만든다. 둘 다 아니면 `None`이다.
+`resolve_source_path`는 `_extracted/`로 시작하면 `output/` 아래로, `data/`로 시작하면 `data/data_study_note_record_organization/` 아래로 경로를 만든다. 카탈로그에 적힌 `data/파일명` 키는 그대로다. 둘 다 아니면 `None`이다.
 
 `read_text_file`은 `utf-8`, `utf-8-sig`, `cp949` 순으로 읽는다. 모두 실패하면 깨진 글자를 대체해 utf-8로 읽는다.
 
@@ -587,7 +587,7 @@ HTML 조각은 `#hero`, `#hero-stage`, `#hero-img-a`, `#hero-img-b`다. 두 이�
 
 ## 이 파일이 부르는 다른 파일
 
-`output/catalog.json`, `output/study`와 `output/assignment`의 마크다운, `output/_extracted` 또는 `data/`의 원본, `data/image`를 읽는다. `dashboard/js/data.js`, `dashboard/js/sources/*.json`, `dashboard/js/hero-images.js`, `dashboard/index.html`을 쓴다. `app.js`와 `hero.js`의 내용은 바꾸지 않는다.
+`output/catalog.json`, `output/study`와 `output/assignment`의 마크다운, `output/_extracted` 또는 `data/data_study_note_record_organization/`의 원본, `study_note_record_organization/data/image`를 읽는다. `dashboard/js/data.js`, `dashboard/js/sources/*.json`, `dashboard/js/hero-images.js`, `dashboard/index.html`을 쓴다. `app.js`와 `hero.js`의 내용은 바꾸지 않는다.
 
 # 문서 생성 스크립트
 
@@ -710,7 +710,7 @@ HTML, CSS, JS, Python 소스를 찾아 각 줄마다 행 번호를 매긴 뒤 �
 ### 프로젝트 카드 구조 (`.project-card`)
 
 각 카드는 독립적인 시맨틱 `<article>` 태그로 구성되며 다음과 같은 정보 블록을 표준화하여 배치한다:
-- `.project-card__eyebrow`: 프로젝트 번호와 작업 일자 (예: `PROJ_01 · 2025.02.17`)
+- `.project-card__index`: 프로젝트 번호만 적는다 (예: `PROJ_01`). 작업 일자와 본문·푸터의 확인 날짜는 빼 두었다.
 - `.project-card__title`: 프로젝트 명칭
 - `.field-label` 및 `.field-body`: 프로젝트 소개, 간단 설명, 실행 환경, 핵심 기능
 - `.pill-list`: 사용한 언어, 프레임워크, AI 도구 태그 목록 (Python, Express, Cursor 등)

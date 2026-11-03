@@ -5,7 +5,7 @@
 
 ## 프로젝트 구성
 
-루트는 취업 지원용 포트폴리오 페이지다. 이력서, 자기소개, 명함은 각각 폴더로 나뉘고, 학습 노트와 과제 원본은 study_note_record_organization 안에 있다. 그 폴더의 파이썬 스크립트가 원본을 요약 마크다운으로 바꾸고, 대시보드가 읽는 data.js와 원본 JSON을 만든다.
+루트는 취업 지원용 포트폴리오 페이지다. 이력서, 자기소개, 명함은 각각 폴더로 나뉘고, 학습 노트와 과제 원본은 data/data_study_note_record_organization 안에 있다. 그 폴더의 파이썬 스크립트가 원본을 요약 마크다운으로 바꾸고, 대시보드가 읽는 data.js와 원본 JSON을 만든다.
 
 - index.html, css/, js/main.js — 메인 포트폴리오
 - cv/ — 이력서
@@ -14,7 +14,9 @@
 - study_note_record_organization/dashboard/ — 학습·과제 카드 화면
 - portfolio_achieve/ — 프로젝트 아카이브 (PROJ_01~PROJ_21)
 - study_note_record_organization/scripts/ — 요약과 정적 데이터 빌드
-- study_note_record_organization/data/ — 노트, 과제, 이미지 원본
+- data/data_study_note_record_organization/ — 노트, 과제, 이미지 원본
+- data/data_portfolio_achieve/ — 프로젝트 아카이브 원본
+- study_note_record_organization/data/image/ — 대시보드가 읽는 히어로 갤러리
 
 
 ## 디렉터리 지도
@@ -28,7 +30,7 @@
 - portfolio_achieve/ — 프로젝트 아카이브(PROJ_01~PROJ_21 메타 카드), 스타일(archive.css) 및 스크립트(site.js)
 - study_note_record_organization/scripts — build_output.py, build_static_site.py, extract_sources.py
 - study_note_record_organization/output — 빌드가 쓰는 요약 마크다운과 catalog.json
-- study_note_record_organization/data/과제분류하기 — 과제 문서 원본. 코드 파일은 이 문서에서 빼 둔다
+- data/data_study_note_record_organization/과제분류하기 — 과제 문서 원본. 코드 파일은 이 문서에서 빼 둔다
 - docs/ — 기술명세서, 코드북, 코드 설명, 소스 번들, 포트폴리오 북 빌드 스크립트
 
 
@@ -1605,6 +1607,7 @@ pickIndex 을 정의한다
 * @param {number} index 이미지 목록 인덱스
 applyImage 을 정의한다
 * @param {number} index 보여줄 이미지 인덱스
+* @param {boolean} [instant] 클릭으로 바로 바꿀 때 true
 swapTo 을 정의한다
 nextRandom 을 정의한다
 startTimer 을 정의한다
@@ -1612,7 +1615,7 @@ current = pickIndex()
 applyImage(imgA, current)
 imgA.classList.add("is-visible")
 stage.addEventListener("click", function ()
-  nextRandom()
+  swapTo(pickIndex(), true)
   startTimer()
 startTimer()
 ```
@@ -1707,15 +1710,15 @@ imgEl.alt = "학습·과제 기록 갤러리 이미지"
 
 #### swapTo
 
-`study_note_record_organization/dashboard/js/hero.js:109`
+`study_note_record_organization/dashboard/js/hero.js:111`
 
 ```
-function swapTo(index)
+function swapTo(index, instant)
 ```
 
-숨겨 둔 이미지에 다음 장을 불러온 뒤, 로드가 끝나면 보이는 장을 교체한다. 이미 전환 중이거나 같은 장이면 아무것도 하지 않는다.
+숨겨 둔 이미지에 다음 장을 불러온 뒤, 로드가 끝나면 보이는 장을 교체한다. 이미 전환 중이거나 같은 장이면 아무것도 하지 않는다. instant가 참이면 클릭 전환이라 불투명도 애니메이션을 건너뛴다.
 
-- 인자: index: number 보여줄 이미지 인덱스
+- 인자: index: number 보여줄 이미지 인덱스, [instant]: boolean 클릭으로 바로 바꿀 때 true
 - 반환: 없음
 
 유사코드
@@ -1742,13 +1745,13 @@ finish 을 정의한다
 
 #### finish
 
-`study_note_record_organization/dashboard/js/hero.js:121`
+`study_note_record_organization/dashboard/js/hero.js:124`
 
 ```
 function finish()
 ```
 
-새 이미지에 표시 클래스를 옮기고 전환 중 상태를 해제한다.
+새 이미지에 표시 클래스를 옮기고 전환 중 상태를 해제한다. 클릭 전환은 transition을 끈 뒤 클래스를 바꿔 즉시 교체한다.
 
 - 인자: 없음
 - 반환: 없음
@@ -1756,8 +1759,15 @@ function finish()
 유사코드
 
 ```
+만약 instant
+  next.style.transition = "none"
+  prev.style.transition = "none"
 next.classList.add("is-visible")
 prev.classList.remove("is-visible")
+만약 instant
+  void next.offsetWidth
+  next.style.transition = ""
+  prev.style.transition = ""
 showA = next === imgA
 busy = false
 ```
@@ -1765,7 +1775,7 @@ busy = false
 
 #### nextRandom
 
-`study_note_record_organization/dashboard/js/hero.js:145`
+`study_note_record_organization/dashboard/js/hero.js:157`
 
 ```
 function nextRandom()
@@ -1785,7 +1795,7 @@ swapTo(pickIndex())
 
 #### startTimer
 
-`study_note_record_organization/dashboard/js/hero.js:153`
+`study_note_record_organization/dashboard/js/hero.js:165`
 
 ```
 function startTimer()
@@ -2072,6 +2082,59 @@ queryAll(".section[id], .hero[id]").forEach(function (section)
 ```
 
 
+#### initScrollHint
+
+`portfolio_achieve/js/site.js:137`
+
+```
+function initScrollHint()
+```
+
+설명이 없습니다.
+
+- 인자: 없음
+- 반환: 없음
+
+유사코드
+
+```
+lead ← document.querySelector(".hero__lead")
+hint ← document.querySelector("[data-scroll-hint]")
+만약 !lead || !hint) return
+setHint 을 정의한다
+만약 typeof IntersectionObserver !== "function"
+  setHint(true)
+  반환
+observer ← new IntersectionObserver(
+function (entries)
+  entries.forEach(function (entry)
+    setHint(entry.isIntersecting)
+{ rootMargin: "-64px 0px 0px 0px", threshold: 0 }
+observer.observe(lead)
+```
+
+
+#### setHint
+
+`portfolio_achieve/js/site.js:142`
+
+```
+function setHint(on)
+```
+
+설명이 없습니다.
+
+- 인자: on
+- 반환: 없음
+
+유사코드
+
+```
+hint.classList.toggle("is-on", on)
+hint.setAttribute("aria-hidden", on ? "false" : "true")
+```
+
+
 ## 빌드 스크립트
 
 scripts 폴더와 docs 폴더의 파이썬 스크립트가 학습 원본 요약, 대시보드 데이터 갱신, 기술문서 및 포트폴리오 북 생성을 맡는다. 아래 설명은 각 함수와 클래스 독스트링이다.
@@ -2089,7 +2152,7 @@ build_output.main을 호출해 원본 추출, 요약 마크다운, 정적 사이
 
 #### MLStripper
 
-`study_note_record_organization/scripts/build_output.py:33`
+`study_note_record_organization/scripts/build_output.py:34`
 
 ```
 class MLStripper(HTMLParser)
@@ -2112,7 +2175,7 @@ HTML 태그 사이의 글자만 모아 순수 텍스트로 만드는 파서.
 
 #### MLStripper.__init__
 
-`study_note_record_organization/scripts/build_output.py:35`
+`study_note_record_organization/scripts/build_output.py:36`
 
 ```
 def __init__(self)
@@ -2133,7 +2196,7 @@ self.parts ← []
 
 #### MLStripper.handle_data
 
-`study_note_record_organization/scripts/build_output.py:40`
+`study_note_record_organization/scripts/build_output.py:41`
 
 ```
 def handle_data(self, data: str) -> None
@@ -2153,7 +2216,7 @@ self.parts.append(data)
 
 #### MLStripper.get_text
 
-`study_note_record_organization/scripts/build_output.py:44`
+`study_note_record_organization/scripts/build_output.py:45`
 
 ```
 def get_text(self) -> str
@@ -2173,7 +2236,7 @@ def get_text(self) -> str
 
 #### read_text_file
 
-`study_note_record_organization/scripts/build_output.py:49`
+`study_note_record_organization/scripts/build_output.py:50`
 
 ```
 def read_text_file(path: Path) -> str
@@ -2198,7 +2261,7 @@ utf-8, utf-8-sig, cp949 순으로 텍스트 파일을 읽는다. 모두 실패�
 
 #### extract_docx
 
-`study_note_record_organization/scripts/build_output.py:59`
+`study_note_record_organization/scripts/build_output.py:60`
 
 ```
 def extract_docx(path: Path) -> str
@@ -2223,7 +2286,7 @@ doc ← Document(str(path))
 
 #### extract_pdf
 
-`study_note_record_organization/scripts/build_output.py:69`
+`study_note_record_organization/scripts/build_output.py:70`
 
 ```
 def extract_pdf(path: Path) -> str
@@ -2251,7 +2314,7 @@ text_parts ← []
 
 #### extract_html
 
-`study_note_record_organization/scripts/build_output.py:82`
+`study_note_record_organization/scripts/build_output.py:83`
 
 ```
 def extract_html(path: Path) -> str
@@ -2277,7 +2340,7 @@ stripper ← MLStripper()
 
 #### mask_secrets
 
-`study_note_record_organization/scripts/build_output.py:122`
+`study_note_record_organization/scripts/build_output.py:123`
 
 ```
 def mask_secrets(text: str, mask: str=KEY_MASK) -> str
@@ -2303,7 +2366,7 @@ def mask_secrets(text: str, mask: str=KEY_MASK) -> str
 
 #### extract_source
 
-`study_note_record_organization/scripts/build_output.py:133`
+`study_note_record_organization/scripts/build_output.py:134`
 
 ```
 def extract_source(path: Path) -> str
@@ -2339,7 +2402,7 @@ raw ← ''
 
 #### source_href
 
-`study_note_record_organization/scripts/build_output.py:150`
+`study_note_record_organization/scripts/build_output.py:151`
 
 ```
 def source_href(path: str) -> str
@@ -2362,7 +2425,7 @@ rel ← path.replace('\\', '/')
 
 #### extracted_href
 
-`study_note_record_organization/scripts/build_output.py:158`
+`study_note_record_organization/scripts/build_output.py:159`
 
 ```
 def extracted_href(path: str) -> str
@@ -2383,7 +2446,7 @@ safe ← re.sub('[^\\w\\-]', '_', path)[:120]
 
 #### source_link_target
 
-`study_note_record_organization/scripts/build_output.py:164`
+`study_note_record_organization/scripts/build_output.py:165`
 
 ```
 def source_link_target(s: SourceRef) -> tuple[str, str]
@@ -2416,7 +2479,7 @@ ext ← p.suffix.lower()
 
 #### is_assignment_path
 
-`study_note_record_organization/scripts/build_output.py:192`
+`study_note_record_organization/scripts/build_output.py:193`
 
 ```
 def is_assignment_path(rel_path: str) -> bool
@@ -2436,7 +2499,7 @@ def is_assignment_path(rel_path: str) -> bool
 
 #### mask_assignment_privacy
 
-`study_note_record_organization/scripts/build_output.py:197`
+`study_note_record_organization/scripts/build_output.py:198`
 
 ```
 def mask_assignment_privacy(text: str) -> str
@@ -2463,7 +2526,7 @@ text ← re.sub('_\\d{7,8}_', f'_{STUDENT_ID_MASK}_', text)
 
 #### cache_extract
 
-`study_note_record_organization/scripts/build_output.py:217`
+`study_note_record_organization/scripts/build_output.py:218`
 
 ```
 def cache_extract(rel_path: str, content: str) -> Path
@@ -2488,7 +2551,7 @@ out.write_text(clean_content or '[empty]', encoding='utf-8')
 
 #### parse_unit
 
-`study_note_record_organization/scripts/build_output.py:227`
+`study_note_record_organization/scripts/build_output.py:228`
 
 ```
 def parse_unit(filename: str) -> str
@@ -2513,7 +2576,7 @@ name ← filename.replace('.txt', '')
 
 #### sort_key_unit
 
-`study_note_record_organization/scripts/build_output.py:244`
+`study_note_record_organization/scripts/build_output.py:245`
 
 ```
 def sort_key_unit(unit: str) -> tuple
@@ -2543,7 +2606,7 @@ n ← int(nums[0]) if nums else 99
 
 #### SourceRef
 
-`study_note_record_organization/scripts/build_output.py:260`
+`study_note_record_organization/scripts/build_output.py:261`
 
 ```
 class SourceRef
@@ -2566,7 +2629,7 @@ class SourceRef
 
 #### CatalogItem
 
-`study_note_record_organization/scripts/build_output.py:268`
+`study_note_record_organization/scripts/build_output.py:269`
 
 ```
 class CatalogItem
@@ -2595,7 +2658,7 @@ class CatalogItem
 
 #### CatalogItem.load_sources
 
-`study_note_record_organization/scripts/build_output.py:279`
+`study_note_record_organization/scripts/build_output.py:280`
 
 ```
 def load_sources(self) -> None
@@ -2634,7 +2697,7 @@ def load_sources(self) -> None
 
 #### normalize_study_title
 
-`study_note_record_organization/scripts/build_output.py:631`
+`study_note_record_organization/scripts/build_output.py:632`
 
 ```
 def normalize_study_title(filename: str) -> str
@@ -2662,7 +2725,7 @@ n ← re.sub('\\s+통합\\(단순합치기\\).*$', '', n)
 
 #### collect_study_groups
 
-`study_note_record_organization/scripts/build_output.py:649`
+`study_note_record_organization/scripts/build_output.py:650`
 
 ```
 def collect_study_groups() -> dict[str, list[str]]
@@ -2701,7 +2764,7 @@ merged ← {}
 
 #### build_study_catalog
 
-`study_note_record_organization/scripts/build_output.py:683`
+`study_note_record_organization/scripts/build_output.py:684`
 
 ```
 def build_study_catalog() -> list[CatalogItem]
@@ -2743,7 +2806,7 @@ items ← []
 
 #### find_assign_file
 
-`study_note_record_organization/scripts/build_output.py:734`
+`study_note_record_organization/scripts/build_output.py:735`
 
 ```
 def find_assign_file(files: list[str], keywords: list[str], used: set[str], exclude_contains: list[str] | None=None) -> str | None
@@ -2772,7 +2835,7 @@ excludes ← exclude_contains or []
 
 #### build_assignment_catalog
 
-`study_note_record_organization/scripts/build_output.py:748`
+`study_note_record_organization/scripts/build_output.py:749`
 
 ```
 def build_assignment_catalog() -> list[CatalogItem]
@@ -2814,7 +2877,7 @@ add('windows-programming', '윈도우프로그래밍2', ['윈도우프로그래�
 
 #### build_assignment_catalog.add
 
-`study_note_record_organization/scripts/build_output.py:757`
+`study_note_record_organization/scripts/build_output.py:758`
 
 ```
 def add(slug: str, title: str, keywords: list[str], tags: list[str], exclude_contains: list[str] | None=None, extra_sources: list[SourceRef] | None=None)
@@ -2841,7 +2904,7 @@ items.append(CatalogItem(id=f'assignment-{slug}', type='assignment', ca…
 
 #### extract_meta_assignment
 
-`study_note_record_organization/scripts/build_output.py:812`
+`study_note_record_organization/scripts/build_output.py:813`
 
 ```
 def extract_meta_assignment(text: str) -> dict[str, str]
@@ -2867,7 +2930,7 @@ patterns ← [('학번', '학\\s*번\\s*[:：]\\s*(\\d+)'), ('수강번호', '�
 
 #### _assignment_line_inner
 
-`study_note_record_organization/scripts/build_output.py:850`
+`study_note_record_organization/scripts/build_output.py:851`
 
 ```
 def _assignment_line_inner(line: str) -> str
@@ -2887,7 +2950,7 @@ def _assignment_line_inner(line: str) -> str
 
 #### _is_assignment_meta_line
 
-`study_note_record_organization/scripts/build_output.py:855`
+`study_note_record_organization/scripts/build_output.py:856`
 
 ```
 def _is_assignment_meta_line(line: str) -> bool
@@ -2919,7 +2982,7 @@ inner ← _assignment_line_inner(s)
 
 #### strip_assignment_cover_block
 
-`study_note_record_organization/scripts/build_output.py:872`
+`study_note_record_organization/scripts/build_output.py:873`
 
 ```
 def strip_assignment_cover_block(text: str) -> str
@@ -2977,7 +3040,7 @@ skip_topic_lines ← False
 
 #### strip_assignment_meta_text
 
-`study_note_record_organization/scripts/build_output.py:916`
+`study_note_record_organization/scripts/build_output.py:917`
 
 ```
 def strip_assignment_meta_text(text: str) -> str
@@ -3015,7 +3078,7 @@ kept ← []
 
 #### is_assignment_meta_bullet
 
-`study_note_record_organization/scripts/build_output.py:952`
+`study_note_record_organization/scripts/build_output.py:953`
 
 ```
 def is_assignment_meta_bullet(bullet: str) -> bool
@@ -3049,7 +3112,7 @@ inner ← _assignment_line_inner(s)
 
 #### summarize_assignment_bullets
 
-`study_note_record_organization/scripts/build_output.py:971`
+`study_note_record_organization/scripts/build_output.py:972`
 
 ```
 def summarize_assignment_bullets(text: str, max_items: int=10) -> list[str]
@@ -3078,7 +3141,7 @@ out ← []
 
 #### _clip_prose
 
-`study_note_record_organization/scripts/build_output.py:985`
+`study_note_record_organization/scripts/build_output.py:986`
 
 ```
 def _clip_prose(s: str, max_len: int=200) -> str
@@ -3105,7 +3168,7 @@ clipped ← s[:max_len - 1].rsplit(' ', 1)[0]
 
 #### _is_readable_assignment_prose
 
-`study_note_record_organization/scripts/build_output.py:997`
+`study_note_record_organization/scripts/build_output.py:998`
 
 ```
 def _is_readable_assignment_prose(line: str) -> bool
@@ -3130,7 +3193,7 @@ s ← line.strip()
 
 #### extract_assignment_points
 
-`study_note_record_organization/scripts/build_output.py:1007`
+`study_note_record_organization/scripts/build_output.py:1008`
 
 ```
 def extract_assignment_points(text: str, max_items: int=15) -> list[str]
@@ -3165,7 +3228,7 @@ seen ← set()
 
 #### _split_assignment_sections
 
-`study_note_record_organization/scripts/build_output.py:1027`
+`study_note_record_organization/scripts/build_output.py:1028`
 
 ```
 def _split_assignment_sections(text: str) -> dict[str, str]
@@ -3199,7 +3262,7 @@ active ← 'intro'
 
 #### _has_assignment_section_markers
 
-`study_note_record_organization/scripts/build_output.py:1046`
+`study_note_record_organization/scripts/build_output.py:1047`
 
 ```
 def _has_assignment_section_markers(text: str) -> bool
@@ -3219,7 +3282,7 @@ def _has_assignment_section_markers(text: str) -> bool
 
 #### _extract_assignment_topics
 
-`study_note_record_organization/scripts/build_output.py:1053`
+`study_note_record_organization/scripts/build_output.py:1054`
 
 ```
 def _extract_assignment_topics(text: str) -> list[str]
@@ -3276,7 +3339,7 @@ prefer ← False
 
 #### _assignment_summary_filler
 
-`study_note_record_organization/scripts/build_output.py:1095`
+`study_note_record_organization/scripts/build_output.py:1096`
 
 ```
 def _assignment_summary_filler(item: CatalogItem, index: int) -> str
@@ -3297,7 +3360,7 @@ fillers ← [f'{item.title} 총괄과제에서 요구한 주제랑 형식에 맞
 
 #### _sentence_from_section
 
-`study_note_record_organization/scripts/build_output.py:1113`
+`study_note_record_organization/scripts/build_output.py:1114`
 
 ```
 def _sentence_from_section(points: list[str], item: CatalogItem, section_name: str) -> str
@@ -3321,7 +3384,7 @@ core ← _clip_prose(points[0], 52).rstrip('.')
 
 #### _compose_summary_from_topics
 
-`study_note_record_organization/scripts/build_output.py:1122`
+`study_note_record_organization/scripts/build_output.py:1123`
 
 ```
 def _compose_summary_from_topics(item: CatalogItem, topics: list[str]) -> list[str]
@@ -3345,7 +3408,7 @@ picks ← topics[:3]
 
 #### _sentence_from_points
 
-`study_note_record_organization/scripts/build_output.py:1135`
+`study_note_record_organization/scripts/build_output.py:1136`
 
 ```
 def _sentence_from_points(points: list[str], opener: str, fallback: str='') -> str
@@ -3369,7 +3432,7 @@ core ← _clip_prose(points[0], 52).rstrip('.')
 
 #### build_assignment_content_summary
 
-`study_note_record_organization/scripts/build_output.py:1144`
+`study_note_record_organization/scripts/build_output.py:1145`
 
 ```
 def build_assignment_content_summary(item: CatalogItem, all_text: str) -> list[str]
@@ -3429,7 +3492,7 @@ openers ← ['앞부분에서는', '중간에서는', '마무리에서는']
 
 #### is_prose_line
 
-`study_note_record_organization/scripts/build_output.py:1222`
+`study_note_record_organization/scripts/build_output.py:1223`
 
 ```
 def is_prose_line(line: str) -> bool
@@ -3461,7 +3524,7 @@ ascii_ratio ← sum((1 for c in s if ord(c) < 128)) / len(s)
 
 #### extract_study_points
 
-`study_note_record_organization/scripts/build_output.py:1239`
+`study_note_record_organization/scripts/build_output.py:1240`
 
 ```
 def extract_study_points(text: str, max_items: int=8) -> list[str]
@@ -3495,7 +3558,7 @@ seen ← set()
 
 #### soften_sentence
 
-`study_note_record_organization/scripts/build_output.py:1258`
+`study_note_record_organization/scripts/build_output.py:1259`
 
 ```
 def soften_sentence(s: str) -> str
@@ -3519,7 +3582,7 @@ s ← re.sub('\\s*등의\\s*$', '', s)
 
 #### weave_narrative
 
-`study_note_record_organization/scripts/build_output.py:1267`
+`study_note_record_organization/scripts/build_output.py:1268`
 
 ```
 def weave_narrative(opener: str, points: list[str], fallback: str='') -> str
@@ -3549,7 +3612,7 @@ rest ← ' '.join(cleaned[3:6])
 
 #### _phase_unit_narratives
 
-`study_note_record_organization/scripts/build_output.py:1287`
+`study_note_record_organization/scripts/build_output.py:1288`
 
 ```
 def _phase_unit_narratives(item: CatalogItem) -> list[tuple[str, str]]
@@ -3592,7 +3655,7 @@ blocks ← []
 
 #### build_study_narrative
 
-`study_note_record_organization/scripts/build_output.py:1433`
+`study_note_record_organization/scripts/build_output.py:1434`
 
 ```
 def build_study_narrative(item: CatalogItem) -> dict[str, Any]
@@ -3625,7 +3688,7 @@ reflection ← f'돌이켜 보면 {item.title}에서 {item.summary}와 관련된
 
 #### summarize_bullets
 
-`study_note_record_organization/scripts/build_output.py:1473`
+`study_note_record_organization/scripts/build_output.py:1474`
 
 ```
 def summarize_bullets(text: str, max_items: int=10) -> list[str]
@@ -3667,7 +3730,7 @@ out ← []
 
 #### make_overview
 
-`study_note_record_organization/scripts/build_output.py:1498`
+`study_note_record_organization/scripts/build_output.py:1499`
 
 ```
 def make_overview(item: CatalogItem, bullets: list[str]) -> str
@@ -3692,7 +3755,7 @@ def make_overview(item: CatalogItem, bullets: list[str]) -> str
 
 #### render_windows_programming1_markdown
 
-`study_note_record_organization/scripts/build_output.py:1518`
+`study_note_record_organization/scripts/build_output.py:1519`
 
 ```
 def render_windows_programming1_markdown(item: CatalogItem) -> str
@@ -3713,7 +3776,7 @@ lines ← ['---', f'id: {item.id}', f'type: {item.type}', f'category: {item.cate
 
 #### render_markdown
 
-`study_note_record_organization/scripts/build_output.py:1573`
+`study_note_record_organization/scripts/build_output.py:1574`
 
 ```
 def render_markdown(item: CatalogItem) -> str
@@ -3773,7 +3836,7 @@ lines.append(overview + '\n')
 
 #### main
 
-`study_note_record_organization/scripts/build_output.py:1657`
+`study_note_record_organization/scripts/build_output.py:1658`
 
 ```
 def main() -> None
@@ -3835,7 +3898,7 @@ print('Done.')
 
 #### mask_secrets
 
-`study_note_record_organization/scripts/build_static_site.py:51`
+`study_note_record_organization/scripts/build_static_site.py:53`
 
 ```
 def mask_secrets(text: str, mask: str=KEY_MASK) -> str
@@ -3861,7 +3924,7 @@ def mask_secrets(text: str, mask: str=KEY_MASK) -> str
 
 #### is_assignment_path
 
-`study_note_record_organization/scripts/build_static_site.py:67`
+`study_note_record_organization/scripts/build_static_site.py:69`
 
 ```
 def is_assignment_path(rel_path: str) -> bool
@@ -3881,7 +3944,7 @@ def is_assignment_path(rel_path: str) -> bool
 
 #### mask_assignment_privacy
 
-`study_note_record_organization/scripts/build_static_site.py:72`
+`study_note_record_organization/scripts/build_static_site.py:74`
 
 ```
 def mask_assignment_privacy(text: str) -> str
@@ -3908,7 +3971,7 @@ text ← re.sub('_\\d{7,8}_', f'_{STUDENT_ID_MASK}_', text)
 
 #### parse_frontmatter
 
-`study_note_record_organization/scripts/build_static_site.py:92`
+`study_note_record_organization/scripts/build_static_site.py:94`
 
 ```
 def parse_frontmatter(raw: str) -> tuple[dict, str]
@@ -3966,7 +4029,7 @@ source_item ← None
 
 #### md_to_html
 
-`study_note_record_organization/scripts/build_static_site.py:135`
+`study_note_record_organization/scripts/build_static_site.py:137`
 
 ```
 def md_to_html(body: str) -> str
@@ -4009,7 +4072,7 @@ def md_to_html(body: str) -> str
 
 #### _esc
 
-`study_note_record_organization/scripts/build_static_site.py:169`
+`study_note_record_organization/scripts/build_static_site.py:171`
 
 ```
 def _esc(s: str) -> str
@@ -4029,7 +4092,7 @@ HTML에 넣을 문자열의 &, <, >, 따옴표를 이스케이프한다.
 
 #### _inline_md
 
-`study_note_record_organization/scripts/build_static_site.py:179`
+`study_note_record_organization/scripts/build_static_site.py:181`
 
 ```
 def _inline_md(s: str) -> str
@@ -4053,7 +4116,7 @@ s ← re.sub('\\[([^\\]]+)\\]\\((/[^)]+)\\)', '<a href="\\2">\\1</a>', s)
 
 #### normalize_source_key
 
-`study_note_record_organization/scripts/build_static_site.py:192`
+`study_note_record_organization/scripts/build_static_site.py:194`
 
 ```
 def normalize_source_key(key: str) -> str
@@ -4078,7 +4141,7 @@ prev ← None
 
 #### rewrite_source_links
 
-`study_note_record_organization/scripts/build_static_site.py:202`
+`study_note_record_organization/scripts/build_static_site.py:204`
 
 ```
 def rewrite_source_links(html: str, pending: set[str]) -> str
@@ -4099,7 +4162,7 @@ repl 을 정의한다
 
 #### rewrite_source_links.repl
 
-`study_note_record_organization/scripts/build_static_site.py:204`
+`study_note_record_organization/scripts/build_static_site.py:206`
 
 ```
 def repl(m: re.Match) -> str
@@ -4127,13 +4190,13 @@ attrs ← m.group(2) or ''
 
 #### resolve_source_path
 
-`study_note_record_organization/scripts/build_static_site.py:224`
+`study_note_record_organization/scripts/build_static_site.py:226`
 
 ```
 def resolve_source_path(key: str) -> Path | None
 ```
 
-원본 키를 output/_extracted 또는 저장소 data 아래의 실제 파일 경로로 바꾼다.
+원본 키를 output/_extracted 또는 data/data_study_note_record_organization 아래 파일로 바꾼다.
 
 - 인자: key: str
 - 반환: Path | None
@@ -4145,14 +4208,14 @@ key ← normalize_source_key(key)
 만약 key.startswith('_extracted/')
   반환 OUT / key
 만약 key.startswith('data/')
-  반환 ROOT / key
+  반환 SOURCE_DATA / key[len('data/'):]
 반환 None
 ```
 
 
 #### read_text_file
 
-`study_note_record_organization/scripts/build_static_site.py:234`
+`study_note_record_organization/scripts/build_static_site.py:236`
 
 ```
 def read_text_file(path: Path) -> str
@@ -4177,7 +4240,7 @@ utf-8, utf-8-sig, cp949 순으로 읽고, 실패하면 깨진 글자를 대체�
 
 #### read_source_text
 
-`study_note_record_organization/scripts/build_static_site.py:244`
+`study_note_record_organization/scripts/build_static_site.py:246`
 
 ```
 def read_source_text(key: str) -> str | None
@@ -4207,7 +4270,7 @@ text ← mask_secrets(text)
 
 #### collect_hero_images
 
-`study_note_record_organization/scripts/build_static_site.py:259`
+`study_note_record_organization/scripts/build_static_site.py:261`
 
 ```
 def collect_hero_images() -> list[str]
@@ -4236,7 +4299,7 @@ paths ← []
 
 #### write_hero_images_js
 
-`study_note_record_organization/scripts/build_static_site.py:273`
+`study_note_record_organization/scripts/build_static_site.py:275`
 
 ```
 def write_hero_images_js(js_dir: Path) -> int
@@ -4259,7 +4322,7 @@ content ← 'window.HERO_IMAGES = ' + json.dumps(images, ensure_ascii=False) + '
 
 #### source_chunk_filename
 
-`study_note_record_organization/scripts/build_static_site.py:281`
+`study_note_record_organization/scripts/build_static_site.py:283`
 
 ```
 def source_chunk_filename(key: str, text: str) -> str
@@ -4281,7 +4344,7 @@ content_digest ← hashlib.sha256(text.encode('utf-8')).hexdigest()[:8]
 
 #### source_build_id
 
-`study_note_record_organization/scripts/build_static_site.py:288`
+`study_note_record_organization/scripts/build_static_site.py:290`
 
 ```
 def source_build_id(source_map: dict[str, str]) -> str
@@ -4302,7 +4365,7 @@ payload ← '|'.join((f'{k}:{v}' for k, v in sorted(source_map.items())))
 
 #### stamp_index_scripts
 
-`study_note_record_organization/scripts/build_static_site.py:294`
+`study_note_record_organization/scripts/build_static_site.py:296`
 
 ```
 def stamp_index_scripts(build_id: str) -> None
@@ -4332,7 +4395,7 @@ index_path.write_text(html, encoding='utf-8')
 
 #### assert_under_github_limit
 
-`study_note_record_organization/scripts/build_static_site.py:320`
+`study_note_record_organization/scripts/build_static_site.py:322`
 
 ```
 def assert_under_github_limit(path: Path, label: str) -> None
@@ -4355,7 +4418,7 @@ size ← path.stat().st_size
 
 #### collect_catalog
 
-`study_note_record_organization/scripts/build_static_site.py:330`
+`study_note_record_organization/scripts/build_static_site.py:332`
 
 ```
 def collect_catalog(catalog_data: dict) -> list[dict]
@@ -4378,7 +4441,7 @@ items ← []
 
 #### build_site
 
-`study_note_record_organization/scripts/build_static_site.py:348`
+`study_note_record_organization/scripts/build_static_site.py:350`
 
 ```
 def build_site() -> None
@@ -4438,7 +4501,7 @@ css_dir.mkdir(parents=True, exist_ok=True)
 
 #### main
 
-`study_note_record_organization/scripts/build_static_site.py:422`
+`study_note_record_organization/scripts/build_static_site.py:424`
 
 ```
 def main() -> None
@@ -4833,4 +4896,1185 @@ data 폴더의 노트, 과제 문서, 이미지다. 함수가 없어 파일마�
 
 ### .docx
 
-- study_note_record_organization/data/바로바로 바이브 코딩 with 커서 AI 독서노트.docx — 독서 노트
+- data/data_study_note_record_organization/2026-11-02_add_data/독서노트.docx — 독서 노트
+- data/data_study_note_record_organization/AI 에전트 트렌드 & 활용백과 독서노트 통합(단순합치기).docx — 독서 노트
+- data/data_study_note_record_organization/Do it android kotlin 수강노트.docx — 수강 노트
+- data/data_study_note_record_organization/과제분류하기/PC활용1_총괄과제 OOO(OOOOOOOO).docx — 과제 제출 원본
+- data/data_study_note_record_organization/과제분류하기/멀티미디어 개론_총괄과제 OOO (OOOOOOOO).docx — 과제 제출 원본
+- data/data_study_note_record_organization/과제분류하기/멀티미디어통신_총괄과졔 OOO(OOOOOOOO).docx — 과제 제출 원본
+- data/data_study_note_record_organization/과제분류하기/소프트웨어공학_총괄과제 OOO(OOOOOOOO).docx — 과제 제출 원본
+- data/data_study_note_record_organization/과제분류하기/시스템분석설계_총괄과졔 OOO(OOOOOOOO).docx — 과제 제출 원본
+- data/data_study_note_record_organization/과제분류하기/윈도우프로그래밍2_총괄과제 OOO(OOOOOOOO).docx — 과제 제출 원본
+- data/data_study_note_record_organization/과제분류하기/이산수학_총괄과제 OOO (OOOOOOOO).docx — 과제 제출 원본
+- data/data_study_note_record_organization/과제분류하기/인터넷 마케팅 최종 과제 (OOOOOOOO OOO).docx — 과제 제출 원본
+- data/data_study_note_record_organization/과제분류하기/인터넷프로그래밍2 총괄과제.docx — 과제 제출 원본
+- data/data_study_note_record_organization/과제분류하기/컴퓨터그래픽1_총괄과졔 OOO(OOOOOOOO).docx — 과제 제출 원본
+- data/data_study_note_record_organization/과학동아 40주년 AI 특이점, 그후 40년 독서노트.docx — 독서 노트
+- data/data_study_note_record_organization/그래도 나아간다는 믿음 독서노트.docx — 독서 노트
+- data/data_study_note_record_organization/꿈은 이루어진다 독서노트.docx — 독서 노트
+- data/data_study_note_record_organization/대기업을 이긴 한국의 스타트업 독서노트.docx — 독서 노트
+- data/data_study_note_record_organization/바로바로 바이브 코딩 with 커서 AI 독서노트.docx — 독서 노트
+- data/data_study_note_record_organization/요즘 바이브 코딩 커서 AI 30가지 프로그램만들기 독서노트.docx — 독서 노트
+- data/data_study_note_record_organization/정치가 왜이래 독서노트.docx — 독서 노트
+- data/data_study_note_record_organization/패스트캠퍼스 안드로이드 코틀린 수강노트.docx — 수강 노트
+- data/data_study_note_record_organization/퍼플렉시티 완벽가이드 독서노트.docx — 독서 노트
+
+
+### .hwpx
+
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/06 이전 강의노트.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/06-4 뷰바인딩.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/06-5 카카오톡 비밀번호 화면 만들기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/07-1 레이아웃 LinearLayout.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/07-2 Relativelayout 관계레이아웃.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/07-3 FrameLayout.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/07-4 GridLayout.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/07-5 ConsraintLayout.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/07-6 전화번호 화면 구성해보기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/08-1 터치이벤트와 키이벤트.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/08-2 뷰 이벤트.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/08-3 시계 앱의 스톱워치 기능 만들기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/09-1 리소스 종류와 특징.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/09-2 리소스 조건 설정.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/09-3 폰 화면 크기별 설정.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/09-4 메신져 화면 만들기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/10-1 호환성문제.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/10-2 퍼미션 문제.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/10-3-1 다양한 다이얼로그 - 토스트, 시간, 날짜 다이얼로그.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/10-3-2 다양한 다이얼로그 - 알터 리스트 커스텀.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/10-4 진동과 벨 알림.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/10-5-1 알림띄우기- 채널, 알림 객체.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/10-5-2 알림구성 스타일.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/10-6-카카오톡 알림 만들기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/11-1. 제트펙과 androidx lib.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/11-2 AppcompatLib 호환성 문제 해결.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/11-3 프레그먼트 - 엑티비티처럼 동작하는뷰.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/11-4-1 리사이클러뷰 기본.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/11-4-2 리사이클러뷰 엑티비티 파일.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/11-5 뷰페이저2.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/11-6 드로어 레이아웃 - 옆에서 열리는 화면.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/11-7-제트팩을 이용해 화면 구성하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/12-1 Appbar Metarial.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/12-2 TabLayout 기본.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/12-3,4네비게이션뷰 확장된 플로팅 액션버튼.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/12-5-머티리얼 라이브러리로 화면 구성하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/13-1-1 인텐트 필기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/13-1-2 인텐트 세부사항 필기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/13-2 엑티비티 생명주기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/13-3 - 엑티비티 제어.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/13-4-태스크 관리.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/13-5-액티비티 ANR 문제와 코루틴.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/14-1 브로드캐드 리시버.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/14-2-시스템 상태 파악하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/14-3-배터리 정보 앱 만들기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/15 -1 서비스 이해하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/15-2 바인딩 서비스.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/15-3 백그라운드 제약.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/15-4 잡 스케줄러.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/16-1 콘텐츠 프로바이더.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/16-2 안드로이드 기본 앱과 연동하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/16-3 카메라앱과 겔러리앱 연동.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/17-1 DatabasePra xml 엑티비티 파일.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/17-2 파일에 보관하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/17-3 공유된 프리퍼런스에 보관하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/18-1 스마트폰 정보 구하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/18-2 HTTP 통신하기 - Volley 라이브러리.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/18-3 HTTP 통신하기 Retrofit2.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/18-4 이미지 Glide 라이브러리.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/19-1 사용자 위치 얻기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/19-2 지도사용하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/19-3 구글 지도앱 만들기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/20-1 firebase 이해하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/20-2 파이어베이스 연동하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/20-3 파이어베이스 인증 사용하기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/20장-21장 함쳐본 파일.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/21-1 파이어스토어 데이터베이스 필기.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/21-2 파이어베이스 스토리지.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/21-4 파이어베이스 클라우드 메시징.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의필가 합쳐논 파일.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/구글 클라우드 스토리지.hwpx — 한글 문서 원본. 요약 빌드에서는 제외한다
+- data/data_study_note_record_organization/Do it android kotlin 수강노트.hwpx — 수강 노트
+- data/data_study_note_record_organization/패스트캠퍼스 안드로이드 코틀린 수강노트.hwpx — 수강 노트
+
+
+### .jpg
+
+- data/data_study_note_record_organization/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/2024신년카드만들기 결과물.jpg — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/2024신년카드만들기.jpg — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/크리스마스-가족.jpg — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/크리스마스-가족2.jpg — 학습·과제 화면 캡처 또는 도표
+
+
+### .mp4
+
+- data/data_study_note_record_organization/2026-11-02_add_data/노션 클론 코딩완성_영상.mp4 — 수강 노트
+- data/data_study_note_record_organization/2026-11-02_add_data/사과게임 만들기 완성_영상.mp4 — 수강 노트
+- data/data_study_note_record_organization/2026-11-02_add_data/애플사이트클론코딩완성_영상.mp4 — 수강 노트
+
+
+### .pdf
+
+- data/data_study_note_record_organization/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/취준생이 반드시 봐야 할 중고신입 전략.pdf — 학습 기록 원본
+- data/data_study_note_record_organization/과제분류하기/데이터베이스_총괄과졔 OOO(OOOOOOOO).pdf — 과제 제출 원본
+- data/data_study_note_record_organization/과제분류하기/정보처리_총괄과졔 OOO(OOOOOOOO).pdf — 과제 제출 원본
+- data/data_study_note_record_organization/과제분류하기/컴퓨터개론_총괄과제 OOO (OOOOOOOO).pdf — 과제 제출 원본
+
+
+### .png
+
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/ANR문제해결.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/Appcompat 라이브러리 호환성 해결 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/Appcompat 라이브러리 호환성 해결 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/Appcompat 라이브러리 호환성 해결 필기3.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/http 통신하기 retrofit2 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/http통신하기 retrofir2 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/intent 세부필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/KEY이벤트필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/layout.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/Notification알람 필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/Notification알람 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/RecylerView decoration 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의노트스캔0.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의노트스캔1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의노트스캔2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의노트스캔3.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의노트스캔4.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의노트스캔5.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의필기-1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/강의필기-2뷰바인딩 필기노트.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/관계레이아웃필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/관계레이아웃필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/리사이클러뷰 필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/리소스 조건 설정.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/바인딩 필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/벡 그라운드 제약 필기 3.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/벡그라운드 제약 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/벡그라운드 제어2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/뷰바인딩 필기노트.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/뷰이벤트.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/브로드캐드리시버 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/브로드케드리시버 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/서비스 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/서피스 필기 2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/앱바 머터리얼 필기 2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/앱바 머터리얼 필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/엑티비티 생명주기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/엡바 머터리얼 필기 3.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/여러가지 다이얼로그 커스텀 다이얼로그.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/여러가지다이얼로그필기 목록다이얼로그.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/여러다이얼로그필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/인텐트 세부 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/인텐트 세부필기 3.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/잡 스캐줄러 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/제트펙과 androidx 필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/제트펙과 androidx 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/진동 알람 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/콘텐츠 프로바이더 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/콘텐츠 프로바이더.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/터치이벤트필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/테스크관리3.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/테스트 관리 요청.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/텝레이아웃 필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/텝레이아웃 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/파이어 베이스 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/파이어베이스 클라우드 메시징 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/파이어베이스 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/퍼미션 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/폰화면 크기 화환성 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/프래그먼트 필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/프래그먼트 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/플로팅 버튼 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/하위호환성 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/하위호환성 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/udemy (과정 앞부분 50%미만 수강)/취준생을 위한 HTML + CSS + JAVASCRIPT 이력서 만들기/CLASSROOM/img/profile.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/2강/Screenshot 2025-07-16 214555.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/2강/Untitled.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/강의들으면서 캡쳐한사진/Screenshot 2025-07-19 175601.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/강의들으면서 캡쳐한사진/Screenshot 2025-07-19 181303.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/강의들으면서 캡쳐한사진/Screenshot 2025-07-19 192431.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/강의들으면서 캡쳐한사진/Screenshot 2025-07-19 205012.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/강의들으면서 캡쳐한사진/Screenshot 2025-07-20 232122.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-11-02_add_data/GOMCAM OOOOOOOO_OOOOOOOO67.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-11-02_add_data/노션 클론 코딩완성_사진.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-11-02_add_data/사과게임 만들기 완성_사진.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-11-02_add_data/사과게임 만들기 완성_사진2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-11-02_add_data/애플사이트클론코딩완성_사진.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-11-02_add_data/애플사이트클론코딩완성_사진2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/2026-11-02_add_data/커서의 웹브라우저로 크롤링 완성_사진.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1. git_home 디렉터리를 만들고 vs코드에 추가하고 git clone 원격 저장소 주소 . 으로 클론하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1. 깃허브 원격 저장소만들디 test-1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1. 설치 Screenshot 2025-08-21 131239.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1. 여러줄 문아열 매칭과 관련된 실습.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1.1.마누스로 자동 모드로 쇼핑 상품 검색 요청해보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1.2.마누스 자동 모드로 쇼핑 상품검색 요청하고 웹 대시보 드형태로 결과물 을요청하고 마누스 기능으로 퍼블리시까지 해봄.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1.3.클로드 Opus4.1 사용해보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1.EUC-KR 인코딩으로 파일 열고 저장하기 (저장할 때ANSI로 저장하면 EUE-KR로 인코딩 가능함).png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1.fork한 레포지토리를 vscode에서 열기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1.manuls 폴더만들고 추가하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1.Screenshot 2025-08-21 142613.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1.Screenshot 2025-08-22 134628.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1.test-3폴더만들고 vs코드에서 열기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1.나노바나나로 이미지생성하고 github 프로필 사진 바꿔보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1.클라우드 환경에서 접속하여 사용하기 깃허브 데브 .... 깃허브 저장소에 진입한후 .(마침표)를 누르면 클라우드 접속환경으로 접속이된다..png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/10. generator2 구현하기 인데 어디가 제너레이터인지 모르겠음.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/10.diff로 바꿘부분확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/10.git branch로 apple branch 추가하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/10.git_home에서 git log로 커밋 상태 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/10.jekyll-now 테마를 사용하여 블로그 만들기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/10.work2.txt파일에 3을 추가하고 우측 상단에 변경내용 확인하기 아이콘을 클릭하고 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/10.펠로로 ppt 생성으로 결과를 ppt로 만들기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/10_2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/11. git log로 head가 참조하는 부분확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/11.add3 메시지로 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/11.git home에서 f3.txt파일을 만들고 내용을 입력하고 스테이징 커밋.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/11.github 커밋확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/11.github에 jekyll-now 테마를 fork해서 사용허기 저장소명을 내아이디.github.io로 해줘야한다. 블로그.....png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/11.time클레스로 5번 출력하는걸 제너레이터 로 구현해보기 제너레이 터표현식사용.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/11.vs코드 M 수정표시.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/11.펠로로 ppt 샡성하고 완성 된 화면.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/12. google, ms branch 추가하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/12.fork된 jekyll-now 저장소 화면.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/12.git home에서 git log --online으로 커밋로그 한눈에 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/12.hello2txt파일 만들기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/12.stage오른쪽 삼쩜삼 버튼을 클릭하고 커밋 메뉴에서 마지막 커밋 실행퀴소 클릭하여 되돌리기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/12.원격 저장소에서 create파일하고 1,2,3을 입력하고 commit change file하기 f2.fxt파일 파일이름으로.....png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/12.원격저장소에서 create파일하고 1, 2, 3을 입력하고 commit change버튼으로 반영하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/12.타입 어노테이션으로 함수구현ㅅ해보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/12.펠로로 만든 ppt 편집하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/13,git home에서 status.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/13. 스테이징 취소하기 stage changing에서 파일에 - 모양의 아이콘 변경내용 스테이징 취소 클릭하여 취소.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/13. 추가한 브런치 git log로 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/13.git pull로 원격저장소 pull하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/13.iter메소드 클레스 로구현하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/13.status로 추가한 파일 상태확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/13.이름, 주석, 푸터링크를 수정하고 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/13.펠로로 검색한 결과를 펠로문서로 저장하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/14. main content 4추가하고 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/14.add하고 status.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/14.change에 work2.txt파일에서 변경내용 취소하기 아이콘을 클릭하여 변경내용 취소하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/14.git home에서 git push로 푸쉬하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/14.git log로 head에 origin main 참조하는지 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/14.mypy설치하고 타입체크 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/14.펠로에서 펠로 에이전트 사용하기 (에이전트에 대한 페르소나 같은걸 만드는 것 같음).png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/14.포스트 작성하기위해 _posts 디렉터리 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/15. about 톱니바퀴 아이콘 클릭하고 저장소 소개글 지정하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/15. git log -- online으로 한줄에 한커밋씩 내용확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/15._posts 디렉터리에 블로그 post를 추가하기 위해 파일 작성하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/15.add하고 commit.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/15.git home에서 git log --oneline으로 커밋, 브렌치 상태 한눈에 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/15.github에 test-3 깃허브 저장소만들기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/15.mypy설치하고 타입 쳌크하 고수정하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/15.펠로에서 에이전트 사용하기(템플릿으로 에이전트 사용).png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/16. git switch apple로 브랜치 변경하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/16.git office에서 git fetch로 원격저장소 변경사항 가져오기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/16.log로 커밋내용 확인.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/16.ssh접속을위해 키만들기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/16.vscode에서 소스제어창에서 삼쩜삼 버튼을 클릭하고 remote 메뉴에서 원격추가를 클릭하여 저장소 연결하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/16.역순으로 출력하는 이터레이터 클레스로 구현하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/16.첫 번째 포스팅 하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/16.펠로에서 AI데이터 보유 체크 해제해서 개인정보 유출 피해맊기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/17. generator  구현해보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/17. git log --oneline로 apple로 바뀐 브렌치 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/17.git log --stat로 통계표시하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/17.git office에서 ls -al로 가져온게 뭔지 확인해보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/17.이미지파일 업로드하기 image디렉터리로 이동하여 이밎 업로드.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/17.입력란에 https주소를 입력하고 저장소 이름을 입력한다음 엔터치고 git remote -v로 연결 상태 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/17.키가 제대로 만들어졌는지 확인.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/18. work txt파일에 apple content 4텍스트를 추가하고 appletxt을 만들고 apple content 4 첵스트를 입력하고 저장하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/18._image 폴더에 이미지를 github에서 업로드 하고 github에서 _post 폴더에서 post에서 사진을 추가하는 코드를 추가하고 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/18.gitagent에 프라이빗키 등록하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/18.la-al로 파일 상태확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/18.현재 지역저장소 커밋 살펴보고 올릴 준비하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/18git office에서. git log로 커밋 로그 살펴보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/19. git add . 으로 두개의 파일 추가하고 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/19. 원격저장소에 clip명령어로 공개키 등록하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/19.ackdark23358.github.io에 접속해서 수정한 포스트 확인하기 간단한거라고 깃허브에서 수정한거같고 세부적이거나 많이 수정하는 경우 다운로드 하여 수정한다음 푸시하는게 좋을 것같음.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/19.git office에서 git log --oneline으로 한눈에 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/19.git status로 커밋상태 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/19.삼쩜삼 버튼을 클릭하고 풀, 푸시 메뉴에서 다음으로 푸시 선택하여 원격저장소로 푸시하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1~2일차 쳇지피티 여행계획 프롬프트 작성 스크린샷.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1~2일차 쳇지피티 여행계획 프롬프트작성 - 2 화면 캡처 2026-01-04 222121.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1장 CMD에서 파이썬 설치후 간단한 테스트 실행 2025-08-21 133821.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1장 파이썬 설치 2025-08-21 131239.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1장 파이썬 설치 후 반복문 함수 사용 2025-08-21 132849.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1장 파이썬 설치 후 실행 2025-08-21 131405.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1장 파이썬 설치 후 추력문 사용 2 2025-08-21 133542.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/1장 파이썬 설치 후 출력문 사용 1 2025-08-21 133335.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/2. git_office 디렉터리를 만들고 vs코드에 추가하고 git clone 원격 저장소 . 으로 클론하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/2. Mul 클래스를만들고 인스턴스화하여 사용하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/2. ssh로 접속하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/2. vscode에서 git init 초기화하기 명령어x.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/2. 실행Screenshot 2025-08-21 131405.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/2. 출력문 Screenshot 2025-08-22 072722.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/2.git init하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/2.Screenshot 2025-08-22 134737.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/2.text1.txt 파일만들고 저장하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/2.깃허브 에서 가져오는 과정중 가져올 주소를 입력하고 저장할 위치를 바탕화면으로 지정한 다음 open을 클릭하 는화면.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/2.깃허브에서 README.MD 파일 작성해보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/2.여러 문자열 매칭과 관련될 실습2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/2.주소를 입력하여 접속하기 나의 깃허브에 .dev 도메인 주소로 접속하면 연결됨.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/2.크롤드 Opus4.1 사용해보기 웹사이트 만들어달라고 요청.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/20. clip으로 복사한 공개키를 붙여넣고 설정완료하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/20. git home에서 f4 스테이징하고 push한거 가져오기 전에 fetch로 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/20. git log --online으로 head 참조 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/20. githome 에서 올린 f4.txt파일을 못가쟈온걸 ls-al로 확인.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/20. 저장소에서 소스제어레포지토리 보기를 체크하여 레포지토리를 제어할 수 있게한다음 main 브렌치를 클릭하고 새로운 분기(new branch)로 분기 만들기 새로운 브렌치가 생성되고 자동으로 전환됨.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/20.git add hello2txt 파일 add하고 status확인.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/21. git log --oneline --branches 로 브렌치 상태 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/21.git commit delete하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/21.git office에서 git log --oneline으로 한눈에 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/21.text4 파일 만들고 새브렌치에서 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/21.레포지트리 지정소를 하나 만들기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/22-2.git init으로 초기화.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/22. git log --oneline --branches --graph 브렌치를 그래프로 그려보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/22.git status로 브랜치 보고 가져와야될게 뭔지 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/22.test-2폴더만들고 vs코드에서 연다음 ssh연결 준비하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/22.방금 작성한 거밋 수정하기 ammend.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/22.삼쩜삼의 pull push 메뉴에서 push to 다음으로 푸쉬를 선택하고 연결한 원격저장소를 선택하고 푸시.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/23.git office에서 원격 저장소와 지역저장소의 거밋 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/23.github에서 push한 브렌치 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/23.main branche에는 없고 apple branche에는 있는 커밋 확인하기 git log main..apple.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/23.ssh remote addd origin ssh 주소로 연결하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/23.text파일 수정하고 리스토어하기전에 수정하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/24. apple branche에는 없고 main branche에만 있는 커밋 확인하기 git log apple..main.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/24. git merge origin슬래시main으로  원격저장소에서 가져온 커밋을 지역저장소에 합치기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/24.git restore하여 복구하기 어느지점으로 복구되는건지는 커밋 시점으로 복원되는 거같음.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/24.소스제어창에서 저장소에서 new-branch를 클릭하고 검색란 선택에서 main 브렌치를 선택하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/24.스테이지에 올리고 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/25. git office에서 git merge origin슬레시 main할때 이전에 파일 더 추가한 작업과 파일도 잘 병합되고 가져옴.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/25.git push 로 푸시하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/25.git resotre stage 하려고 파일 수정하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/25.main 로 전환된 화면.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/25.manual-2폴더만들고 vscode에서 폴더열고 git init 하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/26. git add로 work1 텍스트 파일 스테이지에얼로리고 work1 으로 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/26. 협업을 하고 팀장이 프로젝트 레포지토리를 만들고 콜라보레이터로 팀원을 초대한다면 이런 설정을 하면서 팀원을 추가하고 작업하게될 것같음.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/26.man브렌치 상태에서 텍스트파일 옆에 삼쩜삼을 클릭하고 브렌치 메뉴에서 병합을 클릭하고 new-branch를 선택해서 병합하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/26.staged하고 status하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/26.푸쉬확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/27. o2 라는 브렌치를 하나만들기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/27.new-branch를 선택해서 병합하면 main 브렌치에 없던 work4.txt파일이 생기고 병합된걸 확인할 수 있다..png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/27.커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/27.팀원으로서 프로젝트를 진행하게된다면 프로젝트에 진입을 하고 프로젝트에서 처음 브렌치를 생성하고 커밋 푸쉬 풀을 해야한다. 만약 저장소에 없는 브렌치를 추가하려면 git push -u origin 브렌치명으로 푸쉬해야한다..png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/28. maint텍스트 파일을 만들고 main2를 입력하고 main work2 라는 커밋 하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/28.log로 커밋확인.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/29. o2 branch로 switch 하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/29.커밋 되돌리기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/2장 에스테라스크 연산자로 문자열 곱하여 CMD에서 출력 2025-08-22 072821.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/2장 에스테라스크 연산자로 문자열 곱하여 출력 2025-08-22 072722.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/3. wrapper로 구현하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/3. 원격 저장소 삭제하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/3. 젠스파크 사용해보기 팩트체크.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/3. 테스트Screenshot 2025-08-21 132849.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/3.fork해서 pf와 bg파일 만들어서 저장하고 iondex.html파일에서 수정할 부분 수정하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/3.git_home 에서 f1 파일에 c 추가하고 push.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/3.text1.txt파일 스테이지에 올리기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/3.work텍스트 파일을 만들고 content1입력하고 저장.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/3.깃 폴더만들고 init한다음 vs코드에서 연직후.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/3.깃허브 데브 접속하여 readme.md파일 수정하고 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/3.깃허브에서 README.MD파일 작성해고 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/3.출력문2 Screenshot 2025-08-22 072821.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/30. o2 텍스트파일을 만들고 스테이지에 올리고 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/30.커밋 스테이징 취소 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/31. 진행중인 커밋상태와 브렌치를 그레프로 확인하기 git log --oneline --branches --graph.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/31.restore로 작업내역도 복구하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/32-2. 병합완료직후.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/32. main텍스트파일을 임시저장하고 main 브렌치로 스위칭하고 o2 브랜치와 병합하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/32.커밋으로 되돌리기 하기위해 일단 rev파일을 만들고 add하고 commit하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/33.r1 r2 r3로 커밋하는데 rev텍스트파일에 a b c 를 파일에 추가하면서 커밋.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/33.병합이후 브렌치 상태 확인해보기 g는 파일 수정할때 잘못입력됬던거같음.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/34. manual-3 폴더를 만들고 git init 하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/34.R2커밋으로 커밋을 취소하고 스테이지에서 내리기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/35. work 파이리을 만들고 내용을 입력하고 저장한다음 스테이지에 올리고 추가하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/35.e를 투가하고 commit R5하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/36. main 브렌치에서 work파일에 중간부분에 내용을 추가하고 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/36.r5, r2, r1이 있는지 확인.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/37. o2 브렌치에서 중간에 내용을 추가하고 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/37.R5로 revert하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/38. main으로 스위칭하고 o2 브렌치와 병합하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/38.r5 revert를 하면 r5가revert 가 commit에 추가 되고 r5 commit이 삭제되지 않음.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/39. 병합직후.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/3과 5의 배수 모두 더하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/3장 IF문 실습  2025-08-23 150612.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/4. 스테이지에 올리고 커밋.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/4. 제미나이 2.5플레시 딥리서치 사용해보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/4. 클로저 로데코레이터 구현하기-1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/4. 클로저로 데코레이터 구현하기 -2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/4.idle로 테스트Screenshot 2025-08-21 133335.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/4.readme.md파일 수정된거 확인하기 (왼쪽 상단에 햄버거 버튼을 클릭하고 레포지토리로 이동하기를 클릭하면 레포지토리로 이동됨 종료는 아닌거같음).png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/4.work1.txt파일 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/4.깃터미널열고 깃베시 열기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/4.깃허브 저장소삭제하기-2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/4.깃허브에서 READ.MD 마크다운 형식으로 파일 수정하고 비교해보기 (show diff).png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/4.원격 저장소에서 커밋 푸쉬확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/4.커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/40. manual-4 폴더를 만들고 vscode에서 open하고 git init한다음 work.txt파일을 만들고 스테이지에 올리고 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/41. o2브렌치를 만들고 내용을 추가한다음 스테이지에 올리고 커밋을 한다음 o2 브렌치에서 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/42.o2브렌츠로 스위칭하고 내용을 추가하고 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/43. 수정하는 부분이 공통부분인경우... 일단 main브렌치로 스위칭하고 o2브렌치와 병합하기 git merge o2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/44. 병합 편집기에서 직접 수정해야하기때문에 병합과정을 거치게되면서 화면이 세개로 분활됨.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/45. main에서 수정한 부분을 수락클릭하고 o2에서 수정한 부분을 수락한다음 병합버튼을 클릭하면 수정사항이 두번다 반영되어지게 된다..png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/46.커밋으로 병합된 파이리을 커밋하기 man 상테에서 병합한 것일 것임 그래프로 확인해보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/47. branch 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/48. git branch -d o2 로 브렌치 삭제(숨기기) 하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/49. chery-picck 폴더를 만들고 vs code에서 open한다음 git init를 하고 git add init.txt; git commit -m init  으로 스테이지 추가와 동시에 커밋을 하는데 이전에 am과 어떤차이가 잇는거지.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/4장 기본 매개변수  사용을 잘못했때 에러 2025-08-25 125731.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5. git log 하고 head log확인.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5. idle로 테스트 2Screenshot 2025-08-21 133542.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5. 변경내용 동기화를 클릭해서 동기화하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5. 제미나이 2.5플레시 딥리서치 결과를 DOC로 내보내기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5.git status.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5.gitlog로 커밋한 것 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5.vs코드로 지역저장소 만들기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5.깃허브에서 README.MD 마크다운 형식으로 파일 수정하고 마크다운 추가한다음 커밋 체인지하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5.원격 저장소에서 저장소 변경사항을 pull로 먼저 가져옴.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/50. topic 브렌치를 만들고 git log --oneline --all --graph로 최신커밋뿐아니라 모든커밋을 확인.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/51. New-Item -ItemType File -Name m1; git add m1; git commit -m m1 New-Item -ItemType File -Name m2; git add m2; git commit -m m2 로 파일을 만들고 스테이징과 커밋을 한다음 그래프로 출력해보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/52. git log --oneline --all --graph 브렌치 상태 출력하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/53. t2의 해시값을 복사하고 main으로 스위칭한다음 git cherry-pick 해시값으로 병합하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/54. ls명령어로 t2만을 병합했는지확인.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/55. git log --oneline --all --graph 로 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 3과 5의 배수 모두 더하기 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 게시판 페이징 구현하기 간단한 구현 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 구구단 만들기-1 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 구구단만들기-2 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 구구단만들기-3 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 구구단만들기-4 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 메모장 만들기 -1 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 메모장 만들기 -2 (입력옵션 별로 입력과 출력으로 조건문 작성, ) 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 탭을 스페이 스4칸으로 바꾸기 -4 생성된 txt파일 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 탭을 스페이스 4칸으로 바꾸기 - 1 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 탭을 스페이스 4칸으로 바꾸기 - 2 입력파일 수정하는 부분 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 탭을 스페이스 4칸으로 바꾸기 - 3 b.txt파일로 저장하기 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 하위 디렉터리 검색하 기 - 1 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 하위 디렉터리 검색하기 - 4 재귀호출과 퍼미션 pass로 구현하기 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 하위 디렉터리 검색하기 -2 특정 디렉터리에 파일과 폴더 출력하는 부분 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 하위 디렉터리 검색하기 -3 파이썬 파일 출력하기 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/5장 하위 디렉터리 검색하기 -4 os.walk로 구현하기 2025-09-08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6. cmd에서 실행 Screenshot 2025-08-21 133821.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6. git_office에서 d를 추가하고 스테이징 커밋을 하고 푸쉬.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6. txt파일에 content2 추가하고 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6. 지역스토리지에 파일한개 만들고 a를 저장하고 스테이지에 올리기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6. 팟캐스트가 방송하는 것처럼 보고서에 대한 내용을 팟캐스트로 만들고 음성을 다운로드 할 수 도 있다. (딥XX, 저작권 은 잘모르겠다. 생성해봐도될거같고....).png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6.add 하고 status.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6.elapsed 데코레이터 어노테이션으로 호출하고 구현하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6.work2.txt파일 만들고 2입력하고 저장하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6.동기화된 파일 github에서 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6.이미지 추가하기위해 이미지파일 깃허브에 업로드하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688cOOOOOOOOc_OOOOOOOO75.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688c99407a596_OOOOOOOO36.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688c9c6a19c93_OOOOOOOO46.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688c9c6d62fcd_OOOOOOOO49.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688c9db7c2f91_OOOOOOOO79.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688c9dc00c35a_OOOOOOOO88.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688ca289819b2_OOOOOOOO13.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688ca28e0f16b_OOOOOOOO18.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688caOOOOOOOO_OOOOOOOO37.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688ca7d4ea864_OOOOOOOO68.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688ca7fec482d_OOOOOOOO10.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688caa86405ed_OOOOOOOO58.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688caaOOOOOOOO_OOOOOOOO69.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688cabOOOOOOOO_OOOOOOOO61.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688cac48e1149_OOOOOOOO08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688cac4ba25f5_OOOOOOOO11.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688caccb80037_OOOOOOOO39.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688caccee1551_OOOOOOOO42.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688cae5aa48bb_OOOOOOOO38.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688cae5ceee9c_OOOOOOOO40.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688d4612db485_OOOOOOOO78.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/688d4616c6089_OOOOOOOO82.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6장 1.EUC-KR 인코딩으로 파일 열고 저장하기 (저장할 때ANSI로 저장하면 EUE-KR로 인코딩 가능함).png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6장 10. generator2 구현하기 인데 어디가 제너레이터인지 모르겠음.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6장 11.time클레스로 5번 출력하는걸 제너레이터 로 구현해보기 제너레이 터표현식사용.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6장 12.타입 어노테이션으로 함수구현 해보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6장 13.iter메소드 클레스 로구현하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6장 14.mypy설치하고 타입체크 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6장 15.mypy설치하고 타입 쳌크하 고수정하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6장 16.역순으로 출력하는 이터레이터 클레스로 구현하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6장 17. generator  구현해보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6장 2. Mul 클래스를만들고 인스턴스화하여 사용하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6장 3. wrapper로 구현하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6장 4. 클로저 로데코레이터 구현하기-1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6장 4. 클로저로 데코레이터 구현하기 -2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/6장 6.elapsed 데코레이터 어노테이션으로 호출하고 구현하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/7. content3 추가하고 commit.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/7. git 원격저장소 연결하기 git remote add origin 나의깃허브 레포지토리 https 주소.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/7.git commit.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/7.git_office에서 푸쉬한 커밋 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/7.readme.md파일에 이미지 추가하는 마크다운 추가하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/7.setting 의 page에서 branch를 main으로 선택하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/7.work3.txt파일 만들고 2입력하고 저장하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/7.펠로오 웹 검색 하고 마인드맵 확인해보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/8. git log해서 head가 참조하는거 확인해보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/8. git push로 원격저장소에 push하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/8.git commit 2 추가한다음.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/8.git_home에서 git pull 하여 변경사항 반영하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/8.readme.md파일에 이미지 추가하는 마크다운 추가하기 -2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/8.work2.txt work3.txt 파일 스테이징 없이 커밋하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/8.페이지 설정완료우 화면.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/8.펠로로 웹검색을 하고 답변변환하기 마인드맵으로 마인드맵을 만들어보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/8장 1.여러줄 문아열 매칭과 관련된 실습.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/8장 2.여러 문자열 매칭과 관련될 실습2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/9. git branch로 브렌치 확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/9. git push로 f1에 b추가하고 push하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/9.git log로 변경사항 확인하고 커밋확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/9.git log로 커밋확인하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/9.깃허브에 미미지 업로드하고 마크다운르오 README.MD파일에  추가하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/9.설정된 페이지 접속해보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/9.파일 2를 two로 수정.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/9.펠로로 웹검색을 하고 마인드맵을 구성한다음 AI도식으로 PPT의 마인드맵으로 변환.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/ANR문제해결.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/ansi-colors 모듈 npm으로 설치해서 사용해보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Appcompat 라이브러리 호환성 해결 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Appcompat 라이브러리 호환성 해결 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Appcompat 라이브러리 호환성 해결 필기3.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/a모드로 데이터 추가하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/debug_screenshot.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/GOMCAM OOOOOOOO_OOOOOOOO37.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/GOMCAM OOOOOOOO_OOOOOOOO16.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/GOMCAM OOOOOOOO_OOOOOOOO67.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/GOMCAM OOOOOOOO_OOOOOOOO88.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/GOMCAM OOOOOOOO_OOOOOOOO54.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/GOMCAM OOOOOOOO_OOOOOOOO73.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/GOMCAM OOOOOOOO_OOOOOOOO08.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/GOMCAM OOOOOOOO_OOOOOOOO78.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/GOMCAM OOOOOOOO_OOOOOOOO87.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/GOMCAM OOOOOOOO_OOOOOOOO54.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/GOMCAM OOOOOOOO_OOOOOOOO78.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/GOMCAM OOOOOOOO_OOOOOOOO36.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/http 통신하기 retrofit2 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/http통신하기 retrofir2 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image101.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image102.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image103.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image104.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image105.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image106.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image107.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image108.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image109.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image11.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image110.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image111.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image112.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image113.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image114.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image115.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image116.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image117.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image118.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image119.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image12.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image120.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image121.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image123.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image124.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image125.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image126.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image127.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image128.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image129.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image13.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image130.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image131.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image132.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image133.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image134.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image135.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image136.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image137.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image139.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image140.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image141.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image142.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image143.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image144.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image145.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image146.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image147.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image148.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image149.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image15.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image150.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image151.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image152.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image154.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image155.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image156.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image157.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image158.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image159.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image16.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image160.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image161.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image162.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image163.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image165.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image166.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image167.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image168.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image169.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image17.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image170.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image171.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image173.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image19.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image20.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image21.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image22.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image23.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image24.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image25.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image26.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image27.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image28.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image29.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image3.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image31.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image32.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image34.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image35.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image36.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image37.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image41.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image42.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image43.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image44.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image45.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image46.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image47.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image48.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image49.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image5.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image50.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image51.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image52.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image53.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image54.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image55.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image56.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image57.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image58.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image59.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image6.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image60.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image62.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image63.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image64.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image65.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image66.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image67.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image68.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image7.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image70.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image71.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image72.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image73.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image75.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image76.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image77.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image79.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image8.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image80.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image81.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image82.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image83.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image84.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image85.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image86.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image87.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image88.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image89.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image90.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image91.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image92.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image93.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image94.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image95.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image96.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image97.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/image99.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/img01.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/img02.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/img_68814daf4cda82.OOOOOOOO.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/img_68815b3d9bbd43.OOOOOOOO.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/img_OOOOOOOOf93d133.OOOOOOOO.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/intent 세부필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/KEY이벤트필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/layout.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/New-Item -ItemType File -Name t1; git add t1; git commit -m t1 ... t2, t3 파일만들고 스테이지에 올리고 커미시하하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/node로 js 실행하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Notification알람 필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Notification알람 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/npm 초기화 설치.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/npm으로 ansi-colors 모듈 설치해서 사용해보기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/npm으로 ansi-color모듈 설치하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/ole14.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/open으로 foo파일 만들고 life to short, you need python 추가하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/RecylerView decoration 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-15 114042.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-15 115807.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-15 121217.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-15 122042.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-15 123311.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-20 103855.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-21 151104.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-22 125349.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-22 125420.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-23 144005.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-25 203653.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-25 204605.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-25 205312.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-25 210506.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-25 210958.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-25 211026.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-25 211843.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-25 211923.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-25 212013.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-25 213201.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-25 213716.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-25 214929.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-25 215553.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-25 215617.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-25 220248.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-25 221716.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 010919.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 012044.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 012119.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 020706.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 023830.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 024203.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 024359.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 034345.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 035602.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 040532.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 041020.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 183714.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 184331.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 185832.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 191930.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 193828.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-27 203115.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 170119.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 171046.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 174349.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 174421.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 174502.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 181050.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 183820.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 183901.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 184150.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 184525.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 184836.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 185137.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 185945.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 191442.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 191510.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 192023.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 192057.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-28 192713.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-29 025258.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-29 025513.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-29 025554.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-29 030940.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-29 032415.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-29 033001.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-29 033541.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-29 033701.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-29 041351.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-29 041429.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-29 042410.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-29 042424.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-29 043518.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-29 044009.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-30 142152.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-30 142406.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-30 142902.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-30 143345.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-30 144017.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-30 144033.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-30 145719.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-30 145958.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-30 161007.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-30 163246.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-30 164124.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-06-30 171159.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-01 210503.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-01 210623.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-01 213848.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-01 220011.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-01 220347.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-01 221430.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-01 223024.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-01 225717.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-02 055127.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-02 055317.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-02 055854.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-02 060108.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-02 060308.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-02 062504.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-02 062515.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-02 062657.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-02 063349.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-02 064921.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-02 072713.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-02 081946.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-02 090000.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-02 093421.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 053405.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 055640.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 060217.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 060431.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 061705.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 062508.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 063735.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 064432.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 065806.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 073441.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 074735.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 213347.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 215048.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 215615.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 221449.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 221545.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 222025.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 224848.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 225015.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 231856.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 233539.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 234253.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-04 234404.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-05 010104.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-05 010520.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-05 012121.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-05 013649.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-05 013744.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-16 214555.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-17 233855.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-18 030740.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-18 035917.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-19 175601.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-19 181303.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-19 192431.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-19 205012.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-20 232122.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-21 033201.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-07-27 063425.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-08-23 150612.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-08-23 150626.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-08-23 150701.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-08-25 125731.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-08-27 102834 -새파일.txt open으로 만들기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-08-27 103116 - 파일위치가아닌 특정폴더에 open으로 새파일 만들기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Screenshot 2025-08-27 103530 - 1분코딩 복습파일 만들기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Shotcut_01_27_15_900.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Shotcut_01_45_30_267.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Shotcut_02_06_20_300.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Shotcut_02_21_39_533.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Shotcut_02_57_39_300.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Shotcut_03_09_24_333.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/time_trend.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/TV.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/Untitled.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/wf-1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/wf-2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/write 파일 실행하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/강의노트스캔0.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/강의노트스캔1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/강의노트스캔2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/강의노트스캔3.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/강의노트스캔4.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/강의노트스캔5.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/강의필기-1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/강의필기-2뷰바인딩 필기노트.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/게시판 페이징 구현하기 간단한 구현.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/관계레이아웃필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/관계레이아웃필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/관리자 페이지 레이아웃 구성 화면.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/관리자가 로그인한 상태에서 로그아웃을 누르면 토큰이 삭제되고 로그아웃 되야하는 부분 실행확인.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/구구단 만들기-1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/구구단만들기-2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/구구단만들기-3.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/구구단만들기-4.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/노드제이에서 설치 완료후.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/노션 클론 코딩완성_사진.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/다양한 파이썬 모듈 작업을 고려해 추가한 설계 주기.drawio.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/리사이클러뷰 필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/리소스 조건 설정.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/메모장 만들기 -1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/메모장 만들기 -2 (입력옵션 별로 입력과 출력으로 조건문 작성, ).png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/바인딩 필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/벡 그라운드 제약 필기 3.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/벡그라운드 제약 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/벡그라운드 제어2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/보카 드게임 하양식 설계 다이어그램 그려보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/보카드 게임 다이어그램 그려보기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/뷰바인딩 필기노트.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/뷰이벤트.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/브로드캐드리시버 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/브로드케드리시버 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/사과게임 만들기 완성_사진.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/사과게임 만들기 완성_사진2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/서비스 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/서피스 필기 2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/애니메이트핵심사용법_단축키.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/애플사이트클론코딩완성_사진.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/애플사이트클론코딩완성_사진2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/앱바 머터리얼 필기 2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/앱바 머터리얼 필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/엄근진냥_글썌_00009.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/엄근진냥_글썌_00010.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/엄근진냥_글썌_00011.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/엄근진냥_글썌_00012.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/엑티비티 생명주기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/엡바 머터리얼 필기 3.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/여러가지 다이얼로그 커스텀 다이얼로그.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/여러가지다이얼로그필기 목록다이얼로그.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/여러다이얼로그필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/윈도우프로그래밍1-총괄과제.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/인텐트 세부 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/인텐트 세부필기 3.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/잡 스캐줄러 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/제미나이 이메일에서 접근해서 사용해볼때 의기능들 .... Screenshot 2025-09-18 083451.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/제트펙과 androidx 필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/제트펙과 androidx 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/진동 알람 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/캔바 Magic Media 앱으로 생성한 이미지.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/캔버스로 그린 개구리그림.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/커서의 웹브라우저로 크롤링 완성_사진.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/콘텐츠 프로바이더 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/콘텐츠 프로바이더.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/탭을 스페이 스4칸으로 바꾸기 -4 생성된 txt파일.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/탭을 스페이스 4칸으로 바꾸기 - 1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/탭을 스페이스 4칸으로 바꾸기 - 2 입력파일 수정하는 부분.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/탭을 스페이스 4칸으로 바꾸기 - 3 b.txt파일로 저장하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/터치이벤트필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/테스크관리3.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/테스트 관리 요청.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/텝레이아웃 필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/텝레이아웃 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/파이어 베이스 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/파이어베이스 클라우드 메시징 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/파이어베이스 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/퍼미션 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/폰화면 크기 화환성 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/프래그먼트 필기1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/프래그먼트 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/플로팅 버튼 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/하위 디렉터리 검색하 기 - 1.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/하위 디렉터리 검색하기 - 4 재귀호출과 퍼미션 pass로 구현하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/하위 디렉터리 검색하기 -2 특정 디렉터리에 파일과 폴더 출력하는 부분.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/하위 디렉터리 검색하기 -3 파이썬 파일 출력하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/하위 디렉터리 검색하기 -4 os.walk로 구현하기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/하위호환성 필기.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/하위호환성 필기2.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/하향식 설계 저자식별하는 프로그램 다이어그램 만들어보기.drawio.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/함수 설계하고 테스트하는 기본적인 과정 다이어그램.drawio.png — 학습·과제 화면 캡처 또는 도표
+- data/data_study_note_record_organization/image/함수설계 주기 다이어그램 그려보기.drawio.png — 학습·과제 화면 캡처 또는 도표
+
+
+### .psd
+
+- data/data_study_note_record_organization/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/2024신년카드만들기.psd — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/가족사진-2.psd — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/가족사진-편집1.psd — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 사진 편집 하기/가족사진.psd — 학습 기록 원본
+
+
+### .txt
+
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/ANR문제해결 필기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/바인딩 서비스 필기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/브로드캐드리시버 필기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/서비스 필기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/시스템 파악하기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/안드로이드 기본 앱과 연동하기 필기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/엑티비티생명주기필기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/인텐트 세부사항 필기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/인텐트 필기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/잡 스케쥴러.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/콘텐츠 프로바이더.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/테스크관리 필기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/SSamz온라인 (프로젝트 진행까지 완료)/파이어베이스 쿨라우드 메시징 필기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/udemy (과정 앞부분 50%미만 수강)/유데미 코틀린 필기 백업2.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/udemy (과정 앞부분 50%미만 수강)/유메니 코틀린 필기 백업.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/1일차 강의노트.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/2일차 강의노트.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/3일차 강의노트.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/4일차 강의노트.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/5일차 강의노트.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략/6일차 강의노트.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/1.Flutter Dart 언어 필기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/2. dart flutter oop 필기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/3. dart 함수형 프로그래밍.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/4. dart 비동기 프로그래밍.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/인프런 (그리네모 에니메이트, 코딩팩토리 Dart, 인프런 취준생이 반드시 일겅봐야 할 중고신입 전략, 미리 보는 2026 AI 트렌드 TOP 10과 향후 도입 전략)/코딩펙토리 flutter Dart 언어/코딩펙토리 만원쿠폰.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/10강/10강.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/11강/11강.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/12강/12강.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/13강/13강.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/14강/14강.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/15강/15강.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/1강/1강.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/2강/2강.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/3강/3강 기록.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/4강/4강.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/5강/5강.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/6강/6강.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/7강/7강.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/콜로소 강의(CursorAI) CursorAI/9강/9강.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/일러스트레이터 강의자료 필기/(정리)일러스트레이터 팁.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/일러스트레이터 강의자료 필기/(정리)일스트레이터 입문.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/(정리)포토샵 복습 페스트 캠퍼스.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/Chapter1 필기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/Chapter2 필기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/포토샵 파트3 필기 chapter1.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/포토샵 합성 chapter2 요약 정리하기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/2026-10-18_add_data/페스트캠퍼스 디자인툴 초격차/포토샵 강의자료 필기/메모장 필기 페스트캠퍼스/포토샵 합성 chapter2 요약.txt — 학습 기록 원본
+- data/data_study_note_record_organization/changenote/노트수정하기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/Do it 5일만에 끝내는 깃&깃허브 입문 1장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 5일만에 끝내는 깃&깃허브 입문 2장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 5일만에 끝내는 깃&깃허브 입문 3장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 5일만에 끝내는 깃&깃허브 입문 4장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 5일만에 끝내는 깃&깃허브 입문 4장 영상노트.txt — 수강 노트
+- data/data_study_note_record_organization/Do it 5일만에 끝내는 깃&깃허브 입문 5장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 5일만에 끝내는 깃&깃허브 입문 5장 영상노트.txt — 수강 노트
+- data/data_study_note_record_organization/Do it 5일만에 끝내는 깃&깃허브 입문 6장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 5일만에 끝내는 깃&깃허브 입문 7장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 5일만에 끝내는 깃&깃허브 입문 8장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 점프 투 파이썬 1장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 점프 투 파이썬 2장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 점프 투 파이썬 3장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 점프 투 파이썬 4장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 점프 투 파이썬 5장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 점프 투 파이썬 6장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 점프 투 파이썬 7장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 점프 투 파이썬 8장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 점프 투 파이썬 코딩면허 시험 문제 풀어보기.txt — 학습 기록 원본
+- data/data_study_note_record_organization/Do it 첫 알고리즘 1장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 첫 알고리즘 2장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 첫 알고리즘 3장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 첫 알고리즘 4장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 첫 알고리즘 5장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 커서로 시작하는 AI 코딩 입문 1일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 커서로 시작하는 AI 코딩 입문 2일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 커서로 시작하는 AI 코딩 입문 3일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 커서로 시작하는 AI 코딩 입문 4일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 커서로 시작하는 AI 코딩 입문 5일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it 커서로 시작하는 AI 코딩 입문 6일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! HTML + CSS + 자바스크립트 웹 표준의 정석 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! Node.js 프로그래밍 입문 10일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! Node.js 프로그래밍 입문 11일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! Node.js 프로그래밍 입문 12일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! Node.js 프로그래밍 입문 13일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! Node.js 프로그래밍 입문 14일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! Node.js 프로그래밍 입문 15일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! Node.js 프로그래밍 입문 1일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! Node.js 프로그래밍 입문 2일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! Node.js 프로그래밍 입문 3일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! Node.js 프로그래밍 입문 4일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! Node.js 프로그래밍 입문 5일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! Node.js 프로그래밍 입문 6일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! Node.js 프로그래밍 입문 7일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! Node.js 프로그래밍 입문 8일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! Node.js 프로그래밍 입문 9일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/Do it! 모던 자바스크립트 프로그래밍의 정석 실습 필기는 실습위주.txt — 학습 기록 원본
+- data/data_study_note_record_organization/SSamz 안드로이드 10강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/SSamz 안드로이드 11강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/SSamz 안드로이드 12강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/SSamz 안드로이드 13강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/SSamz 안드로이드 14강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/SSamz 안드로이드 15강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/SSamz 안드로이드 16강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/SSamz 안드로이드 17강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/SSamz 안드로이드 18강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/SSamz 안드로이드 19강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/SSamz 안드로이드 20강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/SSamz 안드로이드 21강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/SSamz 안드로이드 6강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/SSamz 안드로이드 7강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/SSamz 안드로이드 8강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/SSamz 안드로이드 9강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/UI디자인&프로그래밍 10장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/UI디자인&프로그래밍 11장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/UI디자인&프로그래밍 12장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/UI디자인&프로그래밍 1장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/UI디자인&프로그래밍 2장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/UI디자인&프로그래밍 3장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/UI디자인&프로그래밍 4장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/UI디자인&프로그래밍 5장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/UI디자인&프로그래밍 6장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/UI디자인&프로그래밍 7장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/UI디자인&프로그래밍 8장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/UI디자인&프로그래밍 9장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/UI디자인&프로그래밍 서론 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/가장 쉬운 독학 노션 첫걸음 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/과제분류하기/C언어1_총괄과졔 OOO(OOOOOOOO).txt — 과제 제출 원본
+- data/data_study_note_record_organization/과제분류하기/자료구조 최종 과제 (OOOOOOOO OOO).txt — 과제 제출 원본
+- data/data_study_note_record_organization/과제분류하기/컴퓨터네트워크_총괄과제 OOO(OOOOOOOO).txt — 과제 제출 원본
+- data/data_study_note_record_organization/과학동아 323호 AI 공정한가 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/된다! 블로그 10분 작성법 1~2일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/된다! 블로그 10분 작성법 3~ 4일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/된다! 블로그 10분 작성법 5일차 독서 노트.txt — 독서 노트
+- data/data_study_note_record_organization/된다! 블로그 10분 작성법 6일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/된다! 블로그 10분 작성법 7일차 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/맛있는 디자인 에프터 이펙트 노트는 실습 위주.txt — 학습 기록 원본
+- data/data_study_note_record_organization/맛있는 디자인 일러스트레이터 노트는 실습 위주.txt — 학습 기록 원본
+- data/data_study_note_record_organization/맛있는 디자인 포토샵 노트는 실습 위주.txt — 학습 기록 원본
+- data/data_study_note_record_organization/맛있는 디자인 프리미어 프로 노트는 실습 위주.txt — 학습 기록 원본
+- data/data_study_note_record_organization/소스 코드, 더 비기닝  독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/스마트폰으로 AI영상 제작 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/스토리가 스펙을 이긴다 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/에듀펜 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/유데미 HTML CSS 자바스크립트 이력서 1강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/유데미 HTML CSS 자바스크립트 이력서 2강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/유데미 HTML CSS 자바스크립트 이력서 3강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/유데미 HTML CSS 자바스크립트 이력서 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/유데미 코틀린 1강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/유데미 코틀린 2강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 1일차 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 2일차 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 3일차 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 4일차 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 5일차 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/인프런 취준생이 반드시 일겅봐야 할 중고신입 전략 6일차 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/커서AI 트랜드 &활용백과 1장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/커서AI 트랜드 &활용백과 2장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/커서AI 트랜드 &활용백과 3~4장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/커서AI 트랜드 &활용백과 5장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/커서AI 트랜드 &활용백과 6장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/커서AI 트랜드 &활용백과 7장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/커서AI 트랜드 &활용백과 8장 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/커서AI 트랜드 &활용백과 부록 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/커서AI 트랜드 &활용백과 프롤로그 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/코딩펙토리 flutter Dart 1강 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/코딩펙토리 flutter Dart 2강 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/코딩펙토리 flutter Dart 3강 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/코딩펙토리 flutter Dart 4강 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/콜로소 바이브 코딩 10강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/콜로소 바이브 코딩 11강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/콜로소 바이브 코딩 12강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/콜로소 바이브 코딩 13강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/콜로소 바이브 코딩 14강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/콜로소 바이브 코딩 15강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/콜로소 바이브 코딩 1강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/콜로소 바이브 코딩 2강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/콜로소 바이브 코딩 3강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/콜로소 바이브 코딩 4강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/콜로소 바이브 코딩 5강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/콜로소 바이브 코딩 6강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/콜로소 바이브 코딩 7강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/콜로소 바이브 코딩 9강 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/트렌드 코리아 2026 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/페스트캠퍼스 일스트레이터 입문 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/페스트캠퍼스 일스트레이터 입문 팁 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/페스트캠퍼스 포토샵 1장 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/페스트캠퍼스 포토샵 2장 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/페스트캠퍼스 포토샵 3장 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/페스트캠퍼스 포토샵 4장 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/페스트캠퍼스 포토샵 수강노트.txt — 수강 노트
+- data/data_study_note_record_organization/프롬프트 텔링 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/피지컬 컴퓨팅 데이터 수집 및 처리 - 노시훈 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/피지컬 컴퓨팅 데이터 수집 및 처리 독서노트.txt — 독서 노트
+- data/data_study_note_record_organization/한국 2027 트랜드  초개인화시대의 서막 감상노트.txt — 학습 기록 원본

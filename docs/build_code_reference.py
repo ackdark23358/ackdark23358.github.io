@@ -596,7 +596,7 @@ def is_generated_data(path: Path) -> bool:
 
 
 def collect_originals() -> dict[str, list[str]]:
-    data = ROOT / "study_note_record_organization" / "data"
+    data = ROOT / "data" / "data_study_note_record_organization"
     grouped: dict[str, list[str]] = {}
     if not data.is_dir():
         return grouped
@@ -621,7 +621,7 @@ def build() -> Doc:
     doc.h2("프로젝트 구성")
     doc.p(
         "루트는 취업 지원용 포트폴리오 페이지다. 이력서, 자기소개, 명함은 각각 폴더로 나뉘고, "
-        "학습 노트와 과제 원본은 study_note_record_organization 안에 있다. "
+        "학습 노트와 과제 원본은 data/data_study_note_record_organization 안에 있다. "
         "그 폴더의 파이썬 스크립트가 원본을 요약 마크다운으로 바꾸고, 대시보드가 읽는 data.js와 원본 JSON을 만든다."
     )
     doc.ul(
@@ -633,7 +633,9 @@ def build() -> Doc:
             "study_note_record_organization/dashboard/ — 학습·과제 카드 화면",
             "portfolio_achieve/ — 프로젝트 아카이브 (PROJ_01~PROJ_21)",
             "study_note_record_organization/scripts/ — 요약과 정적 데이터 빌드",
-            "study_note_record_organization/data/ — 노트, 과제, 이미지 원본",
+            "data/data_study_note_record_organization/ — 노트, 과제, 이미지 원본",
+            "data/data_portfolio_achieve/ — 프로젝트 아카이브 원본",
+            "study_note_record_organization/data/image/ — 대시보드가 읽는 히어로 갤러리",
         ]
     )
 
@@ -649,7 +651,7 @@ def build() -> Doc:
             "portfolio_achieve/ — 프로젝트 아카이브(PROJ_01~PROJ_21 메타 카드), 스타일(archive.css) 및 스크립트(site.js)",
             "study_note_record_organization/scripts — build_output.py, build_static_site.py, extract_sources.py",
             "study_note_record_organization/output — 빌드가 쓰는 요약 마크다운과 catalog.json",
-            "study_note_record_organization/data/과제분류하기 — 과제 문서 원본. 코드 파일은 이 문서에서 빼 둔다",
+            "data/data_study_note_record_organization/과제분류하기 — 과제 문서 원본. 코드 파일은 이 문서에서 빼 둔다",
             "docs/ — 기술명세서, 코드북, 코드 설명, 소스 번들, 포트폴리오 북 빌드 스크립트",
         ]
     )

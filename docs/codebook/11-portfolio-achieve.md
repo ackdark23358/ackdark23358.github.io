@@ -28,7 +28,7 @@
 ### 프로젝트 카드 구조 (`.project-card`)
 
 각 카드는 독립적인 시맨틱 `<article>` 태그로 구성되며 다음과 같은 정보 블록을 표준화하여 배치한다:
-- `.project-card__eyebrow`: 프로젝트 번호와 작업 일자 (예: `PROJ_01 · 2025.02.17`)
+- `.project-card__index`: 프로젝트 번호만 적는다 (예: `PROJ_01`). 작업 일자와 본문·푸터의 확인 날짜는 빼 두었다.
 - `.project-card__title`: 프로젝트 명칭
 - `.field-label` 및 `.field-body`: 프로젝트 소개, 간단 설명, 실행 환경, 핵심 기능
 - `.pill-list`: 사용한 언어, 프레임워크, AI 도구 태그 목록 (Python, Express, Cursor 등)

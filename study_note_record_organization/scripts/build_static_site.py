@@ -10,9 +10,11 @@ from pathlib import Path
 from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
+REPO = ROOT.parent
 OUT = ROOT / "output"
 SITE = ROOT / "dashboard"
 HERO_IMAGE_DIR = ROOT / "data" / "image"
+SOURCE_DATA = REPO / "data" / "data_study_note_record_organization"
 HERO_IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp"}
 CATALOG_PATH = OUT / "catalog.json"
 GITHUB_MAX_BYTES = 100 * 1024 * 1024
@@ -222,12 +224,12 @@ def rewrite_source_links(html: str, pending: set[str]) -> str:
 
 
 def resolve_source_path(key: str) -> Path | None:
-    """원본 키를 output/_extracted 또는 저장소 data 아래의 실제 파일 경로로 바꾼다."""
+    """원본 키를 output/_extracted 또는 data/data_study_note_record_organization 아래 파일로 바꾼다."""
     key = normalize_source_key(key)
     if key.startswith("_extracted/"):
         return OUT / key
     if key.startswith("data/"):
-        return ROOT / key
+        return SOURCE_DATA / key[len("data/") :]
     return None
 
 

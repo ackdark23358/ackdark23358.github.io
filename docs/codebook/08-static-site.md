@@ -36,7 +36,7 @@
 
 ### 원본 읽기
 
-`resolve_source_path`는 `_extracted/`로 시작하면 `output/` 아래로, `data/`로 시작하면 저장소 루트 아래로 경로를 만든다. 둘 다 아니면 `None`이다.
+`resolve_source_path`는 `_extracted/`로 시작하면 `output/` 아래로, `data/`로 시작하면 `data/data_study_note_record_organization/` 아래로 경로를 만든다. 카탈로그에 적힌 `data/파일명` 키는 그대로다. 둘 다 아니면 `None`이다.
 
 `read_text_file`은 `utf-8`, `utf-8-sig`, `cp949` 순으로 읽는다. 모두 실패하면 깨진 글자를 대체해 utf-8로 읽는다.
 
@@ -70,4 +70,4 @@
 
 ## 이 파일이 부르는 다른 파일
 
-`output/catalog.json`, `output/study`와 `output/assignment`의 마크다운, `output/_extracted` 또는 `data/`의 원본, `data/image`를 읽는다. `dashboard/js/data.js`, `dashboard/js/sources/*.json`, `dashboard/js/hero-images.js`, `dashboard/index.html`을 쓴다. `app.js`와 `hero.js`의 내용은 바꾸지 않는다.
+`output/catalog.json`, `output/study`와 `output/assignment`의 마크다운, `output/_extracted` 또는 `data/data_study_note_record_organization/`의 원본, `study_note_record_organization/data/image`를 읽는다. `dashboard/js/data.js`, `dashboard/js/sources/*.json`, `dashboard/js/hero-images.js`, `dashboard/index.html`을 쓴다. `app.js`와 `hero.js`의 내용은 바꾸지 않는다.

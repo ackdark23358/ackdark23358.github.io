@@ -255,7 +255,7 @@ DFD의 자료 흐름과 저장소에 실리는 자료의 이름, 의미, 구성�
 
 ## D1 학습 원본
 
-`study_note_record_organization/data/`의 노트와 과제 문서, `data/image/`의 히어로 이미지다. 과제 프로그램 소스 코드는 화면 명세의 입력으로 다루지 않는다.
+노트와 과제 문서는 `data/data_study_note_record_organization/`에 있다. 프로젝트 아카이브 원본은 `data/data_portfolio_achieve/`에 있다. 화면이 읽는 히어로 이미지는 `study_note_record_organization/data/image/`의 771장이다. 과제 프로그램 소스 코드는 화면 명세의 입력으로 다루지 않는다.
 
 ## D2 output
 

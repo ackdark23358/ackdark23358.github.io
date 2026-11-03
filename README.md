@@ -90,6 +90,9 @@ IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적
 │   ├── css/
 │   ├── js/
 │   └── img/
+├── data/                       # 원본 자료 (화면이 직접 읽지 않는 보관)
+│   ├── data_study_note_record_organization/
+│   └── data_portfolio_achieve/
 ├── docs/
 │   ├── portfolio-book.pdf      # 포트폴리오 북 (프로젝트 전반·바이브 코딩·기술문서 집약 단행본)
 │   ├── code-reference.pdf      # 함수·클래스 설명과 유사코드
@@ -117,13 +120,13 @@ IT·웹·모바일·AI 서비스 분야 취업 준비를 위해 제작한 정적
     │       ├── data.js
     │       ├── sources/    # 원본 텍스트 청크 (지연 로딩)
     │       └── ...
-    ├── data/image/         # 히어로 갤러리 (771장)
+    ├── data/image/         # 대시보드가 읽는 히어로 갤러리 (771장)
     └── scripts/            # 로컬 빌드용 (선택)
 ```
 
 ## 기술 문서
 
-포트폴리오 북, 코드 설명, 코드북, 소스 모음, 기술명세는 `docs/`에 있습니다. 화면 코드와 빌드 스크립트에는 함수·클래스 주석이 있고, 그 주석을 모아 PDF로 만듭니다. 소스 모음은 그 주석이 붙어 있는 코드 본문입니다. `data/` 안의 과제 프로그램 코드는 이 문서들에서 빼 두었습니다.
+포트폴리오 북, 코드 설명, 코드북, 소스 모음, 기술명세는 `docs/`에 있습니다. 화면 코드와 빌드 스크립트에는 함수·클래스 주석이 있고, 그 주석을 모아 PDF로 만듭니다. 소스 모음은 그 주석이 붙어 있는 코드 본문입니다. `data/` 안의 과제 프로그램 코드는 이 문서들에서 빼 두었습니다. 학습 원본은 `data/data_study_note_record_organization/`, 아카이브 원본은 `data/data_portfolio_achieve/`에 있습니다.
 
 | 문서 | 경로 | 내용 |
 | --- | --- | --- |
@@ -179,7 +182,7 @@ python scripts/build_output.py
 python scripts/build_static_site.py
 ```
 
-- 원본 노트·과제는 `study_note_record_organization/data/`에 두며, 대량 추가분은 `data/2026-10-18_add_data/`처럼 날짜 폴더로 구분할 수 있습니다.
+- 원본 노트·과제는 `data/data_study_note_record_organization/`에 두며, 대량 추가분은 `2026-10-18_add_data/`처럼 날짜 폴더로 구분할 수 있습니다. 요약 빌드는 이 폴더를 읽습니다. 대시보드 히어로만 `study_note_record_organization/data/image/`를 읽습니다.
 - **2026-10-18 반영**: SSamz 안드로이드(6~21강), 페스트캠퍼스 디자인툴(포토샵 1~4장), 유데미 코틀린·HTML 이력서, 에듀펜 수강 메타 등을 빌드에 반영했습니다. 같은 과목이 이미 있으면 내용만 보강하고 중복 카드는 만들지 않습니다.
 - 빌드 검증: 학습 **43그룹** + 과제 **18건** = 카탈로그 **61건** (`build_output.py`의 `EXPECTED_STUDY_GROUPS = 43`).
 
@@ -236,6 +239,8 @@ GitHub Pages는 공개 웹사이트로 배포될 수 있으므로, 업로드 전
 - 프로젝트 아카이브 상단은 21개 이름을 `프로젝트 - 이름`으로 쉼표에 이어 한 문장으로 보여 줍니다. 그 문장이 화면에 있는 동안 오른쪽에 `아래로 스크롤 하세요.`가 세로로 움직이고, 문장이 화면 밖으로 나가면 사라집니다.
 - 학습록 히어로 갤러리 `study_note_record_organization/data/image`에 이미지를 587장 추가해 618장입니다. 추가분은 `data/data_study_note_record_organization/image`에 모은 뒤 갤러리 폴더로 반영했고, `dashboard/js/hero-images.js` 목록도 그 장수에 맞췄습니다.
 - 같은 폴더에 사진을 153장 더 넣어 히어로 갤러리는 771장입니다. 화면이 읽는 경로는 `study_note_record_organization/data/image`이고, 목록은 `dashboard/js/hero-images.js`입니다. 히어로를 클릭하면 페이드 없이 다음 사진으로 바뀌고, 자동 전환의 페이드는 그대로입니다.
+- 프로젝트 아카이브 카드 머리글은 `PROJ_01`처럼 번호만 보여 줍니다. 작업 일자와 본문·푸터의 확인 날짜는 빼 두었습니다.
+- 학습 원본과 프로젝트 아카이브 원본은 저장소 루트 `data/data_study_note_record_organization/`, `data/data_portfolio_achieve/`로 두었습니다. 예전에 `study_note_record_organization/data/`와 `portfolio_achieve/data/`에 있던 파일입니다. 히어로 갤러리 사본은 `study_note_record_organization/data/image/`에 남습니다.
 - 학습록은 **59건(학습 41·과제 18)**을 유지합니다. 바이브 코딩 완성품은 PROJ_16·17로만 기록합니다.
 - 『한국 2027 트렌드 : 초개인화 시대의 서막』(이혜정, 북크크) 감상 노트를 학습록에 추가해 **60건(학습 42·과제 18)**이 되었습니다.
 - 박현규 『바로바로 바이브 코딩 with 커서 AI』(골든래빗) 독서 노트를 학습록에 추가해 **61건(학습 43·과제 18)**이 되었습니다.

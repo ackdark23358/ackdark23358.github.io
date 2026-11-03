@@ -13,7 +13,8 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "data"
+REPO = ROOT.parent
+DATA = REPO / "data" / "data_study_note_record_organization"
 ASSIGN = DATA / "과제분류하기"
 OUT = ROOT / "output"
 EXTRACTED = OUT / "_extracted"
